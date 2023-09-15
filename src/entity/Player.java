@@ -55,7 +55,7 @@ public class Player extends Entity{
         PLAYERstats.weapon = new OBJ_WEAPON_Slash(gp);
         PLAYERstats.armor = new OBJ_Armor(gp);
 
-        //TENGO QUE HACER DOWNCASTING PARA WEAPON POR QUERER HACERLO EN UNA SUBCLASE FUNNY
+        //TENGO QUE HACER DOWNCASTING PARA WEAPON POR QUERER HACERLO EN UNA SUBCLASE
         // Verifica si PLAYERstats.weapon es una instancia de OBJ_WEAPON_Slash
 
         if (PLAYERstats.weapon instanceof OBJ_WEAPON_Slash) {

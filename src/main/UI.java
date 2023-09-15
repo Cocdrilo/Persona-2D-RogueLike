@@ -5,9 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import Object.OBJ_Stairs;
-import entity.Entity;
-
 import javax.imageio.ImageIO;
 
 public class UI {
@@ -255,7 +252,7 @@ public class UI {
         textX = getXforAlignToRightText(valor,tailX);
         g2.drawString(valor,textX,textY+lineHeight*5);
 
-        valor = String.valueOf(gp.player.PLAYERstats.intel);
+        valor = String.valueOf(gp.player.PLAYERstats.dex);
         textX = getXforAlignToRightText(valor,tailX);
         g2.drawString(valor,textX,textY+lineHeight*6);
 

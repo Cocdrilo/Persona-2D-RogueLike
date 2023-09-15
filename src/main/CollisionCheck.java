@@ -73,17 +73,17 @@ public class CollisionCheck {
 
         int index = 999;
 
-        for(int x=0;x<gp.obj.length;x++){
+        for(int objInArray=0;objInArray<gp.obj.length;objInArray++){
 
-            if(gp.obj[x]!=null){
+            if(gp.obj[objInArray]!=null){
 
                 //Get posicion de entidad
                 entity.solidArea.x = entity.WorldX + entity.solidArea.x;
                 entity.solidArea.y = entity.WorldY + entity.solidArea.y;
 
                 //Get Posicion de OBJ
-                gp.obj[x].solidArea.x = gp.obj[x].WorldX + gp.obj[x].solidArea.y;
-                gp.obj[x].solidArea.y = gp.obj[x].WorldY + gp.obj[x].solidArea.y;
+                gp.obj[objInArray].solidArea.x = gp.obj[objInArray].WorldX + gp.obj[objInArray].solidArea.y;
+                gp.obj[objInArray].solidArea.y = gp.obj[objInArray].WorldY + gp.obj[objInArray].solidArea.y;
 
                 switch (entity.direction){
                     case"up":
@@ -99,19 +99,19 @@ public class CollisionCheck {
                         entity.solidArea.x += entity.speed;
                         break;
                 }
-                if(entity.solidArea.intersects(gp.obj[x].solidArea)) {
-                    if (gp.obj[x].collision == true) {
+                if(entity.solidArea.intersects(gp.obj[objInArray].solidArea)) {
+                    if (gp.obj[objInArray].collision == true) {
                         entity.collisionOn = true;
                     }
                     if (player == true) {
-                        index = x;
+                        index = objInArray;
                     }
                 }
 
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.SolidAreaDefaultY;
-                gp.obj[x].solidArea.x=gp.obj[x].solidAreaDefaultX;
-                gp.obj[x].solidArea.y=gp.obj[x].SolidAreaDefaultY;
+                gp.obj[objInArray].solidArea.x=gp.obj[objInArray].solidAreaDefaultX;
+                gp.obj[objInArray].solidArea.y=gp.obj[objInArray].SolidAreaDefaultY;
 
             }
 
@@ -126,17 +126,17 @@ public class CollisionCheck {
 
         int index = 999;
 
-        for(int x=0;x<target.length;x++){
+        for(int entityInArray=0;entityInArray<target.length;entityInArray++){
 
-            if(target[x]!=null){
+            if(target[entityInArray]!=null){
 
                 //Get posicion de entidad
                 entity.solidArea.x = entity.WorldX + entity.solidArea.x;
                 entity.solidArea.y = entity.WorldY + entity.solidArea.y;
 
                 //Get Posicion de OBJ
-                target[x].solidArea.x = target[x].WorldX + target[x].solidArea.y;
-                target[x].solidArea.y = target[x].WorldY + target[x].solidArea.y;
+                target[entityInArray].solidArea.x = target[entityInArray].WorldX + target[entityInArray].solidArea.y;
+                target[entityInArray].solidArea.y = target[entityInArray].WorldY + target[entityInArray].solidArea.y;
 
                 switch (entity.direction){
                     case"up":
@@ -154,17 +154,17 @@ public class CollisionCheck {
                 }
 
                 //BUGFIX PARA QUE NO SE DETECTE A SI MISMO COMO COLISION Y NO SE PUEDAN MOVER
-                if(entity.solidArea.intersects(target[x].solidArea)){
-                    if(target[x]!=entity){
+                if(entity.solidArea.intersects(target[entityInArray].solidArea)){
+                    if(target[entityInArray]!=entity){
                         entity.collisionOn = true;
-                        index = x;
+                        index = entityInArray;
                     }
                 }
 
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.SolidAreaDefaultY;
-                target[x].solidArea.x=target[x].solidAreaDefaultX;
-                target[x].solidArea.y=target[x].SolidAreaDefaultY;
+                target[entityInArray].solidArea.x=target[entityInArray].solidAreaDefaultX;
+                target[entityInArray].solidArea.y=target[entityInArray].SolidAreaDefaultY;
 
             }
 

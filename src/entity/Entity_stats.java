@@ -12,8 +12,7 @@ public class Entity_stats {
     public int maxMp;
     //PERSONA STATS
     public int str;
-    public int intel;
-    public int luck;
+    public int dex;
     public int agi;
     public int vit;
 
@@ -25,7 +24,6 @@ public class Entity_stats {
     //EQUIPMENT STATS
     public int def;
     public int atkDmg;
-    public int hit;
 
     public Entity_stats() {
         //PLAYER STATS DEFAULT
@@ -39,7 +37,7 @@ public class Entity_stats {
         maxMp = 10;
         //PERSONA STATS DEFAULT
         str = 5;
-        intel = 5;
+        dex = 5;
         agi = 5;
         vit = 5;
 
