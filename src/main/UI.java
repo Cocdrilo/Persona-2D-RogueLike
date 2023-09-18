@@ -457,14 +457,25 @@ public class UI {
 
         drawSubWindow(frameX,frameY,frameWidth,frameHeight);
 
-        //DIBUJAR DESCRIPCION DEL OBJETO
+        // DIBUJAR DESCRIPCION DEL OBJETO
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(24F));
-        String text = gp.player.inventory.get(slotRow*11+slotCol).description;
-        int textX = frameX+gp.tileSize/2;
-        int textY = frameY+gp.tileSize;
+
+        // Obtén la descripción del objeto del inventario
+        String text = "";
+        if (gp.player.inventory.size() > slotRow * 11 + slotCol) {
+            text = gp.player.inventory.get(slotRow * 11 + slotCol).description;
+        }
+
+        int textX = frameX + gp.tileSize / 2;
+        int textY = frameY + gp.tileSize;
         final int lineHeight = 34;
-        g2.drawString(text,textX,textY);
+
+        // Verifica si el texto no está en blanco antes de dibujarlo
+        if (!text.isEmpty()) {
+            g2.drawString(text, textX, textY);
+        }
+
 
     }
 
