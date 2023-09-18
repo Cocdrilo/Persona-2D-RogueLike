@@ -31,9 +31,12 @@ public class Entity {
 
     //ATRIBUTOS DE PERSONAJES
     public int speed;
+
     public String name;
     public int type; // 0 = player, 1 = npc, 2 = mosnter
     Entity_stats stats;
+    public String description = "";
+
 
     //CONTADORES
     public int spriteCounter = 0;

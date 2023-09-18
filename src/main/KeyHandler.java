@@ -35,16 +35,23 @@ public class KeyHandler implements KeyListener {
             dialogueState(code);
         }
 
-        //STATUS STATE
-        else if(gp.gameState == gp.statusState){
-            statusState(code);
+        //Menu STATE
+        else if(gp.gameState == gp.enterMenuState){
+            enterMenuState(code);
         }
 
         //TITLESCREEN STATE
         else if(gp.gameState == gp.titleState){
             titleState(code);
         }
-
+        //STATUS STATE
+        else if(gp.gameState == gp.statusState){
+            statusState(code);
+        }
+        //INVENTORY STATE
+        else if(gp.gameState == gp.inventoryState){
+            inventoryState(code);
+        }
     }
 
     public void titleState(int code){
@@ -105,7 +112,7 @@ public class KeyHandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_ENTER){
-            gp.gameState = gp.statusState;
+            gp.gameState = gp.enterMenuState;
         }
     }
     public void pauseState(int code){
@@ -119,10 +126,83 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.playState;
         }
     }
+
     public void statusState(int code){
-        if(code == KeyEvent.VK_ENTER){
+        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE){
+            gp.gameState = gp.enterMenuState;
+        }
+    }
+
+    public void inventoryState(int code){
+
+        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE){
+            gp.gameState = gp.enterMenuState;
+        }
+
+        if(code == KeyEvent.VK_W) {
+            if(gp.ui.slotRow !=0){
+                gp.ui.slotRow--;
+            }
+        }
+
+        if(code == KeyEvent.VK_A) {
+            if(gp.ui.slotCol !=0){
+                gp.ui.slotCol--;
+            }
+        }
+
+        if(code == KeyEvent.VK_S) {
+            if(gp.ui.slotRow !=6){
+                gp.ui.slotRow++;
+            }
+        }
+
+        if(code == KeyEvent.VK_D) {
+            if(gp.ui.slotCol !=10){
+                gp.ui.slotCol++;
+            }
+        }
+
+    }
+
+    public void enterMenuState(int code){
+
+        if(code == KeyEvent.VK_W) {
+            if(gp.ui.commandNum>0){
+                gp.ui.commandNum--;
+            }
+            else{
+                gp.ui.commandNum=3;
+            }
+        }
+
+        if(code == KeyEvent.VK_S) {
+            if(gp.ui.commandNum<3){
+                gp.ui.commandNum++;
+            }
+            else{
+                gp.ui.commandNum=0;
+            }
+        }
+        if(code == KeyEvent.VK_Z) {
+            if (gp.ui.commandNum == 0) {
+                gp.gameState = gp.statusState;
+            }
+            if (gp.ui.commandNum == 1) {
+                gp.gameState = gp.inventoryState;
+            }
+            if (gp.ui.commandNum == 2) {
+                //Implementar Save
+            }
+            if (gp.ui.commandNum == 3){
+                System.exit(0);
+            }
+        }
+
+        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE){
             gp.gameState = gp.playState;
         }
+
     }
 
 

@@ -11,7 +11,9 @@ public class OBJ_Weapon extends Entity {
     public int price;
     public OBJ_Weapon(GamePanel gp) {
         super(gp);
-
+    }
+    public void setUpDescription(){
+        description = "["+ name +" ]\nAtk: "+atk+ " \nHit: " + hit + "\n Tipo de DMG: " + damageType;
     }
 
 
