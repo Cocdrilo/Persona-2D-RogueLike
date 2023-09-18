@@ -53,8 +53,11 @@ public class GamePanel extends JPanel implements Runnable{
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
-    public final int statusState = 4;
+    public final int enterMenuState = 4;
     public final int combatState = 5;
+    public final int statusState = 6;
+    public final int inventoryState = 7;
+
 
 
 
@@ -124,14 +127,14 @@ public class GamePanel extends JPanel implements Runnable{
             player.update();
 
             //NPC ACTUALZ
-            for (int x=0;x< npc.length;x++){
-                if(npc[x]!=null){
-                    npc[x].update();
+            for (int npcInArray=0;npcInArray< npc.length;npcInArray++){
+                if(npc[npcInArray]!=null){
+                    npc[npcInArray].update();
                 }
             }
-            for(int x=0;x<monsters.length;x++){
-                if(monsters[x]!=null){
-                    monsters[x].update();
+            for(int monsterInArray=0;monsterInArray<monsters.length;monsterInArray++){
+                if(monsters[monsterInArray]!=null){
+                    monsters[monsterInArray].update();
                 }
             }
 
@@ -162,20 +165,20 @@ public class GamePanel extends JPanel implements Runnable{
 
             entityList.add(player);
 
-            for(int x=0;x< npc.length;x++){
-                if(npc[x]!=null){
-                    entityList.add(npc[x]);
+            for(int npcInArray=0;npcInArray< npc.length;npcInArray++){
+                if(npc[npcInArray]!=null){
+                    entityList.add(npc[npcInArray]);
                 }
             }
 
-            for(int x=0;x< obj.length;x++){
-                if(obj[x]!=null){
-                    entityList.add(obj[x]);
+            for(int objInArray=0;objInArray< obj.length;objInArray++){
+                if(obj[objInArray]!=null){
+                    entityList.add(obj[objInArray]);
                 }
             }
-            for(int x=0;x<monsters.length;x++){
-                if(monsters[x]!=null){
-                    entityList.add(monsters[x]);
+            for(int monsterInArray=0;monsterInArray<monsters.length;monsterInArray++){
+                if(monsters[monsterInArray]!=null){
+                    entityList.add(monsters[monsterInArray]);
                 }
             }
 
@@ -190,8 +193,8 @@ public class GamePanel extends JPanel implements Runnable{
             });
 
             //DIBUJAMOS LAS ENTIDADES SORTED
-            for(int x=0;x< entityList.size();x++){
-                entityList.get(x).draw(graficos2d);
+            for(int entitySorted=0;entitySorted< entityList.size();entitySorted++){
+                entityList.get(entitySorted).draw(graficos2d);
             }
             //Limpiamos la lista para que no se acumulen entidades
             entityList.clear();

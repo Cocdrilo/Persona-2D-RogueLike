@@ -5,9 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import Object.OBJ_Stairs;
-import entity.Entity;
-
 import javax.imageio.ImageIO;
 
 public class UI {
@@ -27,6 +24,11 @@ public class UI {
     public String currentDialogue = "";
     public String currentName="";
     public int commandNum = 0;
+
+    //VARIABLES PARA MANEJO DE INVENTARIO
+    public int slotCol = 0;
+    public int slotRow = 0;
+
 
     public UI(GamePanel gp){
 
@@ -255,7 +257,7 @@ public class UI {
         textX = getXforAlignToRightText(valor,tailX);
         g2.drawString(valor,textX,textY+lineHeight*5);
 
-        valor = String.valueOf(gp.player.PLAYERstats.intel);
+        valor = String.valueOf(gp.player.PLAYERstats.dex);
         textX = getXforAlignToRightText(valor,tailX);
         g2.drawString(valor,textX,textY+lineHeight*6);
 
@@ -346,7 +348,123 @@ public class UI {
         drawSubWindow(x,y,width,height);
 
 
+    }
 
+    public void drawOptionsMenu(){
+        //Displayea un frame con las opciones de status inventario guardar etc
+        final int frameX = gp.tileSize;
+        final int frameY = gp.tileSize;
+        final int frameWidth = gp.tileSize*3;
+        final int frameHeight = gp.tileSize*10;
+        drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+
+        g2.setColor(Color.gray);
+        g2.fillRect(frameX, frameY, frameWidth, frameHeight);
+        drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+
+        //TEXT
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(24F));
+
+        int textX = frameX+gp.tileSize/2;
+        int textY = frameY+gp.tileSize;
+        final int lineHeight = 68;
+        String text;
+
+        //NAMES
+        text = "STATUS";
+        g2.drawString(text,textX,textY);
+        if(commandNum == 0){
+            g2.drawString("->",textX-(gp.tileSize/2-5),textY);
+        }
+        textY+= lineHeight;
+
+
+        text = "INVENTORY";
+        g2.drawString(text,textX,textY);
+        if(commandNum == 1){
+            g2.drawString("->",textX-(gp.tileSize/2-5),textY);
+        }
+        textY+= lineHeight;
+
+
+        text = "SAVE";
+        g2.drawString(text,textX,textY);
+        if(commandNum == 2){
+            g2.drawString("->",textX-(gp.tileSize/2-5),textY);
+        }
+        textY+= lineHeight;
+
+
+        text = "EXIT";
+        g2.drawString(text,textX,textY);
+        if(commandNum == 3){
+            g2.drawString("->",textX-(gp.tileSize/2-5),textY);
+        }
+        textY+= lineHeight;
+
+    }
+
+    public void drawInventoryScreen(){
+
+        //FRAME COMO TAL
+        int frameX = gp.tileSize*2;
+        int frameY = gp.tileSize*2;
+        int frameWidth = gp.screenWidth - gp.tileSize*4;
+        int frameHeight = gp.screenHeight - gp.tileSize*4;
+
+        drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+
+        //ITEM SLOTS DENTRO DEL FRAME
+
+        //11 X 7 (inventario Slots)
+        final int slotXinicial = frameX+20;
+        final int slotYinicial = frameY+20;
+        int slotX = slotXinicial;
+        int slotY = slotYinicial;
+
+        // DIBUJAR ITEMS
+
+        for(int inventoryArrayPos = 0; inventoryArrayPos < gp.player.inventory.size(); inventoryArrayPos++){
+
+            //DIBUJAR ITEM
+            g2.drawImage(gp.player.inventory.get(inventoryArrayPos).walkDown1,slotX,slotY,null);
+
+            //PASAR AL SIGUIENTE SLOT
+            slotX += gp.tileSize;
+            if(slotX >= slotXinicial + (gp.tileSize*11)){
+                slotX = slotXinicial;
+                slotY += gp.tileSize;
+            }
+        }
+
+
+        //CURSORES DE SELCCION
+        int cursorX = slotXinicial + (gp.tileSize*slotCol);
+        int cursorY = slotYinicial + (gp.tileSize*slotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        //DIBUJAR CURSORS
+        g2.setColor(Color.white);
+        g2.drawRoundRect(cursorX,cursorY,cursorWidth,cursorHeight,10,10);
+
+        //Frame con Descripción del Objeto
+        frameX = gp.tileSize*2;
+        frameY = gp.tileSize*10;
+        frameWidth = gp.screenWidth - gp.tileSize*4;
+        frameHeight = gp.tileSize*4;
+
+        drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+
+        //DIBUJAR DESCRIPCION DEL OBJETO
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        String text = gp.player.inventory.get(slotRow*11+slotCol).description;
+        int textX = frameX+gp.tileSize/2;
+        int textY = frameY+gp.tileSize;
+        final int lineHeight = 34;
+        g2.drawString(text,textX,textY);
 
     }
 
@@ -376,9 +494,17 @@ public class UI {
             drawDialogueScreen();
         }
 
-        //STATUS SCREEN
+        //PLAYER MENU  SCREEN
+        if(gp.gameState==gp.enterMenuState){
+            drawOptionsMenu();
+        }
+        // STATUS SCREEN
         if(gp.gameState==gp.statusState){
             drawStatusScreen();
+        }
+        // INVENTORY SCREEN
+        if(gp.gameState==gp.inventoryState){
+            drawInventoryScreen();
         }
 
         if(gp.gameState == gp.combatState){

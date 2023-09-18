@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Player extends Entity{
 
@@ -17,6 +18,9 @@ public class Player extends Entity{
 
     KeyHandler keyH;
     public Entity_stats PLAYERstats;
+
+    //Inventario del jugador
+    public ArrayList<Entity> inventory = new ArrayList<Entity>();
 
     public Player(GamePanel gp,KeyHandler keyH){
         super (gp);
@@ -34,6 +38,7 @@ public class Player extends Entity{
 
         setDefaultValues();
         getPlayerImage();
+        setItems();
     }
     public void setDefaultValues(){
         WorldX = 100;
@@ -55,7 +60,7 @@ public class Player extends Entity{
         PLAYERstats.weapon = new OBJ_WEAPON_Slash(gp);
         PLAYERstats.armor = new OBJ_Armor(gp);
 
-        //TENGO QUE HACER DOWNCASTING PARA WEAPON POR QUERER HACERLO EN UNA SUBCLASE FUNNY
+        //TENGO QUE HACER DOWNCASTING PARA WEAPON POR QUERER HACERLO EN UNA SUBCLASE
         // Verifica si PLAYERstats.weapon es una instancia de OBJ_WEAPON_Slash
 
         if (PLAYERstats.weapon instanceof OBJ_WEAPON_Slash) {
@@ -76,6 +81,14 @@ public class Player extends Entity{
             // Puedes establecer un valor predeterminado o tomar otra acción aquí.
             PLAYERstats.def = 0; // Establecer un valor predeterminado para la defensa.
         }
+    }
+
+    public void setItems(){
+
+        inventory.add(PLAYERstats.weapon);
+        inventory.add(PLAYERstats.armor);
+
+
     }
 
     public int getAttack(OBJ_Weapon weapon){
