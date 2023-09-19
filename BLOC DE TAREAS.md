@@ -1,10 +1,13 @@
 Falta por hacer: seleccionar con X si lo va a hacer alejandro y con + si lo va a hacer dani
 
 -Terminar menu de combate tanto graficamente como para seleccionar las opciones:
+
 -Hacer funcional el combate:
   -Las opciones de combate:
   -Las opciones de objetos:
   -La opcion de huir:
+-Loot y Exp gain post combate.
+
 -Equipar y usar objetos desde el inventario:X
 -Menu de opciones Graficas y de sonido en el mismo:
 -Poder poner pantalla completa:
