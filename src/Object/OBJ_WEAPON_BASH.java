@@ -10,7 +10,8 @@ public class OBJ_WEAPON_BASH extends OBJ_Weapon{
         atk = 16;
         hit = 85;
         price = 60;
-        description = "["+ name +" ]\nAtk: "+atk+ " \nHit: " + hit + "\n Tipo de DMG: " + damageType;
+        walkDown1 = setUp("/Objects/weapon_Maza");
+        setUpDescription();
     }
 
     //IDEA PARA GUARDAR ARMAS CONTUNDENTES, HACER UN ARRAY DE ESPADAS QUE TOME DE UN TXT LOS DATOS PARA CREAR BASH WEAPONS

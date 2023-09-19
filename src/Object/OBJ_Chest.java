@@ -14,7 +14,7 @@ public class OBJ_Chest extends Entity {
         name = "chest";
         collision=true;
         walkDown1 = setUp("/Objects/Cofre");
-
+        isPickupeable = true;
 
     }
 }

@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 public class KeyHandler implements KeyListener {
 
@@ -161,6 +162,9 @@ public class KeyHandler implements KeyListener {
             if(gp.ui.slotCol !=10){
                 gp.ui.slotCol++;
             }
+        }
+        if(code == KeyEvent.VK_Z) {
+            gp.player.selectItems();
         }
 
     }

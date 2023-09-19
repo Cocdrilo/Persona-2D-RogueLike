@@ -11,8 +11,9 @@ import java.io.IOException;
 
 public class Entity {
 
-    GamePanel gp;
+    public GamePanel gp;
     KeyHandler keyH;
+
 
     //SOLID AREAS
     public Rectangle solidArea = new Rectangle(0,0,48,48);
@@ -33,9 +34,10 @@ public class Entity {
     public int speed;
 
     public String name;
-    public int type; // 0 = player, 1 = npc, 2 = mosnter
-    Entity_stats stats;
+    public int type; // 0 = player, 1 = npc, 2 = mosnter 3 = equipableSword 4 = equipableArmor 5 = consumableItem
+    public Entity_stats stats;
     public String description = "";
+    public boolean isPickupeable = false;
 
 
     //CONTADORES
@@ -140,6 +142,10 @@ public class Entity {
                 direction="left";
                 break;
         }
+
+    }
+
+    public void use(Entity entity){
 
     }
 

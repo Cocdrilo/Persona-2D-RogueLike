@@ -64,11 +64,23 @@ public class Player extends Entity{
         // Verifica si PLAYERstats.weapon es una instancia de OBJ_WEAPON_Slash
 
         if (PLAYERstats.weapon instanceof OBJ_WEAPON_Slash) {
-            OBJ_WEAPON_Slash slashingWeapon = (OBJ_WEAPON_Slash) PLAYERstats.weapon;
 
+            OBJ_WEAPON_Slash slashingWeapon = (OBJ_WEAPON_Slash) PLAYERstats.weapon;
             PLAYERstats.atkDmg = getAttack(slashingWeapon);
 
-        } else {
+        }
+        if(PLAYERstats.weapon instanceof OBJ_WEAPON_Piercing){
+
+            OBJ_WEAPON_Piercing piercingWeapon = (OBJ_WEAPON_Piercing) PLAYERstats.weapon;
+            PLAYERstats.atkDmg = getAttack(piercingWeapon);
+        }
+        if(PLAYERstats.weapon instanceof OBJ_WEAPON_BASH){
+
+                OBJ_WEAPON_BASH bashingWeapon = (OBJ_WEAPON_BASH) PLAYERstats.weapon;
+                PLAYERstats.atkDmg = getAttack(bashingWeapon);
+        }
+
+        else {
             PLAYERstats.atkDmg = 0; // Establecer un valor predeterminado para el ataque.
         }
 
@@ -88,7 +100,32 @@ public class Player extends Entity{
         inventory.add(PLAYERstats.weapon);
         inventory.add(PLAYERstats.armor);
 
+    }
 
+    public void selectItems(){
+
+        int itemIndex = gp.ui.getItemIndexSlot();
+
+        if(itemIndex < inventory.size()){
+
+            Entity selectedItem = inventory.get(itemIndex);
+
+            if(selectedItem.type == 3){
+                PLAYERstats.weapon = selectedItem;
+                PLAYERstats.atkDmg = getAttack((OBJ_Weapon) selectedItem);
+            }
+
+            if(selectedItem.type == 4){
+                PLAYERstats.armor = selectedItem;
+                PLAYERstats.def = getDefense((OBJ_Armor) selectedItem);
+            }
+
+            if(selectedItem.type == 5){
+                //CONSUMIBLE
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+            }
+        }
     }
 
     public int getAttack(OBJ_Weapon weapon){
@@ -144,6 +181,7 @@ public class Player extends Entity{
             //CHECK COLISION OBJETOS
             int objIndex = gp.cCheck.checkObject(this,true);
             ObjectInteractions(objIndex);
+            pickUpObject(objIndex);
 
             //Colision de NPC
             int npcIndex = gp.cCheck.checkEntity(this,gp.npc);
@@ -205,6 +243,18 @@ public class Player extends Entity{
 
         }
     }
+
+    public void pickUpObject(int i){
+        if(i != 999 && gp.keyH.zPressed && gp.obj[i].isPickupeable){
+            String text = "";
+                inventory.add(gp.obj[i]);
+                gp.playerSe(1);
+                text = "You picked up a " + gp.obj[i].name + "!";
+            gp.ui.addMessage(text);
+            gp.obj[i] = null;
+        }
+    }
+
 
     public void contactMonster(int i){
         if(i != 999){
