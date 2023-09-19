@@ -10,7 +10,7 @@ public class OBJ_WEAPON_BASH extends OBJ_Weapon{
         atk = 16;
         hit = 85;
         price = 60;
-        walkDown1 = setUp("/Objects/PuertaAbierta");
+        walkDown1 = setUp("/Objects/weapon_Maza");
         setUpDescription();
     }
 

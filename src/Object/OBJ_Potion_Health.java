@@ -8,11 +8,12 @@ public class OBJ_Potion_Health extends Entity {
 
     public OBJ_Potion_Health(GamePanel gp) {
         super(gp);
+        name = "Health Potion";
         collision = true;
         isPickupeable = true;
         type = 5;
-        walkDown1 = setUp("/Objects/Potion_Health");
-        description = "Health Potion +5 hp";
+        walkDown1 = setUp("/Objects/healthPotion");
+        description = "Health Potion heals +5 hp";
     }
 
     public void use(Entity entity){
