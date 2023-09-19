@@ -1,0 +1,26 @@
+Falta por hacer: seleccionar con X si lo va a hacer alejandro y con + si lo va a hacer dani
+
+-Terminar menu de combate tanto graficamente como para seleccionar las opciones:
+-Hacer funcional el combate:
+  -Las opciones de combate:
+  -Las opciones de objetos:
+  -La opcion de huir:
+-Equipar y usar objetos desde el inventario:X
+-Menu de opciones Graficas y de sonido en el mismo:
+-Poder poner pantalla completa:
+-Save File en un txt:
+-Cargar partida desde el txt:
+-Sistema de tiendas:
+-Transicionar Mapas:
+-Pathfinding (que te sigan los mobs que cojan agro o npcs)
+-Loot fuera de combate:
+-Mejora de los diálogos para que no tengas que rehablar y que avance, es decir que sea estilo page flip:
+-
+
+-------Mejoras para después de terminar todo lo funcional-----
+-Intentar hacer con ayuda de IA o stackOverflow o lo que sea una forma de generar mapas basicos procedurales con salas y pasillos:
+-Mejorar Gráficamente los TileSets y los Npcs.
+-Modificar todos los comentarios y añadir mas al estilo javadoc.
+-Preparar una documentación del código adecuada.
+-Revisar y Privatizar todo lo que sea público y no lo necesite.
+-
