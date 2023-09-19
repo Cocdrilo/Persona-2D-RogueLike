@@ -28,6 +28,15 @@ public class AssetSetter {
             gp.obj[2].WorldX = 64;
             gp.obj[2].WorldY = 192;
 
+            gp.obj[3]= new OBJ_WEAPON_BASH(gp);
+            gp.obj[3].WorldX = 64;
+            gp.obj[3].WorldY = 256;
+
+            gp.obj[4]= new OBJ_Potion_Health(gp);
+            gp.obj[4].WorldX = 64;
+            gp.obj[4].WorldY = 320;
+
+
     }
 
     public void setNPC(){

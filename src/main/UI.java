@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -18,8 +19,11 @@ public class UI {
     BufferedImage image;
 
     public boolean messageOn = false;
-    public String message = "";
-    int messageCounter = 0;
+
+        //ArrayList de text para que sean Scrolling
+    ArrayList<String> messageList = new ArrayList<String>();
+    ArrayList<Integer> messageCounter = new ArrayList<Integer>();
+
     public boolean gameFinished = false;
     public String currentDialogue = "";
     public String currentName="";
@@ -55,9 +59,9 @@ public class UI {
 
     }
 
-    public void showMessage(String text){
-        message = text;
-        messageOn = true;
+    public void addMessage(String text){
+        messageList.add(text);
+        messageCounter.add(0);
     }
 
     public int getXforCenterText(String text){
@@ -427,6 +431,12 @@ public class UI {
 
         for(int inventoryArrayPos = 0; inventoryArrayPos < gp.player.inventory.size(); inventoryArrayPos++){
 
+            //Dibujar Cursor sobre objetos equipados
+            if(gp.player.inventory.get(inventoryArrayPos) == gp.player.PLAYERstats.weapon || gp.player.inventory.get(inventoryArrayPos) == gp.player.PLAYERstats.armor){
+                g2.setColor(new Color(235, 219, 52));
+                g2.fillRoundRect(slotX,slotY,gp.tileSize,gp.tileSize,10,10);
+            }
+
             //DIBUJAR ITEM
             g2.drawImage(gp.player.inventory.get(inventoryArrayPos).walkDown1,slotX,slotY,null);
 
@@ -476,7 +486,36 @@ public class UI {
             g2.drawString(text, textX, textY);
         }
 
+    }
 
+    public int getItemIndexSlot(){
+        int indexItem = slotCol +(slotRow*7);
+        return indexItem;
+    }
+
+    public void drawMessage(){
+        int messageX = gp.tileSize;
+        int messageY = gp.tileSize*4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,24F));
+
+        for(int messagePosition = 0; messagePosition < messageList.size();messagePosition++){
+
+            if(messageList.get(messagePosition) != null){
+                g2.setColor(Color.white);
+                g2.drawString(messageList.get(messagePosition),messageX,messageY);
+
+                //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
+
+                int counter = messageCounter.get(messagePosition) + 1;
+                messageCounter.set(messagePosition,counter);
+                messageY += 50;
+
+                if(messageCounter.get(messagePosition) > 120){
+                    messageList.remove(messagePosition);
+                    messageCounter.remove(messagePosition);
+                }
+            }
+        }
     }
 
 
@@ -494,7 +533,7 @@ public class UI {
         }
 
         if(gp.gameState == gp.playState){
-            //Do sht
+            drawMessage();
         }
             //pantalla de pausa
         if(gp.gameState==gp.pauseState){
