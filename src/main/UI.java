@@ -1,5 +1,7 @@
 package main;
 
+import entity.Player;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,13 +20,10 @@ public class UI {
 
     BufferedImage image;
 
-    public boolean messageOn = false;
+    //ArrayList de text para que sean Scrolling
+    ArrayList<String> messageList = new ArrayList<>();
+    ArrayList<Integer> messageCounter = new ArrayList<>();
 
-        //ArrayList de text para que sean Scrolling
-    ArrayList<String> messageList = new ArrayList<String>();
-    ArrayList<Integer> messageCounter = new ArrayList<Integer>();
-
-    public boolean gameFinished = false;
     public String currentDialogue = "";
     public String currentName="";
     public int commandNum = 0;
@@ -47,15 +46,9 @@ public class UI {
             is = getClass().getResourceAsStream("/font/FranklinGothic.ttf");
             franklin= Font.createFont(Font.TRUETYPE_FONT,is);
 
-        } catch (FontFormatException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }
-
-//        OBJ_Stairs stairs = new OBJ_Stairs(gp);
-//        floorImage = stairs.image;
-
 
     }
 
@@ -67,14 +60,12 @@ public class UI {
     public int getXforCenterText(String text){
 
         int length =(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth() ;
-        int x = gp.screenWidth/2 - length/2;
-        return x;
+        return gp.screenWidth/2 - length/2;
     }
 
     public int getXforAlignToRightText(String text,int tailX){
         int length =(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth() ;
-        int x = tailX - length;
-        return x;
+        return tailX - length;
     }
 
     public void drawPauseScreen(){
@@ -149,7 +140,6 @@ public class UI {
         g2.drawString(text,x,y);
 
         //IMAGEN PERSONAJE
-        x= gp.screenWidth/2;
         y += gp.tileSize;
 
         try {
@@ -283,7 +273,7 @@ public class UI {
 
     }
 
-    public void drawCombatScreen(){
+    public void drawCombatScreen(BattleSystem BattleState){
 
         g2.setFont(franklin);
         //Dibuja un panel arriba centrado donde se displayeara el monstruo
@@ -301,14 +291,8 @@ public class UI {
         x = gp.tileSize*6;
         y = (int)(gp.tileSize*1.5);
 
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/Monsters/MonstersBattleDisplay/Quimera.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        image = BattleState.monster.combatImage;
         g2.drawImage(image,x-18,y-5,150,150,null);
-
 
 
         //Dibuja un panel centrado a la derecha donde se displayeara el orden de turnos de los jugadores
@@ -324,8 +308,7 @@ public class UI {
 
         //Dibuja un menu sencillo que tenga las opciones de atacar, defender, huir, usar item alrededor de abajo a la izquierda pero acercandose al centro
         x = gp.tileSize*2;
-        y = gp.tileSize*5;
-        width = (int)(gp.tileSize*3);
+        width = (gp.tileSize*3);
         height = gp.tileSize*5;
 
         g2.setColor(Color.RED); // You can choose any color you like
@@ -405,7 +388,6 @@ public class UI {
         if(commandNum == 3){
             g2.drawString("->",textX-(gp.tileSize/2-5),textY);
         }
-        textY+= lineHeight;
 
     }
 
@@ -479,7 +461,6 @@ public class UI {
 
         int textX = frameX + gp.tileSize / 2;
         int textY = frameY + gp.tileSize;
-        final int lineHeight = 34;
 
         // Verifica si el texto no está en blanco antes de dibujarlo
         if (!text.isEmpty()) {
@@ -489,8 +470,7 @@ public class UI {
     }
 
     public int getItemIndexSlot(){
-        int indexItem = slotCol +(slotRow*7);
-        return indexItem;
+        return slotCol +(slotRow*7);
     }
 
     public void drawMessage(){
@@ -556,9 +536,9 @@ public class UI {
         if(gp.gameState==gp.inventoryState){
             drawInventoryScreen();
         }
-
+        //Combat State
         if(gp.gameState == gp.combatState){
-            drawCombatScreen();
+            drawCombatScreen(gp.battleSystem);
         }
     }
 }
