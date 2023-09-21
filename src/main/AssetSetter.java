@@ -47,7 +47,7 @@ public class AssetSetter {
     }
 
     public void setMonster(){
-        gp.monsters[0]= new shadowStandar(gp, "Quimera", 100, 20, 10,3 , "/Monsters/MonstersBattleDisplay/Quimera");
+        gp.monsters[0]= new shadowStandar(gp, "Quimera", 20, 7, 3,3 , "/Monsters/MonstersBattleDisplay/Quimera");
         gp.monsters[0].WorldX = gp.tileSize*6;
         gp.monsters[0].WorldY = gp.tileSize*6;
 

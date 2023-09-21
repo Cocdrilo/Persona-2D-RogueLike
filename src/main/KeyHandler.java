@@ -53,6 +53,53 @@ public class KeyHandler implements KeyListener {
         else if(gp.gameState == gp.inventoryState){
             inventoryState(code);
         }
+        //COMBAT STATE
+        else if(gp.gameState == gp.combatState){
+            combatState(code);
+        }
+
+    }
+
+    public void combatState(int code){
+
+        if(code == KeyEvent.VK_W) {
+            if(gp.ui.commandNum>0){
+                gp.ui.commandNum--;
+                System.out.println(gp.ui.commandNum);
+            }
+            else{
+                gp.ui.commandNum=4;
+            }
+        }
+
+        if(code == KeyEvent.VK_S) {
+            if(gp.ui.commandNum<4){
+                gp.ui.commandNum++;
+                System.out.println(gp.ui.commandNum);
+            }
+            else{
+                gp.ui.commandNum=0;
+            }
+        }
+        if(code == KeyEvent.VK_Z){
+            if(gp.ui.commandNum == 0){
+                gp.battleSystem.attack();
+            }
+            if(gp.ui.commandNum == 1){
+                //Use Magic Aun sin Implementar
+            }
+            if(gp.ui.commandNum == 2){
+                //Use Items Aun sin Implementar
+            }
+            if(gp.ui.commandNum == 3){
+                gp.battleSystem.defend();
+            }
+            if(gp.ui.commandNum == 4){
+                //Flee Aun sin Implementar
+            }
+        }
+
+
     }
 
     public void titleState(int code){

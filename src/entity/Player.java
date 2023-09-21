@@ -20,6 +20,7 @@ public class Player extends Entity{
 
     //Inventario del jugador
     public ArrayList<Entity> inventory = new ArrayList<>();
+    public boolean defending = false;
 
     public Player(GamePanel gp,KeyHandler keyH){
         super (gp);
@@ -93,15 +94,13 @@ public class Player extends Entity{
         }
 
     public int getAttack(){
-        int atkReturn = 0;
+        int atkReturn;
         if ( PLAYERstats.weapon != null){
-            atkReturn = (PLAYERstats.str + PLAYERstats.weapon.atk)*(PLAYERstats.weapon.hit/100);
+            return atkReturn = (PLAYERstats.str + PLAYERstats.weapon.atk);
         }
         else {
-            atkReturn = PLAYERstats.str;
+            return atkReturn = PLAYERstats.str;
         }
-
-        return atkReturn;
     }
 
     public int getDefense() {
@@ -227,6 +226,7 @@ public class Player extends Entity{
             //Cambio a Combate
             gp.battleSystem = new BattleSystem(this,shadow,gp);
             gp.gameState = gp.combatState;
+            gp.monsters[i] = null;
         }
     }
 

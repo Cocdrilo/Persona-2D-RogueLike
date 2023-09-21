@@ -294,6 +294,20 @@ public class UI {
         image = BattleState.monster.combatImage;
         g2.drawImage(image,x-18,y-5,150,150,null);
 
+        // Dibuja la barra de vida del monstruo
+        int maxHealth = BattleState.monster.maxHealth;
+        int currentHealth = BattleState.monster.health;
+        int barWidth = 150; // Ancho de la barra de vida
+        int barHeight = 10; // Altura de la barra de vida
+        int barX = x - 18; // Posición X de la barra de vida
+        int barY = y + 150; // Posición Y de la barra de vida
+
+        // Dibuja la vida del monstruo en formato "HP/MAXHP"
+        String monsterHealthText = BattleState.monster.health + "/" + BattleState.monster.maxHealth;
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString(monsterHealthText, barX + 5, barY - 5);
+
 
         //Dibuja un panel centrado a la derecha donde se displayeara el orden de turnos de los jugadores
         x = gp.screenWidth - gp.tileSize*2;
@@ -319,10 +333,25 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(24F));
 
         g2.drawString("Attack",x+gp.tileSize/2,y+gp.tileSize);
+        if(commandNum == 0){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize);
+        }
         g2.drawString("Magic",x+gp.tileSize/2,y+gp.tileSize+40);
-        g2.drawString("Escape",x+gp.tileSize/2,y+gp.tileSize+80);
-        g2.drawString("Item",x+gp.tileSize/2,y+gp.tileSize+120);
-        g2.drawString("Status",x+gp.tileSize/2,y+gp.tileSize+160);
+        if(commandNum == 1){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+40);
+        }
+        g2.drawString("Item",x+gp.tileSize/2,y+gp.tileSize+80);
+        if(commandNum == 2){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+80);
+        }
+        g2.drawString("Defend",x+gp.tileSize/2,y+gp.tileSize+120);
+        if(commandNum == 3){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+120);
+        }
+        g2.drawString("Escape",x+gp.tileSize/2,y+gp.tileSize+160);
+        if(commandNum == 4){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+160);
+        }
 
         //dibuja centrado abajo un panel donde se displayeara el jugador y su party
         x = (int)(gp.tileSize*2.5)+15;

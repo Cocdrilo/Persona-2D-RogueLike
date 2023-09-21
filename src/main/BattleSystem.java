@@ -9,6 +9,7 @@ public class BattleSystem {
 
     private int turn = 0; //0 = player, 1 = monster
 
+
     public BattleSystem(Player player, shadowStandar monster,GamePanel gp) {
         this.gp = gp;
         this.player = player;
@@ -17,39 +18,64 @@ public class BattleSystem {
 
     public void nextTurn() {
 
-        // Gestionar el turno actual (jugador o monstruo)
-        if(player.PLAYERstats.hp!=0 && monster.health!=0){
-            turn ++;
-            if(turn >= 2){
-                turn = 0;
-            }
-
+        if(player.PLAYERstats.hp<=0){
+            System.out.println("Player has died");
+            gp.gameState = gp.titleState;
         }
-        else if (player.PLAYERstats.hp <= 0) {
-
-            //GameOver State
-
-        }
-        else if (monster.health <= 0){
-
+        if(monster.health<=0){
+            System.out.println("Monster has died");
             endBattle();
-
         }
+        // Cambiar el turno al siguiente
+        if (turn == 0) {
+            turn = 1;
+        } else {
+            turn = 0;
+        }
+        if(turn == 1){
+            monsterAttack();
+        }
+
     }
+
 
     public void attack() {
         // Realizar cálculos de daño para un ataque
-        if(turn == 0){
+        if (turn == 0) {
             int playerDMG = player.getAttack();
+            System.out.println(playerDMG);
             int monsterDEF = monster.defense;
-            monster.health = monster.health - (playerDMG - monsterDEF);
-        } else if (turn == 1) {
+            int calculatedDMG = playerDMG - monsterDEF;
+
+            if(calculatedDMG<0){
+                calculatedDMG = 0;
+            }
+
+            monster.health = monster.health - calculatedDMG;
+            System.out.println(monster.name + " has recived" + calculatedDMG + " damage");
+            nextTurn();
+        }
+    }
+
+    public void monsterAttack() {
+             // Turno del monstruo
             int monsterDMG = monster.attack;
             int playerDEF = player.getDefense();
-            player.PLAYERstats.hp = player.PLAYERstats.hp - (monsterDMG - playerDEF);
-        }
-        // Actualizar la interfaz de usuario
-        }
+            int calculatedDMG = monsterDMG - playerDEF;
+
+            // Si el jugador está defendiendo, reduce el daño del monstruo a la mitad
+            if (player.defending) {
+                calculatedDMG /= 2;
+            }
+            if(calculatedDMG<0){
+                calculatedDMG = 0;
+            }
+
+            player.PLAYERstats.hp = player.PLAYERstats.hp - calculatedDMG;
+            System.out.println("Player" + " has recived-" + calculatedDMG + " damage");
+            nextTurn();
+
+    }
 
     public void useItem(Object item) {
         // Implementar el uso de un objeto (poción, etc.)
@@ -57,14 +83,19 @@ public class BattleSystem {
     }
 
     public void defend() {
-        // Implementar la acción de defensa
-        // Actualizar la interfaz de usuario
+        if (turn == 0) {
+            // El jugador decide defender, reduce el daño recibido en el siguiente turno
+            player.defending = true;
+            nextTurn();
+        }
     }
+
 
     public void endBattle(){
         //EXP calc
 
         player.PLAYERstats.exp = player.PLAYERstats.exp + monster.xpGiven;
+        System.out.println("Player has recived " + monster.xpGiven + " exp");
         if(player.PLAYERstats.exp>= player.PLAYERstats.nextLevelExp){
             //Level Up
             player.levelUp();

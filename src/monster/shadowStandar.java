@@ -12,6 +12,7 @@ public class shadowStandar extends Entity {
     BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
 
     public int health;
+    public int maxHealth;
     public int attack;
     public int defense;
     public int xpGiven;
@@ -22,10 +23,11 @@ public class shadowStandar extends Entity {
         super(gp);
         type = 2;
         this.name = name;
-        this.health = health;
+        this.maxHealth = health;
         this.attack = attack;
         this.defense = defense;
         this.xpGiven = xpGiven;
+        this.health = maxHealth;
         speed = 1;
         loadCombatImage(combatImagePath); // Cargar la imagen de combate específica
         getImage(); // Cargar las imágenes del mundo
