@@ -4,7 +4,6 @@ import entity.Entity;
 import main.GamePanel;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class shadowStandar extends Entity {
@@ -16,10 +15,11 @@ public class shadowStandar extends Entity {
     public int attack;
     public int defense;
     public int xpGiven;
+    private final String attackType;
     public BufferedImage combatImage;
 
 
-    public shadowStandar(GamePanel gp,String name,int health,int attack,int defense,int xpGiven,String combatImagePath) {
+    public shadowStandar(GamePanel gp,String name,int health,int attack,int defense,int xpGiven,String attackType,String combatImagePath,String[] weaknesses, String[] resistances, String[] nulls, String[] repells) {
         super(gp);
         type = 2;
         this.name = name;
@@ -28,9 +28,20 @@ public class shadowStandar extends Entity {
         this.defense = defense;
         this.xpGiven = xpGiven;
         this.health = maxHealth;
+        this.attackType = attackType;
         speed = 1;
         loadCombatImage(combatImagePath); // Cargar la imagen de combate específica
         getImage(); // Cargar las imágenes del mundo
+
+        this.weaknesses = weaknesses;
+        this.resistances = resistances;
+        this.nulls = nulls;
+        this.repells = repells;
+    }
+
+
+    public String getAttackType(){
+        return attackType;
     }
 
     public void loadCombatImage(String combatImagePath){

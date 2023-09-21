@@ -47,11 +47,11 @@ public class AssetSetter {
     }
 
     public void setMonster(){
-        gp.monsters[0]= new shadowStandar(gp, "Quimera", 20, 7, 3,3 , "/Monsters/MonstersBattleDisplay/Quimera");
+        gp.monsters[0]= new shadowStandar(gp, "Shadow", 100, 20, 10, 50, "Piercing", "/Monsters/MonstersBattleDisplay/Quimera", new String[]{"Fuego", "Eléctrico"}, new String[]{"Hielo"}, new String[]{}, new String[]{});
         gp.monsters[0].WorldX = gp.tileSize*6;
         gp.monsters[0].WorldY = gp.tileSize*6;
 
-        gp.monsters[1] = new shadowStandar(gp, "Pixie", 80, 25, 5,3, "/Monsters/MonstersBattleDisplay/Goblin");
+        gp.monsters[1] = new shadowStandar(gp, "Shadow", 100, 5, 10, 50, "Slashing", "/Monsters/MonstersBattleDisplay/Goblin", new String[]{"Hielo", "Fuerza"}, new String[]{"Slashing"}, new String[]{}, new String[]{});
         gp.monsters[1].WorldX = gp.tileSize*8;
         gp.monsters[1].WorldY = gp.tileSize*8;
 

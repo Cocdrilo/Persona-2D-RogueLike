@@ -41,27 +41,92 @@ public class BattleSystem {
 
     public void attack() {
         // Realizar cálculos de daño para un ataque
-        if (turn == 0) {
-            int playerDMG = player.getAttack();
-            System.out.println(playerDMG);
-            int monsterDEF = monster.defense;
-            int calculatedDMG = playerDMG - monsterDEF;
+        String weaponDmgType = player.getWeaponDmgType();
+        int playerDMG = player.getAttack();
+        int monsterDEF = monster.defense;
+        int calculatedDMG = playerDMG - monsterDEF;
 
-            if(calculatedDMG<0){
+        // Si el monstruo es débil al tipo de daño del arma, el daño se duplica
+        if (monster.isWeak(weaponDmgType)) {
+            calculatedDMG *= 2;
+            System.out.println("Weak");
+        }
+
+        // Si el monstruo es resistente al tipo de daño del arma, el daño se reduce a la mitad
+        if (monster.isResistant(weaponDmgType)) {
+            calculatedDMG /= 2;
+            System.out.println("resistant");
+        }
+
+        // Si el monstruo es inmune al tipo de daño del arma, el daño es 0
+        if (monster.isNull(weaponDmgType)) {
+            calculatedDMG = 0;
+            System.out.println("null");
+        }
+
+        // Si el monstruo repela el tipo de daño del arma, el calculated dmg te lo haces a ti mismo Falta Implementar Logica de weak resistant null y repel dentro de cuando se repele a ti mismo
+        if (monster.isRepelled(weaponDmgType)) {
+            // Aplica la lógica al propio personaje
+            if (player.isWeak(weaponDmgType)) {
+                calculatedDMG *= 2;
+            }
+            if (player.isResistant(weaponDmgType)) {
+                calculatedDMG /= 2;
+            }
+            if (player.isNull(weaponDmgType)) {
                 calculatedDMG = 0;
             }
-
-            monster.health = monster.health - calculatedDMG;
-            System.out.println(monster.name + " has recived" + calculatedDMG + " damage");
+            // Aquí puedes aplicar el daño al propio personaje
+            player.PLAYERstats.hp -= calculatedDMG;
+            System.out.println("Player" + " has recived" + calculatedDMG + " damage");
             nextTurn();
+            return;
         }
+
+        if(calculatedDMG<0){
+            calculatedDMG = 0;
+        }
+        monster.health = monster.health - calculatedDMG;
+        System.out.println(monster.name + " has recived" + calculatedDMG + " damage");
+        nextTurn();
     }
 
     public void monsterAttack() {
              // Turno del monstruo
+            String attackType = monster.getAttackType();
             int monsterDMG = monster.attack;
             int playerDEF = player.getDefense();
             int calculatedDMG = monsterDMG - playerDEF;
+
+            if (player.isWeak(attackType)) {
+                calculatedDMG *= 2;
+                System.out.println("Weak");
+            }
+            if (player.isResistant(attackType)) {
+                calculatedDMG /= 2;
+                System.out.println("resistant");
+            }
+            if (player.isNull(attackType)) {
+                calculatedDMG = 0;
+                System.out.println("null");
+            }
+            if(player.isRepelled(attackType)){
+                //Aplica la logica al propio monstruo
+                if (monster.isWeak(attackType)) {
+                    calculatedDMG *= 2;
+                }
+                if (monster.isResistant(attackType)) {
+                    calculatedDMG /= 2;
+                }
+                if (monster.isNull(attackType)) {
+                    calculatedDMG = 0;
+                }
+                // Aquí puedes aplicar el daño al propio monstruo
+                monster.health -= calculatedDMG;
+                System.out.println(monster.name + " has recived" + calculatedDMG + " damage");
+                nextTurn();
+                return;
+            }
 
             // Si el jugador está defendiendo, reduce el daño del monstruo a la mitad
             if (player.defending) {

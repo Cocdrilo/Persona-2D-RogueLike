@@ -59,6 +59,10 @@ public class Player extends Entity{
         PLAYERstats.money = 0;
         PLAYERstats.weapon = new OBJ_WEAPON_Slash(gp);
         PLAYERstats.armor = new OBJ_Armor(gp);
+        resistances = new String[]{};
+        weaknesses = new String[]{};
+        nulls = new String[]{};
+        repells = new String[]{};
     }
 
     public void setItems(){
@@ -113,6 +117,15 @@ public class Player extends Entity{
         }
         return defReturn;
     }
+
+    public String getWeaponDmgType(){
+        String dmgType = "";
+        if(PLAYERstats.weapon != null){
+            dmgType = PLAYERstats.weapon.damageType;
+        }
+        return dmgType;
+    }
+
 
     public void getPlayerImage(){
         standFront = setUp("/player/Raidou1");
