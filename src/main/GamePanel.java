@@ -1,5 +1,6 @@
 package main;
 
+import battleNeeds.SpellManager;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
@@ -38,6 +39,7 @@ public class GamePanel extends JPanel implements Runnable{
     public AssetSetter Asetter = new AssetSetter(this);
     public UI ui= new UI(this);
     public Events eventHandler = new Events(this);
+    public SpellManager spellManager = SpellManager.getInstance();
 
     //ENTITY AND OBJECT
     public Player player = new Player(this,keyH);

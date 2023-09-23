@@ -1,5 +1,6 @@
 package entity;
 
+import battleNeeds.superMagic;
 import main.BattleSystem;
 import main.GamePanel;
 import main.KeyHandler;
@@ -39,7 +40,27 @@ public class Player extends Entity{
         setDefaultValues();
         getPlayerImage();
         setItems();
+        spells = new ArrayList<>();
+
+        ArrayList<superMagic> availableSpells = gp.spellManager.getSpells();
+        for (superMagic spell : availableSpells) {
+            if (spell.name.equals("Fireball")) {
+                addSpell(spell);
+                break; // Una vez que se agrega el hechizo, salimos del bucle
+            }
+        }
+        printPlayerSpells();
     }
+
+    //DEBUG
+    public void printPlayerSpells() {
+        System.out.print("Spells of the player: ");
+        for (superMagic spell : spells) {
+            System.out.print(spell.name + " ");
+        }
+        System.out.println();
+    }
+
     public void setDefaultValues(){
         WorldX = 100;
         WorldY = 100;
@@ -124,6 +145,19 @@ public class Player extends Entity{
             dmgType = PLAYERstats.weapon.damageType;
         }
         return dmgType;
+    }
+
+    // Métodos para agregar, quitar y acceder a hechizos del jugador
+    public void addSpell(superMagic spell) {
+        spells.add(spell);
+    }
+
+    public void removeSpell(superMagic spell) {
+        spells.remove(spell);
+    }
+
+    public ArrayList<superMagic> getSpells() {
+        return spells;
     }
 
 

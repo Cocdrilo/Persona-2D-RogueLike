@@ -1,5 +1,6 @@
 package entity;
 
+import battleNeeds.superMagic;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Toolbox;
@@ -8,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Entity {
@@ -45,6 +47,9 @@ public class Entity {
     public String weaknesses[];
     public String nulls[];
     public String repells[];
+
+    //Array de hechizos:
+    protected ArrayList<superMagic> spells;
 
 
     //CombatMethods
@@ -84,9 +89,6 @@ public class Entity {
         }
         return false;
     }
-
-
-
 
 
     //CONTADORES
