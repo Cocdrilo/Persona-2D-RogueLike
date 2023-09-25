@@ -1,4 +1,4 @@
-# Nombre del Juego
+# SMT ROGUELIKE
 
 ![Captura de pantalla del juego](screenshot.png)
 
