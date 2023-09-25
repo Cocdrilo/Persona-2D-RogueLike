@@ -4,7 +4,7 @@
 
 **Descripción breve del juego**
 
-[Nombre del Juego] es un Roguelike RPG de combate por turnos inspirado en la saga SHIN MEGAMI TENSEI. Sumérgete en un mundo oscuro y postapocalíptico lleno de demonios, toma decisiones difíciles y lucha por tu supervivencia.
+[SMT RogueLike] es un Roguelike RPG de combate por turnos inspirado en la saga SHIN MEGAMI TENSEI. Sumérgete en un mundo oscuro y postapocalíptico lleno de demonios, toma decisiones difíciles y lucha por tu supervivencia.
 
 ## Características principales
 
@@ -37,12 +37,12 @@
 
 ## Créditos
 
-* [Tu Nombre](https://github.com/TU_USUARIO) - Desarrollador principal
-* [Nombre del Colaborador](https://github.com/USUARIO_DEL_COLABORADOR) - Colaborador destacado
-* [Nombre del Artista](https://www.artista.com) - Arte y diseño
-* [Compositor de la Banda Sonora](https://www.compositor.com) - Música y efectos de sonido
+* [Alejandro Lana](https://github.com/TU_USUARIO) - Desarrollador principal
+* [Daniel Berzal](https://github.com/USUARIO_DEL_COLABORADOR) - Desarrollador principal 2
+* [Hurto a mano armada de Internet](https://www.artista.com) - Arte y diseño
+* [Algun compositor de internet](https://www.compositor.com) - Música y efectos de sonido
 
-Agradecemos a todos los miembros del equipo y colaboradores que han contribuido a [Nombre del Juego].
+Agradecemos a todos los miembros del equipo y colaboradores que han contribuido a [SMT RogueLike].
 
 ## Licencia
 
@@ -50,5 +50,5 @@ Este proyecto está bajo la Licencia MIT - consulta el archivo [LICENSE.md](LICE
 
 ---
 
-¡Disfruta jugando [Nombre del Juego]! Si tienes preguntas, problemas o sugerencias, no dudes en [crear un problema](https://github.com/TU_USUARIO/[Nombre del Juego]/issues) en este repositorio.
+¡Disfruta jugando [SMT RogueLike]! Si tienes preguntas, problemas o sugerencias, no dudes en [crear un problema](https://github.com/TU_USUARIO/[SMT RogueLike]/issues) en este repositorio.
 
