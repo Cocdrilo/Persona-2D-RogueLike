@@ -18,7 +18,10 @@
 
 ## Cómo Jugar
 
-[Explica cómo jugar tu juego aquí, incluyendo los controles, la mecánica principal y cualquier otra información necesaria para que los jugadores puedan comenzar rápidamente.]
+**Exploración:** Navega por las mazmorras laberínticas mientras buscas tesoros y enemigos.
+**Combate:** Entra en combate por turnos con monstruos y enemigos que encuentres. Elige tus acciones sabiamente, como atacar, defender o usar habilidades especiales.
+**Inventario:** Recoge objetos, pociones y equipo para mejorar tus habilidades y tu supervivencia en las mazmorras.
+**Progresión:** Gana experiencia y mejora tus habilidades a medida que avanzas en el juego. Derrota jefes para desbloquear nuevas áreas y desafíos.
 
 ## Instalación
 
