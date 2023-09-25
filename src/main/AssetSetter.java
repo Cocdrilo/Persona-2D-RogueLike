@@ -1,7 +1,7 @@
 package main;
 import Object.*;
 import entity.NPC_Mimic;
-import monster.MON_ChestDemon;
+import monster.shadowStandar;
 
 public class AssetSetter {
 
@@ -47,7 +47,7 @@ public class AssetSetter {
     }
 
     public void setMonster(){
-        gp.monsters[0]=new MON_ChestDemon(gp);
+        gp.monsters[0]=new shadowStandar(gp);
         gp.monsters[0].WorldX = gp.tileSize*6;
         gp.monsters[0].WorldY = gp.tileSize*6;
 
