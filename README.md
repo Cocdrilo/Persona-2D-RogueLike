@@ -1,6 +1,6 @@
 # SMT ROGUELIKE
 
-![Captura de pantalla del juego](screenshot.png)
+![Captura de pantalla del juego](\res\TitleScreen\DemiRaidou.png)
 
 **Descripción breve del juego**
 
