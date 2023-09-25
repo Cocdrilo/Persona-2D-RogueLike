@@ -35,22 +35,20 @@
    ```bash
    git clone https://github.com/TU_USUARIO/[Nombre del Juego].git
 
-   Crea una rama para tu contribución.
+## Créditos
 
-bash
-Copy code
-git checkout -b mi-contribucion
-Realiza tus cambios y realiza commits.
+* [Tu Nombre](https://github.com/TU_USUARIO) - Desarrollador principal
+* [Nombre del Colaborador](https://github.com/USUARIO_DEL_COLABORADOR) - Colaborador destacado
+* [Nombre del Artista](https://www.artista.com) - Arte y diseño
+* [Compositor de la Banda Sonora](https://www.compositor.com) - Música y efectos de sonido
 
-Envía tus cambios al repositorio fork de GitHub.
+Agradecemos a todos los miembros del equipo y colaboradores que han contribuido a [Nombre del Juego].
 
-Crea un pull request describiendo tus cambios y por qué deben fusionarse.
+## Licencia
 
-Créditos
-[Enumera aquí a los miembros del equipo que contribuyeron al juego, así como a cualquier recurso de terceros utilizado.]
+Este proyecto está bajo la Licencia MIT - consulta el archivo [LICENSE.md](LICENSE.md) para obtener más detalles.
 
-Licencia
-Este proyecto está bajo la Licencia MIT - consulta el archivo LICENSE.md para obtener más detalles.
+---
 
 ¡Disfruta jugando [Nombre del Juego]! Si tienes preguntas, problemas o sugerencias, no dudes en [crear un problema](https://github.com/TU_USUARIO/[Nombre del Juego]/issues) en este repositorio.
 
