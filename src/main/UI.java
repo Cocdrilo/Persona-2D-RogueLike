@@ -12,19 +12,17 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font p5Menu,p5Hatty;
+    Font Arcadia,p5Hatty;
 
     Font franklin;
 
     BufferedImage image;
+    BufferedImage titleImage;
 
-    public boolean messageOn = false;
+    //ArrayList de text para que sean Scrolling
+    ArrayList<String> messageList = new ArrayList<>();
+    ArrayList<Integer> messageCounter = new ArrayList<>();
 
-        //ArrayList de text para que sean Scrolling
-    ArrayList<String> messageList = new ArrayList<String>();
-    ArrayList<Integer> messageCounter = new ArrayList<Integer>();
-
-    public boolean gameFinished = false;
     public String currentDialogue = "";
     public String currentName="";
     public int commandNum = 0;
@@ -40,22 +38,22 @@ public class UI {
 
         //CUSTOM TEXTOS IMPORT
         try {
-            InputStream is = getClass().getResourceAsStream("/font/Persona5MenuFontPrototype-Regular.ttf");
-            p5Menu = Font.createFont(Font.TRUETYPE_FONT,is);
+            InputStream is = getClass().getResourceAsStream("/font/Arcadia.ttf");
+            Arcadia = Font.createFont(Font.TRUETYPE_FONT,is);
             is = getClass().getResourceAsStream("/font/p5hatty.ttf");
             p5Hatty= Font.createFont(Font.TRUETYPE_FONT,is);
             is = getClass().getResourceAsStream("/font/FranklinGothic.ttf");
             franklin= Font.createFont(Font.TRUETYPE_FONT,is);
 
-        } catch (FontFormatException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }
 
-//        OBJ_Stairs stairs = new OBJ_Stairs(gp);
-//        floorImage = stairs.image;
-
+        try {
+            titleImage = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -67,14 +65,12 @@ public class UI {
     public int getXforCenterText(String text){
 
         int length =(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth() ;
-        int x = gp.screenWidth/2 - length/2;
-        return x;
+        return gp.screenWidth/2 - length/2;
     }
 
     public int getXforAlignToRightText(String text,int tailX){
         int length =(int)g2.getFontMetrics().getStringBounds(text,g2).getWidth() ;
-        int x = tailX - length;
-        return x;
+        return tailX - length;
     }
 
     public void drawPauseScreen(){
@@ -134,11 +130,12 @@ public class UI {
 
     public void drawTitleScreen(){
 
-        g2.setFont(p5Menu);
+        g2.drawImage(titleImage,0,0,gp.screenWidth,gp.screenHeight,null);
+        g2.setFont(Arcadia);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
-        String text = "Persona 2D RogueLike";
+        String text = "SMT ROGUELIKE";
         int x = getXforCenterText(text);
-        int y = gp.tileSize+10;
+        int y = gp.tileSize+20;
 
         //COLOR SOMBRA
         g2.setColor(Color.BLACK);
@@ -148,23 +145,11 @@ public class UI {
         g2.setColor(Color.white);
         g2.drawString(text,x,y);
 
-        //IMAGEN PERSONAJE
-        x= gp.screenWidth/2;
-        y += gp.tileSize;
-
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/DemiRaidou.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        g2.drawImage(image,0,y,gp.screenWidth,(int)(gp.screenHeight/1.8),null);
-
         //Menu
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,48F));
         text = "NEW GAME";
         x = getXforCenterText(text);
-        y += (int)(gp.tileSize*7.5);
+        y += gp.tileSize*8;
         g2.drawString(text,x,y);
         if(commandNum == 0){
             g2.drawString("->",x-gp.tileSize,y);
@@ -185,7 +170,6 @@ public class UI {
         if(commandNum == 2){
             g2.drawString("->",x-gp.tileSize,y);
         }
-
 
     }
 
@@ -283,7 +267,7 @@ public class UI {
 
     }
 
-    public void drawCombatScreen(){
+    public void drawCombatScreen(BattleSystem BattleState){
 
         g2.setFont(franklin);
         //Dibuja un panel arriba centrado donde se displayeara el monstruo
@@ -301,14 +285,22 @@ public class UI {
         x = gp.tileSize*6;
         y = (int)(gp.tileSize*1.5);
 
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/Monsters/MonstersBattleDisplay/Quimera.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        image = BattleState.monster.combatImage;
         g2.drawImage(image,x-18,y-5,150,150,null);
 
+        // Dibuja la barra de vida del monstruo
+        int maxHealth = BattleState.monster.maxHealth;
+        int currentHealth = BattleState.monster.health;
+        int barWidth = 150; // Ancho de la barra de vida
+        int barHeight = 10; // Altura de la barra de vida
+        int barX = x - 18; // Posición X de la barra de vida
+        int barY = y + 150; // Posición Y de la barra de vida
+
+        // Dibuja la vida del monstruo en formato "HP/MAXHP"
+        String monsterHealthText = BattleState.monster.health + "/" + BattleState.monster.maxHealth;
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString(monsterHealthText, barX + 5, barY - 5);
 
 
         //Dibuja un panel centrado a la derecha donde se displayeara el orden de turnos de los jugadores
@@ -324,8 +316,7 @@ public class UI {
 
         //Dibuja un menu sencillo que tenga las opciones de atacar, defender, huir, usar item alrededor de abajo a la izquierda pero acercandose al centro
         x = gp.tileSize*2;
-        y = gp.tileSize*5;
-        width = (int)(gp.tileSize*3);
+        width = (gp.tileSize*3);
         height = gp.tileSize*5;
 
         g2.setColor(Color.RED); // You can choose any color you like
@@ -336,10 +327,25 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(24F));
 
         g2.drawString("Attack",x+gp.tileSize/2,y+gp.tileSize);
+        if(commandNum == 0){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize);
+        }
         g2.drawString("Magic",x+gp.tileSize/2,y+gp.tileSize+40);
-        g2.drawString("Escape",x+gp.tileSize/2,y+gp.tileSize+80);
-        g2.drawString("Item",x+gp.tileSize/2,y+gp.tileSize+120);
-        g2.drawString("Status",x+gp.tileSize/2,y+gp.tileSize+160);
+        if(commandNum == 1){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+40);
+        }
+        g2.drawString("Item",x+gp.tileSize/2,y+gp.tileSize+80);
+        if(commandNum == 2){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+80);
+        }
+        g2.drawString("Defend",x+gp.tileSize/2,y+gp.tileSize+120);
+        if(commandNum == 3){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+120);
+        }
+        g2.drawString("Escape",x+gp.tileSize/2,y+gp.tileSize+160);
+        if(commandNum == 4){
+            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+160);
+        }
 
         //dibuja centrado abajo un panel donde se displayeara el jugador y su party
         x = (int)(gp.tileSize*2.5)+15;
@@ -405,7 +411,6 @@ public class UI {
         if(commandNum == 3){
             g2.drawString("->",textX-(gp.tileSize/2-5),textY);
         }
-        textY+= lineHeight;
 
     }
 
@@ -479,7 +484,6 @@ public class UI {
 
         int textX = frameX + gp.tileSize / 2;
         int textY = frameY + gp.tileSize;
-        final int lineHeight = 34;
 
         // Verifica si el texto no está en blanco antes de dibujarlo
         if (!text.isEmpty()) {
@@ -489,8 +493,7 @@ public class UI {
     }
 
     public int getItemIndexSlot(){
-        int indexItem = slotCol +(slotRow*7);
-        return indexItem;
+        return slotCol +(slotRow*7);
     }
 
     public void drawMessage(){
@@ -556,9 +559,9 @@ public class UI {
         if(gp.gameState==gp.inventoryState){
             drawInventoryScreen();
         }
-
+        //Combat State
         if(gp.gameState == gp.combatState){
-            drawCombatScreen();
+            drawCombatScreen(gp.battleSystem);
         }
     }
 }
