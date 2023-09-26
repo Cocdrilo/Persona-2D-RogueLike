@@ -23,20 +23,22 @@
 **Inventario:** Recoge objetos, pociones y equipo para mejorar tus habilidades y tu supervivencia en las mazmorras.
 **Progresión:** Gana experiencia y mejora tus habilidades a medida que avanzas en el juego. Derrota jefes para desbloquear nuevas áreas y desafíos.
 
+![UML Diagram](UML Persona .png)
+
 ## Instalación
 
 [Proporciona instrucciones claras sobre cómo instalar y ejecutar el juego en diferentes plataformas, si es aplicable.]
 
 ## Contribuir
 
-¡Las contribuciones son bienvenidas! Si deseas contribuir al desarrollo de [Nombre del Juego], sigue estos pasos:
+¡Las contribuciones son bienvenidas! Si deseas contribuir al desarrollo de [SMT ROGUELIKE], sigue estos pasos:
 
 1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) el repositorio en GitHub.
 
-2. Clona tu repositorio [Nombre del Juego] fork en tu máquina local.
+2. Clona tu repositorio [SMT ROGUELIKE] fork en tu máquina local.
 
    ```bash
-   git clone https://github.com/TU_USUARIO/[Nombre del Juego].git
+   git clone https://github.com/TU_USUARIO/[SMT ROGUELIKE].git
 
 ## Créditos
 
