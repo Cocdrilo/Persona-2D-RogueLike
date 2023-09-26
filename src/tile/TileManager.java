@@ -65,7 +65,7 @@ public class TileManager {
 
                 String line = br.readLine();
 
-                while(col< gp.maxScreenCol ){
+                while(col< gp.maxWorldCol ){
 
                     String numbers[] = line.split(" ");
 
@@ -75,7 +75,7 @@ public class TileManager {
 
                     col++;
                 }
-                if(col == gp.maxScreenCol){
+                if(col == gp.maxWorldCol){
                     col = 0;
                     row++;
                 }
@@ -109,7 +109,7 @@ public class TileManager {
 
             WorldCol++;
 
-            if(WorldCol == gp.maxScreenCol){
+            if(WorldCol == gp.maxWorldCol){
                 WorldCol=0;
                 WorldRow++;
             }

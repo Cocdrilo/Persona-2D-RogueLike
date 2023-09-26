@@ -6,6 +6,7 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,14 +16,20 @@ public class GamePanel extends JPanel implements Runnable{
     final int originalTileSize = 16; //16*16
     final int scale = 3;
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 16;
+    public final int maxScreenCol =20;
     public final int maxScreenRow = 12 ;
-    public final int screenWidth = tileSize * maxScreenCol; //768 pixels
+    public final int screenWidth = tileSize * maxScreenCol; //960 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     //SETTINGS DEL MUNDO
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
+
+    //PARA PANTALLA COMPLETA
+    int screenWidth2 = screenWidth;
+    int screenHeight2 = screenHeight;
+    BufferedImage tempScreen;
+    Graphics2D g2;
 
     //FPS
     int FPS = 60;
@@ -77,6 +84,22 @@ public class GamePanel extends JPanel implements Runnable{
 
         //playMusic(0);
         gameState = titleState;
+
+        tempScreen = new BufferedImage(screenWidth , screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) tempScreen.getGraphics();
+
+        setFullScreen();
+
+
+    }
+
+    public void setFullScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        screenWidth2 = (int) width;
+        screenHeight2 = (int) height;
     }
 
     public void startGameThread(){
@@ -106,7 +129,9 @@ public class GamePanel extends JPanel implements Runnable{
 
             if(accumulator>=1){
                 update();
-                repaint();
+                //repaint();
+                drawToTempScreen(); // dibuja todo a una imagen buffered
+                drawToScreen(); // dibuja la imagen buffered a la pantalla
                 accumulator--;
                 drawCount++;
             }
@@ -143,71 +168,66 @@ public class GamePanel extends JPanel implements Runnable{
             //NOTHING
         }
     }
-    public void paintComponent(Graphics graficos){
 
-        super.paintComponent(graficos);
-        //Pasamos los graficos a super clase graficos2D le damos color posicion y el dispose es una buena practica de liberar memoria
-        Graphics2D graficos2d = (Graphics2D) graficos;
+    public void drawToTempScreen() {
+        // Limpia el búfer antes de dibujar
+        g2.clearRect(0, 0, screenWidth, screenHeight);
 
-        //PANTALLA DE TITULOS
-        if(gameState==titleState){
+        // PANTALLA DE TITULOS
+        if (gameState == titleState) {
+            ui.draw(g2);
+        } else {
+            // Dibuja los tiles de fondo primero
+            tileM.draw(g2);
 
-            ui.draw(graficos2d);
+            // Organiza las entidades en una lista para ordenarlas
+            ArrayList<Entity> entityList = new ArrayList<>();
 
-        }
-
-        //OTHERS
-        else{
-            //Tile Dibujo (Ponemos antes para que este layereado debajo
-            tileM.draw(graficos2d);
-
-            //ENTITY ARRAYLIST
-
+            // Agrega al jugador y a otras entidades necesarias
             entityList.add(player);
-
-            for(int npcInArray=0;npcInArray< npc.length;npcInArray++){
-                if(npc[npcInArray]!=null){
+            for (int npcInArray = 0; npcInArray < npc.length; npcInArray++) {
+                if (npc[npcInArray] != null) {
                     entityList.add(npc[npcInArray]);
                 }
             }
-
-            for(int objInArray=0;objInArray< obj.length;objInArray++){
-                if(obj[objInArray]!=null){
+            for (int objInArray = 0; objInArray < obj.length; objInArray++) {
+                if (obj[objInArray] != null) {
                     entityList.add(obj[objInArray]);
                 }
             }
-            for(int monsterInArray=0;monsterInArray<monsters.length;monsterInArray++){
-                if(monsters[monsterInArray]!=null){
+            for (int monsterInArray = 0; monsterInArray < monsters.length; monsterInArray++) {
+                if (monsters[monsterInArray] != null) {
                     entityList.add(monsters[monsterInArray]);
                 }
             }
 
-            //SE VIENE LO CHIDO, para organizar el renderizado de entidades correctamente utilizamos el sort del Collections library
-            //Utilizamos un comparador para ordenar las entidades por su posicion en el eje Y del mundo La funcion compare devuelve un int que es el resultado de la comparacion
+            // Ordena las entidades por su posición en el eje Y
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
                 public int compare(Entity o1, Entity o2) {
-                    int result = Integer.compare(o1.WorldY,o2.WorldY);
+                    int result = Integer.compare(o1.WorldY, o2.WorldY);
                     return result;
                 }
             });
 
-            //DIBUJAMOS LAS ENTIDADES SORTED
-            for(int entitySorted=0;entitySorted< entityList.size();entitySorted++){
-                entityList.get(entitySorted).draw(graficos2d);
+            // Dibuja las entidades ordenadas
+            for (int entitySorted = 0; entitySorted < entityList.size(); entitySorted++) {
+                entityList.get(entitySorted).draw(g2);
             }
-            //Limpiamos la lista para que no se acumulen entidades
+
+            // Dibuja la interfaz de usuario encima de todo
+            ui.draw(g2);
+
+            // Limpia la lista de entidades
             entityList.clear();
-
-
-            //UI (Se llama aqui para que no esté por debajo de nada )
-            ui.draw(graficos2d);
-
         }
+    }
 
 
-        graficos2d.dispose();
-
+    public void drawToScreen(){
+        Graphics g = getGraphics();
+        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null );
+        g.dispose();
     }
 
     public void playMusic(int i){

@@ -2,14 +2,14 @@ Falta por hacer: seleccionar con X si lo va a hacer alejandro y con + si lo va a
 
 -Terminar menu de combate tanto graficamente como para seleccionar las opciones:
 
--Hacer funcional el combate:
+-Hacer funcional el combate:X
   -Las opciones de combate:
   -Las opciones de objetos:
   -La opcion de huir:
 -Loot y Exp gain post combate.
 
 -Menu de opciones Graficas y de sonido en el mismo:
--Poder poner pantalla completa:
+-Poder poner pantalla completa:+
 -Save File en un txt:
 -Cargar partida desde el txt:
 -Sistema de tiendas:
