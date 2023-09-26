@@ -6,7 +6,7 @@ public class OBJ_WEAPON_BASH extends OBJ_Weapon{
     public OBJ_WEAPON_BASH(GamePanel gp) {
         super(gp);
         name = "Bashing Weapon";
-        damageType = "bash";
+        damageType = "Bashing";
         atk = 16;
         hit = 85;
         price = 60;

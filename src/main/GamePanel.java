@@ -1,5 +1,6 @@
 package main;
 
+import battleNeeds.SpellManager;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
@@ -24,6 +25,7 @@ public class GamePanel extends JPanel implements Runnable{
     //SETTINGS DEL MUNDO
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
+    public BattleSystem battleSystem;
 
     //PARA PANTALLA COMPLETA
     int screenWidth2 = screenWidth;
@@ -44,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable{
     public AssetSetter Asetter = new AssetSetter(this);
     public UI ui= new UI(this);
     public Events eventHandler = new Events(this);
+    public SpellManager spellManager = SpellManager.getInstance();
 
     //ENTITY AND OBJECT
     public Player player = new Player(this,keyH);
