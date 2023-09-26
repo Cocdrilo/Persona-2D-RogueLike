@@ -1,7 +1,5 @@
 package main;
 
-import entity.Player;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,7 +12,7 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font p5Menu,p5Hatty;
+    Font Arcadia,p5Hatty;
 
     Font franklin;
 
@@ -39,8 +37,8 @@ public class UI {
 
         //CUSTOM TEXTOS IMPORT
         try {
-            InputStream is = getClass().getResourceAsStream("/font/Persona5MenuFontPrototype-Regular.ttf");
-            p5Menu = Font.createFont(Font.TRUETYPE_FONT,is);
+            InputStream is = getClass().getResourceAsStream("/font/Arcadia.ttf");
+            Arcadia = Font.createFont(Font.TRUETYPE_FONT,is);
             is = getClass().getResourceAsStream("/font/p5hatty.ttf");
             p5Hatty= Font.createFont(Font.TRUETYPE_FONT,is);
             is = getClass().getResourceAsStream("/font/FranklinGothic.ttf");
@@ -125,22 +123,6 @@ public class UI {
 
     public void drawTitleScreen(){
 
-        g2.setFont(p5Menu);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
-        String text = "Persona 2D RogueLike";
-        int x = getXforCenterText(text);
-        int y = gp.tileSize+10;
-
-        //COLOR SOMBRA
-        g2.setColor(Color.BLACK);
-        g2.drawString(text,x+5,y+5);
-
-        //COLOR PRINCIPAL
-        g2.setColor(Color.white);
-        g2.drawString(text,x,y);
-
-        //IMAGEN PERSONAJE
-        y += gp.tileSize;
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
@@ -150,11 +132,25 @@ public class UI {
 
         g2.drawImage(image,0,0,gp.screenWidth,gp.screenHeight,null);
 
+        g2.setFont(Arcadia);
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
+        String text = "SMT ROGUELIKE";
+        int x = getXforCenterText(text);
+        int y = gp.tileSize+20;
+
+        //COLOR SOMBRA
+        g2.setColor(Color.BLACK);
+        g2.drawString(text,x+5,y+5);
+
+        //COLOR PRINCIPAL
+        g2.setColor(Color.white);
+        g2.drawString(text,x,y);
+
         //Menu
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,48F));
         text = "NEW GAME";
         x = getXforCenterText(text);
-        y += (int)(gp.tileSize*7.5);
+        y += gp.tileSize*8;
         g2.drawString(text,x,y);
         if(commandNum == 0){
             g2.drawString("->",x-gp.tileSize,y);
