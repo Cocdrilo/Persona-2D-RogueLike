@@ -143,12 +143,12 @@ public class UI {
         y += gp.tileSize;
 
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/DemiRaidou.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        g2.drawImage(image,0,y,gp.screenWidth,(int)(gp.screenHeight/1.8),null);
+        g2.drawImage(image,0,0,gp.screenWidth,gp.screenHeight,null);
 
         //Menu
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,48F));
