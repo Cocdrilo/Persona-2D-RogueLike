@@ -60,47 +60,70 @@ public class KeyHandler implements KeyListener {
 
     }
 
-    public void combatState(int code){
+    public void combatState(int code) {
 
-        if(code == KeyEvent.VK_W) {
-            if(gp.ui.commandNum>0){
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.commandNum > 0 && !gp.ui.magicMenu) {
                 gp.ui.commandNum--;
                 System.out.println(gp.ui.commandNum);
-            }
-            else{
-                gp.ui.commandNum=4;
+            } else if (!gp.ui.magicMenu) {
+                gp.ui.commandNum = 4;
             }
         }
 
-        if(code == KeyEvent.VK_S) {
-            if(gp.ui.commandNum<4){
+        if (code == KeyEvent.VK_S) {
+            if (gp.ui.commandNum < 4 && !gp.ui.magicMenu) {
                 gp.ui.commandNum++;
                 System.out.println(gp.ui.commandNum);
-            }
-            else{
-                gp.ui.commandNum=0;
+            } else if (!gp.ui.magicMenu) {
+                gp.ui.commandNum = 0;
             }
         }
-        if(code == KeyEvent.VK_Z){
-            if(gp.ui.commandNum == 0){
+
+        if (code == KeyEvent.VK_Z) {
+            if (gp.ui.commandNum == 0) {
                 gp.battleSystem.attack();
             }
-            if(gp.ui.commandNum == 1){
-                //Use Magic Aun sin Implementar
+            if (gp.ui.commandNum == 1) {
+                gp.ui.magicMenu = true;
             }
-            if(gp.ui.commandNum == 2){
-                //Use Items Aun sin Implementar
+            if (gp.ui.commandNum == 2) {
+                // Use Items Aun sin Implementar
             }
-            if(gp.ui.commandNum == 3){
+            if (gp.ui.commandNum == 3) {
                 gp.battleSystem.defend();
             }
-            if(gp.ui.commandNum == 4){
-                //Flee Aun sin Implementar
+            if (gp.ui.commandNum == 4) {
+                // Flee Aun sin Implementar
             }
         }
 
-
+        // Aquí obtenemos la cantidad de hechizos disponibles
+        int numSpells = gp.player.numberOfSpells();
+        if (gp.ui.commandNum == 1 && gp.ui.magicMenu) {
+            if (code == KeyEvent.VK_W) {
+                if (gp.ui.commandNum2 > 0) {
+                    gp.ui.commandNum2--;
+                    System.out.println(gp.ui.commandNum2);
+                } else {
+                    gp.ui.commandNum2 = numSpells - 1; // Ir al último hechizo
+                }
+            }
+            if (code == KeyEvent.VK_S) {
+                if (gp.ui.commandNum2 < numSpells - 1) {
+                    gp.ui.commandNum2++;
+                    System.out.println(gp.ui.commandNum2);
+                } else {
+                    gp.ui.commandNum2 = 0; // Volver al primer hechizo
+                }
+            }
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.ui.commandNum2 = 0;
+                gp.ui.magicMenu = false;
+            }
+        }
     }
+
 
     public void titleState(int code){
 

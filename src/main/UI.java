@@ -1,5 +1,8 @@
 package main;
 
+import battleNeeds.superMagic;
+import entity.Player;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -26,6 +29,8 @@ public class UI {
     public String currentDialogue = "";
     public String currentName="";
     public int commandNum = 0;
+    public int commandNum2 = 0;
+    public boolean magicMenu = false;
 
     //VARIABLES PARA MANEJO DE INVENTARIO
     public int slotCol = 0;
@@ -270,7 +275,8 @@ public class UI {
     public void drawCombatScreen(BattleSystem BattleState){
 
         g2.setFont(franklin);
-        //Dibuja un panel arriba centrado donde se displayeara el monstruo
+
+        //Dibuja un panel arriba centrado donde se displayeará el monstruo
         int x = (int)(gp.tileSize*2.5);
         int y = gp.tileSize;
         int width = gp.screenWidth - gp.tileSize*5;
@@ -279,14 +285,14 @@ public class UI {
         g2.setColor(Color.BLUE);
         g2.fillRect(x, y, width, height);
 
-        drawSubWindow(x,y,width,height);
+        drawSubWindow(x, y, width, height);
 
-        //Dentro de este panel de arriba centrado se dibujara el monstruo
+        // Dentro de este panel de arriba centrado se dibujará el monstruo
         x = gp.tileSize*6;
         y = (int)(gp.tileSize*1.5);
 
         image = BattleState.monster.combatImage;
-        g2.drawImage(image,x-18,y-5,150,150,null);
+        g2.drawImage(image, x-18, y-5, 150, 150, null);
 
         // Dibuja la barra de vida del monstruo
         int maxHealth = BattleState.monster.maxHealth;
@@ -302,8 +308,7 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(24F));
         g2.drawString(monsterHealthText, barX + 5, barY - 5);
 
-
-        //Dibuja un panel centrado a la derecha donde se displayeara el orden de turnos de los jugadores
+        // Dibuja un panel centrado a la derecha donde se displayeará el orden de turnos de los jugadores
         x = gp.screenWidth - gp.tileSize*2;
         y = gp.tileSize*5;
         width = gp.tileSize*2;
@@ -312,53 +317,82 @@ public class UI {
         g2.setColor(Color.GREEN); // Default Visual
         g2.fillRect(x, y, width, height);
 
-        drawSubWindow(x,y,width,height);
+        drawSubWindow(x, y, width, height);
 
-        //Dibuja un menu sencillo que tenga las opciones de atacar, defender, huir, usar item alrededor de abajo a la izquierda pero acercandose al centro
+        // Dibuja un menu sencillo que tenga las opciones de atacar, defender, huir, usar item alrededor de abajo a la izquierda pero acercándose al centro
         x = gp.tileSize*2;
         width = (gp.tileSize*3);
         height = gp.tileSize*5;
 
         g2.setColor(Color.RED); // You can choose any color you like
         g2.fillRect(x, y, width, height);
-        drawSubWindow(x,y,width,height);
+        drawSubWindow(x, y, width, height);
 
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(24F));
 
-        g2.drawString("Attack",x+gp.tileSize/2,y+gp.tileSize);
-        if(commandNum == 0){
-            g2.drawString("->",x-gp.tileSize,y+gp.tileSize);
+        g2.drawString("Attack", x + gp.tileSize/2, y + gp.tileSize);
+        if (commandNum == 0) {
+            g2.drawString("->", x - gp.tileSize, y + gp.tileSize);
         }
-        g2.drawString("Magic",x+gp.tileSize/2,y+gp.tileSize+40);
-        if(commandNum == 1){
-            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+40);
+        g2.drawString("Magic", x + gp.tileSize/2, y + gp.tileSize + 40);
+        if (commandNum == 1) {
+            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 40);
         }
-        g2.drawString("Item",x+gp.tileSize/2,y+gp.tileSize+80);
-        if(commandNum == 2){
-            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+80);
+        g2.drawString("Item", x + gp.tileSize/2, y + gp.tileSize + 80);
+        if (commandNum == 2) {
+            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 80);
         }
-        g2.drawString("Defend",x+gp.tileSize/2,y+gp.tileSize+120);
-        if(commandNum == 3){
-            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+120);
+        g2.drawString("Defend", x + gp.tileSize/2, y + gp.tileSize + 120);
+        if (commandNum == 3) {
+            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 120);
         }
-        g2.drawString("Escape",x+gp.tileSize/2,y+gp.tileSize+160);
-        if(commandNum == 4){
-            g2.drawString("->",x-gp.tileSize,y+gp.tileSize+160);
+        g2.drawString("Escape", x + gp.tileSize/2, y + gp.tileSize + 160);
+        if (commandNum == 4) {
+            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 160);
         }
 
-        //dibuja centrado abajo un panel donde se displayeara el jugador y su party
-        x = (int)(gp.tileSize*2.5)+15;
+        // Dibuja el menú de magia al lado derecho
+        if (magicMenu) {
+            int magicMenuX = x + width; // Posición X del menú de magia
+            int magicMenuY = y; // Posición Y del menú de magia
+            int magicMenuWidth = gp.tileSize * 4; // Ancho del menú de magia
+            int magicMenuHeight = height; // Altura del menú de magia
+
+            g2.setColor(Color.MAGENTA); // Color del menú de magia (puedes cambiarlo)
+            g2.fillRect(magicMenuX, magicMenuY, magicMenuWidth, magicMenuHeight);
+
+            g2.setColor(Color.BLACK);
+            g2.setFont(g2.getFont().deriveFont(24F));
+
+            // Obtén los nombres de los hechizos del jugador
+            String[] playerSpellNames = gp.player.printPlayerSpells();
+
+            // Dibuja las opciones de magia
+            int magicOptionY = magicMenuY + gp.tileSize;
+            for (int i = 0; i < playerSpellNames.length; i++) {
+                String spellText = playerSpellNames[i];
+                g2.drawString(spellText, magicMenuX + gp.tileSize, magicOptionY + i * gp.tileSize);
+
+                // Verifica si este es el hechizo seleccionado y ajusta la posición de la flecha
+                if (i == gp.ui.commandNum2) {
+                    g2.drawString("->", magicMenuX +gp.tileSize-30, magicOptionY + i * gp.tileSize);
+                }
+            }
+
+        }
+
+        // Dibuja centrado abajo un panel donde se displayeará el jugador y su party
+        x = (int)(gp.tileSize*2.5) + 15;
         y = gp.tileSize*10;
         width = gp.screenWidth - gp.tileSize*5;
         height = gp.tileSize*4;
 
         g2.setColor(Color.YELLOW);
         g2.fillRect(x, y, width, height);
-        drawSubWindow(x,y,width,height);
-
-
+        drawSubWindow(x, y, width, height);
     }
+
 
     public void drawOptionsMenu(){
         //Displayea un frame con las opciones de status inventario guardar etc

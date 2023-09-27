@@ -8,7 +8,7 @@
     "description": "Shoots a fiery ball."
   },
   {
-    "name": "Ice Blast",
+    "name": "IceBlast",
     "mpCost": 8,
     "damage": 15,
     "hit": 95,

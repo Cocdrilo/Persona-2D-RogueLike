@@ -46,19 +46,35 @@ public class Player extends Entity{
         for (superMagic spell : availableSpells) {
             if (spell.name.equals("Fireball")) {
                 addSpell(spell);
-                break; // Una vez que se agrega el hechizo, salimos del bucle
+            }
+            if (spell.name.equals("IceBlast")) {
+                addSpell(spell);
             }
         }
-        printPlayerSpells();
+        debugPlayerSpells();
     }
 
     //DEBUG
-    public void printPlayerSpells() {
-        System.out.print("Spells of the player: ");
-        for (superMagic spell : spells) {
-            System.out.print(spell.name + " ");
+
+    public void debugPlayerSpells() {
+        System.out.println("DEBUG: Player spells:");
+        for(int spells=0;spells<this.spells.size();spells++){
+            System.out.println(this.spells.get(spells).name);
         }
-        System.out.println();
+
+    }
+
+    public String[] printPlayerSpells() {
+        String[] spellNames = new String[this.spells.size()];
+        for(int spells=0;spells<this.spells.size();spells++){
+            spellNames[spells] = this.spells.get(spells).name;
+        }
+        return spellNames;
+    }
+
+    public int numberOfSpells() {
+        int numSpells = this.spells.size();
+        return numSpells;
     }
 
     public void setDefaultValues(){
