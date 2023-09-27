@@ -17,6 +17,7 @@ public class UI {
     Font franklin;
 
     BufferedImage image;
+    BufferedImage titleImage;
 
     //ArrayList de text para que sean Scrolling
     ArrayList<String> messageList = new ArrayList<>();
@@ -46,6 +47,12 @@ public class UI {
 
         } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
+        }
+
+        try {
+            titleImage = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -123,15 +130,7 @@ public class UI {
 
     public void drawTitleScreen(){
 
-
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        g2.drawImage(image,0,0,gp.screenWidth,gp.screenHeight,null);
-
+        g2.drawImage(titleImage,0,0,gp.screenWidth,gp.screenHeight,null);
         g2.setFont(Arcadia);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,50F));
         String text = "SMT ROGUELIKE";
@@ -171,7 +170,6 @@ public class UI {
         if(commandNum == 2){
             g2.drawString("->",x-gp.tileSize,y);
         }
-
 
     }
 
