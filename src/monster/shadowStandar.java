@@ -10,15 +10,43 @@ public class shadowStandar extends Entity {
 
     BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
 
-    public shadowStandar(GamePanel gp) {
+    public int health;
+    public int maxHealth;
+    public int attack;
+    public int defense;
+    public int xpGiven;
+    private final String attackType;
+    public BufferedImage combatImage;
+
+
+    public shadowStandar(GamePanel gp,String name,int health,int attack,int defense,int xpGiven,String attackType,String combatImagePath,String[] weaknesses, String[] resistances, String[] nulls, String[] repells) {
         super(gp);
         type = 2;
-        name = "ChestDemon";
+        this.name = name;
+        this.maxHealth = health;
+        this.attack = attack;
+        this.defense = defense;
+        this.xpGiven = xpGiven;
+        this.health = maxHealth;
+        this.attackType = attackType;
         speed = 1;
-        getImage();
+        loadCombatImage(combatImagePath); // Cargar la imagen de combate específica
+        getImage(); // Cargar las imágenes del mundo
 
+        this.weaknesses = weaknesses;
+        this.resistances = resistances;
+        this.nulls = nulls;
+        this.repells = repells;
     }
 
+
+    public String getAttackType(){
+        return attackType;
+    }
+
+    public void loadCombatImage(String combatImagePath){
+        combatImage = setUp(combatImagePath);
+    }
     public void getImage(){
         walkDown1 = setUp("/Monsters/Demon1");
         walkDown2 = setUp("/Monsters/Demon2");
@@ -62,8 +90,5 @@ public class shadowStandar extends Entity {
             }
             actionLockCounter =0;
         }
-
-
     }
-
 }

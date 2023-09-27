@@ -1,14 +1,14 @@
 package entity;
 
+import battleNeeds.superMagic;
+import main.BattleSystem;
 import main.GamePanel;
 import main.KeyHandler;
 import Object.*;
-import main.Toolbox;
+import monster.shadowStandar;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player extends Entity{
@@ -20,7 +20,8 @@ public class Player extends Entity{
     public Entity_stats PLAYERstats;
 
     //Inventario del jugador
-    public ArrayList<Entity> inventory = new ArrayList<Entity>();
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public boolean defending = false;
 
     public Player(GamePanel gp,KeyHandler keyH){
         super (gp);
@@ -39,7 +40,27 @@ public class Player extends Entity{
         setDefaultValues();
         getPlayerImage();
         setItems();
+        spells = new ArrayList<>();
+
+        ArrayList<superMagic> availableSpells = gp.spellManager.getSpells();
+        for (superMagic spell : availableSpells) {
+            if (spell.name.equals("Fireball")) {
+                addSpell(spell);
+                break; // Una vez que se agrega el hechizo, salimos del bucle
+            }
+        }
+        printPlayerSpells();
     }
+
+    //DEBUG
+    public void printPlayerSpells() {
+        System.out.print("Spells of the player: ");
+        for (superMagic spell : spells) {
+            System.out.print(spell.name + " ");
+        }
+        System.out.println();
+    }
+
     public void setDefaultValues(){
         WorldX = 100;
         WorldY = 100;
@@ -59,40 +80,10 @@ public class Player extends Entity{
         PLAYERstats.money = 0;
         PLAYERstats.weapon = new OBJ_WEAPON_Slash(gp);
         PLAYERstats.armor = new OBJ_Armor(gp);
-
-        //TENGO QUE HACER DOWNCASTING PARA WEAPON POR QUERER HACERLO EN UNA SUBCLASE
-        // Verifica si PLAYERstats.weapon es una instancia de OBJ_WEAPON_Slash
-
-        if (PLAYERstats.weapon instanceof OBJ_WEAPON_Slash) {
-
-            OBJ_WEAPON_Slash slashingWeapon = (OBJ_WEAPON_Slash) PLAYERstats.weapon;
-            PLAYERstats.atkDmg = getAttack(slashingWeapon);
-
-        }
-        if(PLAYERstats.weapon instanceof OBJ_WEAPON_Piercing){
-
-            OBJ_WEAPON_Piercing piercingWeapon = (OBJ_WEAPON_Piercing) PLAYERstats.weapon;
-            PLAYERstats.atkDmg = getAttack(piercingWeapon);
-        }
-        if(PLAYERstats.weapon instanceof OBJ_WEAPON_BASH){
-
-                OBJ_WEAPON_BASH bashingWeapon = (OBJ_WEAPON_BASH) PLAYERstats.weapon;
-                PLAYERstats.atkDmg = getAttack(bashingWeapon);
-        }
-
-        else {
-            PLAYERstats.atkDmg = 0; // Establecer un valor predeterminado para el ataque.
-        }
-
-        // Verifica si PLAYERstats.armor es una instancia de OBJ_ARMOR
-        if (PLAYERstats.armor instanceof OBJ_Armor) {
-            OBJ_Armor armor = (OBJ_Armor) PLAYERstats.armor;
-            PLAYERstats.def = getDefense(armor);
-        } else {
-            // Manejo de caso en el que PLAYERstats.armor no es una instancia de OBJ_ARMOR
-            // Puedes establecer un valor predeterminado o tomar otra acción aquí.
-            PLAYERstats.def = 0; // Establecer un valor predeterminado para la defensa.
-        }
+        resistances = new String[]{};
+        weaknesses = new String[]{};
+        nulls = new String[]{};
+        repells = new String[]{};
     }
 
     public void setItems(){
@@ -110,14 +101,12 @@ public class Player extends Entity{
 
             Entity selectedItem = inventory.get(itemIndex);
 
-            if(selectedItem.type == 3){
-                PLAYERstats.weapon = selectedItem;
-                PLAYERstats.atkDmg = getAttack((OBJ_Weapon) selectedItem);
+            if(selectedItem instanceof OBJ_Weapon){
+                PLAYERstats.weapon = (OBJ_Weapon) selectedItem;
             }
 
-            if(selectedItem.type == 4){
-                PLAYERstats.armor = selectedItem;
-                PLAYERstats.def = getDefense((OBJ_Armor) selectedItem);
+            if(selectedItem instanceof OBJ_Armor){
+                PLAYERstats.armor = (OBJ_Armor) selectedItem;
             }
 
             if(selectedItem.type == 5){
@@ -125,22 +114,52 @@ public class Player extends Entity{
                 selectedItem.use(this);
                 inventory.remove(itemIndex);
             }
+
+            }
+        }
+
+    public int getAttack(){
+        int atkReturn;
+        if ( PLAYERstats.weapon != null){
+            return atkReturn = (PLAYERstats.str + PLAYERstats.weapon.atk);
+        }
+        else {
+            return atkReturn = PLAYERstats.str;
         }
     }
 
-    public int getAttack(OBJ_Weapon weapon){
-        int atkReturn = 0;
-        atkReturn = PLAYERstats.str + weapon.atk;
-        return atkReturn;
+    public int getDefense() {
+        int defReturn = 0;
+        if (PLAYERstats.armor != null) {
+            defReturn = PLAYERstats.agi + PLAYERstats.armor.def;
+        }
+        else{
+            defReturn = PLAYERstats.agi;
+        }
+        return defReturn;
     }
 
-    public int getDefense(OBJ_Armor armor) {
-        int defense = 0;
-        if (armor != null) {
-            defense = PLAYERstats.agi * armor.def;
+    public String getWeaponDmgType(){
+        String dmgType = "";
+        if(PLAYERstats.weapon != null){
+            dmgType = PLAYERstats.weapon.damageType;
         }
-        return defense;
+        return dmgType;
     }
+
+    // Métodos para agregar, quitar y acceder a hechizos del jugador
+    public void addSpell(superMagic spell) {
+        spells.add(spell);
+    }
+
+    public void removeSpell(superMagic spell) {
+        spells.remove(spell);
+    }
+
+    public ArrayList<superMagic> getSpells() {
+        return spells;
+    }
+
 
     public void getPlayerImage(){
         standFront = setUp("/player/Raidou1");
@@ -158,18 +177,18 @@ public class Player extends Entity{
     }
     public void update(){
 
-        if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true|| keyH.zPressed == true){
+        if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed){
 
-            if(keyH.upPressed==true){
+            if(keyH.upPressed){
                 direction = "up";
             }
-            else if(keyH.downPressed==true){
+            else if(keyH.downPressed){
                 direction = "down";
             }
-            else if(keyH.leftPressed==true){
+            else if(keyH.leftPressed){
                 direction = "left";
             }
-            else if(keyH.rightPressed==true){
+            else if(keyH.rightPressed){
                 direction = "right";
             }
 
@@ -195,21 +214,13 @@ public class Player extends Entity{
             contactMonster(mobIndex);
 
 
-            if(collisionOn==false && keyH.zPressed == false){
+            if(!collisionOn && !keyH.zPressed){
 
-                switch(direction){
-                    case "up":
-                        WorldY -=speed;
-                        break;
-                    case "down":
-                        WorldY +=speed;
-                        break;
-                    case "left":
-                        WorldX -=speed;
-                        break;
-                    case "right":
-                        WorldX +=speed;
-                        break;
+                switch (direction) {
+                    case "up" -> WorldY -= speed;
+                    case "down" -> WorldY += speed;
+                    case "left" -> WorldX -= speed;
+                    case "right" -> WorldX += speed;
                 }
             }
             //Despues de todo para actualizar estado
@@ -258,62 +269,62 @@ public class Player extends Entity{
 
     public void contactMonster(int i){
         if(i != 999){
+            shadowStandar shadow = (shadowStandar) gp.monsters[i];
             //Cambio a Combate
+            gp.battleSystem = new BattleSystem(this,shadow,gp);
             gp.gameState = gp.combatState;
+            gp.monsters[i] = null;
         }
+    }
+
+    public void levelUp(){
+        PLAYERstats.level++;
+        PLAYERstats.nextLevelExp = PLAYERstats.nextLevelExp * 2;
     }
 
     public void draw(Graphics2D graficos2d){
 
         BufferedImage image = null;
 
-        if (keyH.upPressed == false && keyH.downPressed == false && keyH.leftPressed == false && keyH.rightPressed == false) {
+        if (!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
             // El jugador está quieto, selecciona la imagen adecuada según la última dirección.
             switch (direction) {
-                case "up":
-                    image = standBack;
-                    break;
-                case "down":
-                    image = standFront;
-                    break;
-                case "left":
-                    image = standLeft;
-                    break;
-                case "right":
-                    image = standRight;
-                    break;
+                case "up" -> image = standBack;
+                case "down" -> image = standFront;
+                case "left" -> image = standLeft;
+                case "right" -> image = standRight;
             }
         } else {
             // El jugador se está moviendo, selecciona la imagen correspondiente a la dirección de movimiento.
             switch (direction) {
-                case "up":
+                case "up" -> {
                     if (spriteNum == 1) {
                         image = walkUp1;
                     } else if (spriteNum == 2) {
                         image = walkUp2;
                     }
-                    break;
-                case "down":
+                }
+                case "down" -> {
                     if (spriteNum == 1) {
                         image = walkDown1;
                     } else if (spriteNum == 2) {
                         image = walkDown2;
                     }
-                    break;
-                case "left":
+                }
+                case "left" -> {
                     if (spriteNum == 1) {
                         image = walkLeft1;
                     } else if (spriteNum == 2) {
                         image = walkLeft2;
                     }
-                    break;
-                case "right":
+                }
+                case "right" -> {
                     if (spriteNum == 1) {
                         image = walkRight1;
                     } else if (spriteNum == 2) {
                         image = walkRight2;
                     }
-                    break;
+                }
             }
         }
         graficos2d.drawImage(image, screenX, screenY,null);

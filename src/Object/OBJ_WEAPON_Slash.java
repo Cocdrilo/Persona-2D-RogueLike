@@ -6,7 +6,7 @@ public class OBJ_WEAPON_Slash extends OBJ_Weapon{
     public OBJ_WEAPON_Slash(GamePanel gp) {
         super(gp);
         name = "Espadon";
-        damageType = "slash";
+        damageType = "Slashing";
         atk = 10;
         hit = 97;
         price = 100;
