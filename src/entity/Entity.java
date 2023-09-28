@@ -1,5 +1,6 @@
 package entity;
 
+import battleNeeds.superMagic;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Toolbox;
@@ -8,6 +9,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Entity {
 
@@ -38,6 +41,54 @@ public class Entity {
     public Entity_stats stats;
     public String description = "";
     public boolean isPickupeable = false;
+
+    //Maps de Resistencias y Debilidades.
+    public String resistances[];
+    public String weaknesses[];
+    public String nulls[];
+    public String repells[];
+
+    //Array de hechizos:
+    protected ArrayList<superMagic> spells;
+
+
+    //CombatMethods
+
+    public boolean isWeak(String attckType){
+        for (String weakness : weaknesses) {
+            if (Objects.equals(attckType, weakness)) {
+                return true;
+            }
+        }
+        return false;
+        }
+
+    public boolean isResistant(String attckType){
+        for (String resistance : resistances) {
+            if (Objects.equals(attckType, resistance)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNull(String attckType){
+        for (String aNull : nulls) {
+            if (Objects.equals(attckType, aNull)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isRepelled(String attckType){
+        for (String repel : repells) {
+            if (Objects.equals(attckType, repel)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     //CONTADORES

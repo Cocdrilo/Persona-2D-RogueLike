@@ -1,4 +1,5 @@
 package entity;
+import Object.*;
 
 public class Entity_stats {
     //PLAYER STATS
@@ -10,20 +11,15 @@ public class Entity_stats {
     public int maxHp;
     public int mp;
     public int maxMp;
-    //PERSONA STATS
     public int str;
     public int dex;
     public int agi;
     public int vit;
 
     //PLAYER EQUIPMENT
-    public Entity weapon;
-    public Entity armor;
+    public OBJ_Weapon weapon;
+    public OBJ_Armor armor;
     public Entity accessory;
-
-    //EQUIPMENT STATS
-    public int def;
-    public int atkDmg;
 
     public Entity_stats() {
         //PLAYER STATS DEFAULT
@@ -35,7 +31,7 @@ public class Entity_stats {
         maxHp = 10;
         mp = 10;
         maxMp = 10;
-        //PERSONA STATS DEFAULT
+
         str = 5;
         dex = 5;
         agi = 5;

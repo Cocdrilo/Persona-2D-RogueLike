@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Fireball",
+    "mpCost": 10,
+    "damage": 20,
+    "hit": 90,
+    "damageType": "Fire",
+    "description": "Shoots a fiery ball."
+  },
+  {
+    "name": "Ice Blast",
+    "mpCost": 8,
+    "damage": 15,
+    "hit": 95,
+    "damageType": "Ice",
+    "description": "Launches a freezing blast."
+  }
+]

@@ -1,5 +1,6 @@
 package main;
 
+import battleNeeds.SpellManager;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
@@ -16,23 +17,24 @@ public class GamePanel extends JPanel implements Runnable{
     final int originalTileSize = 16; //16*16
     final int scale = 3;
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol =20;
+    public final int maxScreenCol = 16;
     public final int maxScreenRow = 12 ;
-    public final int screenWidth = tileSize * maxScreenCol; //960 pixels
+    public final int screenWidth = tileSize * maxScreenCol; //768 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     //SETTINGS DEL MUNDO
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
+    public BattleSystem battleSystem;
 
-    //PARA PANTALLA COMPLETA
+    //FPS
+    int FPS = 60;
+
+    //ScreenVars
     int screenWidth2 = screenWidth;
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
     Graphics2D g2;
-
-    //FPS
-    int FPS = 60;
 
     //SYSTEM
     public KeyHandler keyH = new KeyHandler(this);
@@ -44,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable{
     public AssetSetter Asetter = new AssetSetter(this);
     public UI ui= new UI(this);
     public Events eventHandler = new Events(this);
+    public SpellManager spellManager = SpellManager.getInstance();
 
     //ENTITY AND OBJECT
     public Player player = new Player(this,keyH);
@@ -76,6 +79,17 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
     }
 
+    public void setFullScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        screenWidth2 = (int) width;
+        screenHeight2 = (int) height;
+    }
+
+
+
     public void setUpGame(){
 
         Asetter.setObject();
@@ -85,21 +99,10 @@ public class GamePanel extends JPanel implements Runnable{
         //playMusic(0);
         gameState = titleState;
 
-        tempScreen = new BufferedImage(screenWidth , screenHeight, BufferedImage.TYPE_INT_ARGB);
-        g2 = (Graphics2D) tempScreen.getGraphics();
+        tempScreen = new BufferedImage(screenWidth,screenHeight,BufferedImage.TYPE_INT_ARGB);
+        g2= (Graphics2D) tempScreen.getGraphics();
 
         setFullScreen();
-
-
-    }
-
-    public void setFullScreen() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
-        Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        screenWidth2 = (int) width;
-        screenHeight2 = (int) height;
     }
 
     public void startGameThread(){
@@ -129,9 +132,8 @@ public class GamePanel extends JPanel implements Runnable{
 
             if(accumulator>=1){
                 update();
-                //repaint();
-                drawToTempScreen(); // dibuja todo a una imagen buffered
-                drawToScreen(); // dibuja la imagen buffered a la pantalla
+                drawToTempScreen();
+                drawToScreen();
                 accumulator--;
                 drawCount++;
             }
@@ -168,7 +170,6 @@ public class GamePanel extends JPanel implements Runnable{
             //NOTHING
         }
     }
-
     public void drawToTempScreen() {
         // Limpia el búfer antes de dibujar
         g2.clearRect(0, 0, screenWidth, screenHeight);
