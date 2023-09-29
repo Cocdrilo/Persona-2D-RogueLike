@@ -90,7 +90,7 @@ public class Player extends Entity{
         PLAYERstats.mp = PLAYERstats.maxMp;
         PLAYERstats.str = 5;
         PLAYERstats.agi = 5;
-        PLAYERstats.vit = 5;
+        PLAYERstats.mag = 5;
         PLAYERstats.exp = 0;
         PLAYERstats.nextLevelExp = 10;
         PLAYERstats.money = 0;
@@ -294,6 +294,7 @@ public class Player extends Entity{
     }
 
     public void levelUp(){
+        gp.gameState = gp.levelUpState;
         PLAYERstats.level++;
         PLAYERstats.nextLevelExp = PLAYERstats.nextLevelExp * 2;
     }

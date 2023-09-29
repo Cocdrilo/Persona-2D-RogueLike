@@ -67,6 +67,8 @@ public class GamePanel extends JPanel implements Runnable{
     public final int combatState = 5;
     public final int statusState = 6;
     public final int inventoryState = 7;
+    public final int levelUpState = 8;
+    public final int magicMenuState = 9;
 
 
 
@@ -186,19 +188,19 @@ public class GamePanel extends JPanel implements Runnable{
 
             // Agrega al jugador y a otras entidades necesarias
             entityList.add(player);
-            for (int npcInArray = 0; npcInArray < npc.length; npcInArray++) {
-                if (npc[npcInArray] != null) {
-                    entityList.add(npc[npcInArray]);
+            for (Entity entity : npc) {
+                if (entity != null) {
+                    entityList.add(entity);
                 }
             }
-            for (int objInArray = 0; objInArray < obj.length; objInArray++) {
-                if (obj[objInArray] != null) {
-                    entityList.add(obj[objInArray]);
+            for (Entity entity : obj) {
+                if (entity != null) {
+                    entityList.add(entity);
                 }
             }
-            for (int monsterInArray = 0; monsterInArray < monsters.length; monsterInArray++) {
-                if (monsters[monsterInArray] != null) {
-                    entityList.add(monsters[monsterInArray]);
+            for (Entity monster : monsters) {
+                if (monster != null) {
+                    entityList.add(monster);
                 }
             }
 

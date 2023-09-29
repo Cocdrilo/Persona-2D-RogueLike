@@ -9,6 +9,7 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed , enterPressed ,zPressed;
 
+
     public KeyHandler(GamePanel gp){
         this.gp = gp;
     }
@@ -57,6 +58,13 @@ public class KeyHandler implements KeyListener {
         else if(gp.gameState == gp.combatState){
             combatState(code);
         }
+        //MAGIC MENU STATE
+        else if(gp.gameState == gp.magicMenuState){
+            magicMenuState(code);
+        }
+        else if(gp.gameState == gp.levelUpState){
+            levelState(code);
+        }
 
     }
 
@@ -86,6 +94,7 @@ public class KeyHandler implements KeyListener {
             }
             if (gp.ui.commandNum == 1) {
                 gp.ui.magicMenu = true;
+                gp.gameState = gp.magicMenuState;
             }
             if (gp.ui.commandNum == 2) {
                 // Use Items Aun sin Implementar
@@ -97,10 +106,13 @@ public class KeyHandler implements KeyListener {
                 // Flee Aun sin Implementar
             }
         }
+    }
 
+    public void magicMenuState(int code){
         // Aquí obtenemos la cantidad de hechizos disponibles
         int numSpells = gp.player.numberOfSpells();
         if (gp.ui.commandNum == 1 && gp.ui.magicMenu) {
+
             if (code == KeyEvent.VK_W) {
                 if (gp.ui.commandNum2 > 0) {
                     gp.ui.commandNum2--;
@@ -117,9 +129,77 @@ public class KeyHandler implements KeyListener {
                     gp.ui.commandNum2 = 0; // Volver al primer hechizo
                 }
             }
+            // Verificar si estamos dentro del submenu de magia antes de activar el hechizo
+            if (code == KeyEvent.VK_Z) {
+                // Aquí activa el hechizo seleccionado (sin pasar una variable)
+                gp.battleSystem.useMagic();
+            }
+
             if(code == KeyEvent.VK_ESCAPE){
                 gp.ui.commandNum2 = 0;
                 gp.ui.magicMenu = false;
+                gp.gameState = gp.combatState;
+            }
+        }
+    }
+
+    //Necesita Fix
+    public void levelState(int code){
+        int pointsPerLevel = 3;
+
+        if(code == KeyEvent.VK_W) {
+            if(gp.ui.commandNum>0){
+                gp.ui.commandNum--;
+            }
+            else{
+                gp.ui.commandNum=2;
+            }
+        }
+
+        if(code == KeyEvent.VK_S) {
+            if(gp.ui.commandNum<2){
+                gp.ui.commandNum++;
+            }
+            else{
+                gp.ui.commandNum=0;
+            }
+        }
+        if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A){
+            if(gp.ui.commandNum == 0){
+                if(pointsPerLevel>0){
+                    gp.player.PLAYERstats.dex++;
+                    pointsPerLevel--;
+                }
+            }
+            if(gp.ui.commandNum == 1){
+                if(pointsPerLevel>0){
+                    gp.player.PLAYERstats.str++;
+                    pointsPerLevel--;
+                }
+            }
+            if(gp.ui.commandNum == 2){
+                if(pointsPerLevel>0){
+                    gp.player.PLAYERstats.mag++;
+                    pointsPerLevel--;
+                }
+            }
+        }
+        if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D) {
+            if (gp.ui.commandNum == 0) {
+                gp.player.PLAYERstats.dex--;
+                pointsPerLevel++;
+
+            }
+            if (gp.ui.commandNum == 1) {
+                gp.player.PLAYERstats.str--;
+                pointsPerLevel++;
+            }
+            if (gp.ui.commandNum == 2) {
+                gp.player.PLAYERstats.mag--;
+                pointsPerLevel++;
+            }
+            if (code == KeyEvent.VK_ENTER) {
+                gp.gameState = gp.playState;
             }
         }
     }

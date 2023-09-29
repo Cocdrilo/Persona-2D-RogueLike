@@ -14,7 +14,7 @@ public class Entity_stats {
     public int str;
     public int dex;
     public int agi;
-    public int vit;
+    public int mag;
 
     //PLAYER EQUIPMENT
     public OBJ_Weapon weapon;
@@ -35,7 +35,7 @@ public class Entity_stats {
         str = 5;
         dex = 5;
         agi = 5;
-        vit = 5;
+        mag = 5;
 
         //PLAYER EQUIPMENT DEFAULT
         weapon = null;

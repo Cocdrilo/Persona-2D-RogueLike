@@ -1,6 +1,9 @@
 package main;
+import battleNeeds.superMagic;
 import entity.Player;
 import monster.shadowStandar;
+
+import java.util.ArrayList;
 
 public class BattleSystem {
     private Player player;
@@ -142,6 +145,44 @@ public class BattleSystem {
 
     }
 
+
+    public void useMagic() {
+        // Obtener el hechizo seleccionado por el jugador
+        ArrayList<superMagic> playerSpells = player.getSpells();
+        if (gp.ui.commandNum2 >= 0 && gp.ui.commandNum2 < playerSpells.size()) {
+            superMagic selectedSpell = playerSpells.get(gp.ui.commandNum2);
+
+            // Verificar si el jugador tiene suficiente MP para lanzar el hechizo
+            if (player.PLAYERstats.mp >= selectedSpell.mpCost) {
+                // Restar el costo de MP al jugador
+                player.PLAYERstats.mp -= selectedSpell.mpCost;
+
+                // Realizar cálculos de daño o efectos del hechizo según sea necesario
+                int damage = selectedSpell.damage;
+                // Puedes agregar lógica adicional aquí para diferentes tipos de hechizos
+
+                // Aplicar los efectos del hechizo al enemigo (monstruo)
+                if (turn == 0) {
+                    monster.health -= damage;
+                    System.out.println(monster.name + " has recived " + damage + " damage from " + selectedSpell.name);
+                }
+                // Aplicar los efectos del hechizo al jugador
+                else if (turn == 1) {
+                    player.PLAYERstats.hp -= damage;
+                    System.out.println("Player has recived " + damage + " damage from " + selectedSpell.name);
+                }
+
+                // Actualizar la interfaz de usuario para reflejar los cambios
+                // Puedes agregar código aquí para mostrar mensajes o actualizaciones visuales
+
+                // Cambiar al siguiente turno
+                nextTurn();
+            } else {
+                System.out.println("Not enough MP to cast " + selectedSpell.name);
+            }
+        }
+    }
+
     public void useItem(Object item) {
         // Implementar el uso de un objeto (poción, etc.)
         // Actualizar la interfaz de usuario
@@ -161,17 +202,19 @@ public class BattleSystem {
 
         player.PLAYERstats.exp = player.PLAYERstats.exp + monster.xpGiven;
         System.out.println("Player has recived " + monster.xpGiven + " exp");
+
+        //Loot calc
+
+        //Random de dinero
+        //Random de Objetos
+
         if(player.PLAYERstats.exp>= player.PLAYERstats.nextLevelExp){
             //Level Up
             player.levelUp();
         }
+        else {
+            gp.gameState = gp.playState;
+        }
 
-        //Loot calc
-
-            //Random de dinero
-            //Random de Objetos
-
-        //End Battle
-        gp.gameState = gp.playState;
     }
 }

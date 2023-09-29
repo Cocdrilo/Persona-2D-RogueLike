@@ -47,9 +47,9 @@ public class Events {
         }
 
         //COMPROBAR SI EL JUGADOR ESTA EN UN EVENTO
-        if(canTouchEvent = true){
+        if(canTouchEvent){
             //DAMAGE PIT
-            if(hit(10,10,"any")){ damagePit(gp.dialogueState) ;}
+            if(hit(9,4,"any")){ damagePit(gp.dialogueState) ;}
         }
 
 
@@ -76,8 +76,6 @@ public class Events {
         gp.player.solidArea.y = gp.player.SolidAreaDefaultY;
         eventRect[col][row].x = eventRect[col][row].eventRectDefaultX;
         eventRect[col][row].y = eventRect[col][row].eventRectDefaultY;
-
-
 
         return hit;
     }
