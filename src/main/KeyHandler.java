@@ -2,14 +2,13 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed , enterPressed ,zPressed;
     public int pointsPerLevel = 0;
-    public int oldDex = 0,oldStr=0,oldMag=0;
+    public int oldDex = 0,oldStr=0,oldMag=0,oldAgi=0;
 
 
     public KeyHandler(GamePanel gp){
@@ -154,12 +153,12 @@ public class KeyHandler implements KeyListener {
                 gp.ui.commandNum--;
             }
             else{
-                gp.ui.commandNum=2;
+                gp.ui.commandNum=3;
             }
         }
 
         if(code == KeyEvent.VK_S) {
-            if(gp.ui.commandNum<2){
+            if(gp.ui.commandNum<3){
                 gp.ui.commandNum++;
             }
             else{
@@ -169,7 +168,8 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D){
             if(gp.ui.commandNum == 0){
                 if(pointsPerLevel>0){
-                    gp.player.PLAYERstats.dex++;
+                    gp.player.PLAYERstats.vit++;
+                    gp.player.PLAYERstats.maxHp+=5;
                     pointsPerLevel--;
                 }
             }
@@ -182,18 +182,24 @@ public class KeyHandler implements KeyListener {
             if(gp.ui.commandNum == 2){
                 if(pointsPerLevel>0){
                     gp.player.PLAYERstats.mag++;
+                    gp.player.PLAYERstats.maxMp+=5;
                     pointsPerLevel--;
                 }
+            }
+            if(gp.ui.commandNum == 3){
+                gp.player.PLAYERstats.agi++;
+                pointsPerLevel--;
             }
         }
         if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
             if (gp.ui.commandNum == 0) {
-                gp.player.PLAYERstats.dex--;
+                gp.player.PLAYERstats.vit--;
                 pointsPerLevel++;
-                if(gp.player.PLAYERstats.dex<oldDex){
-                    gp.player.PLAYERstats.dex=oldDex;
+                if(gp.player.PLAYERstats.vit <oldDex){
+                    gp.player.PLAYERstats.vit =oldDex;
                     pointsPerLevel--;
                 }
+                gp.player.PLAYERstats.maxHp-=5;
             }
             if (gp.ui.commandNum == 1) {
                 gp.player.PLAYERstats.str--;
@@ -208,6 +214,15 @@ public class KeyHandler implements KeyListener {
                 pointsPerLevel++;
                 if(gp.player.PLAYERstats.mag<oldMag){
                     gp.player.PLAYERstats.mag=oldMag;
+                    pointsPerLevel--;
+                }
+                gp.player.PLAYERstats.maxMp-=5;
+            }
+            if(gp.ui.commandNum == 3){
+                gp.player.PLAYERstats.agi--;
+                pointsPerLevel++;
+                if(gp.player.PLAYERstats.mag<oldAgi){
+                    gp.player.PLAYERstats.agi=oldAgi;
                     pointsPerLevel--;
                 }
             }

@@ -247,7 +247,7 @@ public class UI {
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 5);
 
-        valor = String.valueOf(gp.player.PLAYERstats.dex);
+        valor = String.valueOf(gp.player.PLAYERstats.vit);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 6);
 
@@ -567,7 +567,7 @@ public class UI {
         // Configura el color del texto en blanco
         g2.setColor(Color.WHITE);
 
-        String[] attributes = {"dex", "str", "mag"};
+        String[] attributes = {"vit", "str", "mag","agi"};
         int y = 100; // Posición vertical inicial de las cadenas de texto
 
         for (int i = 0; i < attributes.length; i++) {
@@ -582,21 +582,13 @@ public class UI {
             g2.drawString(attributes[i], 50, y);
 
             // Dibuja el valor de la estadística al lado de la flecha
-            String statValue;
-            switch (i) {
-                case 0:
-                    statValue = String.valueOf(gp.player.PLAYERstats.dex);
-                    break;
-                case 1:
-                    statValue = String.valueOf(gp.player.PLAYERstats.str);
-                    break;
-                case 2:
-                    statValue = String.valueOf(gp.player.PLAYERstats.mag);
-                    break;
-                default:
-                    statValue = "N/A";
-                    break;
-            }
+            String statValue = switch (i) {
+                case 0 -> String.valueOf(gp.player.PLAYERstats.vit);
+                case 1 -> String.valueOf(gp.player.PLAYERstats.str);
+                case 2 -> String.valueOf(gp.player.PLAYERstats.mag);
+                case 3 -> String.valueOf(gp.player.PLAYERstats.agi);
+                default -> "N/A";
+            };
             g2.drawString(statValue, 250, y); // Ajusta la posición horizontal según tus necesidades
 
             // Dibuja la flecha hacia la derecha
@@ -606,6 +598,7 @@ public class UI {
             g2.drawLine(arrowX, arrowY, arrowX + arrowLength, arrowY);
             g2.drawLine(arrowX + arrowLength, arrowY, arrowX + arrowLength - 5, arrowY - 5);
             g2.drawLine(arrowX + arrowLength, arrowY, arrowX + arrowLength - 5, arrowY + 5);
+            g2.drawLine(arrowX + arrowLength, arrowY, arrowX + arrowLength - 5, arrowY + 10);
 
             // Incrementa la posición vertical para la siguiente cadena de texto
             y += 50; // Ajusta la separación vertical entre las cadenas de texto

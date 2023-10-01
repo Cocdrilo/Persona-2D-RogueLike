@@ -1,6 +1,10 @@
 package main;
-import Object.*;
-import entity.NPC_Mimic;
+import Object.Consumables.OBJ_Potion_Health;
+import Object.Equipables.OBJ_WEAPON_BASH;
+import Object.WorldBuilding.OBJ_Chest;
+import Object.WorldBuilding.OBJ_Door;
+import Object.WorldBuilding.OBJ_Stairs;
+import entity.NPC;
 import monster.shadowStandar;
 
 public class AssetSetter {
@@ -41,7 +45,7 @@ public class AssetSetter {
 
     public void setNPC(){
 
-        gp.npc[0]=new NPC_Mimic(gp);
+        gp.npc[0]=new NPC(gp);
         gp.npc[0].WorldX = gp.tileSize*4;
         gp.npc[0].WorldY = gp.tileSize*4;
     }

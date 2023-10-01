@@ -45,25 +45,24 @@ public class BattleSystem {
     public void attack() {
         // Realizar cálculos de daño para un ataque
         String weaponDmgType = player.getWeaponDmgType();
-        int playerDMG = player.getAttack();
         int monsterDEF = monster.defense;
-        int calculatedDMG = playerDMG - monsterDEF;
+        int DmgPreModifier = player.getPhysAttack(monsterDEF,player.PLAYERstats.weapon.atk);
 
         // Si el monstruo es débil al tipo de daño del arma, el daño se duplica
         if (monster.isWeak(weaponDmgType)) {
-            calculatedDMG *= 2;
+            DmgPreModifier *= 2;
             System.out.println("Weak");
         }
 
         // Si el monstruo es resistente al tipo de daño del arma, el daño se reduce a la mitad
         if (monster.isResistant(weaponDmgType)) {
-            calculatedDMG /= 2;
+            DmgPreModifier /= 2;
             System.out.println("resistant");
         }
 
         // Si el monstruo es inmune al tipo de daño del arma, el daño es 0
         if (monster.isNull(weaponDmgType)) {
-            calculatedDMG = 0;
+            DmgPreModifier = 0;
             System.out.println("null");
         }
 
@@ -71,26 +70,26 @@ public class BattleSystem {
         if (monster.isRepelled(weaponDmgType)) {
             // Aplica la lógica al propio personaje
             if (player.isWeak(weaponDmgType)) {
-                calculatedDMG *= 2;
+                DmgPreModifier *= 2;
             }
             if (player.isResistant(weaponDmgType)) {
-                calculatedDMG /= 2;
+                DmgPreModifier /= 2;
             }
             if (player.isNull(weaponDmgType)) {
-                calculatedDMG = 0;
+                DmgPreModifier = 0;
             }
             // Aquí puedes aplicar el daño al propio personaje
-            player.PLAYERstats.hp -= calculatedDMG;
-            System.out.println("Player" + " has recived" + calculatedDMG + " damage");
+            player.PLAYERstats.hp -= DmgPreModifier;
+            System.out.println("Player" + " has recived" + DmgPreModifier + " damage");
             nextTurn();
             return;
         }
 
-        if(calculatedDMG<0){
-            calculatedDMG = 0;
+        if(DmgPreModifier<0){
+            DmgPreModifier = 0;
         }
-        monster.health = monster.health - calculatedDMG;
-        System.out.println(monster.name + " has recived" + calculatedDMG + " damage");
+        monster.health = monster.health - DmgPreModifier;
+        System.out.println(monster.name + " has recived" + DmgPreModifier + " damage");
         nextTurn();
     }
 
@@ -145,7 +144,6 @@ public class BattleSystem {
 
     }
 
-
     public void useMagic() {
         // Obtener el hechizo seleccionado por el jugador
         ArrayList<superMagic> playerSpells = player.getSpells();
@@ -158,7 +156,7 @@ public class BattleSystem {
                 player.PLAYERstats.mp -= selectedSpell.mpCost;
 
                 // Realizar cálculos de daño o efectos del hechizo según sea necesario
-                int damage = selectedSpell.damage;
+                int damage = player.getMagicAttack(monster.defense,selectedSpell.damage);;
                 // Puedes agregar lógica adicional aquí para diferentes tipos de hechizos
 
                 // Aplicar los efectos del hechizo al enemigo (monstruo)

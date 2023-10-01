@@ -1,15 +1,18 @@
 package entity;
 
+import Object.Equipables.OBJ_Armor;
+import Object.Equipables.OBJ_WEAPON_Slash;
+import Object.Equipables.OBJ_Weapon;
 import battleNeeds.superMagic;
 import main.BattleSystem;
 import main.GamePanel;
 import main.KeyHandler;
-import Object.*;
 import monster.shadowStandar;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player extends Entity{
 
@@ -134,14 +137,36 @@ public class Player extends Entity{
             }
         }
 
-    public int getAttack(){
-        int atkReturn;
-        if ( PLAYERstats.weapon != null){
-            return atkReturn = (PLAYERstats.str + PLAYERstats.weapon.atk);
-        }
-        else {
-            return atkReturn = PLAYERstats.str;
-        }
+    //DMG = 5 x sqrt(ST/EN x ATK) x MOD x HITS X RND
+    //
+    //DMG = Damage
+    //ST = Character's Strength stat
+    //EN = Enemy's Endurance stat
+    //ATK = Atk value of equipped weapon OR Pwr value of used skill
+    //HITS= Number of hits (for physical skills)
+    //RND = Randomness factor (according to DragoonKain33, may be roughly between
+    //0.95 and 1.05)
+
+    public double randomFactor(){
+        double minFactor = 0.95;
+        double maxFactor = 1.05;
+
+        // Crear una instancia de la clase Random
+        Random random = new Random();
+
+        // Generar un valor aleatorio entre minFactor y maxFactor
+
+        return minFactor + (maxFactor - minFactor) * random.nextDouble();
+    }
+
+    public int getPhysAttack(int monsterEndurance,int physDmg){
+
+        return 5*(int)(Math.sqrt(((double) PLAYERstats.str/monsterEndurance)*physDmg*randomFactor()));
+    }
+
+    public int getMagicAttack(int monsterEndurance,int spellDmg){
+
+        return 5*(int)(Math.sqrt(((double) PLAYERstats.mag /monsterEndurance)*spellDmg*randomFactor()));
     }
 
     public int getDefense() {
@@ -159,6 +184,9 @@ public class Player extends Entity{
         String dmgType = "";
         if(PLAYERstats.weapon != null){
             dmgType = PLAYERstats.weapon.damageType;
+        }
+        else{
+            dmgType = "Bashing";
         }
         return dmgType;
     }
@@ -295,8 +323,9 @@ public class Player extends Entity{
 
     public void getOldStats(){
         keyH.oldStr = gp.player.PLAYERstats.str;
-        keyH.oldDex = gp.player.PLAYERstats.dex;
+        keyH.oldDex = gp.player.PLAYERstats.vit;
         keyH.oldMag = gp.player.PLAYERstats.mag;
+        keyH.oldAgi = gp.player.PLAYERstats.agi;
     }
 
     public void levelUp(){
