@@ -8,6 +8,8 @@ public class KeyHandler implements KeyListener {
 
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed , enterPressed ,zPressed;
+    public int pointsPerLevel = 0;
+    public int oldDex = 0,oldStr=0,oldMag=0;
 
 
     public KeyHandler(GamePanel gp){
@@ -145,7 +147,7 @@ public class KeyHandler implements KeyListener {
 
     //Necesita Fix
     public void levelState(int code){
-        int pointsPerLevel = 3;
+        System.out.println(oldStr);
 
         if(code == KeyEvent.VK_W) {
             if(gp.ui.commandNum>0){
@@ -164,7 +166,7 @@ public class KeyHandler implements KeyListener {
                 gp.ui.commandNum=0;
             }
         }
-        if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_A){
+        if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D){
             if(gp.ui.commandNum == 0){
                 if(pointsPerLevel>0){
                     gp.player.PLAYERstats.dex++;
@@ -184,23 +186,37 @@ public class KeyHandler implements KeyListener {
                 }
             }
         }
-        if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_D) {
+        if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
             if (gp.ui.commandNum == 0) {
                 gp.player.PLAYERstats.dex--;
                 pointsPerLevel++;
-
+                if(gp.player.PLAYERstats.dex<oldDex){
+                    gp.player.PLAYERstats.dex=oldDex;
+                    pointsPerLevel--;
+                }
             }
             if (gp.ui.commandNum == 1) {
                 gp.player.PLAYERstats.str--;
                 pointsPerLevel++;
+                if(gp.player.PLAYERstats.str<oldStr){
+                    gp.player.PLAYERstats.str=oldStr;
+                    pointsPerLevel--;
+                }
             }
             if (gp.ui.commandNum == 2) {
                 gp.player.PLAYERstats.mag--;
                 pointsPerLevel++;
+                if(gp.player.PLAYERstats.mag<oldMag){
+                    gp.player.PLAYERstats.mag=oldMag;
+                    pointsPerLevel--;
+                }
             }
             if (code == KeyEvent.VK_ENTER) {
                 gp.gameState = gp.playState;
             }
+        }
+        if(code == KeyEvent.VK_ENTER && pointsPerLevel == 0){
+            gp.gameState = gp.playState;
         }
     }
 

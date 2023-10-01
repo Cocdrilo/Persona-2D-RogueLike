@@ -293,7 +293,15 @@ public class Player extends Entity{
         }
     }
 
+    public void getOldStats(){
+        keyH.oldStr = gp.player.PLAYERstats.str;
+        keyH.oldDex = gp.player.PLAYERstats.dex;
+        keyH.oldMag = gp.player.PLAYERstats.mag;
+    }
+
     public void levelUp(){
+        keyH.pointsPerLevel = keyH.pointsPerLevel+3;
+        getOldStats();
         gp.gameState = gp.levelUpState;
         PLAYERstats.level++;
         PLAYERstats.nextLevelExp = PLAYERstats.nextLevelExp * 2;

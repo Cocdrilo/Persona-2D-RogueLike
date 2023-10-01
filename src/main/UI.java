@@ -609,6 +609,10 @@ public class UI {
 
             // Incrementa la posición vertical para la siguiente cadena de texto
             y += 50; // Ajusta la separación vertical entre las cadenas de texto
+
+            //Dibujar pointsperStatLeft abajo a la derecha
+            g2.setColor(Color.WHITE);
+            g2.drawString("Points Left: " + gp.keyH.pointsPerLevel, gp.screenWidth - 200, gp.screenHeight - 50);
         }
     }
 
