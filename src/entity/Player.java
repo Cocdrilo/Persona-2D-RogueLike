@@ -70,7 +70,7 @@ public class Player extends Entity{
     public String[] printPlayerSpells() {
         String[] spellNames = new String[this.spells.size()];
         for(int spells=0;spells<this.spells.size();spells++){
-            spellNames[spells] = this.spells.get(spells).name;
+            spellNames[spells] = this.spells.get(spells).name +"  "+ (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
         }
         return spellNames;
     }

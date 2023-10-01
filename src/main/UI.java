@@ -369,11 +369,11 @@ public class UI {
             int magicOptionY = magicMenuY + gp.tileSize;
             for (int i = 0; i < playerSpellNames.length; i++) {
                 String spellText = playerSpellNames[i];
-                g2.drawString(spellText, magicMenuX + gp.tileSize, magicOptionY + i * gp.tileSize);
+                g2.drawString(spellText, magicMenuX + 15, magicOptionY + i * gp.tileSize);
 
                 // Verifica si este es el hechizo seleccionado y ajusta la posición de la flecha
                 if (i == gp.ui.commandNum2) {
-                    g2.drawString("->", magicMenuX + gp.tileSize - 30, magicOptionY + i * gp.tileSize);
+                    g2.drawString("->", magicMenuX, magicOptionY + i * gp.tileSize);
                 }
             }
 
