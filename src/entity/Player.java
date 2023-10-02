@@ -47,10 +47,10 @@ public class Player extends Entity{
 
         ArrayList<superMagic> availableSpells = gp.spellManager.getSpells();
         for (superMagic spell : availableSpells) {
-            if (spell.name.equals("Fireball")) {
+            if (spell.name.equals("Agi")) {
                 addSpell(spell);
             }
-            if (spell.name.equals("IceBlast")) {
+            if (spell.name.equals("Bufu")) {
                 addSpell(spell);
             }
         }
