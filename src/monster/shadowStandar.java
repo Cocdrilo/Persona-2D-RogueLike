@@ -10,24 +10,22 @@ public class shadowStandar extends Entity {
 
     BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
 
-    public int health;
-    public int maxHealth;
-    public int attack;
-    public int defense;
     public int xpGiven;
     private final String attackType;
     public BufferedImage combatImage;
 
 
-    public shadowStandar(GamePanel gp,String name,int health,int attack,int defense,int xpGiven,String attackType,String combatImagePath,String[] weaknesses, String[] resistances, String[] nulls, String[] repells) {
+    public shadowStandar(GamePanel gp,String name,int health,int str,int agi,int mag,int vit,int xpGiven,String attackType,String combatImagePath,String[] weaknesses, String[] resistances, String[] nulls, String[] repells) {
         super(gp);
         type = 2;
         this.name = name;
-        this.maxHealth = health;
-        this.attack = attack;
-        this.defense = defense;
+        this.stats.hp = health;
+        this.stats.maxHp = this.stats.hp;
+        this.stats.str = str;
+        this.stats.agi = agi;
+        this.stats.mag = mag;
+        this.stats.vit = vit;
         this.xpGiven = xpGiven;
-        this.health = maxHealth;
         this.attackType = attackType;
         speed = 1;
         loadCombatImage(combatImagePath); // Cargar la imagen de combate específica
@@ -43,6 +41,11 @@ public class shadowStandar extends Entity {
     public String getAttackType(){
         return attackType;
     }
+
+    public int getPhysAttack(int playerEndurance,int attackerStat){
+        return 5*(int)(Math.sqrt(((double) attackerStat/playerEndurance)*randomFactor()));
+    }
+
 
     public void loadCombatImage(String combatImagePath){
         combatImage = setUp(combatImagePath);

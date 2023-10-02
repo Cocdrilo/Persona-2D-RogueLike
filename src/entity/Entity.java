@@ -11,12 +11,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 public class Entity {
 
     public GamePanel gp;
-    KeyHandler keyH;
-
 
     //SOLID AREAS
     public Rectangle solidArea = new Rectangle(0,0,48,48);
@@ -48,9 +47,18 @@ public class Entity {
     public String nulls[];
     public String repells[];
 
+    //Sprites
+    //CONTADORES
+    public int spriteCounter = 0;
+    public int actionLockCounter = 0;
+
+    //IMAGE DATA
+    public BufferedImage image;
+    public boolean collision = false;
+    public BufferedImage standFront,standLeft,standBack,standRight,walkDown1,walkDown2,walkLeft1,walkLeft2,walkRight1,walkRight2,walkUp1,walkUp2;
+
     //Array de hechizos:
     protected ArrayList<superMagic> spells;
-
 
     //CombatMethods
 
@@ -90,15 +98,39 @@ public class Entity {
         return false;
     }
 
+    //DMG = 5 x sqrt(ST/EN x ATK) x MOD x HITS X RND
+    //
+    //DMG = Damage
+    //ST = Character's Strength stat
+    //EN = Enemy's Endurance stat
+    //ATK = Atk value of equipped weapon OR Pwr value of used skill
+    //HITS= Number of hits (for physical skills)
+    //RND = Randomness factor (according to DragoonKain33, may be roughly between
+    //0.95 and 1.05)
 
-    //CONTADORES
-    public int spriteCounter = 0;
-    public int actionLockCounter = 0;
+    public double randomFactor(){
+        double minFactor = 0.95;
+        double maxFactor = 1.05;
 
-    //IMAGE DATA
-    public BufferedImage image;
-    public boolean collision = false;
-    public BufferedImage standFront,standLeft,standBack,standRight,walkDown1,walkDown2,walkLeft1,walkLeft2,walkRight1,walkRight2,walkUp1,walkUp2;
+        // Crear una instancia de la clase Random
+        Random random = new Random();
+
+        // Generar un valor aleatorio entre minFactor y maxFactor
+
+        return minFactor + (maxFactor - minFactor) * random.nextDouble();
+    }
+
+    public int getPhysAttack(int monsterEndurance,int physDmg,int attackerStat){
+        return 5*(int)(Math.sqrt(((double) attackerStat/monsterEndurance)*Math.sqrt(physDmg)*randomFactor()));
+    }
+
+    public int getMagicAttack(int monsterEndurance,int spellDmg,int attackMagicStat){
+        return 5*(int)(Math.sqrt(((double) attackMagicStat /monsterEndurance)*Math.sqrt(spellDmg)*randomFactor()));
+    }
+
+    public int getDefense() {
+        return stats.vit;
+    }
 
     public Entity(GamePanel gp){
 

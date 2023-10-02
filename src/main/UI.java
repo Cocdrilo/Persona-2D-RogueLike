@@ -292,15 +292,15 @@ public class UI {
         g2.drawImage(image, x - 18, y - 5, 150, 150, null);
 
         // Dibuja la barra de vida del monstruo
-        int maxHealth = BattleState.monster.maxHealth;
-        int currentHealth = BattleState.monster.health;
+        int maxHealth = BattleState.monster.stats.maxHp;
+        int currentHealth = BattleState.monster.stats.hp;
         int barWidth = 150; // Ancho de la barra de vida
         int barHeight = 10; // Altura de la barra de vida
         int barX = x - 18; // Posición X de la barra de vida
         int barY = y + 150; // Posición Y de la barra de vida
 
         // Dibuja la vida del monstruo en formato "HP/MAXHP"
-        String monsterHealthText = BattleState.monster.health + "/" + BattleState.monster.maxHealth;
+        String monsterHealthText = BattleState.monster.stats.hp + "/" + BattleState.monster.stats.maxHp;
         g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
         g2.drawString(monsterHealthText, barX + 5, barY - 5);

@@ -74,7 +74,6 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_W) {
             if (gp.ui.commandNum > 0 && !gp.ui.magicMenu) {
                 gp.ui.commandNum--;
-                System.out.println(gp.ui.commandNum);
             } else if (!gp.ui.magicMenu) {
                 gp.ui.commandNum = 4;
             }
@@ -83,7 +82,6 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_S) {
             if (gp.ui.commandNum < 4 && !gp.ui.magicMenu) {
                 gp.ui.commandNum++;
-                System.out.println(gp.ui.commandNum);
             } else if (!gp.ui.magicMenu) {
                 gp.ui.commandNum = 0;
             }
@@ -221,7 +219,7 @@ public class KeyHandler implements KeyListener {
             if(gp.ui.commandNum == 3){
                 gp.player.PLAYERstats.agi--;
                 pointsPerLevel++;
-                if(gp.player.PLAYERstats.mag<oldAgi){
+                if(gp.player.PLAYERstats.agi<oldAgi){
                     gp.player.PLAYERstats.agi=oldAgi;
                     pointsPerLevel--;
                 }

@@ -8,7 +8,7 @@ public class OBJ_WEAPON_BASH extends OBJ_Weapon {
         super(gp);
         name = "Bashing Weapon";
         damageType = "Bashing";
-        atk = 16;
+        atk = 42;
         hit = 85;
         price = 60;
         walkDown1 = setUp("/Objects/weapon_Maza");

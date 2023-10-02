@@ -25,7 +25,7 @@ public class BattleSystem {
             System.out.println("Player has died");
             gp.gameState = gp.titleState;
         }
-        if(monster.health<=0){
+        if(monster.stats.hp<=0){
             System.out.println("Monster has died");
             endBattle();
         }
@@ -45,9 +45,10 @@ public class BattleSystem {
     public void attack() {
         // Realizar cálculos de daño para un ataque
         String weaponDmgType = player.getWeaponDmgType();
-        int monsterDEF = monster.defense;
-        int DmgPreModifier = player.getPhysAttack(monsterDEF,player.PLAYERstats.weapon.atk);
-
+        int monsterDEF = monster.getDefense();
+        System.out.println(monsterDEF);
+        int DmgPreModifier = player.getPhysAttack(monsterDEF,player.PLAYERstats.weapon.atk,player.PLAYERstats.str);
+        System.out.println(DmgPreModifier);
         // Si el monstruo es débil al tipo de daño del arma, el daño se duplica
         if (monster.isWeak(weaponDmgType)) {
             DmgPreModifier *= 2;
@@ -88,7 +89,7 @@ public class BattleSystem {
         if(DmgPreModifier<0){
             DmgPreModifier = 0;
         }
-        monster.health = monster.health - DmgPreModifier;
+        monster.stats.hp = monster.stats.hp - DmgPreModifier;
         System.out.println(monster.name + " has recived" + DmgPreModifier + " damage");
         nextTurn();
     }
@@ -96,50 +97,48 @@ public class BattleSystem {
     public void monsterAttack() {
              // Turno del monstruo
             String attackType = monster.getAttackType();
-            int monsterDMG = monster.attack;
-            int playerDEF = player.getDefense();
-            int calculatedDMG = monsterDMG - playerDEF;
-
+            int monsterDMG = monster.getPhysAttack(player.getDefense(),monster.stats.str);
+            System.out.println("str de monstruo "+ monster.stats.str);
             if (player.isWeak(attackType)) {
-                calculatedDMG *= 2;
+                monsterDMG *= 2;
                 System.out.println("Weak");
             }
             if (player.isResistant(attackType)) {
-                calculatedDMG /= 2;
+                monsterDMG /= 2;
                 System.out.println("resistant");
             }
             if (player.isNull(attackType)) {
-                calculatedDMG = 0;
+                monsterDMG = 0;
                 System.out.println("null");
             }
             if(player.isRepelled(attackType)){
                 //Aplica la logica al propio monstruo
                 if (monster.isWeak(attackType)) {
-                    calculatedDMG *= 2;
+                    monsterDMG *= 2;
                 }
                 if (monster.isResistant(attackType)) {
-                    calculatedDMG /= 2;
+                    monsterDMG /= 2;
                 }
                 if (monster.isNull(attackType)) {
-                    calculatedDMG = 0;
+                    monsterDMG = 0;
                 }
                 // Aquí puedes aplicar el daño al propio monstruo
-                monster.health -= calculatedDMG;
-                System.out.println(monster.name + " has recived" + calculatedDMG + " damage");
+                monster.stats.hp -= monsterDMG;
+                System.out.println(monster.name + " has recived" + monsterDMG + " damage");
                 nextTurn();
                 return;
             }
 
             // Si el jugador está defendiendo, reduce el daño del monstruo a la mitad
             if (player.defending) {
-                calculatedDMG /= 2;
+                monsterDMG /= 2;
             }
-            if(calculatedDMG<0){
-                calculatedDMG = 0;
+            if(monsterDMG<0){
+                monsterDMG = 0;
             }
 
-            player.PLAYERstats.hp = player.PLAYERstats.hp - calculatedDMG;
-            System.out.println("Player" + " has recived-" + calculatedDMG + " damage");
+            player.PLAYERstats.hp = player.PLAYERstats.hp - monsterDMG;
+            System.out.println("Player" + " has recived-" + monsterDMG + " damage");
             nextTurn();
 
     }
@@ -156,12 +155,12 @@ public class BattleSystem {
                 player.PLAYERstats.mp -= selectedSpell.mpCost;
 
                 // Realizar cálculos de daño o efectos del hechizo según sea necesario
-                int damage = player.getMagicAttack(monster.defense,selectedSpell.damage);;
+                int damage = player.getMagicAttack(monster.getDefense(),selectedSpell.damage,player.PLAYERstats.mag);;
                 // Puedes agregar lógica adicional aquí para diferentes tipos de hechizos
 
                 // Aplicar los efectos del hechizo al enemigo (monstruo)
                 if (turn == 0) {
-                    monster.health -= damage;
+                    monster.stats.hp -= damage;
                     System.out.println(monster.name + " has recived " + damage + " damage from " + selectedSpell.name);
                 }
                 // Aplicar los efectos del hechizo al jugador

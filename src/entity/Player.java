@@ -61,8 +61,8 @@ public class Player extends Entity{
 
     public void debugPlayerSpells() {
         System.out.println("DEBUG: Player spells:");
-        for(int spells=0;spells<this.spells.size();spells++){
-            System.out.println(this.spells.get(spells).name);
+        for (superMagic spell : this.spells) {
+            System.out.println(spell.name);
         }
 
     }
@@ -136,39 +136,6 @@ public class Player extends Entity{
 
             }
         }
-
-    //DMG = 5 x sqrt(ST/EN x ATK) x MOD x HITS X RND
-    //
-    //DMG = Damage
-    //ST = Character's Strength stat
-    //EN = Enemy's Endurance stat
-    //ATK = Atk value of equipped weapon OR Pwr value of used skill
-    //HITS= Number of hits (for physical skills)
-    //RND = Randomness factor (according to DragoonKain33, may be roughly between
-    //0.95 and 1.05)
-
-    public double randomFactor(){
-        double minFactor = 0.95;
-        double maxFactor = 1.05;
-
-        // Crear una instancia de la clase Random
-        Random random = new Random();
-
-        // Generar un valor aleatorio entre minFactor y maxFactor
-
-        return minFactor + (maxFactor - minFactor) * random.nextDouble();
-    }
-
-    public int getPhysAttack(int monsterEndurance,int physDmg){
-
-        return 5*(int)(Math.sqrt(((double) PLAYERstats.str/monsterEndurance)*physDmg*randomFactor()));
-    }
-
-    public int getMagicAttack(int monsterEndurance,int spellDmg){
-
-        return 5*(int)(Math.sqrt(((double) PLAYERstats.mag /monsterEndurance)*spellDmg*randomFactor()));
-    }
-
     public int getDefense() {
         int defReturn = 0;
         if (PLAYERstats.armor != null) {
@@ -267,7 +234,7 @@ public class Player extends Entity{
                     case "right" -> WorldX += speed;
                 }
             }
-            //Despues de todo para actualizar estado
+            //Despues de tod0 para actualizar estado
             gp.keyH.zPressed = false;
 
             spriteCounter++;
