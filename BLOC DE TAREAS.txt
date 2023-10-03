@@ -10,8 +10,8 @@ Falta por hacer: seleccionar con X si lo va a hacer alejandro y con + si lo va a
 
 -Menu de opciones Graficas y de sonido en el mismo:
 -Poder poner pantalla completa:+
--Save File en un txt:
--Cargar partida desde el txt:
+-Save File en un txt:+
+-Cargar partida desde el txt:+
 -Sistema de tiendas:
 -Transicionar Mapas:
 -Pathfinding (que te sigan los mobs que cojan agro o npcs)
@@ -19,10 +19,10 @@ Falta por hacer: seleccionar con X si lo va a hacer alejandro y con + si lo va a
 -Mejora de los diálogos para que no tengas que rehablar y que avance, es decir que sea estilo page flip:
 -
 
--------Mejoras para después de terminar todo lo funcional-----
+-------Mejoras para después de terminar t0do lo funcional-----
 -Intentar hacer con ayuda de IA o stackOverflow o lo que sea una forma de generar mapas basicos procedurales con salas y pasillos:
 -Mejorar Gráficamente los TileSets y los Npcs.
 -Modificar todos los comentarios y añadir mas al estilo javadoc.
 -Preparar una documentación del código adecuada.
--Revisar y Privatizar todo lo que sea público y no lo necesite.
+-Revisar y Privatizar t0do lo que sea público y no lo necesite.
 -

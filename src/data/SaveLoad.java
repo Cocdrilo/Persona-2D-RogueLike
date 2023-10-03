@@ -2,15 +2,8 @@ package data;
 
 import entity.Entity;
 import main.GamePanel;
-import Object.OBJ_Armor;
-import Object.OBJ_Chest;
-import Object.OBJ_Door;
-import Object.OBJ_Potion_Health;
-import Object.OBJ_Potion_Mana;
-import Object.OBJ_Stairs;
-import Object.OBJ_WEAPON_BASH;
-import Object.OBJ_WEAPON_Piercing;
-import Object.OBJ_WEAPON_Slash;
+import Object.*;
+
 
 import java.io.*;
 

@@ -22,8 +22,8 @@ public class Events {
             eventRect[col][row] = new EventRect();
             eventRect[col][row].x = col * gp.tileSize;
             eventRect[col][row].y = row * gp.tileSize;
-            eventRect[col][row].width = gp.tileSize;
-            eventRect[col][row].height = gp.tileSize;
+            eventRect[col][row].width = 10;
+            eventRect[col][row].height = 10;
             eventRect[col][row].eventRectDefaultX = eventRect[col][row].x;
             eventRect[col][row].eventRectDefaultY = eventRect[col][row].y;
 
