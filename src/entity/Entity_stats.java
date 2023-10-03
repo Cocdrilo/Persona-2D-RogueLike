@@ -1,5 +1,6 @@
 package entity;
-import Object.*;
+import Object.Equipables.OBJ_Armor;
+import Object.Equipables.OBJ_Weapon;
 
 public class Entity_stats {
     //PLAYER STATS
@@ -12,9 +13,9 @@ public class Entity_stats {
     public int mp;
     public int maxMp;
     public int str;
-    public int mag;
-    public int agi;
     public int vit;
+    public int agi;
+    public int mag;
 
     //PLAYER EQUIPMENT
     public OBJ_Weapon weapon;
@@ -33,9 +34,9 @@ public class Entity_stats {
         maxMp = 10;
 
         str = 5;
-        mag = 5;
-        agi = 5;
         vit = 5;
+        agi = 5;
+        mag = 5;
 
         //PLAYER EQUIPMENT DEFAULT
         weapon = null;

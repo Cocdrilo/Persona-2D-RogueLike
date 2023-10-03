@@ -1,4 +1,4 @@
-package Object;
+package Object.Consumables;
 
 import entity.Entity;
 import entity.Player;
