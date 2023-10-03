@@ -47,9 +47,10 @@ public class Events {
         }
 
         //COMPROBAR SI EL JUGADOR ESTA EN UN EVENTO
-        if(canTouchEvent = true){
+        if(canTouchEvent == true){
             //DAMAGE PIT
-            if(hit(10,10,"any")){ damagePit(gp.dialogueState) ;}
+            if(hit(5,5,"any")){ damagePit(5, 5, gp.dialogueState) ;}
+            if(hit(4,4,"any")){ healPool(gp.dialogueState); ;}
         }
 
 
@@ -82,16 +83,20 @@ public class Events {
         return hit;
     }
 
-    public void damagePit(int gameState){
+    public void damagePit(int col, int row, int gameState){
         gp.gameState = gameState;
         gp.ui.currentDialogue = "Te caiste mongo";
+        gp.player.PLAYERstats.hp -= 1;
         canTouchEvent = false;
+
     }
 
-    public void HealPool(int gameState){
+    public void healPool(int gameState){
         if(gp.keyH.zPressed){
             gp.gameState = gameState;
-            gp.ui.currentDialogue = "Te curaste";
+            gp.ui.currentDialogue = "Te curaste y guardaste partida";
+            gp.player.PLAYERstats.hp = gp.player.PLAYERstats.maxHp;
+            gp.player.PLAYERstats.mp = gp.player.PLAYERstats.maxMp;
         }
     }
 

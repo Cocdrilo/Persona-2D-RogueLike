@@ -245,7 +245,7 @@ public class UI {
         textX = getXforAlignToRightText(valor,tailX);
         g2.drawString(valor,textX,textY+lineHeight*5);
 
-        valor = String.valueOf(gp.player.PLAYERstats.dex);
+        valor = String.valueOf(gp.player.PLAYERstats.mag);
         textX = getXforAlignToRightText(valor,tailX);
         g2.drawString(valor,textX,textY+lineHeight*6);
 

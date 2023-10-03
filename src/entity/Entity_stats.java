@@ -12,7 +12,7 @@ public class Entity_stats {
     public int mp;
     public int maxMp;
     public int str;
-    public int dex;
+    public int mag;
     public int agi;
     public int vit;
 
@@ -33,7 +33,7 @@ public class Entity_stats {
         maxMp = 10;
 
         str = 5;
-        dex = 5;
+        mag = 5;
         agi = 5;
         vit = 5;
 
