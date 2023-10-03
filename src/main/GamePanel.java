@@ -3,6 +3,7 @@ package main;
 import battleNeeds.SpellManager;
 import entity.Entity;
 import entity.Player;
+import monster.MonsterManager;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -47,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable{
     public UI ui= new UI(this);
     public Events eventHandler = new Events(this);
     public SpellManager spellManager = SpellManager.getInstance();
+    public MonsterManager monsterManager = MonsterManager.getInstance();
 
     //ENTITY AND OBJECT
     public Player player = new Player(this,keyH);

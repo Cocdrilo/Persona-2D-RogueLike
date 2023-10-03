@@ -1,21 +1,44 @@
 package monster;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.Entity;
 import main.GamePanel;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
-public class shadowStandar extends Entity {
+public class shadowStandar extends Entity{
 
-    BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
+    transient BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
 
     public int xpGiven;
-    private final String attackType;
-    public BufferedImage combatImage;
+    private String attackType;
+    transient public BufferedImage combatImage;
 
+    public shadowStandar(GamePanel gp) {
+        super(gp);
+    }
 
-    public shadowStandar(GamePanel gp,String name,int health,int str,int agi,int mag,int vit,int xpGiven,String attackType,String combatImagePath,String[] weaknesses, String[] resistances, String[] nulls, String[] repells) {
+    @JsonCreator
+    public shadowStandar(
+            @JsonProperty("gp") GamePanel gp,
+            @JsonProperty("name") String name,
+            @JsonProperty("health") int health,
+            @JsonProperty("str") int str,
+            @JsonProperty("agi") int agi,
+            @JsonProperty("mag") int mag,
+            @JsonProperty("vit") int vit,
+            @JsonProperty("xpGiven") int xpGiven,
+            @JsonProperty("attackType") String attackType,
+            @JsonProperty("combatImagePath") String combatImagePath,
+            @JsonProperty("weaknesses") String[] weaknesses,
+            @JsonProperty("resistances") String[] resistances,
+            @JsonProperty("nulls") String[] nulls,
+            @JsonProperty("repells") String[] repells
+    ) {
         super(gp);
         type = 2;
         this.name = name;
@@ -36,7 +59,6 @@ public class shadowStandar extends Entity {
         this.nulls = nulls;
         this.repells = repells;
     }
-
 
     public String getAttackType(){
         return attackType;
