@@ -68,6 +68,9 @@ public class SaveLoad {
              * ds.currentShieldSlot = gp.player.getcurrentShieldSlot();
              * */
 
+            //Objects on Map
+
+
             //Write in the file
             oos.writeObject(ds);
 

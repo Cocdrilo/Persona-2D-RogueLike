@@ -17,6 +17,7 @@ public class OBJ_Potion_Health extends Entity {
     }
 
     public void use(Entity entity){
+        gp.playerSe(4);
         entity.stats.hp += 10;
         gp.gameState =gp.dialogueState;
         gp.ui.currentDialogue = "You used a health potion";
