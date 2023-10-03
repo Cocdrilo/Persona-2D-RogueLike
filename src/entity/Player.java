@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player extends Entity{
+public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
@@ -23,14 +23,14 @@ public class Player extends Entity{
     public ArrayList<Entity> inventory = new ArrayList<>();
     public boolean defending = false;
 
-    public Player(GamePanel gp,KeyHandler keyH){
-        super (gp);
+    public Player(GamePanel gp, KeyHandler keyH) {
+        super(gp);
         this.keyH = keyH;
 
-        screenX = gp.screenWidth/2 - (gp.tileSize/2);
-        screenY = gp.screenHeight/2 - (gp.tileSize/2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(14,35,26,29);
+        solidArea = new Rectangle(14, 35, 26, 29);
 
         solidAreaDefaultX = solidArea.x;
         SolidAreaDefaultY = solidArea.y;
@@ -61,11 +61,11 @@ public class Player extends Entity{
         System.out.println();
     }
 
-    public void setDefaultValues(){
-        WorldX = 100;
-        WorldY = 100;
-        speed=4;
-        direction="down";
+    public void setDefaultValues() {
+        WorldX = 120;
+        WorldY = 120;
+        speed = 4;
+        direction = "down";
 
         PLAYERstats.level = 1;
         PLAYERstats.maxHp = 10;
@@ -86,44 +86,43 @@ public class Player extends Entity{
         repells = new String[]{};
     }
 
-    public void setItems(){
+    public void setItems() {
 
         inventory.add(PLAYERstats.weapon);
         inventory.add(PLAYERstats.armor);
 
     }
 
-    public void selectItems(){
+    public void selectItems() {
 
         int itemIndex = gp.ui.getItemIndexSlot();
 
-        if(itemIndex < inventory.size()){
+        if (itemIndex < inventory.size()) {
 
             Entity selectedItem = inventory.get(itemIndex);
 
-            if(selectedItem instanceof OBJ_Weapon){
+            if (selectedItem instanceof OBJ_Weapon) {
                 PLAYERstats.weapon = (OBJ_Weapon) selectedItem;
             }
 
-            if(selectedItem instanceof OBJ_Armor){
+            if (selectedItem instanceof OBJ_Armor) {
                 PLAYERstats.armor = (OBJ_Armor) selectedItem;
             }
 
-            if(selectedItem.type == 5){
+            if (selectedItem.type == 5) {
                 //CONSUMIBLE
                 selectedItem.use(this);
                 inventory.remove(itemIndex);
             }
 
-            }
         }
+    }
 
-    public int getAttack(){
+    public int getAttack() {
         int atkReturn;
-        if ( PLAYERstats.weapon != null){
+        if (PLAYERstats.weapon != null) {
             return atkReturn = (PLAYERstats.str + PLAYERstats.weapon.atk);
-        }
-        else {
+        } else {
             return atkReturn = PLAYERstats.str;
         }
     }
@@ -132,16 +131,36 @@ public class Player extends Entity{
         int defReturn = 0;
         if (PLAYERstats.armor != null) {
             defReturn = PLAYERstats.agi + PLAYERstats.armor.def;
-        }
-        else{
+        } else {
             defReturn = PLAYERstats.agi;
         }
         return defReturn;
     }
 
-    public String getWeaponDmgType(){
+    /*
+    public int getCurrentWeaponSlot() {
+        int currenWeaponSlot;
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i) == currentWeapon){
+                currentWeaponSlot = i;
+            }
+        }
+        return currentWeaponSlot;
+    }
+    public int getCurrentShieldSlot() {
+        int currenShieldSlot;
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i) == currentShield){
+                currentShieldSlot = i;
+            }
+        }
+        return currentWeaponSlot;
+    }
+    */
+
+    public String getWeaponDmgType() {
         String dmgType = "";
-        if(PLAYERstats.weapon != null){
+        if (PLAYERstats.weapon != null) {
             dmgType = PLAYERstats.weapon.damageType;
         }
         return dmgType;
@@ -161,9 +180,9 @@ public class Player extends Entity{
     }
 
 
-    public void getPlayerImage(){
+    public void getPlayerImage() {
         standFront = setUp("/player/Raidou1");
-        standLeft =  setUp("/player/Raidou2");
+        standLeft = setUp("/player/Raidou2");
         standRight = setUp("/player/Raidou3");
         standBack = setUp("/player/Raidou4");
         walkDown1 = setUp("/player/Raidou5");
@@ -175,46 +194,44 @@ public class Player extends Entity{
         walkUp1 = setUp("/player/Raidou8");
         walkUp2 = setUp("/player/Raidou12");
     }
-    public void update(){
 
-        if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed){
+    public void update() {
 
-            if(keyH.upPressed){
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed) {
+
+            if (keyH.upPressed) {
                 direction = "up";
-            }
-            else if(keyH.downPressed){
+            } else if (keyH.downPressed) {
                 direction = "down";
-            }
-            else if(keyH.leftPressed){
+            } else if (keyH.leftPressed) {
                 direction = "left";
-            }
-            else if(keyH.rightPressed){
+            } else if (keyH.rightPressed) {
                 direction = "right";
             }
 
 
             // CHECKEA LA COLISION DE TILES
-            collisionOn=false;
+            collisionOn = false;
             gp.cCheck.checkTile(this);
 
             //CHECK COLISION OBJETOS
-            int objIndex = gp.cCheck.checkObject(this,true);
+            int objIndex = gp.cCheck.checkObject(this, true);
             ObjectInteractions(objIndex);
             pickUpObject(objIndex);
 
             //Colision de NPC
-            int npcIndex = gp.cCheck.checkEntity(this,gp.npc);
+            int npcIndex = gp.cCheck.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
             //COLISION CON EVENTOS
             gp.eventHandler.checkEvent();
 
             //COLISION CON MOBS
-            int mobIndex = gp.cCheck.checkEntity(this,gp.monsters);
+            int mobIndex = gp.cCheck.checkEntity(this, gp.monsters);
             contactMonster(mobIndex);
 
 
-            if(!collisionOn && !keyH.zPressed){
+            if (!collisionOn && !keyH.zPressed) {
 
                 switch (direction) {
                     case "up" -> WorldY -= speed;
@@ -227,11 +244,11 @@ public class Player extends Entity{
             gp.keyH.zPressed = false;
 
             spriteCounter++;
-            if(spriteCounter > 12){
-                if(spriteNum==1){
-                    spriteNum=2;
-                } else if (spriteNum==2) {
-                    spriteNum=1;
+            if (spriteCounter > 12) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
                 }
                 spriteCounter = 0;
             }
@@ -240,49 +257,49 @@ public class Player extends Entity{
     }
 
     private void interactNPC(int i) {
-        if(i!=999){
-            if(gp.keyH.zPressed){
+        if (i != 999) {
+            if (gp.keyH.zPressed) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
-                }
             }
+        }
     }
 
-    public void ObjectInteractions(int i){
+    public void ObjectInteractions(int i) {
 
-        if(i != 999){
+        if (i != 999) {
 
         }
     }
 
-    public void pickUpObject(int i){
-        if(i != 999 && gp.keyH.zPressed && gp.obj[i].isPickupeable){
+    public void pickUpObject(int i) {
+        if (i != 999 && gp.keyH.zPressed && gp.obj[i].isPickupeable) {
             String text = "";
-                inventory.add(gp.obj[i]);
-                gp.playerSe(1);
-                text = "You picked up a " + gp.obj[i].name + "!";
+            inventory.add(gp.obj[i]);
+            gp.playerSe(1);
+            text = "You picked up a " + gp.obj[i].name + "!";
             gp.ui.addMessage(text);
             gp.obj[i] = null;
         }
     }
 
 
-    public void contactMonster(int i){
-        if(i != 999){
+    public void contactMonster(int i) {
+        if (i != 999) {
             shadowStandar shadow = (shadowStandar) gp.monsters[i];
             //Cambio a Combate
-            gp.battleSystem = new BattleSystem(this,shadow,gp);
+            gp.battleSystem = new BattleSystem(this, shadow, gp);
             gp.gameState = gp.combatState;
             gp.monsters[i] = null;
         }
     }
 
-    public void levelUp(){
+    public void levelUp() {
         PLAYERstats.level++;
         PLAYERstats.nextLevelExp = PLAYERstats.nextLevelExp * 2;
     }
 
-    public void draw(Graphics2D graficos2d){
+    public void draw(Graphics2D graficos2d) {
 
         BufferedImage image = null;
 
@@ -327,7 +344,7 @@ public class Player extends Entity{
                 }
             }
         }
-        graficos2d.drawImage(image, screenX, screenY,null);
+        graficos2d.drawImage(image, screenX, screenY, null);
 
     }
 }
