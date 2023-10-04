@@ -379,9 +379,10 @@ public class KeyHandler implements KeyListener {
             }
             if (gp.ui.commandNum == 2) {
                 gp.saveLoad.save();
-                //System.out.println("Saved!");
-                gp.gameState = gp.dialogueState;
-                gp.ui.currentDialogue = "Has guardado el progreso";
+                gp.playerSe(1);
+                gp.gameState = gp.playState;
+                String text = "Has guardado el progreso!";
+                gp.ui.addMessage(text);
             }
             if (gp.ui.commandNum == 3){
                 System.exit(0);
