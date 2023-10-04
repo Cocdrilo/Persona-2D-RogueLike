@@ -1,63 +1,39 @@
 package monster;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.Entity;
 import main.GamePanel;
 
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 import java.util.Random;
 
 public class shadowStandar extends Entity{
 
-    transient BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
+    public BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
 
     public int xpGiven;
     private String attackType;
-    transient public BufferedImage combatImage;
+    public BufferedImage combatImage;
+    public String combatImagePath;
 
-    public shadowStandar(GamePanel gp) {
+    public shadowStandar(GamePanel gp,monsterData data) {
         super(gp);
-    }
-
-    @JsonCreator
-    public shadowStandar(
-            @JsonProperty("gp") GamePanel gp,
-            @JsonProperty("name") String name,
-            @JsonProperty("health") int health,
-            @JsonProperty("str") int str,
-            @JsonProperty("agi") int agi,
-            @JsonProperty("mag") int mag,
-            @JsonProperty("vit") int vit,
-            @JsonProperty("xpGiven") int xpGiven,
-            @JsonProperty("attackType") String attackType,
-            @JsonProperty("combatImagePath") String combatImagePath,
-            @JsonProperty("weaknesses") String[] weaknesses,
-            @JsonProperty("resistances") String[] resistances,
-            @JsonProperty("nulls") String[] nulls,
-            @JsonProperty("repells") String[] repells
-    ) {
-        super(gp);
-        type = 2;
-        this.name = name;
-        this.stats.hp = health;
+        this.name = data.name;
+        this.stats.hp = data.hp;
         this.stats.maxHp = this.stats.hp;
-        this.stats.str = str;
-        this.stats.agi = agi;
-        this.stats.mag = mag;
-        this.stats.vit = vit;
-        this.xpGiven = xpGiven;
-        this.attackType = attackType;
+        this.stats.str = data.str;
+        this.stats.agi = data.agi;
+        this.stats.mag = data.mag;
+        this.stats.vit = data.vit;
+        this.xpGiven = data.xpGiven;
+        this.attackType = data.attackType;
+        this.combatImagePath = data.combatImagePath;
+        this.resistances = data.resistances;
+        this.weaknesses = data.weaknesses;
+        this.nulls = data.nulls;
+        this.repells = data.repells;
+        this.type = 2;
         speed = 1;
-        loadCombatImage(combatImagePath); // Cargar la imagen de combate específica
-        getImage(); // Cargar las imágenes del mundo
-
-        this.weaknesses = weaknesses;
-        this.resistances = resistances;
-        this.nulls = nulls;
-        this.repells = repells;
+        getImage();
     }
 
     public String getAttackType(){
@@ -69,9 +45,11 @@ public class shadowStandar extends Entity{
     }
 
 
-    public void loadCombatImage(String combatImagePath){
+    public BufferedImage getCombatImage(){
         combatImage = setUp(combatImagePath);
+        return combatImage;
     }
+
     public void getImage(){
         walkDown1 = setUp("/Monsters/Demon1");
         walkDown2 = setUp("/Monsters/Demon2");

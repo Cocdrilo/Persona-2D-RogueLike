@@ -153,26 +153,14 @@ public class Entity {
         boolean contactPlayer = gp.cCheck.checkPlayer(this);
 
 
-        if(this.type == 2 && contactPlayer == true){
-            //Aqui habra que empieza combate
-        }
-
         //COLISON = FALSO ->PUEDE MOVER
-        if(collisionOn==false){
+        if(!collisionOn){
 
-            switch(direction){
-                case "up":
-                    WorldY -=speed;
-                    break;
-                case "down":
-                    WorldY +=speed;
-                    break;
-                case "left":
-                    WorldX -=speed;
-                    break;
-                case "right":
-                    WorldX +=speed;
-                    break;
+            switch (direction) {
+                case "up" -> WorldY -= speed;
+                case "down" -> WorldY += speed;
+                case "left" -> WorldX -= speed;
+                case "right" -> WorldX += speed;
             }
         }
 

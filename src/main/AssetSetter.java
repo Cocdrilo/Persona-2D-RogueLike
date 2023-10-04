@@ -4,8 +4,8 @@ import Object.Equipables.OBJ_WEAPON_BASH;
 import Object.WorldBuilding.OBJ_Chest;
 import Object.WorldBuilding.OBJ_Door;
 import Object.WorldBuilding.OBJ_Stairs;
-import java.util.Random;
 import entity.NPC;
+import monster.monsterData;
 import monster.shadowStandar;
 
 import java.util.ArrayList;
@@ -54,13 +54,9 @@ public class AssetSetter {
     }
 
     public void setMonster(){
-
-        ArrayList<shadowStandar> availableMonsters = gp.monsterManager.getMonsters();
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(availableMonsters.size());
-        gp.monsters[0] = availableMonsters.get(randomIndex);
-        gp.monsters[0].WorldX = gp.tileSize*6;
-        gp.monsters[0].WorldY = gp.tileSize*6;
-
+            ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
+            gp.monsters[0] = new shadowStandar(gp,availableMonsters.get(0));
+            gp.monsters[0].WorldX = gp.tileSize*8;
+            gp.monsters[0].WorldY = gp.tileSize*4;
     }
 }

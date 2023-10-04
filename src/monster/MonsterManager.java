@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class MonsterManager {
     private static MonsterManager instance;
-    private ArrayList<shadowStandar> monsters;
+    private ArrayList<monsterData> monsters;
 
     private MonsterManager() {
         loadMonstersFromFile("res/Jsons/monsters.json"); // Ajusta la ruta según la ubicación de tu archivo JSON
@@ -25,14 +25,14 @@ public class MonsterManager {
     private void loadMonstersFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            monsters = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<shadowStandar>>() {});
+            monsters = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<monsterData>>() {});
         } catch (IOException e) {
             e.printStackTrace();
             // Manejar excepciones apropiadamente
         }
     }
 
-    public ArrayList<shadowStandar> getMonsters() {
+    public ArrayList<monsterData> getMonsters() {
         return monsters;
     }
 }

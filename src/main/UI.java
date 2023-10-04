@@ -288,7 +288,7 @@ public class UI {
         x = gp.tileSize * 6;
         y = (int) (gp.tileSize * 1.5);
 
-        image = BattleState.monster.combatImage;
+        image = BattleState.monster.getCombatImage();
         g2.drawImage(image, x - 18, y - 5, 150, 150, null);
 
         // Dibuja la barra de vida del monstruo
