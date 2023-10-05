@@ -111,6 +111,26 @@ public class Player extends Entity{
         inventory.add(PLAYERstats.armor);
 
     }
+    public int getWeaponSlot() {
+        int weaponSlot = -1; // Valor predeterminado para indicar que no se ha encontrado un arma en el inventario
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i) instanceof OBJ_Weapon && inventory.get(i) == PLAYERstats.weapon) {
+                weaponSlot = i;
+                break; // Terminamos la búsqueda cuando se encuentra un arma
+            }
+        }
+        return weaponSlot;
+    }
+    public int getArmorSlot() {
+        int armorSlot = -1; // Valor predeterminado para indicar que no se ha encontrado armadura en el inventario
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i) instanceof OBJ_Armor && inventory.get(i) == PLAYERstats.armor) {
+                armorSlot = i;
+                break; // Terminamos la búsqueda cuando se encuentra armadura
+            }
+        }
+        return armorSlot;
+    }
 
     public void selectItems(){
 

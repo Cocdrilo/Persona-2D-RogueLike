@@ -1,8 +1,10 @@
 package data;
 
+import Object.Equipables.*;
+import Object.Consumables.*;
+import Object.WorldBuilding.*;
 import entity.Entity;
 import main.GamePanel;
-import Object.*;
 
 
 import java.io.*;
@@ -14,20 +16,18 @@ public class SaveLoad {
     }
 
     public Entity getObject(String itemName){
-        Entity obj = null;
-        switch (itemName){
-            case "Cota de malla": obj = new OBJ_Armor(gp); break;
-            case "chest": obj = new OBJ_Chest(gp); break;
-            case "door": obj = new OBJ_Door(gp); break;
-            case "Health Potion": obj = new OBJ_Potion_Health(gp); break;
-            case "Mana Potion": obj = new OBJ_Potion_Mana(gp); break;
-            case "stairs": obj = new OBJ_Stairs(gp); break;
-            case "Bashing Weapon": obj = new OBJ_WEAPON_BASH(gp); break;
-            case "Piercing Weapon": obj = new OBJ_WEAPON_Piercing(gp); break;
-            case "Espadon": obj = new OBJ_WEAPON_Slash(gp); break;
-
-        }
-        return obj;
+        return switch (itemName) {
+            case "Cota de malla" -> new OBJ_Armor(gp);
+            case "chest" -> new OBJ_Chest(gp);
+            case "door" -> new OBJ_Door(gp);
+            case "Health Potion" -> new OBJ_Potion_Health(gp);
+            case "Mana Potion" -> new OBJ_Potion_Mana(gp);
+            case "stairs" -> new OBJ_Stairs(gp);
+            case "Bashing Weapon" -> new OBJ_WEAPON_BASH(gp);
+            case "Piercing Weapon" -> new OBJ_WEAPON_Piercing(gp);
+            case "Espadon" -> new OBJ_WEAPON_Slash(gp);
+            default -> null;
+        };
     }
     public void save(){
         try {
@@ -42,7 +42,7 @@ public class SaveLoad {
             ds.life = gp.player.PLAYERstats.hp;
             ds.mana = gp.player.PLAYERstats.mp;
             ds.maxMana = gp.player.PLAYERstats.maxMp;
-            ds.strength = gp.player.PLAYERstats.level;
+            ds.strength = gp.player.PLAYERstats.str;
             ds.magic = gp.player.PLAYERstats.mag;
             ds.agility = gp.player.PLAYERstats.agi;
             ds.vitality = gp.player.PLAYERstats.vit;
@@ -56,10 +56,8 @@ public class SaveLoad {
             }
 
             //Player Equipment
-            /*
-             * ds.currentWeaponSlot = gp.player.getcurrentWeaponSlot();
-             * ds.currentShieldSlot = gp.player.getcurrentShieldSlot();
-             * */
+              ds.currentWeaponSlot = gp.player.getWeaponSlot();
+              ds.currentArmorSlot = gp.player.getArmorSlot();
 
             //Objects on Map
 
@@ -97,13 +95,11 @@ public class SaveLoad {
                 gp.player.inventory.add(getObject(ds.itemNames.get(i)));
             }
             //Player Equipment
-            /* CURRENTSLOT IMPORTANTE
-            *  gp.player.currentWeapon = gp.player.inventory.get(ds.currentWeaponSlot);
-            *  gp.player.currentShield = gp.player.inventory.get(ds.currentShieldSlot);
-            * */
-            gp.player.getAttack();
+            gp.player.PLAYERstats.weapon = (OBJ_Weapon) gp.player.inventory.get(ds.currentWeaponSlot);
+            gp.player.PLAYERstats.armor = (OBJ_Armor) gp.player.inventory.get(ds.currentArmorSlot);
             gp.player.getDefense();
             gp.player.getPlayerImage();
+
 
 
         }catch (Exception e){

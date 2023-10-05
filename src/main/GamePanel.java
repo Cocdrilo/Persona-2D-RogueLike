@@ -1,6 +1,7 @@
 package main;
 
 import battleNeeds.SpellManager;
+import data.SaveLoad;
 import entity.Entity;
 import entity.Player;
 import monster.MonsterManager;
@@ -49,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
     public Events eventHandler = new Events(this);
     public SpellManager spellManager = SpellManager.getInstance();
     public MonsterManager monsterManager = MonsterManager.getInstance();
+    SaveLoad saveLoad = new SaveLoad(this);
 
     //ENTITY AND OBJECT
     public Player player = new Player(this,keyH);
