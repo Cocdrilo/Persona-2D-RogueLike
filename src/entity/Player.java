@@ -87,13 +87,14 @@ public class Player extends Entity{
         direction="down";
 
         PLAYERstats.level = 1;
-        PLAYERstats.maxHp = 10;
+        PLAYERstats.maxHp = 70;
         PLAYERstats.hp = PLAYERstats.maxHp;
-        PLAYERstats.maxMp = 10;
+        PLAYERstats.maxMp = 41;
         PLAYERstats.mp = PLAYERstats.maxMp;
-        PLAYERstats.str = 5;
-        PLAYERstats.agi = 5;
-        PLAYERstats.mag = 5;
+        PLAYERstats.str = 2;
+        PLAYERstats.agi = 3;
+        PLAYERstats.mag = 2;
+        PLAYERstats.vit = 3;
         PLAYERstats.exp = 0;
         PLAYERstats.nextLevelExp = 10;
         PLAYERstats.money = 0;
