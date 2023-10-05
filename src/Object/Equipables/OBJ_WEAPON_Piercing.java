@@ -8,7 +8,7 @@ public class OBJ_WEAPON_Piercing extends OBJ_Weapon {
         super(gp);
         name = "Piercing Weapon";
         damageType = "Piercing";
-        atk = 8;
+        atk = 42;
         hit = 90;
         price = 80;
         description = "["+ name +" ]\nAtk: "+atk+ " \nHit: " + hit + "\n Tipo de DMG: " + damageType;

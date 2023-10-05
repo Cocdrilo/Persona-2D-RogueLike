@@ -91,7 +91,7 @@ public class Player extends Entity{
         PLAYERstats.hp = PLAYERstats.maxHp;
         PLAYERstats.maxMp = 41;
         PLAYERstats.mp = PLAYERstats.maxMp;
-        PLAYERstats.str = 2;
+        PLAYERstats.str = 3;
         PLAYERstats.agi = 3;
         PLAYERstats.mag = 2;
         PLAYERstats.vit = 3;
