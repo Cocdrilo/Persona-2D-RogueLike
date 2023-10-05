@@ -16,6 +16,7 @@ public class Sound {
         soundURL[1]= getClass().getResource("/Sound/Coin.wav");
         soundURL[2]= getClass().getResource("/Sound/Unlock.wav");
         soundURL[3]= getClass().getResource("/Sound/fanfare.wav");
+        soundURL[4]= getClass().getResource("/Sound/powerup.wav");
     }
 
     public void setFile(int i){
@@ -43,5 +44,6 @@ public class Sound {
     public void stop(){
         clip.stop();
     }
+    //hola
 
 }
