@@ -388,6 +388,25 @@ public class UI {
         g2.setColor(Color.YELLOW);
         g2.fillRect(x, y, width, height);
         drawSubWindow(x, y, width, height);
+
+        // Dibuja el jugador
+        image = gp.player.standFront;
+        g2.drawImage(image, x+10, y , 64, 64, null);
+
+// Dibuja hp y mana
+        int maxHealth2 = gp.player.PLAYERstats.maxHp;
+        int currentHealth2 = gp.player.PLAYERstats.hp;
+        int maxMana = gp.player.PLAYERstats.maxMp;
+        int currentMana = gp.player.PLAYERstats.mp;
+
+// Dibuja la vida del jugador en formato "HP/MAXHP"
+        String playerHealthText = gp.player.PLAYERstats.hp + "/" + gp.player.PLAYERstats.maxHp;
+        String playerManaText = gp.player.PLAYERstats.mp + "/" + gp.player.PLAYERstats.maxMp;
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString(playerHealthText, x + 5, y + 80);
+        g2.drawString(playerManaText, x + 5, y + 97);
+
     }
 
 
