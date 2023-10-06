@@ -12,6 +12,7 @@ public class monsterData {
     public int agi;
     public int mag;
     public int vit;
+    public int lvl;
     public int xpGiven;
     public String attackType;
     public String combatImagePath;
@@ -34,6 +35,7 @@ public class monsterData {
             @JsonProperty("agi") int agi,
             @JsonProperty("mag") int mag,
             @JsonProperty("vit") int vit,
+            @JsonProperty("lvl") int lvl,
             @JsonProperty("xpGiven") int xpGiven,
             @JsonProperty("attackType") String attackType,
             @JsonProperty("combatImagePath") String combatImagePath,
@@ -49,6 +51,7 @@ public class monsterData {
         this.agi = agi;
         this.mag = mag;
         this.vit = vit;
+        this.lvl = lvl;
         this.xpGiven = xpGiven;
         this.attackType = attackType;
         this.combatImagePath = combatImagePath;

@@ -85,6 +85,7 @@ public class Player extends Entity{
         WorldY = 250;
         speed=4;
         direction="down";
+        name = "Raidou";
 
         PLAYERstats.level = 1;
         PLAYERstats.maxHp = 70;
@@ -276,6 +277,8 @@ public class Player extends Entity{
             if(gp.keyH.zPressed){
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
+                gp.party.addMonsterToParty("Ice golem");
+                gp.party.printParty();
                 }
             }
     }
