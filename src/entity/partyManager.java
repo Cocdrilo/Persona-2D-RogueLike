@@ -9,14 +9,9 @@ import java.util.ArrayList;
 public class partyManager {
 
     private Player Leader;
-    private ArrayList<shadowStandar> partyMembers;
+    public ArrayList<shadowStandar> partyMembers;
     private GamePanel gp;
 
-    public partyManager(Player Leader, ArrayList<shadowStandar> partyMembers, GamePanel gp) {
-        this.Leader = Leader;
-        this.partyMembers = partyMembers;
-        this.gp = gp;
-    }
     public partyManager(Player Leader , GamePanel gp) {
         this.Leader = Leader;
         this.partyMembers = new ArrayList<>();
@@ -24,11 +19,18 @@ public class partyManager {
     }
 
     public void addMonsterToParty(String monsterName) {
-        ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
-        for (monsterData monster: availableMonsters) {
-            if (monster.name.equals(monsterName)) {
-                partyMembers.add(new shadowStandar(gp,monster));
+        if (partyMembers.size() < 3) {
+            ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
+            for (monsterData monster : availableMonsters) {
+                if (monster.name.equals(monsterName)) {
+                    partyMembers.add(new shadowStandar(gp, monster));
+                    System.out.println(monsterName + " ha sido añadido al grupo.");
+                    return; // Sal del bucle una vez que hayas agregado un miembro.
+                }
             }
+            System.out.println("No se pudo encontrar un monstruo con el nombre: " + monsterName);
+        } else {
+            System.out.println("El grupo ya tiene 3 miembros, no se puede agregar más.");
         }
     }
 

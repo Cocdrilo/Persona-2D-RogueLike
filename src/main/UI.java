@@ -1,5 +1,7 @@
 package main;
 
+import monster.shadowStandar;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -178,7 +180,7 @@ public class UI {
     public void drawStatusScreen() {
 
         //CREATE A FRAME
-        final int frameX = gp.tileSize * 2;
+        final int frameX = gp.tileSize/2;
         final int frameY = gp.tileSize;
         final int frameWidth = gp.tileSize * 5;
         final int frameHeight = gp.tileSize * 10;
@@ -266,6 +268,67 @@ public class UI {
         g2.drawImage(gp.player.PLAYERstats.weapon.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 10, null);
         textY += gp.tileSize;
         g2.drawImage(gp.player.PLAYERstats.armor.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 20, null);
+
+        //Posicion Inicial para dibujar marcos del equipo
+        int memberX = frameX + frameWidth + 10; // Inicia al lado derecho del marco principal
+        int memberY = frameY;
+
+        for (int i = 0; i < gp.party.partyMembers.size(); i++) {
+            drawSubWindow(memberX, memberY, (frameWidth/2)+30, frameHeight);
+            g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(24F));
+
+            // Dibuja la información del miembro del grupo de manera similar a la del jugador
+            shadowStandar member = gp.party.partyMembers.get(i);
+
+            // Alinea los valores con el marco del miembro del grupo
+            // Utiliza las mismas coordenadas de textoY, textX y tailX para alinear los valores
+            textY = memberY + gp.tileSize;
+            textX = memberX + gp.tileSize / 2;
+            tailX = (memberX + frameWidth) - 30;
+
+            valor = String.valueOf(member.stats.level);
+            g2.drawString("Level: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.nextLevelExp);
+            g2.drawString("EXP: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.hp + "/" + member.stats.maxHp);
+            g2.drawString("HP: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.mp + "/" + member.stats.maxMp);
+            g2.drawString("MP: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.str);
+            g2.drawString("STR: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.mag);
+            g2.drawString("MAG: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.agi);
+            g2.drawString("AGI: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.vit);
+            g2.drawString("VIT: " + valor, textX, textY);
+            textY += lineHeight;
+
+            // Dibuja la imagen de combate de 64x64 debajo del atributo VIT
+            image = member.getCombatImage();
+            int imageX = memberX + (frameWidth - 64) / 12; // Centra la imagen en el marco
+            int imageY = textY + 10; // Espacio para separar la imagen del texto
+            g2.drawImage(image, imageX, imageY, 128, 128, null);
+
+
+            // Avanza a la siguiente posición Y para dibujar el siguiente miembro del grupo
+            memberX += gp.tileSize*3.5;
+        }
 
     }
 
@@ -393,19 +456,33 @@ public class UI {
         image = gp.player.standFront;
         g2.drawImage(image, x+10, y , 64, 64, null);
 
-// Dibuja hp y mana
+        // Dibuja hp y mana
         int maxHealth2 = gp.player.PLAYERstats.maxHp;
         int currentHealth2 = gp.player.PLAYERstats.hp;
         int maxMana = gp.player.PLAYERstats.maxMp;
         int currentMana = gp.player.PLAYERstats.mp;
 
-// Dibuja la vida del jugador en formato "HP/MAXHP"
+        // Dibuja la vida del jugador en formato "HP/MAXHP"
         String playerHealthText = gp.player.PLAYERstats.hp + "/" + gp.player.PLAYERstats.maxHp;
         String playerManaText = gp.player.PLAYERstats.mp + "/" + gp.player.PLAYERstats.maxMp;
         g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
         g2.drawString(playerHealthText, x + 5, y + 80);
         g2.drawString(playerManaText, x + 5, y + 97);
+
+        //Hace lo mismo que en player pero para toda la party
+        for (int i = 0; i < gp.party.partyMembers.size(); i++) {
+            image = gp.party.partyMembers.get(i).getCombatImage();
+            g2.drawImage(image, x + 140 + (i * 120), y, 64, 64, null);
+
+            // Dibuja la vida de la party en formato "HP/MAXHP"
+            String partyHealthText = gp.party.partyMembers.get(i).stats.hp + "/" + gp.party.partyMembers.get(i).stats.maxHp;
+            String partyManaText = gp.party.partyMembers.get(i).stats.mp + "/" + gp.party.partyMembers.get(i).stats.maxMp;
+            g2.setColor(Color.WHITE);
+            g2.setFont(g2.getFont().deriveFont(24F));
+            g2.drawString(partyHealthText, x + 125 + (i * 120), y + 80);
+            g2.drawString(partyManaText, x + 125 + (i * 120), y + 97);
+        }
 
     }
 
