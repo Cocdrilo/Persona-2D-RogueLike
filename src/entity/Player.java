@@ -195,18 +195,18 @@ public class Player extends Entity{
 
 
     public void getPlayerImage(){
-        standFront = setUp("/player/Raidou1");
-        standLeft =  setUp("/player/Raidou2");
-        standRight = setUp("/player/Raidou3");
-        standBack = setUp("/player/Raidou4");
-        walkDown1 = setUp("/player/Raidou5");
-        walkDown2 = setUp("/player/Raidou9");
-        walkLeft1 = setUp("/player/Raidou6");
-        walkLeft2 = setUp("/player/Raidou10");
-        walkRight1 = setUp("/player/Raidou7");
-        walkRight2 = setUp("/player/Raidou11");
-        walkUp1 = setUp("/player/Raidou8");
-        walkUp2 = setUp("/player/Raidou12");
+        standFront = setUp("/player/RaidouFront");
+        standLeft =  setUp("/player/RaidouLeft");
+        standRight = setUp("/player/RaidouRight");
+        standBack = setUp("/player/RaidouBack");
+        walkDown1 = setUp("/player/RaidouFrontWalk1");
+        walkDown2 = setUp("/player/RaidouFrontWalk2");
+        walkLeft1 = setUp("/player/RaidouLeftWalk1");
+        walkLeft2 = setUp("/player/RaidouLeftWalk2");
+        walkRight1 = setUp("/player/RaidouRightWalk1");
+        walkRight2 = setUp("/player/RaidouRightWalk2");
+        walkUp1 = setUp("/player/RaidouBackWalk1");
+        walkUp2 = setUp("/player/RaidouBackWalk2");
     }
     public void update(){
 
@@ -263,7 +263,7 @@ public class Player extends Entity{
             if(spriteCounter > 12){
                 if(spriteNum==1){
                     spriteNum=2;
-                } else if (spriteNum==2) {
+                }else if (spriteNum==2) {
                     spriteNum=1;
                 }
                 spriteCounter = 0;
