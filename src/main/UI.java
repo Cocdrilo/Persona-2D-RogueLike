@@ -225,49 +225,49 @@ public class UI {
         textY = frameY + gp.tileSize;
         String valor;
 
-        valor = String.valueOf(gp.player.PLAYERstats.level);
+        valor = String.valueOf(gp.player.stats.level);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY);
 
-        valor = String.valueOf(gp.player.PLAYERstats.exp);
+        valor = String.valueOf(gp.player.stats.exp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight);
 
-        valor = String.valueOf(gp.player.PLAYERstats.nextLevelExp);
+        valor = String.valueOf(gp.player.stats.nextLevelExp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 2);
 
-        valor = String.valueOf(gp.player.PLAYERstats.hp + "/" + gp.player.PLAYERstats.maxHp);
+        valor = String.valueOf(gp.player.stats.hp + "/" + gp.player.stats.maxHp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 3);
 
-        valor = String.valueOf(gp.player.PLAYERstats.mp + "/" + gp.player.PLAYERstats.maxMp);
+        valor = String.valueOf(gp.player.stats.mp + "/" + gp.player.stats.maxMp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 4);
 
-        valor = String.valueOf(gp.player.PLAYERstats.str);
+        valor = String.valueOf(gp.player.stats.str);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 5);
 
-        valor = String.valueOf(gp.player.PLAYERstats.vit);
+        valor = String.valueOf(gp.player.stats.vit);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 6);
 
-        valor = String.valueOf(gp.player.PLAYERstats.agi);
+        valor = String.valueOf(gp.player.stats.agi);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 7);
 
-        valor = String.valueOf(gp.player.PLAYERstats.mag);
+        valor = String.valueOf(gp.player.stats.mag);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 8);
 
-        valor = String.valueOf(gp.player.PLAYERstats.money);
+        valor = String.valueOf(gp.player.stats.money);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 9);
 
-        g2.drawImage(gp.player.PLAYERstats.weapon.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 10, null);
+        g2.drawImage(gp.player.stats.weapon.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 10, null);
         textY += gp.tileSize;
-        g2.drawImage(gp.player.PLAYERstats.armor.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 20, null);
+        g2.drawImage(gp.player.stats.armor.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 20, null);
 
         //Posicion Inicial para dibujar marcos del equipo
         int memberX = frameX + frameWidth + 10; // Inicia al lado derecho del marco principal
@@ -457,14 +457,14 @@ public class UI {
         g2.drawImage(image, x+10, y , 64, 64, null);
 
         // Dibuja hp y mana
-        int maxHealth2 = gp.player.PLAYERstats.maxHp;
-        int currentHealth2 = gp.player.PLAYERstats.hp;
-        int maxMana = gp.player.PLAYERstats.maxMp;
-        int currentMana = gp.player.PLAYERstats.mp;
+        int maxHealth2 = gp.player.stats.maxHp;
+        int currentHealth2 = gp.player.stats.hp;
+        int maxMana = gp.player.stats.maxMp;
+        int currentMana = gp.player.stats.mp;
 
         // Dibuja la vida del jugador en formato "HP/MAXHP"
-        String playerHealthText = gp.player.PLAYERstats.hp + "/" + gp.player.PLAYERstats.maxHp;
-        String playerManaText = gp.player.PLAYERstats.mp + "/" + gp.player.PLAYERstats.maxMp;
+        String playerHealthText = gp.player.stats.hp + "/" + gp.player.stats.maxHp;
+        String playerManaText = gp.player.stats.mp + "/" + gp.player.stats.maxMp;
         g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
         g2.drawString(playerHealthText, x + 5, y + 80);
@@ -564,7 +564,7 @@ public class UI {
         for (int inventoryArrayPos = 0; inventoryArrayPos < gp.player.inventory.size(); inventoryArrayPos++) {
 
             //Dibujar Cursor sobre objetos equipados
-            if (gp.player.inventory.get(inventoryArrayPos) == gp.player.PLAYERstats.weapon || gp.player.inventory.get(inventoryArrayPos) == gp.player.PLAYERstats.armor) {
+            if (gp.player.inventory.get(inventoryArrayPos) == gp.player.stats.weapon || gp.player.inventory.get(inventoryArrayPos) == gp.player.stats.armor) {
                 g2.setColor(new Color(235, 219, 52));
                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
             }
@@ -679,10 +679,10 @@ public class UI {
 
             // Dibuja el valor de la estadística al lado de la flecha
             String statValue = switch (i) {
-                case 0 -> String.valueOf(gp.player.PLAYERstats.vit);
-                case 1 -> String.valueOf(gp.player.PLAYERstats.str);
-                case 2 -> String.valueOf(gp.player.PLAYERstats.mag);
-                case 3 -> String.valueOf(gp.player.PLAYERstats.agi);
+                case 0 -> String.valueOf(gp.player.stats.vit);
+                case 1 -> String.valueOf(gp.player.stats.str);
+                case 2 -> String.valueOf(gp.player.stats.mag);
+                case 3 -> String.valueOf(gp.player.stats.agi);
                 default -> "N/A";
             };
             g2.drawString(statValue, 250, y); // Ajusta la posición horizontal según tus necesidades

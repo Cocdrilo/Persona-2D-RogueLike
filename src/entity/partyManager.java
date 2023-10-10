@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class partyManager {
 
-    private Player Leader;
+    public Player Leader;
     public ArrayList<shadowStandar> partyMembers;
     private GamePanel gp;
 

@@ -35,18 +35,18 @@ public class SaveLoad {
             DataStorage ds = new DataStorage();
 
             //Player Stats
-            ds.level = gp.player.PLAYERstats.level;
-            ds.exp = gp.player.PLAYERstats.exp;
-            ds.nextLevelExp = gp.player.PLAYERstats.nextLevelExp;
-            ds.maxLife = gp.player.PLAYERstats.maxHp;
-            ds.life = gp.player.PLAYERstats.hp;
-            ds.mana = gp.player.PLAYERstats.mp;
-            ds.maxMana = gp.player.PLAYERstats.maxMp;
-            ds.strength = gp.player.PLAYERstats.str;
-            ds.magic = gp.player.PLAYERstats.mag;
-            ds.agility = gp.player.PLAYERstats.agi;
-            ds.vitality = gp.player.PLAYERstats.vit;
-            ds.money = gp.player.PLAYERstats.money;
+            ds.level = gp.player.stats.level;
+            ds.exp = gp.player.stats.exp;
+            ds.nextLevelExp = gp.player.stats.nextLevelExp;
+            ds.maxLife = gp.player.stats.maxHp;
+            ds.life = gp.player.stats.hp;
+            ds.mana = gp.player.stats.mp;
+            ds.maxMana = gp.player.stats.maxMp;
+            ds.strength = gp.player.stats.str;
+            ds.magic = gp.player.stats.mag;
+            ds.agility = gp.player.stats.agi;
+            ds.vitality = gp.player.stats.vit;
+            ds.money = gp.player.stats.money;
 
             //Player Inventory
             for(int i = 0;i<gp.player.inventory.size();i++){
@@ -76,18 +76,18 @@ public class SaveLoad {
             DataStorage ds = (DataStorage)ois.readObject();
 
             //Player Stats
-            gp.player.PLAYERstats.level = ds.level;
-            gp.player.PLAYERstats.exp = ds.exp;
-            gp.player.PLAYERstats.nextLevelExp = ds.nextLevelExp;
-            gp.player.PLAYERstats.maxHp = ds.maxLife;
-            gp.player.PLAYERstats.hp = ds.life;
-            gp.player.PLAYERstats.mp = ds.mana;
-            gp.player.PLAYERstats.maxMp = ds.maxMana;
-            gp.player.PLAYERstats.str = ds.strength;
-            gp.player.PLAYERstats.mag= ds.magic;
-            gp.player.PLAYERstats.agi = ds.agility;
-            gp.player.PLAYERstats.vit = ds.vitality;
-            gp.player.PLAYERstats.money = ds.money;
+            gp.player.stats.level = ds.level;
+            gp.player.stats.exp = ds.exp;
+            gp.player.stats.nextLevelExp = ds.nextLevelExp;
+            gp.player.stats.maxHp = ds.maxLife;
+            gp.player.stats.hp = ds.life;
+            gp.player.stats.mp = ds.mana;
+            gp.player.stats.maxMp = ds.maxMana;
+            gp.player.stats.str = ds.strength;
+            gp.player.stats.mag= ds.magic;
+            gp.player.stats.agi = ds.agility;
+            gp.player.stats.vit = ds.vitality;
+            gp.player.stats.money = ds.money;
 
             //Player Inventory
             gp.player.inventory.clear();
@@ -95,8 +95,8 @@ public class SaveLoad {
                 gp.player.inventory.add(getObject(ds.itemNames.get(i)));
             }
             //Player Equipment
-            gp.player.PLAYERstats.weapon = (OBJ_Weapon) gp.player.inventory.get(ds.currentWeaponSlot);
-            gp.player.PLAYERstats.armor = (OBJ_Armor) gp.player.inventory.get(ds.currentArmorSlot);
+            gp.player.stats.weapon = (OBJ_Weapon) gp.player.inventory.get(ds.currentWeaponSlot);
+            gp.player.stats.armor = (OBJ_Armor) gp.player.inventory.get(ds.currentArmorSlot);
             gp.player.getDefense();
             gp.player.getPlayerImage();
 

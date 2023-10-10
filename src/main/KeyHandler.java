@@ -89,7 +89,8 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_Z) {
             if (gp.ui.commandNum == 0) {
-                gp.battleSystem.attack();
+                System.out.println("Attacking");
+                gp.battleSystem.attack(gp.party.Leader, gp.battleSystem.monster);
             }
             if (gp.ui.commandNum == 1) {
                 gp.ui.magicMenu = true;
@@ -99,7 +100,7 @@ public class KeyHandler implements KeyListener {
                 // Use Items Aun sin Implementar
             }
             if (gp.ui.commandNum == 3) {
-                gp.battleSystem.defend();
+                //gp.battleSystem.defend();
             }
             if (gp.ui.commandNum == 4) {
                 // Flee Aun sin Implementar
@@ -131,7 +132,7 @@ public class KeyHandler implements KeyListener {
             // Verificar si estamos dentro del submenu de magia antes de activar el hechizo
             if (code == KeyEvent.VK_Z) {
                 // Aquí activa el hechizo seleccionado (sin pasar una variable)
-                gp.battleSystem.useMagic();
+                //gp.battleSystem.useMagic();
             }
 
             if(code == KeyEvent.VK_ESCAPE){
@@ -166,61 +167,61 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D){
             if(gp.ui.commandNum == 0){
                 if(pointsPerLevel>0){
-                    gp.player.PLAYERstats.vit++;
-                    gp.player.PLAYERstats.maxHp+=5;
+                    gp.player.stats.vit++;
+                    gp.player.stats.maxHp+=5;
                     pointsPerLevel--;
                 }
             }
             if(gp.ui.commandNum == 1){
                 if(pointsPerLevel>0){
-                    gp.player.PLAYERstats.str++;
+                    gp.player.stats.str++;
                     pointsPerLevel--;
                 }
             }
             if(gp.ui.commandNum == 2){
                 if(pointsPerLevel>0){
-                    gp.player.PLAYERstats.mag++;
-                    gp.player.PLAYERstats.maxMp+=5;
+                    gp.player.stats.mag++;
+                    gp.player.stats.maxMp+=5;
                     pointsPerLevel--;
                 }
             }
             if(gp.ui.commandNum == 3){
-                gp.player.PLAYERstats.agi++;
+                gp.player.stats.agi++;
                 pointsPerLevel--;
             }
         }
         if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
             if (gp.ui.commandNum == 0) {
-                gp.player.PLAYERstats.vit--;
+                gp.player.stats.vit--;
                 pointsPerLevel++;
-                if(gp.player.PLAYERstats.vit <oldDex){
-                    gp.player.PLAYERstats.vit =oldDex;
+                if(gp.player.stats.vit <oldDex){
+                    gp.player.stats.vit =oldDex;
                     pointsPerLevel--;
                 }
-                gp.player.PLAYERstats.maxHp-=5;
+                gp.player.stats.maxHp-=5;
             }
             if (gp.ui.commandNum == 1) {
-                gp.player.PLAYERstats.str--;
+                gp.player.stats.str--;
                 pointsPerLevel++;
-                if(gp.player.PLAYERstats.str<oldStr){
-                    gp.player.PLAYERstats.str=oldStr;
+                if(gp.player.stats.str<oldStr){
+                    gp.player.stats.str=oldStr;
                     pointsPerLevel--;
                 }
             }
             if (gp.ui.commandNum == 2) {
-                gp.player.PLAYERstats.mag--;
+                gp.player.stats.mag--;
                 pointsPerLevel++;
-                if(gp.player.PLAYERstats.mag<oldMag){
-                    gp.player.PLAYERstats.mag=oldMag;
+                if(gp.player.stats.mag<oldMag){
+                    gp.player.stats.mag=oldMag;
                     pointsPerLevel--;
                 }
-                gp.player.PLAYERstats.maxMp-=5;
+                gp.player.stats.maxMp-=5;
             }
             if(gp.ui.commandNum == 3){
-                gp.player.PLAYERstats.agi--;
+                gp.player.stats.agi--;
                 pointsPerLevel++;
-                if(gp.player.PLAYERstats.agi<oldAgi){
-                    gp.player.PLAYERstats.agi=oldAgi;
+                if(gp.player.stats.agi<oldAgi){
+                    gp.player.stats.agi=oldAgi;
                     pointsPerLevel--;
                 }
             }
