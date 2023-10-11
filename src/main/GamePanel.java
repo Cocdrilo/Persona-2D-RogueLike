@@ -39,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable{
     BufferedImage tempScreen;
     Graphics2D g2;
 
+    public boolean fullScreenOn = false;
+
     //SYSTEM
     public KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
@@ -75,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int inventoryState = 7;
     public final int levelUpState = 8;
     public final int magicMenuState = 9;
+    public final int optionsState = 10;
 
 
 
