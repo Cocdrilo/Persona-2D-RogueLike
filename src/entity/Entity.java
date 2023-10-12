@@ -58,7 +58,7 @@ public class Entity {
     public BufferedImage standFront,standLeft,standBack,standRight,walkDown1,walkDown2,walkLeft1,walkLeft2,walkRight1,walkRight2,walkUp1,walkUp2;
 
     //Array de hechizos:
-    protected ArrayList<superMagic> spells;
+    public ArrayList<superMagic> spells;
 
     //CombatMethods
 
@@ -131,6 +131,21 @@ public class Entity {
     public int getDefense() {
         return stats.vit;
     }
+    //Spell Methods
+
+    // Métodos para agregar, quitar y acceder a hechizos del jugador
+    public void addSpell(superMagic spell) {
+        spells.add(spell);
+    }
+
+    public void removeSpell(superMagic spell) {
+        spells.remove(spell);
+    }
+
+    public ArrayList<superMagic> getSpells() {
+        return spells;
+    }
+
 
     public Entity(GamePanel gp){
 

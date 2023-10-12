@@ -1,5 +1,9 @@
 package main;
 
+import entity.Entity;
+import entity.Player;
+import monster.shadowStandar;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -89,9 +93,18 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_Z) {
             if (gp.ui.commandNum == 0) {
-                System.out.println("Attacking");
-                gp.battleSystem.attack(gp.party.Leader, gp.battleSystem.monster);
+
+                Entity attacker = gp.battleSystem.partyMembers.get(gp.battleSystem.currentPartyMemberIndex);
+
+                if (attacker instanceof Player playerAttacker) {
+                    // Realiza un casting a Player
+                    gp.battleSystem.attack(playerAttacker, gp.battleSystem.monster);
+                } else if (attacker instanceof shadowStandar monsterAttacker) {
+                    // Realiza un casting a shadowStandar
+                    gp.battleSystem.attack(monsterAttacker, gp.battleSystem.monster);
+                }
             }
+
             if (gp.ui.commandNum == 1) {
                 gp.ui.magicMenu = true;
                 gp.gameState = gp.magicMenuState;
@@ -110,7 +123,7 @@ public class KeyHandler implements KeyListener {
 
     public void magicMenuState(int code){
         // Aquí obtenemos la cantidad de hechizos disponibles
-        int numSpells = gp.player.numberOfSpells();
+        int numSpells = gp.player.spells.size();
         if (gp.ui.commandNum == 1 && gp.ui.magicMenu) {
 
             if (code == KeyEvent.VK_W) {
@@ -132,7 +145,7 @@ public class KeyHandler implements KeyListener {
             // Verificar si estamos dentro del submenu de magia antes de activar el hechizo
             if (code == KeyEvent.VK_Z) {
                 // Aquí activa el hechizo seleccionado (sin pasar una variable)
-                //gp.battleSystem.useMagic();
+                gp.battleSystem.useMagic(gp.party.Leader, gp.battleSystem.monster, gp.player.spells.get(gp.ui.commandNum2));
             }
 
             if(code == KeyEvent.VK_ESCAPE){
@@ -186,8 +199,10 @@ public class KeyHandler implements KeyListener {
                 }
             }
             if(gp.ui.commandNum == 3){
-                gp.player.stats.agi++;
-                pointsPerLevel--;
+                if(pointsPerLevel>0){
+                    gp.player.stats.agi++;
+                    pointsPerLevel--;
+                }
             }
         }
         if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {

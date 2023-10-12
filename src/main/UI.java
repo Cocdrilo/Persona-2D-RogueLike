@@ -483,7 +483,6 @@ public class UI {
             g2.drawString(partyHealthText, x + 125 + (i * 120), y + 80);
             g2.drawString(partyManaText, x + 125 + (i * 120), y + 97);
         }
-
     }
 
 

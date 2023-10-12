@@ -179,20 +179,6 @@ public class Player extends Entity{
         return dmgType;
     }
 
-    // Métodos para agregar, quitar y acceder a hechizos del jugador
-    public void addSpell(superMagic spell) {
-        spells.add(spell);
-    }
-
-    public void removeSpell(superMagic spell) {
-        spells.remove(spell);
-    }
-
-    public ArrayList<superMagic> getSpells() {
-        return spells;
-    }
-
-
     public void getPlayerImage(){
         standFront = setUp("/player/RaidouFront");
         standLeft =  setUp("/player/RaidouLeft");

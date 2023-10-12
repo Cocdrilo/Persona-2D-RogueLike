@@ -55,7 +55,7 @@ public class AssetSetter {
 
     public void setMonster(){
             ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
-            gp.monsters[0] = new shadowStandar(gp,availableMonsters.get(0));
+            gp.monsters[0] = new shadowStandar(gp,availableMonsters.get(6));
             gp.monsters[0].WorldX = gp.tileSize*8;
             gp.monsters[0].WorldY = gp.tileSize*4;
     }
