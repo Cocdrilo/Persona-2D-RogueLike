@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.io.File;
 
 import javax.imageio.ImageIO;
 
@@ -20,6 +21,8 @@ public class UI {
 
     BufferedImage image;
     BufferedImage titleImage;
+    BufferedImage pressTurnIcon1;
+    BufferedImage pressTurnIcon2;
 
     //ArrayList de text para que sean Scrolling
     ArrayList<String> messageList = new ArrayList<>();
@@ -55,11 +58,22 @@ public class UI {
 
         try {
             titleImage = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
+            pressTurnIcon1 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIcon.png"));
+            pressTurnIcon2 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIconHalfTurn.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
+    public BufferedImage loadImage(String filePath) {
+        try {
+            return ImageIO.read(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public void addMessage(String text) {
         messageList.add(text);
@@ -482,6 +496,28 @@ public class UI {
             g2.setFont(g2.getFont().deriveFont(24F));
             g2.drawString(partyHealthText, x + 125 + (i * 120), y + 80);
             g2.drawString(partyManaText, x + 125 + (i * 120), y + 97);
+        }
+        // Dibujar los turnos con los Iconos arriba a la derecha
+        int pressTurn = BattleState.pressTurn;
+        int iconWidth = 64; // Ancho de los iconos
+        int iconHeight = 64; // Altura de los iconos
+        int iconSpacing = 10; // Espacio entre los iconos
+
+        int startX = gp.screenWidth - gp.tileSize  - iconWidth/2;
+        int startY = gp.tileSize/2;
+
+        for (int i = 0; i < 4; i++) {
+            BufferedImage iconImage;
+            if (pressTurn >= 8 - i) {
+                iconImage = pressTurnIcon1; // Usar la imagen tipo 1
+            } else if (pressTurn > i) {
+                iconImage = pressTurnIcon2; // Usar la imagen tipo 2
+            } else {
+                break; // Salir del bucle si ya no hay más iconos para dibujar
+            }
+
+            g2.drawImage(iconImage, startX, startY, iconWidth, iconHeight, null);
+            startX -= (iconWidth + iconSpacing);
         }
     }
 

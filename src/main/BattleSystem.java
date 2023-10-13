@@ -5,6 +5,7 @@ import entity.Player;
 import entity.partyManager;
 import monster.shadowStandar;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class BattleSystem {
     public GamePanel gp;
 
     private int turn = 0; // 0 = player, 1 = monster
-    private int pressTurn = 8; // 2 turns per action, if hit weakness or crit 1 turn per action
+    public int pressTurn = 8; // 2 turns per action, if hit weakness or crit 1 turn per action
     public ArrayList<Entity> partyMembers; // Lista de miembros del partido
     public int currentPartyMemberIndex; // Índice del miembro del partido que está atacando
 
@@ -47,7 +48,8 @@ public class BattleSystem {
             turn = 0;
         }
         if(turn == 1){
-            attack(monster,party.Leader);
+
+            attack(monster, party.Leader);
         }
 
     }
@@ -93,11 +95,9 @@ public class BattleSystem {
         if (pressTurn <= 0 || target.stats.hp <= 0) {
             pressTurn = 8;
             nextTurn();
+            return;
         }
-        currentPartyMemberIndex++;
-        if (currentPartyMemberIndex >= partyMembers.size()) {
-            currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
-        }
+        attack(attacker, target);
     }
 
     // Hacer para monster->player y monster monster
