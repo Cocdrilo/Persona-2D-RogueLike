@@ -60,6 +60,20 @@ public class Entity {
     //Array de hechizos:
     public ArrayList<superMagic> spells;
 
+    public void fillSpells(String[] spellNames) {
+        spells = new ArrayList<>();
+
+        ArrayList<superMagic> availableSpells = gp.spellManager.getSpells();
+        for (superMagic spell : availableSpells) {
+            for (String spellName : spellNames) {
+                if (spell.name.equals(spellName)) {
+                    addSpell(spell);
+                    break; // Exit the inner loop when a match is found
+                }
+            }
+        }
+    }
+
     //CombatMethods
 
     public boolean isWeak(String attckType){
@@ -136,6 +150,14 @@ public class Entity {
     // Métodos para agregar, quitar y acceder a hechizos del jugador
     public void addSpell(superMagic spell) {
         spells.add(spell);
+    }
+
+    public String[] printSpells() {
+        String[] spellNames = new String[this.spells.size()];
+        for(int spells=0;spells<this.spells.size();spells++){
+            spellNames[spells] = this.spells.get(spells).name +"  "+ (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
+        }
+        return spellNames;
     }
 
     public void removeSpell(superMagic spell) {

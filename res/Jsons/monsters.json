@@ -13,7 +13,8 @@
     "weaknesses": ["Wind"],
     "resistances": [],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Bufu","Zio"]
   },
   {
     "name": "Mascara Sonriente",
@@ -29,7 +30,8 @@
     "weaknesses": ["Ice","Elec"],
     "resistances": ["Fire"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Zio"]
   },
   {
     "name": "Cuervo Oscuro",
@@ -45,7 +47,8 @@
     "weaknesses": ["Elec"],
     "resistances": [],
     "nulls": ["Fire","Wind"],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Magic Hand",
@@ -61,7 +64,8 @@
     "weaknesses": ["Ice"],
     "resistances": ["Bashing","Slashing","Piercing","Wind"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Trance Twins",
@@ -77,7 +81,8 @@
     "weaknesses": ["Fire"],
     "resistances": ["Elec"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi"]
   },
   {
     "name": "Dancing Table",
@@ -93,7 +98,8 @@
     "weaknesses": ["Fire", "Elec"],
     "resistances": ["Ice"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Unveiling Monster",
@@ -109,7 +115,8 @@
     "weaknesses": ["Ice", "Slashing"],
     "resistances": ["Fire", "Piercing"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Small Gigant",
@@ -125,7 +132,8 @@
     "weaknesses": ["Elec"],
     "resistances": [],
     "nulls": ["Fire", "Ice"],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Tiny Devil",
@@ -141,7 +149,8 @@
     "weaknesses": ["Fire"],
     "resistances": ["Slashing", "Bashing"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Ice golem",
@@ -157,7 +166,8 @@
     "weaknesses": ["Fire"],
     "resistances": ["Elec"],
     "nulls": ["Ice"],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   }
 
 ]

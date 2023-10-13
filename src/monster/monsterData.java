@@ -20,6 +20,7 @@ public class monsterData {
     public String[] resistances;
     public String[] nulls;
     public String[] repells;
+    public String[] spells;
 
 
     // Constructor predeterminado sin argumentos
@@ -42,7 +43,8 @@ public class monsterData {
             @JsonProperty("weaknesses") String[] weaknesses,
             @JsonProperty("resistances") String[] resistances,
             @JsonProperty("nulls") String[] nulls,
-            @JsonProperty("repells") String[] repells
+            @JsonProperty("repells") String[] repells,
+            @JsonProperty("spells") String[] spells
     ) {
         this.name = name;
         this.hp = health;
@@ -60,5 +62,6 @@ public class monsterData {
         this.resistances = resistances;
         this.nulls = nulls;
         this.repells = repells;
+        this.spells = spells;
     }
 }

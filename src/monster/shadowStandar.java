@@ -32,6 +32,7 @@ public class shadowStandar extends Entity{
         this.weaknesses = data.weaknesses;
         this.nulls = data.nulls;
         this.repells = data.repells;
+        fillSpells(data.spells);
         this.type = 2;
         speed = 1;
         getImage();

@@ -38,21 +38,12 @@ public class Player extends Entity{
         SolidAreaDefaultY = solidArea.y;
 
         stats = new Entity_stats();
+        String defaultSpells[] = {"Zio","Agi"};
 
         setDefaultValues();
         getPlayerImage();
         setItems();
-        spells = new ArrayList<>();
-
-        ArrayList<superMagic> availableSpells = gp.spellManager.getSpells();
-        for (superMagic spell : availableSpells) {
-            if (spell.name.equals("Agi")) {
-                addSpell(spell);
-            }
-            if (spell.name.equals("Bufu")) {
-                addSpell(spell);
-            }
-        }
+        fillSpells(defaultSpells);
         debugPlayerSpells();
     }
 
@@ -64,19 +55,6 @@ public class Player extends Entity{
             System.out.println(spell.name);
         }
 
-    }
-
-    public String[] printPlayerSpells() {
-        String[] spellNames = new String[this.spells.size()];
-        for(int spells=0;spells<this.spells.size();spells++){
-            spellNames[spells] = this.spells.get(spells).name +"  "+ (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
-        }
-        return spellNames;
-    }
-
-    public int numberOfSpells() {
-        int numSpells = this.spells.size();
-        return numSpells;
     }
 
     public void setDefaultValues(){
