@@ -256,12 +256,12 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_Z) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.playState;
-                //gp.playMusic(0);
+                gp.playMusic(0);
             }
             if (gp.ui.commandNum == 1) {
                 gp.saveLoad.load();
                 gp.gameState = gp.playState;
-                //gp.playMusic(0);
+                gp.playMusic(0);
             }
             if (gp.ui.commandNum == 2) {
                 System.exit(0);
@@ -288,6 +288,7 @@ public class KeyHandler implements KeyListener {
         }
 
         if (code == KeyEvent.VK_ESCAPE) {
+            gp.stopMusic();
             gp.gameState = gp.pauseState;
         }
 
@@ -303,6 +304,7 @@ public class KeyHandler implements KeyListener {
     public void pauseState(int code) {
 
         if (code == KeyEvent.VK_ESCAPE) {
+            gp.playMusic(0);
             gp.gameState = gp.playState;
         }
     }
@@ -398,14 +400,29 @@ public class KeyHandler implements KeyListener {
     }
 
     public void optionsState(int code) {
+        /*
+        if(gp.ui.subState == 3){
+            if(gp.ui.commandNum3 == 0 && code == KeyEvent.VK_Z){
+                gp.ui.subState = 0;
+                gp.gameState = gp.titleState;
+            }
+            else if(gp.ui.commandNum3 == 1 && code == KeyEvent.VK_Z){
+                gp.ui.subState = 0;
+            }
+        }*/
+
         if (code == KeyEvent.VK_ENTER) {
             gp.gameState = gp.enterMenuState;
         }
+
         int maxCommandNum = 0;
         switch (gp.ui.subState) {
             case 0:
                 maxCommandNum = 5;
-
+                break;
+            case 3:
+                maxCommandNum = 1;
+                break;
         }
 
         if (code == KeyEvent.VK_W) {
@@ -421,38 +438,62 @@ public class KeyHandler implements KeyListener {
                 gp.ui.commandNum3 = 0;
             }
         }
+        if (code == KeyEvent.VK_A) {
+            if(gp.ui.subState == 0){
+                if(gp.ui.commandNum3 == 1 && gp.music.volumeScale > 0){
+                    gp.music.volumeScale--;
+                    gp.music.checkVolume();
+                    //gp.playerSe(9);
+                }
+                if(gp.ui.commandNum3 == 2 && gp.se.volumeScale > 0){
+                    gp.se.volumeScale--;
+                    //gp.playerSe(9);
+                }
+            }
+        }
+        if (code == KeyEvent.VK_D) {
+            if(gp.ui.subState == 0){
+                if(gp.ui.commandNum3 == 1 && gp.music.volumeScale < 5){
+                    gp.music.volumeScale++;
+                    gp.music.checkVolume();
+                    //gp.playerSe(9);
+                }
+                if(gp.ui.commandNum3 == 2 && gp.se.volumeScale < 5){
+                    gp.se.volumeScale++;
+                    //gp.playerSe(9);
+                }
+            }
+        }
+
+
+
 
         if (code == KeyEvent.VK_Z) {
 
-            if (gp.ui.commandNum3 == 0) {
-                if (!gp.fullScreenOn) {
-                    gp.fullScreenOn = true;
-                } else if (gp.fullScreenOn) {
-                    gp.fullScreenOn = false;
+            if(gp.ui.subState==0){
+                if (gp.ui.commandNum3 == 0) {
+                    if (!gp.fullScreenOn) {
+                        gp.fullScreenOn = true;
+                    } else if (gp.fullScreenOn) {
+                        gp.fullScreenOn = false;
+                    }
+                    gp.ui.subState = 1;
                 }
-                gp.ui.subState=1;
             }
 
 
-            if (gp.ui.commandNum3 == 1) {
-
-            }
-            if (gp.ui.commandNum3 == 2) {
-
-            }
             if (gp.ui.commandNum3 == 3) {
-
+                gp.ui.subState=2;
             }
             if (gp.ui.commandNum3 == 4) {
-
-            }
-            if (gp.ui.commandNum3 == 4) {
+                gp.ui.subState=3;
             }
 
 
         }
-        if (code == KeyEvent.VK_ESCAPE && gp.ui.subState == 1) {
+        if (code == KeyEvent.VK_ESCAPE && gp.ui.subState == 1 || code == KeyEvent.VK_ESCAPE && gp.ui.subState == 2) {
             gp.ui.subState = 0;
+            gp.gameState = gp.optionsState;
         }
     }
 
