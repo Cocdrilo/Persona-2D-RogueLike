@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable{
     public AssetSetter Asetter = new AssetSetter(this);
     public UI ui= new UI(this);
     public Events eventHandler = new Events(this);
+    Config config = new Config(this);
     public SpellManager spellManager = SpellManager.getInstance();
     public MonsterManager monsterManager = MonsterManager.getInstance();
     SaveLoad saveLoad = new SaveLoad(this);
@@ -113,7 +114,9 @@ public class GamePanel extends JPanel implements Runnable{
         tempScreen = new BufferedImage(screenWidth,screenHeight,BufferedImage.TYPE_INT_ARGB);
         g2= (Graphics2D) tempScreen.getGraphics();
 
-        setFullScreen();
+        if(fullScreenOn==true){
+            setFullScreen();
+        }
     }
 
     public void startGameThread(){

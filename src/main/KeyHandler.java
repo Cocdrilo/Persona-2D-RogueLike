@@ -494,6 +494,7 @@ public class KeyHandler implements KeyListener {
             //BACK
             if (gp.ui.commandNum3 == 5) {
                 gp.ui.subState=0;
+                gp.ui.commandNum3=0;
                 gp.gameState=gp.enterMenuState;
             }
 
