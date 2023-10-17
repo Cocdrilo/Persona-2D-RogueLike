@@ -427,6 +427,7 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_W) {
             gp.ui.commandNum3--;
+            gp.playerSe(5);
             if (gp.ui.commandNum3 < 0) {
                 gp.ui.commandNum3 = maxCommandNum;
             }
@@ -434,6 +435,7 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_S) {
             gp.ui.commandNum3++;
+            gp.playerSe(5);
             if (gp.ui.commandNum3 > maxCommandNum) {
                 gp.ui.commandNum3 = 0;
             }
@@ -443,11 +445,11 @@ public class KeyHandler implements KeyListener {
                 if(gp.ui.commandNum3 == 1 && gp.music.volumeScale > 0){
                     gp.music.volumeScale--;
                     gp.music.checkVolume();
-                    //gp.playerSe(9);
+                    gp.playerSe(5);
                 }
                 if(gp.ui.commandNum3 == 2 && gp.se.volumeScale > 0){
                     gp.se.volumeScale--;
-                    //gp.playerSe(9);
+                    gp.playerSe(5);
                 }
             }
         }
@@ -456,11 +458,11 @@ public class KeyHandler implements KeyListener {
                 if(gp.ui.commandNum3 == 1 && gp.music.volumeScale < 5){
                     gp.music.volumeScale++;
                     gp.music.checkVolume();
-                    //gp.playerSe(9);
+                    gp.playerSe(5);
                 }
                 if(gp.ui.commandNum3 == 2 && gp.se.volumeScale < 5){
                     gp.se.volumeScale++;
-                    //gp.playerSe(9);
+                    gp.playerSe(5);
                 }
             }
         }
@@ -481,12 +483,30 @@ public class KeyHandler implements KeyListener {
                 }
             }
 
-
+            //CONTROL
             if (gp.ui.commandNum3 == 3) {
                 gp.ui.subState=2;
             }
+            //END GAME
             if (gp.ui.commandNum3 == 4) {
                 gp.ui.subState=3;
+            }
+            //BACK
+            if (gp.ui.commandNum3 == 5) {
+                gp.ui.subState=0;
+                gp.gameState=gp.enterMenuState;
+            }
+
+            //END GAME YES/NO
+            if(gp.ui.subState == 3 && gp.ui.commandNum3 == 0){
+                gp.ui.subState=0;
+                gp.stopMusic();
+                gp.gameState = gp.titleState;
+            }
+            else if(gp.ui.subState == 3 && gp.ui.commandNum3 == 1){
+                gp.ui.subState=0;
+                gp.ui.commandNum3=4;
+                gp.gameState = gp.optionsState;
             }
 
 

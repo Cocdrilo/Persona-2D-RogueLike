@@ -890,10 +890,9 @@ public class UI {
 
         //BACK
         textY = frameY + gp.tileSize * 9;
-        g2.drawString("Back", textX, textY);
-        if (commandNum3 == 0) {
-            g2.drawString(">", textX - 25, textY);
-        }
+        textX += gp.tileSize * 5;
+        g2.drawString("ESC", textX, textY);
+
     }
 
 
@@ -928,6 +927,8 @@ public class UI {
         g2.drawString("ENTER", textX, textY);
         textY += (int) (gp.tileSize * 1.5);
         g2.drawString("ESCAPE", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("ESC", textX, textY);
         textY += (int) (gp.tileSize * 1.5);
     }
 
