@@ -2,7 +2,6 @@ package entity;
 
 import battleNeeds.superMagic;
 import main.GamePanel;
-import main.KeyHandler;
 import main.Toolbox;
 
 import javax.imageio.ImageIO;
@@ -42,10 +41,10 @@ public class Entity {
     public boolean isPickupeable = false;
 
     //Maps de Resistencias y Debilidades.
-    public String resistances[];
-    public String weaknesses[];
-    public String nulls[];
-    public String repells[];
+    public String[] resistances;
+    public String[] weaknesses;
+    public String[] nulls;
+    public String[] repells;
 
     //Sprites
     //CONTADORES
@@ -53,7 +52,6 @@ public class Entity {
     public int actionLockCounter = 0;
 
     //IMAGE DATA
-    public BufferedImage image;
     public boolean collision = false;
     public BufferedImage standFront,standLeft,standBack,standRight,walkDown1,walkDown2,walkLeft1,walkLeft2,walkRight1,walkRight2,walkUp1,walkUp2;
 
@@ -220,7 +218,7 @@ public class Entity {
             scaledImage = ImageIO.read(getClass().getResourceAsStream(ImagePath+".png"));
             scaledImage = tbox.scaleImage(scaledImage,gp.tileSize,gp.tileSize);
         }catch (IOException e){
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
         return scaledImage;
     }

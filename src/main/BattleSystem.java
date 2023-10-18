@@ -49,7 +49,7 @@ public class BattleSystem {
         }
         if(turn == 1){
 
-            attack(monster, party.Leader);
+            monsterAttackIA();
         }
 
     }
@@ -229,7 +229,69 @@ public class BattleSystem {
             nextTurn();
         }
     }
+    private void monsterAttackIA() {
 
+        int maxDamage = 0;
+        String selectedAction = "";
+        int member = 0;
+
+        // Obtener los hechizos del monstruo
+        ArrayList<superMagic> monsterSpells = monster.getSpells();
+
+        do {
+            // Obtener el ataque físico del monstruo
+            for (Entity partyMember : partyMembers) {
+                if (partyMember.stats.hp > 0) {
+                    String weaponDmgType = monster.getAttackType();
+                    int physicalDamage = calculateDamage(monster, partyMember, weaponDmgType);
+                    if (physicalDamage >= maxDamage) {
+                        maxDamage = physicalDamage;
+                        selectedAction = "Physical Attack: ";
+                        member = partyMembers.indexOf(partyMember);
+                    }
+                }
+            }
+
+            // Calcular el daño máximo para los hechizos
+            for (superMagic spell : monsterSpells) {
+                for (Entity partyMember : partyMembers) {
+                    if (partyMember.stats.hp > 0) {
+                        int damage = calculateMagicDamage(monster, partyMember, spell);
+                        if (damage > maxDamage) {
+                            maxDamage = damage;
+                            selectedAction = "Spell: " + spell.name;
+                            member = partyMembers.indexOf(partyMember);
+                        }
+                    }
+                }
+            }
+
+
+            // Realizar la acción con el daño máximo
+            if (selectedAction.startsWith("Spell")) {
+                superMagic selectedSpell = findSpellByName(selectedAction.substring(7), monsterSpells);
+                useMagic(monster, partyMembers.get(member), selectedSpell);
+            } else if (selectedAction.equals("Physical Attack")) {
+                Entity targetEntity = partyMembers.get(member);
+
+                if (targetEntity instanceof Player) {
+                    attack(monster, (Player) targetEntity);
+                } else if (targetEntity instanceof shadowStandar) {
+                    attack(monster, (shadowStandar) targetEntity);
+                }
+            }
+        }while (pressTurn > 0 || monster.stats.hp > 0) ;
+    }
+
+
+    private superMagic findSpellByName(String name, ArrayList<superMagic> spells) {
+        for (superMagic spell : spells) {
+            if (spell.name.equals(name)) {
+                return spell;
+            }
+        }
+        return null;
+    }
 
     public void endBattle(){
         //EXP calc
