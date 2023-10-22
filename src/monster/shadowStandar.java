@@ -24,6 +24,7 @@ public class shadowStandar extends Entity{
         this.stats.agi = data.agi;
         this.stats.mag = data.mag;
         this.stats.vit = data.vit;
+        this.stats.level = data.lvl;
         this.xpGiven = data.xpGiven;
         this.attackType = data.attackType;
         this.combatImagePath = data.combatImagePath;
@@ -31,6 +32,7 @@ public class shadowStandar extends Entity{
         this.weaknesses = data.weaknesses;
         this.nulls = data.nulls;
         this.repells = data.repells;
+        fillSpells(data.spells);
         this.type = 2;
         speed = 1;
         getImage();
@@ -94,4 +96,5 @@ public class shadowStandar extends Entity{
             actionLockCounter =0;
         }
     }
+
 }

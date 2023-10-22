@@ -12,7 +12,6 @@ import monster.shadowStandar;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Player extends Entity{
 
@@ -20,7 +19,7 @@ public class Player extends Entity{
     public final int screenY;
 
     KeyHandler keyH;
-    public Entity_stats PLAYERstats;
+    public Entity_stats stats;
 
     //Inventario del jugador
     public ArrayList<Entity> inventory = new ArrayList<>();
@@ -38,22 +37,13 @@ public class Player extends Entity{
         solidAreaDefaultX = solidArea.x;
         SolidAreaDefaultY = solidArea.y;
 
-        PLAYERstats = new Entity_stats();
+        stats = new Entity_stats();
+        String defaultSpells[] = {"Zio","Agi"};
 
         setDefaultValues();
         getPlayerImage();
         setItems();
-        spells = new ArrayList<>();
-
-        ArrayList<superMagic> availableSpells = gp.spellManager.getSpells();
-        for (superMagic spell : availableSpells) {
-            if (spell.name.equals("Agi")) {
-                addSpell(spell);
-            }
-            if (spell.name.equals("Bufu")) {
-                addSpell(spell);
-            }
-        }
+        fillSpells(defaultSpells);
         debugPlayerSpells();
     }
 
@@ -67,39 +57,27 @@ public class Player extends Entity{
 
     }
 
-    public String[] printPlayerSpells() {
-        String[] spellNames = new String[this.spells.size()];
-        for(int spells=0;spells<this.spells.size();spells++){
-            spellNames[spells] = this.spells.get(spells).name +"  "+ (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
-        }
-        return spellNames;
-    }
-
-    public int numberOfSpells() {
-        int numSpells = this.spells.size();
-        return numSpells;
-    }
-
     public void setDefaultValues(){
         WorldX = 300;
         WorldY = 250;
         speed=4;
         direction="down";
+        name = "Raidou";
 
-        PLAYERstats.level = 1;
-        PLAYERstats.maxHp = 70;
-        PLAYERstats.hp = PLAYERstats.maxHp;
-        PLAYERstats.maxMp = 41;
-        PLAYERstats.mp = PLAYERstats.maxMp;
-        PLAYERstats.str = 3;
-        PLAYERstats.agi = 3;
-        PLAYERstats.mag = 2;
-        PLAYERstats.vit = 3;
-        PLAYERstats.exp = 0;
-        PLAYERstats.nextLevelExp = 10;
-        PLAYERstats.money = 0;
-        PLAYERstats.weapon = new OBJ_WEAPON_Slash(gp);
-        PLAYERstats.armor = new OBJ_Armor(gp);
+        stats.level = 1;
+        stats.maxHp = 70;
+        stats.hp = stats.maxHp;
+        stats.maxMp = 41;
+        stats.mp = stats.maxMp;
+        stats.str = 3;
+        stats.agi = 3;
+        stats.mag = 2;
+        stats.vit = 3;
+        stats.exp = 0;
+        stats.nextLevelExp = 10;
+        stats.money = 0;
+        stats.weapon = new OBJ_WEAPON_Slash(gp);
+        stats.armor = new OBJ_Armor(gp);
         resistances = new String[]{};
         weaknesses = new String[]{};
         nulls = new String[]{};
@@ -108,14 +86,14 @@ public class Player extends Entity{
 
     public void setItems(){
 
-        inventory.add(PLAYERstats.weapon);
-        inventory.add(PLAYERstats.armor);
+        inventory.add(stats.weapon);
+        inventory.add(stats.armor);
 
     }
     public int getWeaponSlot() {
         int weaponSlot = -1; // Valor predeterminado para indicar que no se ha encontrado un arma en el inventario
         for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i) instanceof OBJ_Weapon && inventory.get(i) == PLAYERstats.weapon) {
+            if (inventory.get(i) instanceof OBJ_Weapon && inventory.get(i) == stats.weapon) {
                 weaponSlot = i;
                 break; // Terminamos la búsqueda cuando se encuentra un arma
             }
@@ -125,12 +103,51 @@ public class Player extends Entity{
     public int getArmorSlot() {
         int armorSlot = -1; // Valor predeterminado para indicar que no se ha encontrado armadura en el inventario
         for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i) instanceof OBJ_Armor && inventory.get(i) == PLAYERstats.armor) {
+            if (inventory.get(i) instanceof OBJ_Armor && inventory.get(i) == stats.armor) {
                 armorSlot = i;
                 break; // Terminamos la búsqueda cuando se encuentra armadura
             }
         }
         return armorSlot;
+    }
+    public String[] printItems(){
+        String[] Items = new String[inventory.size()];
+        int ItemsIndex = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if(inventory.get(i).type == 5) {
+                Items[ItemsIndex] = inventory.get(i).name;
+                ItemsIndex++;
+            }
+        }
+        String [] consumableItems = new String[ItemsIndex];
+        for(int i = 0; i < ItemsIndex; i++){
+            consumableItems[i] = Items[i];
+        }
+        return consumableItems;
+    }
+    public ArrayList<Entity> getItems() {
+        ArrayList<Entity> Items = new ArrayList<>();
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i).type == 5){
+                Items.add(inventory.get(i));
+            }
+        }
+        return Items;
+    }
+    public int[] saveItemIndexes(){
+        int[] itemIndexes = new int[inventory.size()];
+        int itemCounter = 0;
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i).type == 5){
+                itemIndexes[itemCounter] = i;
+                itemCounter++;
+            }
+        }
+        int [] consumableItemsIndex = new int[itemIndexes.length];
+        for(int i = 0; i < itemCounter; i++){
+            consumableItemsIndex[i] = itemIndexes[i];
+        }
+        return consumableItemsIndex;
     }
 
     public void selectItems(){
@@ -142,16 +159,16 @@ public class Player extends Entity{
             Entity selectedItem = inventory.get(itemIndex);
 
             if(selectedItem instanceof OBJ_Weapon){
-                PLAYERstats.weapon = (OBJ_Weapon) selectedItem;
+                stats.weapon = (OBJ_Weapon) selectedItem;
             }
 
             if(selectedItem instanceof OBJ_Armor){
-                PLAYERstats.armor = (OBJ_Armor) selectedItem;
+                stats.armor = (OBJ_Armor) selectedItem;
             }
 
             if(selectedItem.type == 5){
                 //CONSUMIBLE
-                selectedItem.use(this);
+                selectedItem.overWorldUse(this);
                 inventory.remove(itemIndex);
             }
 
@@ -159,19 +176,19 @@ public class Player extends Entity{
         }
     public int getDefense() {
         int defReturn = 0;
-        if (PLAYERstats.armor != null) {
-            defReturn = PLAYERstats.agi + PLAYERstats.armor.def;
+        if (stats.armor != null) {
+            defReturn = stats.agi + stats.armor.def;
         }
         else{
-            defReturn = PLAYERstats.agi;
+            defReturn = stats.agi;
         }
         return defReturn;
     }
 
     public String getWeaponDmgType(){
         String dmgType = "";
-        if(PLAYERstats.weapon != null){
-            dmgType = PLAYERstats.weapon.damageType;
+        if(stats.weapon != null){
+            dmgType = stats.weapon.damageType;
         }
         else{
             dmgType = "Bashing";
@@ -179,33 +196,19 @@ public class Player extends Entity{
         return dmgType;
     }
 
-    // Métodos para agregar, quitar y acceder a hechizos del jugador
-    public void addSpell(superMagic spell) {
-        spells.add(spell);
-    }
-
-    public void removeSpell(superMagic spell) {
-        spells.remove(spell);
-    }
-
-    public ArrayList<superMagic> getSpells() {
-        return spells;
-    }
-
-
     public void getPlayerImage(){
-        standFront = setUp("/player/Raidou1");
-        standLeft =  setUp("/player/Raidou2");
-        standRight = setUp("/player/Raidou3");
-        standBack = setUp("/player/Raidou4");
-        walkDown1 = setUp("/player/Raidou5");
-        walkDown2 = setUp("/player/Raidou9");
-        walkLeft1 = setUp("/player/Raidou6");
-        walkLeft2 = setUp("/player/Raidou10");
-        walkRight1 = setUp("/player/Raidou7");
-        walkRight2 = setUp("/player/Raidou11");
-        walkUp1 = setUp("/player/Raidou8");
-        walkUp2 = setUp("/player/Raidou12");
+        standFront = setUp("/player/RaidouFront");
+        standLeft =  setUp("/player/RaidouLeft");
+        standRight = setUp("/player/RaidouRight");
+        standBack = setUp("/player/RaidouBack");
+        walkDown1 = setUp("/player/RaidouFrontWalk1");
+        walkDown2 = setUp("/player/RaidouFrontWalk2");
+        walkLeft1 = setUp("/player/RaidouLeftWalk1");
+        walkLeft2 = setUp("/player/RaidouLeftWalk2");
+        walkRight1 = setUp("/player/RaidouRightWalk1");
+        walkRight2 = setUp("/player/RaidouRightWalk2");
+        walkUp1 = setUp("/player/RaidouBackWalk1");
+        walkUp2 = setUp("/player/RaidouBackWalk2");
     }
     public void update(){
 
@@ -262,7 +265,7 @@ public class Player extends Entity{
             if(spriteCounter > 12){
                 if(spriteNum==1){
                     spriteNum=2;
-                } else if (spriteNum==2) {
+                }else if (spriteNum==2) {
                     spriteNum=1;
                 }
                 spriteCounter = 0;
@@ -276,6 +279,8 @@ public class Player extends Entity{
             if(gp.keyH.zPressed){
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
+                gp.party.addMonsterToParty("Ice golem");
+                gp.party.printParty();
                 }
             }
     }
@@ -303,25 +308,25 @@ public class Player extends Entity{
         if(i != 999){
             shadowStandar shadow = (shadowStandar) gp.monsters[i];
             //Cambio a Combate
-            gp.battleSystem = new BattleSystem(this,shadow,gp);
+            gp.battleSystem = new BattleSystem(gp.party,shadow,gp);
             gp.gameState = gp.combatState;
             gp.monsters[i] = null;
         }
     }
 
     public void getOldStats(){
-        keyH.oldStr = gp.player.PLAYERstats.str;
-        keyH.oldDex = gp.player.PLAYERstats.vit;
-        keyH.oldMag = gp.player.PLAYERstats.mag;
-        keyH.oldAgi = gp.player.PLAYERstats.agi;
+        keyH.oldStr = gp.player.stats.str;
+        keyH.oldDex = gp.player.stats.vit;
+        keyH.oldMag = gp.player.stats.mag;
+        keyH.oldAgi = gp.player.stats.agi;
     }
 
     public void levelUp(){
         keyH.pointsPerLevel = keyH.pointsPerLevel+3;
         getOldStats();
         gp.gameState = gp.levelUpState;
-        PLAYERstats.level++;
-        PLAYERstats.nextLevelExp = PLAYERstats.nextLevelExp * 2;
+        stats.level++;
+        stats.nextLevelExp = stats.nextLevelExp * 2;
     }
 
     public void draw(Graphics2D graficos2d){
@@ -372,4 +377,5 @@ public class Player extends Entity{
         graficos2d.drawImage(image, screenX, screenY,null);
 
     }
+
 }

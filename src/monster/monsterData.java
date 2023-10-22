@@ -12,6 +12,7 @@ public class monsterData {
     public int agi;
     public int mag;
     public int vit;
+    public int lvl;
     public int xpGiven;
     public String attackType;
     public String combatImagePath;
@@ -19,6 +20,7 @@ public class monsterData {
     public String[] resistances;
     public String[] nulls;
     public String[] repells;
+    public String[] spells;
 
 
     // Constructor predeterminado sin argumentos
@@ -34,13 +36,15 @@ public class monsterData {
             @JsonProperty("agi") int agi,
             @JsonProperty("mag") int mag,
             @JsonProperty("vit") int vit,
+            @JsonProperty("lvl") int lvl,
             @JsonProperty("xpGiven") int xpGiven,
             @JsonProperty("attackType") String attackType,
             @JsonProperty("combatImagePath") String combatImagePath,
             @JsonProperty("weaknesses") String[] weaknesses,
             @JsonProperty("resistances") String[] resistances,
             @JsonProperty("nulls") String[] nulls,
-            @JsonProperty("repells") String[] repells
+            @JsonProperty("repells") String[] repells,
+            @JsonProperty("spells") String[] spells
     ) {
         this.name = name;
         this.hp = health;
@@ -49,6 +53,7 @@ public class monsterData {
         this.agi = agi;
         this.mag = mag;
         this.vit = vit;
+        this.lvl = lvl;
         this.xpGiven = xpGiven;
         this.attackType = attackType;
         this.combatImagePath = combatImagePath;
@@ -57,5 +62,6 @@ public class monsterData {
         this.resistances = resistances;
         this.nulls = nulls;
         this.repells = repells;
+        this.spells = spells;
     }
 }

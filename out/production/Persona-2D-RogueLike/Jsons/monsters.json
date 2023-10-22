@@ -6,13 +6,15 @@
     "agi": 6,
     "mag": 3,
     "vit": 4,
+    "lvl": 1,
     "xpGiven": 40,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Wind"],
     "resistances": [],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Bufu","Zio"]
   },
   {
     "name": "Mascara Sonriente",
@@ -21,13 +23,15 @@
     "agi": 3,
     "mag": 5,
     "vit": 3,
+    "lvl": 1,
     "xpGiven": 32,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Ice","Elec"],
     "resistances": ["Fire"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Zio"]
   },
   {
     "name": "Cuervo Oscuro",
@@ -36,13 +40,15 @@
     "agi": 5,
     "mag": 4,
     "vit": 4,
+    "lvl": 2,
     "xpGiven": 48,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Elec"],
     "resistances": [],
     "nulls": ["Fire","Wind"],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Magic Hand",
@@ -51,13 +57,15 @@
     "agi": 2,
     "mag": 6,
     "vit": 5,
+    "lvl": 2,
     "xpGiven": 78,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Ice"],
     "resistances": ["Bashing","Slashing","Piercing","Wind"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Trance Twins",
@@ -66,13 +74,15 @@
     "agi": 6,
     "mag": 6,
     "vit": 5,
+    "lvl": 4,
     "xpGiven": 88,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Fire"],
     "resistances": ["Elec"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi"]
   },
   {
     "name": "Dancing Table",
@@ -81,13 +91,15 @@
     "agi": 5,
     "mag": 3,
     "vit": 3,
+    "lvl": 1,
     "xpGiven": 36,
     "attackType": "Slashing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Fire", "Elec"],
     "resistances": ["Ice"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Unveiling Monster",
@@ -96,13 +108,15 @@
     "agi": 4,
     "mag": 4,
     "vit": 3,
+    "lvl": 1,
     "xpGiven": 42,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Ice", "Slashing"],
     "resistances": ["Fire", "Piercing"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Small Gigant",
@@ -111,13 +125,15 @@
     "agi": 3,
     "mag": 5,
     "vit": 4,
+    "lvl": 2,
     "xpGiven": 50,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Elec"],
     "resistances": [],
     "nulls": ["Fire", "Ice"],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Tiny Devil",
@@ -126,13 +142,15 @@
     "agi": 5,
     "mag": 6,
     "vit": 4,
+    "lvl": 2,
     "xpGiven": 58,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Fire"],
     "resistances": ["Slashing", "Bashing"],
     "nulls": [],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   },
   {
     "name": "Ice golem",
@@ -141,13 +159,15 @@
     "agi": 7,
     "mag": 7,
     "vit": 5,
+    "lvl": 2,
     "xpGiven": 66,
     "attackType": "Piercing",
     "combatImagePath": "/Monsters/MonstersBattleDisplay/Quimera",
     "weaknesses": ["Fire"],
     "resistances": ["Elec"],
     "nulls": ["Ice"],
-    "repells": []
+    "repells": [],
+    "spells": ["Agi","Garu"]
   }
 
 ]

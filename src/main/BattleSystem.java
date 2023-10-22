@@ -1,27 +1,39 @@
 package main;
+import Object.Consumables.*;
 import battleNeeds.superMagic;
+import entity.Entity;
 import entity.Player;
+import entity.partyManager;
 import monster.shadowStandar;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BattleSystem {
-    private Player player;
+    public partyManager party;
     public shadowStandar monster;
     public GamePanel gp;
 
-    private int turn = 0; //0 = player, 1 = monster
+    private int turn = 0; // 0 = player, 1 = monster
+    public int pressTurn = 8; // 2 turns per action, if hit weakness or crit 1 turn per action
+    public ArrayList<Entity> partyMembers; // Lista de miembros del partido
+    public int currentPartyMemberIndex; // Índice del miembro del partido que está atacando
 
-
-    public BattleSystem(Player player, shadowStandar monster,GamePanel gp) {
-        this.gp = gp;
-        this.player = player;
+    public BattleSystem(partyManager party, shadowStandar monster, GamePanel gp) {
+        this.party = party; // Asigna la party
         this.monster = monster;
+        this.gp = gp;
+        this.partyMembers = new ArrayList<>(); // Inicializa la lista de miembros del partido
+        this.partyMembers.add(party.Leader); // Agrega al líder a la lista
+
+        // Agrega a los miembros del partido a la lista
+        this.partyMembers.addAll(party.partyMembers);
+        this.currentPartyMemberIndex = 0; // Inicialmente, el primer miembro del partido ataca
     }
 
     public void nextTurn() {
 
-        if(player.PLAYERstats.hp<=0){
+        if(party.Leader.stats.hp<=0){
             System.out.println("Player has died");
             gp.gameState = gp.titleState;
         }
@@ -36,159 +48,198 @@ public class BattleSystem {
             turn = 0;
         }
         if(turn == 1){
-            monsterAttack();
+
+            attack(monster, party.Leader);
         }
 
     }
 
+    public void attack(Player attacker, shadowStandar target) {
+        String weaponDmgType = attacker.getWeaponDmgType();
+        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
 
-    public void attack() {
-        // Realizar cálculos de daño para un ataque
-        String weaponDmgType = player.getWeaponDmgType();
-        int monsterDEF = monster.getDefense();
-        System.out.println(monsterDEF);
-        int DmgPreModifier = player.getPhysAttack(monsterDEF,player.PLAYERstats.weapon.atk,player.PLAYERstats.str);
-        System.out.println(DmgPreModifier);
-        // Si el monstruo es débil al tipo de daño del arma, el daño se duplica
-        if (monster.isWeak(weaponDmgType)) {
-            DmgPreModifier *= 2;
-            System.out.println("Weak");
+        target.stats.hp= target.stats.hp - calculateDamage(attacker,target, weaponDmgType);
+
+
+        System.out.println(pressTurn);
+        if (pressTurn <= 0 || target.stats.hp <= 0) {
+            pressTurn = 8;
+            nextTurn();
         }
-
-        // Si el monstruo es resistente al tipo de daño del arma, el daño se reduce a la mitad
-        if (monster.isResistant(weaponDmgType)) {
-            DmgPreModifier /= 2;
-            System.out.println("resistant");
+        currentPartyMemberIndex++;
+        if (currentPartyMemberIndex >= partyMembers.size()) {
+            currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
         }
+    }
+    public void attack(shadowStandar attacker, shadowStandar target) {
+        String weaponDmgType = attacker.getAttackType();
+        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
 
-        // Si el monstruo es inmune al tipo de daño del arma, el daño es 0
-        if (monster.isNull(weaponDmgType)) {
-            DmgPreModifier = 0;
-            System.out.println("null");
+        target.stats.hp= target.stats.hp - calculateDamage(attacker,target, weaponDmgType);
+
+        if (pressTurn <= 0 || target.stats.hp <= 0) {
+            pressTurn = 8;
+            nextTurn();
         }
+        currentPartyMemberIndex++;
+        if (currentPartyMemberIndex >= partyMembers.size()) {
+            currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
+        }
+    }
+    public void attack(shadowStandar attacker, Player target) {
+        String weaponDmgType = attacker.getAttackType();
+        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
 
-        // Si el monstruo repela el tipo de daño del arma, el calculated dmg te lo haces a ti mismo Falta Implementar Logica de weak resistant null y repel dentro de cuando se repele a ti mismo
-        if (monster.isRepelled(weaponDmgType)) {
-            // Aplica la lógica al propio personaje
-            if (player.isWeak(weaponDmgType)) {
-                DmgPreModifier *= 2;
-            }
-            if (player.isResistant(weaponDmgType)) {
-                DmgPreModifier /= 2;
-            }
-            if (player.isNull(weaponDmgType)) {
-                DmgPreModifier = 0;
-            }
-            // Aquí puedes aplicar el daño al propio personaje
-            player.PLAYERstats.hp -= DmgPreModifier;
-            System.out.println("Player" + " has recived" + DmgPreModifier + " damage");
+        target.stats.hp= target.stats.hp - calculateDamage(attacker,target, weaponDmgType);
+
+        if (pressTurn <= 0 || target.stats.hp <= 0) {
+            pressTurn = 8;
             nextTurn();
             return;
         }
+        attack(attacker, target);
+    }
 
-        if(DmgPreModifier<0){
+    // Hacer para monster->player y monster monster
+
+    private int calculateDamage(Entity attacker, Entity target, String weaponDmgType) {
+        int targetDEF = target.getDefense();
+        int DmgPreModifier;
+
+        if (attacker instanceof Player) {
+            DmgPreModifier = ((Player) attacker).getPhysAttack(targetDEF, ((Player) attacker).stats.weapon.atk, ((Player) attacker).stats.str);
+        } else if (attacker instanceof shadowStandar) {
+            DmgPreModifier = ((shadowStandar)attacker).getPhysAttack(targetDEF, attacker.stats.str);
+        } else {
+            // Manejar el caso en el que attacker no sea ni Player ni Monster
             DmgPreModifier = 0;
         }
-        monster.stats.hp = monster.stats.hp - DmgPreModifier;
-        System.out.println(monster.name + " has recived" + DmgPreModifier + " damage");
-        nextTurn();
+        handleDamageAndPressTurn(target, DmgPreModifier, weaponDmgType);
+
+        return Math.max(0, DmgPreModifier); // Ensure damage is non-negative
     }
 
-    public void monsterAttack() {
-             // Turno del monstruo
-            String attackType = monster.getAttackType();
-            int monsterDMG = monster.getPhysAttack(player.getDefense(),monster.stats.str);
-            System.out.println("str de monstruo "+ monster.stats.str);
-            if (player.isWeak(attackType)) {
-                monsterDMG *= 2;
-                System.out.println("Weak");
-            }
-            if (player.isResistant(attackType)) {
-                monsterDMG /= 2;
-                System.out.println("resistant");
-            }
-            if (player.isNull(attackType)) {
-                monsterDMG = 0;
-                System.out.println("null");
-            }
-            if(player.isRepelled(attackType)){
-                //Aplica la logica al propio monstruo
-                if (monster.isWeak(attackType)) {
-                    monsterDMG *= 2;
-                }
-                if (monster.isResistant(attackType)) {
-                    monsterDMG /= 2;
-                }
-                if (monster.isNull(attackType)) {
-                    monsterDMG = 0;
-                }
-                // Aquí puedes aplicar el daño al propio monstruo
-                monster.stats.hp -= monsterDMG;
-                System.out.println(monster.name + " has recived" + monsterDMG + " damage");
-                nextTurn();
-                return;
-            }
-
-            // Si el jugador está defendiendo, reduce el daño del monstruo a la mitad
-            if (player.defending) {
-                monsterDMG /= 2;
-            }
-            if(monsterDMG<0){
-                monsterDMG = 0;
-            }
-
-            player.PLAYERstats.hp = player.PLAYERstats.hp - monsterDMG;
-            System.out.println("Player" + " has recived-" + monsterDMG + " damage");
-            nextTurn();
-
-    }
-
-    public void useMagic() {
-        // Obtener el hechizo seleccionado por el jugador
-        ArrayList<superMagic> playerSpells = player.getSpells();
-        if (gp.ui.commandNum2 >= 0 && gp.ui.commandNum2 < playerSpells.size()) {
-            superMagic selectedSpell = playerSpells.get(gp.ui.commandNum2);
-
-            // Verificar si el jugador tiene suficiente MP para lanzar el hechizo
-            if (player.PLAYERstats.mp >= selectedSpell.mpCost) {
-                // Restar el costo de MP al jugador
-                player.PLAYERstats.mp -= selectedSpell.mpCost;
-
-                // Realizar cálculos de daño o efectos del hechizo según sea necesario
-                int damage = player.getMagicAttack(monster.getDefense(),selectedSpell.damage,player.PLAYERstats.mag);;
-                // Puedes agregar lógica adicional aquí para diferentes tipos de hechizos
-
-                // Aplicar los efectos del hechizo al enemigo (monstruo)
-                if (turn == 0) {
-                    monster.stats.hp -= damage;
-                    System.out.println(monster.name + " has recived " + damage + " damage from " + selectedSpell.name);
-                }
-                // Aplicar los efectos del hechizo al jugador
-                else if (turn == 1) {
-                    player.PLAYERstats.hp -= damage;
-                    System.out.println("Player has recived " + damage + " damage from " + selectedSpell.name);
-                }
-
-                // Actualizar la interfaz de usuario para reflejar los cambios
-                // Puedes agregar código aquí para mostrar mensajes o actualizaciones visuales
-
-                // Cambiar al siguiente turno
-                nextTurn();
-            } else {
-                System.out.println("Not enough MP to cast " + selectedSpell.name);
-            }
+    private void handleDamageAndPressTurn(Entity target, int damage, String weaponDmgType) {
+        if (target.isWeak(weaponDmgType)) {
+            damage *= 2;
+            pressTurn--;
+        } else if (target.isResistant(weaponDmgType)) {
+            damage /= 2;
+            pressTurn -= 2;
+        } else if (target.isNull(weaponDmgType)) {
+            damage = 0;
+            pressTurn -= 3;
+        } else if (target.isRepelled(weaponDmgType)) {
+            handleRepelledDamage(target, damage, weaponDmgType);
+        }else{
+            pressTurn-=2;
         }
     }
 
-    public void useItem(Object item) {
-        // Implementar el uso de un objeto (poción, etc.)
-        // Actualizar la interfaz de usuario
+    private void handleDamageAndPressTurn(Entity attacker, Entity target, int damage, superMagic selectedSpell) {
+        if (target.isWeak(selectedSpell.damageType)) {
+            damage *= 2;
+            pressTurn--;
+        } else if (target.isResistant(selectedSpell.damageType)) {
+            damage /= 2;
+            pressTurn -= 2;
+        } else if (target.isNull(selectedSpell.damageType)) {
+            damage = 0;
+            pressTurn -= 3;
+        } else if (target.isRepelled(selectedSpell.damageType)) {
+            handleRepelledDamage(attacker, damage, selectedSpell.damageType);
+        }else{
+            pressTurn-=2;
+        }
+
+        if (damage > 0) {
+            target.stats.hp -= damage;
+            System.out.println(target.name + " has received " + damage + " damage from " + selectedSpell.name);
+        } else {
+            System.out.println("No damage dealt by " + selectedSpell.name);
+        }
+    }
+
+
+    private void handleRepelledDamage(Entity target, int DmgPreModifier, String weaponDmgType) {
+        if (target.isWeak(weaponDmgType)) {
+            DmgPreModifier *= 2;
+        } else if (target.isResistant(weaponDmgType)) {
+            DmgPreModifier /= 2;
+        } else if (target.isNull(weaponDmgType)) {
+            DmgPreModifier = 0;
+        }
+        pressTurn -=3;
+
+        target.stats.hp -= DmgPreModifier;
+        System.out.println(target.name + " has received " + DmgPreModifier + " damage");
+    }
+
+
+    private superMagic selectSpell(Entity attacker) {
+        ArrayList<superMagic> entitySpells = attacker.getSpells();
+        if(gp.ui.commandNum2 >=0 &&gp.ui.commandNum2 < entitySpells.size()){
+            return entitySpells.get(gp.ui.commandNum2);
+        }
+        return null;
+    }
+
+    public void useMagic(Entity attacker, Entity target, superMagic selectedSpell) {
+        if (attacker.stats.mp < selectedSpell.mpCost) {
+            System.out.println("Not enough MP to cast " + selectedSpell.name);
+            return;
+        }
+
+        int damage = calculateMagicDamage(attacker, target, selectedSpell);
+
+        handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
+        if(pressTurn <= 0 || target.stats.hp <= 0){
+            pressTurn = 8;
+            nextTurn();
+        }
+        // Cambiar al siguiente miembro del partido
+        currentPartyMemberIndex++;
+        if (currentPartyMemberIndex >= partyMembers.size()) {
+            currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
+        }
+    }
+
+    private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell) {
+        int damage = 0;
+
+        if (attacker instanceof Player playerAttacker) {
+            damage = playerAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, playerAttacker.stats.mag);
+        } else if (attacker instanceof shadowStandar monsterAttacker) {
+            damage = monsterAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, monsterAttacker.stats.mag);
+        }
+
+        return damage;
+    }
+
+
+    public void useItem(Entity item) {
+        if (item instanceof OBJ_Potion_Health healthPotion) {
+            healthPotion.battleUse(partyMembers.get(currentPartyMemberIndex));
+        }
     }
 
     public void defend() {
         if (turn == 0) {
             // El jugador decide defender, reduce el daño recibido en el siguiente turno
-            player.defending = true;
+            party.Leader.defending = true;
+            nextTurn();
+        }
+    }
+    public void fleeFromBattle(){
+        //Implementar el escape de la batalla
+        Random random = new Random();
+        int randomNum = random.nextInt(100);
+        if(randomNum<50){
+            System.out.println("Player has escaped");
+            gp.gameState = gp.playState;
+        }
+        else{
+            System.out.println("Player has failed to escape");
             nextTurn();
         }
     }
@@ -197,7 +248,7 @@ public class BattleSystem {
     public void endBattle(){
         //EXP calc
 
-        player.PLAYERstats.exp = player.PLAYERstats.exp + monster.xpGiven;
+        party.Leader.stats.exp = party.Leader.stats.exp + monster.xpGiven;
         System.out.println("Player has recived " + monster.xpGiven + " exp");
 
         //Loot calc
@@ -205,10 +256,18 @@ public class BattleSystem {
         //Random de dinero
         //Random de Objetos
 
-        if(player.PLAYERstats.exp>= player.PLAYERstats.nextLevelExp){
+        if(party.Leader.stats.exp>= party.Leader.stats.nextLevelExp){
             //Level Up
-            player.levelUp();
+            party.Leader.levelUp();
         }
+        /*
+        for(int i = 0; i < party.partyMembers.size(); i++){
+            if(party.partyMembers.get(i).stats.exp>= party.partyMembers.get(i).stats.nextLevelExp){
+                //Level Up
+                party.partyMembers.get(i).levelUp();
+            }
+        }
+         */
         else {
             gp.gameState = gp.playState;
         }

@@ -40,8 +40,8 @@ public class AssetSetter {
             gp.obj[3].WorldY = gp.tileSize*5;
 
             gp.obj[4]= new OBJ_Potion_Health(gp);
-            gp.obj[4].WorldX = gp.tileSize*11;
-            gp.obj[4].WorldY = gp.tileSize*38;
+            gp.obj[4].WorldX = gp.tileSize*16;
+            gp.obj[4].WorldY = gp.tileSize*6;
 
 
     }
@@ -55,7 +55,7 @@ public class AssetSetter {
 
     public void setMonster(){
             ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
-            gp.monsters[0] = new shadowStandar(gp,availableMonsters.get(0));
+            gp.monsters[0] = new shadowStandar(gp,availableMonsters.get(6));
             gp.monsters[0].WorldX = gp.tileSize*8;
             gp.monsters[0].WorldY = gp.tileSize*4;
     }

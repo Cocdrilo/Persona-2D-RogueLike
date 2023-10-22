@@ -58,7 +58,21 @@ public class Entity {
     public BufferedImage standFront,standLeft,standBack,standRight,walkDown1,walkDown2,walkLeft1,walkLeft2,walkRight1,walkRight2,walkUp1,walkUp2;
 
     //Array de hechizos:
-    protected ArrayList<superMagic> spells;
+    public ArrayList<superMagic> spells;
+
+    public void fillSpells(String[] spellNames) {
+        spells = new ArrayList<>();
+
+        ArrayList<superMagic> availableSpells = gp.spellManager.getSpells();
+        for (superMagic spell : availableSpells) {
+            for (String spellName : spellNames) {
+                if (spell.name.equals(spellName)) {
+                    addSpell(spell);
+                    break; // Exit the inner loop when a match is found
+                }
+            }
+        }
+    }
 
     //CombatMethods
 
@@ -131,6 +145,29 @@ public class Entity {
     public int getDefense() {
         return stats.vit;
     }
+    //Spell Methods
+
+    // Métodos para agregar, quitar y acceder a hechizos del jugador
+    public void addSpell(superMagic spell) {
+        spells.add(spell);
+    }
+
+    public String[] printSpells() {
+        String[] spellNames = new String[this.spells.size()];
+        for(int spells=0;spells<this.spells.size();spells++){
+            spellNames[spells] = this.spells.get(spells).name +"  "+ (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
+        }
+        return spellNames;
+    }
+
+    public void removeSpell(superMagic spell) {
+        spells.remove(spell);
+    }
+
+    public ArrayList<superMagic> getSpells() {
+        return spells;
+    }
+
 
     public Entity(GamePanel gp){
 
@@ -216,7 +253,11 @@ public class Entity {
 
     }
 
-    public void use(Entity entity){
+    public void overWorldUse(Entity entity){
+
+    }
+
+    public void battleUse(Entity entity){
 
     }
 

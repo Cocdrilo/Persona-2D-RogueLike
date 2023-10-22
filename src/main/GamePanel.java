@@ -4,6 +4,7 @@ import battleNeeds.SpellManager;
 import data.SaveLoad;
 import entity.Entity;
 import entity.Player;
+import entity.partyManager;
 import monster.MonsterManager;
 import tile.TileManager;
 
@@ -54,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     //ENTITY AND OBJECT
     public Player player = new Player(this,keyH);
+    public partyManager party = new partyManager(player,this);
     public Entity obj [] = new Entity[10];
     public Entity npc[] = new Entity[10];
     public Entity monsters[] = new Entity[20];
@@ -73,8 +75,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int inventoryState = 7;
     public final int levelUpState = 8;
     public final int magicMenuState = 9;
-
-
+    public final int battleItemsState = 10;
 
 
     public GamePanel(){

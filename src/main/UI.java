@@ -1,10 +1,13 @@
 package main;
 
+import monster.shadowStandar;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.io.File;
 
 import javax.imageio.ImageIO;
 
@@ -18,6 +21,8 @@ public class UI {
 
     BufferedImage image;
     BufferedImage titleImage;
+    BufferedImage pressTurnIcon1;
+    BufferedImage pressTurnIcon2;
 
     //ArrayList de text para que sean Scrolling
     ArrayList<String> messageList = new ArrayList<>();
@@ -28,6 +33,7 @@ public class UI {
     public int commandNum = 0;
     public int commandNum2;
     public boolean magicMenu = false;
+    public boolean itemMenu = false;
 
     //VARIABLES PARA MANEJO DE INVENTARIO
     public int slotCol = 0;
@@ -53,11 +59,22 @@ public class UI {
 
         try {
             titleImage = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
+            pressTurnIcon1 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIcon.png"));
+            pressTurnIcon2 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIconHalfTurn.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
+    public BufferedImage loadImage(String filePath) {
+        try {
+            return ImageIO.read(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public void addMessage(String text) {
         messageList.add(text);
@@ -178,7 +195,7 @@ public class UI {
     public void drawStatusScreen() {
 
         //CREATE A FRAME
-        final int frameX = gp.tileSize * 2;
+        final int frameX = gp.tileSize/2;
         final int frameY = gp.tileSize;
         final int frameWidth = gp.tileSize * 5;
         final int frameHeight = gp.tileSize * 10;
@@ -223,171 +240,327 @@ public class UI {
         textY = frameY + gp.tileSize;
         String valor;
 
-        valor = String.valueOf(gp.player.PLAYERstats.level);
+        valor = String.valueOf(gp.player.stats.level);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY);
 
-        valor = String.valueOf(gp.player.PLAYERstats.exp);
+        valor = String.valueOf(gp.player.stats.exp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight);
 
-        valor = String.valueOf(gp.player.PLAYERstats.nextLevelExp);
+        valor = String.valueOf(gp.player.stats.nextLevelExp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 2);
 
-        valor = String.valueOf(gp.player.PLAYERstats.hp + "/" + gp.player.PLAYERstats.maxHp);
+        valor = String.valueOf(gp.player.stats.hp + "/" + gp.player.stats.maxHp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 3);
 
-        valor = String.valueOf(gp.player.PLAYERstats.mp + "/" + gp.player.PLAYERstats.maxMp);
+        valor = String.valueOf(gp.player.stats.mp + "/" + gp.player.stats.maxMp);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 4);
 
-        valor = String.valueOf(gp.player.PLAYERstats.str);
+        valor = String.valueOf(gp.player.stats.str);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 5);
 
-        valor = String.valueOf(gp.player.PLAYERstats.vit);
+        valor = String.valueOf(gp.player.stats.vit);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 6);
 
-        valor = String.valueOf(gp.player.PLAYERstats.agi);
+        valor = String.valueOf(gp.player.stats.agi);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 7);
 
-        valor = String.valueOf(gp.player.PLAYERstats.mag);
+        valor = String.valueOf(gp.player.stats.mag);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 8);
 
-        valor = String.valueOf(gp.player.PLAYERstats.money);
+        valor = String.valueOf(gp.player.stats.money);
         textX = getXforAlignToRightText(valor, tailX);
         g2.drawString(valor, textX, textY + lineHeight * 9);
 
-        g2.drawImage(gp.player.PLAYERstats.weapon.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 10, null);
+        g2.drawImage(gp.player.stats.weapon.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 10, null);
         textY += gp.tileSize;
-        g2.drawImage(gp.player.PLAYERstats.armor.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 20, null);
+        g2.drawImage(gp.player.stats.armor.walkDown1, tailX - gp.tileSize, (textY + lineHeight * 9) + 20, null);
+
+        //Posicion Inicial para dibujar marcos del equipo
+        int memberX = frameX + frameWidth + 10; // Inicia al lado derecho del marco principal
+        int memberY = frameY;
+
+        for (int i = 0; i < gp.party.partyMembers.size(); i++) {
+            drawSubWindow(memberX, memberY, (frameWidth/2)+30, frameHeight);
+            g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(24F));
+
+            // Dibuja la información del miembro del grupo de manera similar a la del jugador
+            shadowStandar member = gp.party.partyMembers.get(i);
+
+            // Alinea los valores con el marco del miembro del grupo
+            // Utiliza las mismas coordenadas de textoY, textX y tailX para alinear los valores
+            textY = memberY + gp.tileSize;
+            textX = memberX + gp.tileSize / 2;
+            tailX = (memberX + frameWidth) - 30;
+
+            valor = String.valueOf(member.stats.level);
+            g2.drawString("Level: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.nextLevelExp);
+            g2.drawString("EXP: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.hp + "/" + member.stats.maxHp);
+            g2.drawString("HP: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.mp + "/" + member.stats.maxMp);
+            g2.drawString("MP: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.str);
+            g2.drawString("STR: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.mag);
+            g2.drawString("MAG: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.agi);
+            g2.drawString("AGI: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.vit);
+            g2.drawString("VIT: " + valor, textX, textY);
+            textY += lineHeight;
+
+            // Dibuja la imagen de combate de 64x64 debajo del atributo VIT
+            image = member.getCombatImage();
+            int imageX = memberX + (frameWidth - 64) / 12; // Centra la imagen en el marco
+            int imageY = textY + 10; // Espacio para separar la imagen del texto
+            g2.drawImage(image, imageX, imageY, 128, 128, null);
+
+
+            // Avanza a la siguiente posición Y para dibujar el siguiente miembro del grupo
+            memberX += gp.tileSize*3.5;
+        }
 
     }
 
     public void drawCombatScreen(BattleSystem BattleState) {
-
         g2.setFont(franklin);
 
-        //Dibuja un panel arriba centrado donde se displayeará el monstruo
         int x = (int) (gp.tileSize * 2.5);
         int y = gp.tileSize;
         int width = gp.screenWidth - gp.tileSize * 5;
         int height = gp.tileSize * 4;
 
-        g2.setColor(Color.BLUE);
+        // Draw the monster panel
+        drawMonsterPanel(x, y, width, height, BattleState);
+
+        // Draw the turn order panel
+        x = gp.screenWidth - gp.tileSize * 2;
+        y = gp.tileSize * 5;
+        width = gp.tileSize * 2;
+        height = (int) (gp.tileSize * 6.5);
+        drawTurnOrderPanel(x, y, width, height);
+
+        // Draw the command menu
+        x = gp.tileSize * 2;
+        width = (gp.tileSize * 3);
+        height = gp.tileSize * 5;
+        drawCommandMenu(x, y, width, height);
+
+        // Draw the magic menu
+        if (magicMenu) {
+            x = x + width;
+            int magicMenuY = y;
+            int magicMenuWidth = gp.tileSize * 4;
+            int magicMenuHeight = height;
+            drawMagicMenu(x, magicMenuY, magicMenuWidth, magicMenuHeight, BattleState);
+        }
+        if(itemMenu) {
+            x = x + width;
+            int itemMenuY = y;
+            int itemMenuWidth = gp.tileSize * 4;
+            int itemMenuHeight = height;
+            drawItemMenu(x, itemMenuY, itemMenuWidth, itemMenuHeight, BattleState);
+        }
+
+        // Draw the player and party panel
+        x = (int) (gp.tileSize * 2.5) + 15;
+        y = gp.tileSize * 10;
+        width = gp.screenWidth - gp.tileSize * 5;
+        height = gp.tileSize * 4;
+
+        // Code for Resalting the one who is attacking
+        int selectedIndex = BattleState.currentPartyMemberIndex;
+        drawPlayerAndPartyPanel(x, y, width, height, selectedIndex, BattleState);
+
+        // Draw the turn icons
+        drawTurnIcons(BattleState.pressTurn);
+    }
+
+    private void drawItemMenu(int x, int itemMenuY, int itemMenuWidth, int itemMenuHeight, BattleSystem battleState) {
+        g2.setColor(Color.MAGENTA);
+        g2.fillRect(x, itemMenuY, itemMenuWidth, itemMenuHeight);
+
+        g2.setColor(Color.BLACK);
+        g2.setFont(g2.getFont().deriveFont(24F));
+
+        String[] entityItemNames = battleState.party.Leader.printItems();
+
+        int itemOptionY = itemMenuY + gp.tileSize;
+
+
+        for (int i = 0; i < entityItemNames.length; i++) {
+            String spellText = entityItemNames[i];
+            g2.drawString(spellText, x + 15, itemOptionY + i * gp.tileSize);
+
+            if (i == gp.ui.commandNum2) {
+                g2.drawString("->", x, itemOptionY + i * gp.tileSize);
+            }
+        }
+
+
+    }
+
+    private void drawMagicMenu(int x, int y, int width, int height, BattleSystem BattleState) {
+        g2.setColor(Color.MAGENTA);
         g2.fillRect(x, y, width, height);
 
+        g2.setColor(Color.BLACK);
+        g2.setFont(g2.getFont().deriveFont(24F));
+
+        String[] entitySpellNames = BattleState.partyMembers.get(BattleState.currentPartyMemberIndex).printSpells();
+
+        int magicOptionY = y + gp.tileSize;
+
+        for (int i = 0; i < entitySpellNames.length; i++) {
+            String spellText = entitySpellNames[i];
+            g2.drawString(spellText, x + 15, magicOptionY + i * gp.tileSize);
+
+            if (i == gp.ui.commandNum2) {
+                g2.drawString("->", x, magicOptionY + i * gp.tileSize);
+            }
+        }
+    }
+
+    private void drawMonsterPanel(int x, int y, int width, int height, BattleSystem BattleState) {
+        g2.setColor(Color.BLUE);
+        g2.fillRect(x, y, width, height);
         drawSubWindow(x, y, width, height);
 
-        // Dentro de este panel de arriba centrado se dibujará el monstruo
         x = gp.tileSize * 6;
         y = (int) (gp.tileSize * 1.5);
 
         image = BattleState.monster.getCombatImage();
         g2.drawImage(image, x - 18, y - 5, 150, 150, null);
 
-        // Dibuja la barra de vida del monstruo
         int maxHealth = BattleState.monster.stats.maxHp;
         int currentHealth = BattleState.monster.stats.hp;
-        int barWidth = 150; // Ancho de la barra de vida
-        int barHeight = 10; // Altura de la barra de vida
-        int barX = x - 18; // Posición X de la barra de vida
-        int barY = y + 150; // Posición Y de la barra de vida
+        int barWidth = 150;
+        int barHeight = 10;
+        int barX = x - 18;
+        int barY = y + 150;
 
-        // Dibuja la vida del monstruo en formato "HP/MAXHP"
-        String monsterHealthText = BattleState.monster.stats.hp + "/" + BattleState.monster.stats.maxHp;
+        String monsterHealthText = BattleState.monster.stats.hp + "/" + maxHealth;
         g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
         g2.drawString(monsterHealthText, barX + 5, barY - 5);
+    }
 
-        // Dibuja un panel centrado a la derecha donde se displayeará el orden de turnos de los jugadores
-        x = gp.screenWidth - gp.tileSize * 2;
-        y = gp.tileSize * 5;
-        width = gp.tileSize * 2;
-        height = (int) (gp.tileSize * 6.5);
-
-        g2.setColor(Color.GREEN); // Default Visual
+    private void drawTurnOrderPanel(int x, int y, int width, int height) {
+        g2.setColor(Color.GREEN);
         g2.fillRect(x, y, width, height);
-
         drawSubWindow(x, y, width, height);
+    }
 
-        // Dibuja un menu sencillo que tenga las opciones de atacar, defender, huir, usar item alrededor de abajo a la izquierda pero acercándose al centro
-        x = gp.tileSize * 2;
-        width = (gp.tileSize * 3);
-        height = gp.tileSize * 5;
-
-        g2.setColor(Color.RED); // You can choose any color you like
+    private void drawCommandMenu(int x, int y, int width, int height) {
+        g2.setColor(Color.RED);
         g2.fillRect(x, y, width, height);
         drawSubWindow(x, y, width, height);
 
-        g2.setColor(Color.white);
+        g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
 
-        g2.drawString("Attack", x + gp.tileSize / 2, y + gp.tileSize);
-        if (commandNum == 0) {
-            g2.drawString("->", x - gp.tileSize, y + gp.tileSize);
-        }
-        g2.drawString("Magic", x + gp.tileSize / 2, y + gp.tileSize + 40);
-        if (commandNum == 1) {
-            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 40);
-        }
-        g2.drawString("Item", x + gp.tileSize / 2, y + gp.tileSize + 80);
-        if (commandNum == 2) {
-            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 80);
-        }
-        g2.drawString("Defend", x + gp.tileSize / 2, y + gp.tileSize + 120);
-        if (commandNum == 3) {
-            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 120);
-        }
-        g2.drawString("Escape", x + gp.tileSize / 2, y + gp.tileSize + 160);
-        if (commandNum == 4) {
-            g2.drawString("->", x - gp.tileSize, y + gp.tileSize + 160);
-        }
+        String[] commandOptions = { "Attack", "Magic", "Item", "Defend", "Escape" };
 
-        // Dibuja el menú de magia al lado derecho
-        if (magicMenu) {
-            int magicMenuX = x + width; // Posición X del menú de magia
-            int magicMenuY = y; // Posición Y del menú de magia
-            int magicMenuWidth = gp.tileSize * 4; // Ancho del menú de magia
-            int magicMenuHeight = height; // Altura del menú de magia
-
-            g2.setColor(Color.MAGENTA); // Color del menú de magia (puedes cambiarlo)
-            g2.fillRect(magicMenuX, magicMenuY, magicMenuWidth, magicMenuHeight);
-
-            g2.setColor(Color.BLACK);
-            g2.setFont(g2.getFont().deriveFont(24F));
-
-            // Obtén los nombres de los hechizos del jugador
-            String[] playerSpellNames = gp.player.printPlayerSpells();
-
-            // Dibuja las opciones de magia
-            int magicOptionY = magicMenuY + gp.tileSize;
-            for (int i = 0; i < playerSpellNames.length; i++) {
-                String spellText = playerSpellNames[i];
-                g2.drawString(spellText, magicMenuX + 15, magicOptionY + i * gp.tileSize);
-
-                // Verifica si este es el hechizo seleccionado y ajusta la posición de la flecha
-                if (i == gp.ui.commandNum2) {
-                    g2.drawString("->", magicMenuX, magicOptionY + i * gp.tileSize);
-                }
+        for (int i = 0; i < commandOptions.length; i++) {
+            g2.drawString(commandOptions[i], x + gp.tileSize / 2, y + gp.tileSize + i * 40);
+            if (commandNum == i) {
+                g2.drawString("->", x - gp.tileSize, y + gp.tileSize + i * 40);
             }
-
         }
+    }
 
-        // Dibuja centrado abajo un panel donde se displayeará el jugador y su party
-        x = (int) (gp.tileSize * 2.5) + 15;
-        y = gp.tileSize * 10;
-        width = gp.screenWidth - gp.tileSize * 5;
-        height = gp.tileSize * 4;
 
+    private void drawPlayerAndPartyPanel(int x, int y, int width, int height, int selectedIndex, BattleSystem BattleState) {
         g2.setColor(Color.YELLOW);
         g2.fillRect(x, y, width, height);
         drawSubWindow(x, y, width, height);
+
+        drawPlayer(x, y, selectedIndex);
+
+        int maxHealth2 = gp.player.stats.maxHp;
+        int currentHealth2 = gp.player.stats.hp;
+        int maxMana = gp.player.stats.maxMp;
+        int currentMana = gp.player.stats.mp;
+
+        String playerHealthText = currentHealth2 + "/" + maxHealth2;
+        String playerManaText = currentMana + "/" + maxMana;
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString(playerHealthText, x + 5, y + 80);
+        g2.drawString(playerManaText, x + 5, y + 97);
+    }
+
+    private void drawPlayer(int x, int y, int selectedIndex) {
+        image = gp.player.standFront;
+        g2.drawImage(image, x + 10, y, 64, 64, null);
+        if (selectedIndex == 0) {
+            g2.setColor(Color.RED);
+            g2.drawRoundRect(x + 10, y, 65, 65, 20, 20);
+        }
+
+        for (int i = 0; i < gp.party.partyMembers.size(); i++) {
+            image = gp.party.partyMembers.get(i).getCombatImage();
+            g2.drawImage(image, x + 140 + (i * 120), y, 64, 64, null);
+
+            String partyHealthText = gp.party.partyMembers.get(i).stats.hp + "/" + gp.party.partyMembers.get(i).stats.maxHp;
+            String partyManaText = gp.party.partyMembers.get(i).stats.mp + "/" + gp.party.partyMembers.get(i).stats.maxMp;
+            g2.setColor(Color.WHITE);
+            g2.setFont(g2.getFont().deriveFont(24F));
+            g2.drawString(partyHealthText, x + 125 + (i * 120), y + 80);
+            g2.drawString(partyManaText, x + 125 + (i * 120), y + 97);
+
+            if (selectedIndex == i + 1) {
+                g2.setColor(Color.RED);
+                g2.drawRoundRect(x + 140 + (i * 120), y, 65, 65, 20, 20);
+            }
+        }
+    }
+
+    private void drawTurnIcons(int pressTurn) {
+        int iconWidth = 64;
+        int iconHeight = 64;
+        int iconSpacing = 10;
+        int startX = gp.screenWidth - gp.tileSize - iconWidth / 2;
+        int startY = gp.tileSize / 2;
+
+        for (int i = 0; i < 4; i++) {
+            BufferedImage iconImage;
+            if (pressTurn >= 8 - i) {
+                iconImage = pressTurnIcon1;
+            } else if (pressTurn > i) {
+                iconImage = pressTurnIcon2;
+            } else {
+                break;
+            }
+
+            g2.drawImage(iconImage, startX, startY, iconWidth, iconHeight, null);
+            startX -= (iconWidth + iconSpacing);
+        }
     }
 
 
@@ -468,7 +641,7 @@ public class UI {
         for (int inventoryArrayPos = 0; inventoryArrayPos < gp.player.inventory.size(); inventoryArrayPos++) {
 
             //Dibujar Cursor sobre objetos equipados
-            if (gp.player.inventory.get(inventoryArrayPos) == gp.player.PLAYERstats.weapon || gp.player.inventory.get(inventoryArrayPos) == gp.player.PLAYERstats.armor) {
+            if (gp.player.inventory.get(inventoryArrayPos) == gp.player.stats.weapon || gp.player.inventory.get(inventoryArrayPos) == gp.player.stats.armor) {
                 g2.setColor(new Color(235, 219, 52));
                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
             }
@@ -583,10 +756,10 @@ public class UI {
 
             // Dibuja el valor de la estadística al lado de la flecha
             String statValue = switch (i) {
-                case 0 -> String.valueOf(gp.player.PLAYERstats.vit);
-                case 1 -> String.valueOf(gp.player.PLAYERstats.str);
-                case 2 -> String.valueOf(gp.player.PLAYERstats.mag);
-                case 3 -> String.valueOf(gp.player.PLAYERstats.agi);
+                case 0 -> String.valueOf(gp.player.stats.vit);
+                case 1 -> String.valueOf(gp.player.stats.str);
+                case 2 -> String.valueOf(gp.player.stats.mag);
+                case 3 -> String.valueOf(gp.player.stats.agi);
                 default -> "N/A";
             };
             g2.drawString(statValue, 250, y); // Ajusta la posición horizontal según tus necesidades
@@ -647,7 +820,7 @@ public class UI {
             drawInventoryScreen();
         }
         //Combat State
-        if(gp.gameState == gp.combatState || gp.gameState==gp.magicMenuState){
+        if(gp.gameState == gp.combatState || gp.gameState==gp.magicMenuState || gp.gameState==gp.battleItemsState){
             drawCombatScreen(gp.battleSystem);
         }
         if(gp.gameState == gp.levelUpState){
