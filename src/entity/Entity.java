@@ -253,7 +253,11 @@ public class Entity {
 
     }
 
-    public void use(Entity entity){
+    public void overWorldUse(Entity entity){
+
+    }
+
+    public void battleUse(Entity entity){
 
     }
 

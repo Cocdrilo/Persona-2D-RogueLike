@@ -33,6 +33,7 @@ public class UI {
     public int commandNum = 0;
     public int commandNum2;
     public boolean magicMenu = false;
+    public boolean itemMenu = false;
 
     //VARIABLES PARA MANEJO DE INVENTARIO
     public int slotCol = 0;
@@ -378,6 +379,13 @@ public class UI {
             int magicMenuHeight = height;
             drawMagicMenu(x, magicMenuY, magicMenuWidth, magicMenuHeight, BattleState);
         }
+        if(itemMenu) {
+            x = x + width;
+            int itemMenuY = y;
+            int itemMenuWidth = gp.tileSize * 4;
+            int itemMenuHeight = height;
+            drawItemMenu(x, itemMenuY, itemMenuWidth, itemMenuHeight, BattleState);
+        }
 
         // Draw the player and party panel
         x = (int) (gp.tileSize * 2.5) + 15;
@@ -391,6 +399,51 @@ public class UI {
 
         // Draw the turn icons
         drawTurnIcons(BattleState.pressTurn);
+    }
+
+    private void drawItemMenu(int x, int itemMenuY, int itemMenuWidth, int itemMenuHeight, BattleSystem battleState) {
+        g2.setColor(Color.MAGENTA);
+        g2.fillRect(x, itemMenuY, itemMenuWidth, itemMenuHeight);
+
+        g2.setColor(Color.BLACK);
+        g2.setFont(g2.getFont().deriveFont(24F));
+
+        String[] entityItemNames = battleState.party.Leader.printItems();
+
+        int itemOptionY = itemMenuY + gp.tileSize;
+
+
+        for (int i = 0; i < entityItemNames.length; i++) {
+            String spellText = entityItemNames[i];
+            g2.drawString(spellText, x + 15, itemOptionY + i * gp.tileSize);
+
+            if (i == gp.ui.commandNum2) {
+                g2.drawString("->", x, itemOptionY + i * gp.tileSize);
+            }
+        }
+
+
+    }
+
+    private void drawMagicMenu(int x, int y, int width, int height, BattleSystem BattleState) {
+        g2.setColor(Color.MAGENTA);
+        g2.fillRect(x, y, width, height);
+
+        g2.setColor(Color.BLACK);
+        g2.setFont(g2.getFont().deriveFont(24F));
+
+        String[] entitySpellNames = BattleState.partyMembers.get(BattleState.currentPartyMemberIndex).printSpells();
+
+        int magicOptionY = y + gp.tileSize;
+
+        for (int i = 0; i < entitySpellNames.length; i++) {
+            String spellText = entitySpellNames[i];
+            g2.drawString(spellText, x + 15, magicOptionY + i * gp.tileSize);
+
+            if (i == gp.ui.commandNum2) {
+                g2.drawString("->", x, magicOptionY + i * gp.tileSize);
+            }
+        }
     }
 
     private void drawMonsterPanel(int x, int y, int width, int height, BattleSystem BattleState) {
@@ -441,26 +494,6 @@ public class UI {
         }
     }
 
-    private void drawMagicMenu(int x, int y, int width, int height, BattleSystem BattleState) {
-        g2.setColor(Color.MAGENTA);
-        g2.fillRect(x, y, width, height);
-
-        g2.setColor(Color.BLACK);
-        g2.setFont(g2.getFont().deriveFont(24F));
-
-        String[] entitySpellNames = BattleState.partyMembers.get(BattleState.currentPartyMemberIndex).printSpells();
-
-        int magicOptionY = y + gp.tileSize;
-
-        for (int i = 0; i < entitySpellNames.length; i++) {
-            String spellText = entitySpellNames[i];
-            g2.drawString(spellText, x + 15, magicOptionY + i * gp.tileSize);
-
-            if (i == gp.ui.commandNum2) {
-                g2.drawString("->", x, magicOptionY + i * gp.tileSize);
-            }
-        }
-    }
 
     private void drawPlayerAndPartyPanel(int x, int y, int width, int height, int selectedIndex, BattleSystem BattleState) {
         g2.setColor(Color.YELLOW);
@@ -787,7 +820,7 @@ public class UI {
             drawInventoryScreen();
         }
         //Combat State
-        if(gp.gameState == gp.combatState || gp.gameState==gp.magicMenuState){
+        if(gp.gameState == gp.combatState || gp.gameState==gp.magicMenuState || gp.gameState==gp.battleItemsState){
             drawCombatScreen(gp.battleSystem);
         }
         if(gp.gameState == gp.levelUpState){

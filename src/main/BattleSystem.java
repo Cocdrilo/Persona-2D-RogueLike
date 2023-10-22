@@ -1,13 +1,13 @@
 package main;
+import Object.Consumables.*;
 import battleNeeds.superMagic;
 import entity.Entity;
 import entity.Player;
 import entity.partyManager;
 import monster.shadowStandar;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 public class BattleSystem {
     public partyManager party;
@@ -217,15 +217,29 @@ public class BattleSystem {
     }
 
 
-    public void useItem(Object item) {
-        // Implementar el uso de un objeto (poción, etc.)
-        // Actualizar la interfaz de usuario
+    public void useItem(Entity item) {
+        if (item instanceof OBJ_Potion_Health healthPotion) {
+            healthPotion.battleUse(partyMembers.get(currentPartyMemberIndex));
+        }
     }
 
     public void defend() {
         if (turn == 0) {
             // El jugador decide defender, reduce el daño recibido en el siguiente turno
             party.Leader.defending = true;
+            nextTurn();
+        }
+    }
+    public void fleeFromBattle(){
+        //Implementar el escape de la batalla
+        Random random = new Random();
+        int randomNum = random.nextInt(100);
+        if(randomNum<50){
+            System.out.println("Player has escaped");
+            gp.gameState = gp.playState;
+        }
+        else{
+            System.out.println("Player has failed to escape");
             nextTurn();
         }
     }

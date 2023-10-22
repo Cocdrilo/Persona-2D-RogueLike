@@ -96,4 +96,5 @@ public class shadowStandar extends Entity{
             actionLockCounter =0;
         }
     }
+
 }

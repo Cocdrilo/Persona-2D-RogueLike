@@ -6,6 +6,7 @@ import monster.shadowStandar;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class KeyHandler implements KeyListener {
 
@@ -69,6 +70,8 @@ public class KeyHandler implements KeyListener {
         }
         else if(gp.gameState == gp.levelUpState){
             levelState(code);
+        } else if (gp.gameState == gp.battleItemsState) {
+            battleItemsState(code);
         }
 
     }
@@ -76,17 +79,17 @@ public class KeyHandler implements KeyListener {
     public void combatState(int code) {
 
         if (code == KeyEvent.VK_W) {
-            if (gp.ui.commandNum > 0 && !gp.ui.magicMenu) {
+            if (gp.ui.commandNum > 0 && !gp.ui.magicMenu && !gp.ui.itemMenu) {
                 gp.ui.commandNum--;
-            } else if (!gp.ui.magicMenu) {
+            } else if (!gp.ui.magicMenu && !gp.ui.itemMenu) {
                 gp.ui.commandNum = 4;
             }
         }
 
         if (code == KeyEvent.VK_S) {
-            if (gp.ui.commandNum < 4 && !gp.ui.magicMenu) {
+            if (gp.ui.commandNum < 4 && !gp.ui.magicMenu && !gp.ui.itemMenu) {
                 gp.ui.commandNum++;
-            } else if (!gp.ui.magicMenu) {
+            } else if (!gp.ui.magicMenu && !gp.ui.itemMenu) {
                 gp.ui.commandNum = 0;
             }
         }
@@ -110,13 +113,14 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.magicMenuState;
             }
             if (gp.ui.commandNum == 2) {
-                // Use Items Aun sin Implementar
+                gp.ui.itemMenu = true;
+                gp.gameState = gp.battleItemsState;
             }
             if (gp.ui.commandNum == 3) {
-                //gp.battleSystem.defend();
+                gp.battleSystem.defend();
             }
             if (gp.ui.commandNum == 4) {
-                // Flee Aun sin Implementar
+                gp.battleSystem.fleeFromBattle();
             }
         }
     }
@@ -124,6 +128,7 @@ public class KeyHandler implements KeyListener {
     public void magicMenuState(int code){
         // Aquí obtenemos la cantidad de hechizos disponibles
         int numSpells = gp.player.spells.size();
+        Entity attacker = gp.battleSystem.partyMembers.get(gp.battleSystem.currentPartyMemberIndex);
         if (gp.ui.commandNum == 1 && gp.ui.magicMenu) {
 
             if (code == KeyEvent.VK_W) {
@@ -145,12 +150,48 @@ public class KeyHandler implements KeyListener {
             // Verificar si estamos dentro del submenu de magia antes de activar el hechizo
             if (code == KeyEvent.VK_Z) {
                 // Aquí activa el hechizo seleccionado (sin pasar una variable)
-                gp.battleSystem.useMagic(gp.party.Leader, gp.battleSystem.monster, gp.player.spells.get(gp.ui.commandNum2));
+                gp.battleSystem.useMagic(attacker, gp.battleSystem.monster, attacker.spells.get(gp.ui.commandNum2));
             }
 
             if(code == KeyEvent.VK_ESCAPE){
                 gp.ui.commandNum2 = 0;
                 gp.ui.magicMenu = false;
+                gp.gameState = gp.combatState;
+            }
+        }
+    }
+    public void battleItemsState(int code){
+
+        ArrayList<Entity> consumableItems = gp.player.getItems();
+        int [] indexConsus = gp.player.saveItemIndexes();
+
+        if(gp.ui.commandNum == 2 && gp.ui.itemMenu){
+            if(code == KeyEvent.VK_W){
+                if(gp.ui.commandNum2>0){
+                    gp.ui.commandNum2--;
+                }
+                else{
+                    gp.ui.commandNum2 = consumableItems.size()-1;
+                }
+            }
+            if(code == KeyEvent.VK_S){
+                if(gp.ui.commandNum2<consumableItems.size()-1){
+                    gp.ui.commandNum2++;
+                }
+                else{
+                    gp.ui.commandNum2 = 0;
+                }
+            }
+            if(code == KeyEvent.VK_Z){
+                while(consumableItems.size()>0){
+                    gp.battleSystem.useItem(consumableItems.get(gp.ui.commandNum2));
+                    consumableItems.remove(gp.ui.commandNum2);
+                    gp.player.inventory.remove(indexConsus[gp.ui.commandNum2]);
+                }
+            }
+            if(code == KeyEvent.VK_ESCAPE){
+                gp.ui.commandNum2 = 0;
+                gp.ui.itemMenu = false;
                 gp.gameState = gp.combatState;
             }
         }
