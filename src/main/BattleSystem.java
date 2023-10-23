@@ -48,8 +48,7 @@ public class BattleSystem {
             turn = 0;
         }
         if(turn == 1){
-
-            attack(monster, party.Leader);
+            monsterAI();
         }
 
     }
@@ -137,6 +136,21 @@ public class BattleSystem {
     }
 
     private void handleDamageAndPressTurn(Entity attacker, Entity target, int damage, superMagic selectedSpell) {
+        damage = handleDamageAndPressTurnBasedOnWeakness(attacker, target, damage, selectedSpell);
+        if (damage > 0) {
+            if(target instanceof Player targetPlayer){
+                targetPlayer.stats.hp -= damage;
+            }
+            if(target instanceof shadowStandar targetMonster){
+                targetMonster.stats.hp -= damage;
+            }
+            System.out.println(target.name + " has received " + damage + " damage from " + selectedSpell.name);
+        } else {
+            System.out.println("No damage dealt by " + selectedSpell.name);
+        }
+    }
+
+    private int handleDamageAndPressTurnBasedOnWeakness(Entity attacker, Entity target, int damage, superMagic selectedSpell) {
         if (target.isWeak(selectedSpell.damageType)) {
             damage *= 2;
             pressTurn--;
@@ -148,17 +162,12 @@ public class BattleSystem {
             pressTurn -= 3;
         } else if (target.isRepelled(selectedSpell.damageType)) {
             handleRepelledDamage(attacker, damage, selectedSpell.damageType);
-        }else{
-            pressTurn-=2;
-        }
-
-        if (damage > 0) {
-            target.stats.hp -= damage;
-            System.out.println(target.name + " has received " + damage + " damage from " + selectedSpell.name);
         } else {
-            System.out.println("No damage dealt by " + selectedSpell.name);
+            pressTurn -= 2;
         }
+        return damage;
     }
+
 
 
     private void handleRepelledDamage(Entity target, int DmgPreModifier, String weaponDmgType) {
@@ -216,6 +225,67 @@ public class BattleSystem {
         return damage;
     }
 
+    public void monsterAI() {
+        superMagic selectedSpell = null;
+        Entity target = null;
+        int maxPhysDmg = 0;
+        int maxMagicDmg = 0;
+
+        System.out.println("Monster AI - Calculating damage for each party member and spell:");
+
+        for (Entity partyMember : partyMembers) {
+            if (partyMember instanceof Player targetPlayer) {
+                int physicalDamage = calculateDamage(monster, targetPlayer, monster.getAttackType());
+                if (physicalDamage > maxPhysDmg) {
+                    maxPhysDmg = physicalDamage;
+                    target = targetPlayer;
+                }
+            }
+            if (partyMember instanceof shadowStandar targetMonster) {
+                int physicalDamage = calculateDamage(monster, targetMonster, monster.getAttackType());
+                if (physicalDamage > maxPhysDmg) {
+                    maxPhysDmg = physicalDamage;
+                    target = targetMonster;
+                }
+            }
+
+            for (int i = 0; i < monster.spells.size(); i++) {
+                superMagic spell = monster.spells.get(i);
+                int magicalDamage = calculateMagicDamage(monster, partyMember, spell);
+                magicalDamage = handleDamageAndPressTurnBasedOnWeakness(monster, partyMember, magicalDamage, spell);
+                if (magicalDamage > maxMagicDmg) {
+                    maxMagicDmg = magicalDamage;
+                    selectedSpell = spell;
+                    target = partyMember;
+                }
+
+                System.out.println("  - Damage to " + partyMember.name + " from " + spell.name + " is " + magicalDamage);
+            }
+        }
+
+        System.out.println("Monster AI - Selected target: " + target.name);
+        System.out.println("Monster AI - Max Physical Damage: " + maxPhysDmg);
+        System.out.println("Monster AI - Max Magic Damage: " + maxMagicDmg);
+
+        // Encuentra al miembro al que el monstruo le haría más daño
+        // Decide si atacar físicamente o mágicamente
+        int physicalDamage = calculateDamage(monster, target, monster.getAttackType());
+        int magicalDamage = calculateMagicDamage(monster, target, selectedSpell);
+
+        System.out.println("Monster AI - Calculated Physical Damage: " + physicalDamage);
+        System.out.println("Monster AI - Calculated Magic Damage: " + magicalDamage);
+
+        if (physicalDamage > magicalDamage) {
+            if (target instanceof Player targetPlayer) {
+                attack(monster, targetPlayer);
+            }
+            if (target instanceof shadowStandar targetMonster) {
+                attack(monster, targetMonster);
+            }
+        } else {
+            useMagic(monster, target, selectedSpell);
+        }
+    }
 
     public void useItem(Entity item) {
         if (item instanceof OBJ_Potion_Health healthPotion) {
