@@ -9,14 +9,10 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("PersonaRemake");
+        window.setUndecorated(true);
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
-
-        gamePanel.config.loadConfig();
-        if(gamePanel.fullScreenOn==true){
-            window.setUndecorated(true);
-        }
 
         window.pack();
 

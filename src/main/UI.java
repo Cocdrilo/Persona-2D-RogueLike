@@ -374,8 +374,10 @@ public class UI {
         // Draw the magic menu
         if (magicMenu) {
             x = x + width;
+            int magicMenuY = y;
             int magicMenuWidth = gp.tileSize * 4;
-            drawMagicMenu(x, y, magicMenuWidth, height, BattleState);
+            int magicMenuHeight = height;
+            drawMagicMenu(x, magicMenuY, magicMenuWidth, magicMenuHeight, BattleState);
         }
         if(itemMenu) {
             x = x + width;
@@ -457,6 +459,8 @@ public class UI {
 
         int maxHealth = BattleState.monster.stats.maxHp;
         int currentHealth = BattleState.monster.stats.hp;
+        int barWidth = 150;
+        int barHeight = 10;
         int barX = x - 18;
         int barY = y + 150;
 

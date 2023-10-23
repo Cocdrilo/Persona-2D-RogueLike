@@ -1,13 +1,13 @@
 package main;
+import Object.Consumables.*;
 import battleNeeds.superMagic;
 import entity.Entity;
 import entity.Player;
 import entity.partyManager;
 import monster.shadowStandar;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 public class BattleSystem {
     public partyManager party;
@@ -49,7 +49,7 @@ public class BattleSystem {
         }
         if(turn == 1){
 
-            monsterAttackIA();
+            attack(monster, party.Leader);
         }
 
     }
@@ -217,9 +217,10 @@ public class BattleSystem {
     }
 
 
-    public void useItem(Object item) {
-        // Implementar el uso de un objeto (poción, etc.)
-        // Actualizar la interfaz de usuario
+    public void useItem(Entity item) {
+        if (item instanceof OBJ_Potion_Health healthPotion) {
+            healthPotion.battleUse(partyMembers.get(currentPartyMemberIndex));
+        }
     }
 
     public void defend() {
@@ -229,69 +230,20 @@ public class BattleSystem {
             nextTurn();
         }
     }
-    private void monsterAttackIA() {
-
-        int maxDamage = 0;
-        String selectedAction = "";
-        int member = 0;
-
-        // Obtener los hechizos del monstruo
-        ArrayList<superMagic> monsterSpells = monster.getSpells();
-
-        do {
-            // Obtener el ataque físico del monstruo
-            for (Entity partyMember : partyMembers) {
-                if (partyMember.stats.hp > 0) {
-                    String weaponDmgType = monster.getAttackType();
-                    int physicalDamage = calculateDamage(monster, partyMember, weaponDmgType);
-                    if (physicalDamage >= maxDamage) {
-                        maxDamage = physicalDamage;
-                        selectedAction = "Physical Attack: ";
-                        member = partyMembers.indexOf(partyMember);
-                    }
-                }
-            }
-
-            // Calcular el daño máximo para los hechizos
-            for (superMagic spell : monsterSpells) {
-                for (Entity partyMember : partyMembers) {
-                    if (partyMember.stats.hp > 0) {
-                        int damage = calculateMagicDamage(monster, partyMember, spell);
-                        if (damage > maxDamage) {
-                            maxDamage = damage;
-                            selectedAction = "Spell: " + spell.name;
-                            member = partyMembers.indexOf(partyMember);
-                        }
-                    }
-                }
-            }
-
-
-            // Realizar la acción con el daño máximo
-            if (selectedAction.startsWith("Spell")) {
-                superMagic selectedSpell = findSpellByName(selectedAction.substring(7), monsterSpells);
-                useMagic(monster, partyMembers.get(member), selectedSpell);
-            } else if (selectedAction.equals("Physical Attack")) {
-                Entity targetEntity = partyMembers.get(member);
-
-                if (targetEntity instanceof Player) {
-                    attack(monster, (Player) targetEntity);
-                } else if (targetEntity instanceof shadowStandar) {
-                    attack(monster, (shadowStandar) targetEntity);
-                }
-            }
-        }while (pressTurn > 0 || monster.stats.hp > 0) ;
-    }
-
-
-    private superMagic findSpellByName(String name, ArrayList<superMagic> spells) {
-        for (superMagic spell : spells) {
-            if (spell.name.equals(name)) {
-                return spell;
-            }
+    public void fleeFromBattle(){
+        //Implementar el escape de la batalla
+        Random random = new Random();
+        int randomNum = random.nextInt(100);
+        if(randomNum<50){
+            System.out.println("Player has escaped");
+            gp.gameState = gp.playState;
         }
-        return null;
+        else{
+            System.out.println("Player has failed to escape");
+            nextTurn();
+        }
     }
+
 
     public void endBattle(){
         //EXP calc
