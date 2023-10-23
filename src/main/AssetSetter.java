@@ -40,8 +40,8 @@ public class AssetSetter {
             gp.obj[3].WorldY = gp.tileSize*5;
 
             gp.obj[4]= new OBJ_Potion_Health(gp);
-            gp.obj[4].WorldX = gp.tileSize*11;
-            gp.obj[4].WorldY = gp.tileSize*38;
+            gp.obj[4].WorldX = gp.tileSize*16;
+            gp.obj[4].WorldY = gp.tileSize*6;
 
 
     }

@@ -75,8 +75,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int inventoryState = 7;
     public final int levelUpState = 8;
     public final int magicMenuState = 9;
-
-
+    public final int battleItemsState = 10;
 
 
     public GamePanel(){

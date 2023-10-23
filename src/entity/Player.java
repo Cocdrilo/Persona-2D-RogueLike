@@ -110,6 +110,45 @@ public class Player extends Entity{
         }
         return armorSlot;
     }
+    public String[] printItems(){
+        String[] Items = new String[inventory.size()];
+        int ItemsIndex = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if(inventory.get(i).type == 5) {
+                Items[ItemsIndex] = inventory.get(i).name;
+                ItemsIndex++;
+            }
+        }
+        String [] consumableItems = new String[ItemsIndex];
+        for(int i = 0; i < ItemsIndex; i++){
+            consumableItems[i] = Items[i];
+        }
+        return consumableItems;
+    }
+    public ArrayList<Entity> getItems() {
+        ArrayList<Entity> Items = new ArrayList<>();
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i).type == 5){
+                Items.add(inventory.get(i));
+            }
+        }
+        return Items;
+    }
+    public int[] saveItemIndexes(){
+        int[] itemIndexes = new int[inventory.size()];
+        int itemCounter = 0;
+        for(int i = 0; i < inventory.size(); i++){
+            if(inventory.get(i).type == 5){
+                itemIndexes[itemCounter] = i;
+                itemCounter++;
+            }
+        }
+        int [] consumableItemsIndex = new int[itemIndexes.length];
+        for(int i = 0; i < itemCounter; i++){
+            consumableItemsIndex[i] = itemIndexes[i];
+        }
+        return consumableItemsIndex;
+    }
 
     public void selectItems(){
 
@@ -129,7 +168,7 @@ public class Player extends Entity{
 
             if(selectedItem.type == 5){
                 //CONSUMIBLE
-                selectedItem.use(this);
+                selectedItem.overWorldUse(this);
                 inventory.remove(itemIndex);
             }
 
@@ -338,4 +377,5 @@ public class Player extends Entity{
         graficos2d.drawImage(image, screenX, screenY,null);
 
     }
+
 }
