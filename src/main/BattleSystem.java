@@ -32,6 +32,8 @@ public class BattleSystem {
     }
 
     public void nextTurn() {
+        pressTurn = 8;
+        System.out.println(pressTurn);
 
         if(party.Leader.stats.hp<=0){
             System.out.println("Player has died");
@@ -40,6 +42,13 @@ public class BattleSystem {
         if(monster.stats.hp<=0){
             System.out.println("Monster has died");
             endBattle();
+        }
+        for(int i = 0; i<partyMembers.size();i++){
+            if(partyMembers.get(i).stats.hp<=0){
+                partyMembers.get(i).stats.hp = 0;
+                System.out.println(partyMembers.get(i).name + " has died");
+                partyMembers.remove(i);
+            }
         }
         // Cambiar el turno al siguiente
         if (turn == 0) {
@@ -53,53 +62,44 @@ public class BattleSystem {
 
     }
 
-    public void attack(Player attacker, shadowStandar target) {
-        String weaponDmgType = attacker.getWeaponDmgType();
+    public void attack(Entity attacker, Entity target) {
+        String weaponDmgType = "";
+
+        if (attacker instanceof Player) {
+            weaponDmgType = ((Player) attacker).getWeaponDmgType();
+        } else if (attacker instanceof shadowStandar) {
+            weaponDmgType = ((shadowStandar) attacker).getAttackType();
+        }
+
         System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
 
-        target.stats.hp= target.stats.hp - calculateDamage(attacker,target, weaponDmgType);
+        target.stats.hp = target.stats.hp - calculateDamage(attacker, target, weaponDmgType);
 
-
-        System.out.println(pressTurn);
         if (pressTurn <= 0 || target.stats.hp <= 0) {
             pressTurn = 8;
             nextTurn();
         }
+
         currentPartyMemberIndex++;
         if (currentPartyMemberIndex >= partyMembers.size()) {
             currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
         }
     }
-    public void attack(shadowStandar attacker, shadowStandar target) {
-        String weaponDmgType = attacker.getAttackType();
+    public void monsterAttack(Entity attacker, Entity target) {
+        String weaponDmgType = "";
+
+        if (attacker instanceof Player) {
+            weaponDmgType = ((Player) attacker).getWeaponDmgType();
+        } else if (attacker instanceof shadowStandar) {
+            weaponDmgType = ((shadowStandar) attacker).getAttackType();
+        }
+
         System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
 
-        target.stats.hp= target.stats.hp - calculateDamage(attacker,target, weaponDmgType);
+        target.stats.hp = target.stats.hp - calculateDamage(attacker, target, weaponDmgType);
 
-        if (pressTurn <= 0 || target.stats.hp <= 0) {
-            pressTurn = 8;
-            nextTurn();
-        }
-        currentPartyMemberIndex++;
-        if (currentPartyMemberIndex >= partyMembers.size()) {
-            currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
-        }
-    }
-    public void attack(shadowStandar attacker, Player target) {
-        String weaponDmgType = attacker.getAttackType();
-        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
-
-        target.stats.hp= target.stats.hp - calculateDamage(attacker,target, weaponDmgType);
-
-        if (pressTurn <= 0 || target.stats.hp <= 0) {
-            pressTurn = 8;
-            nextTurn();
-            return;
-        }
-        attack(attacker, target);
     }
 
-    // Hacer para monster->player y monster monster
 
     private int calculateDamage(Entity attacker, Entity target, String weaponDmgType) {
         int targetDEF = target.getDefense();
@@ -203,7 +203,6 @@ public class BattleSystem {
 
         handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
         if(pressTurn <= 0 || target.stats.hp <= 0){
-            pressTurn = 8;
             nextTurn();
         }
         // Cambiar al siguiente miembro del partido
@@ -212,6 +211,19 @@ public class BattleSystem {
             currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
         }
     }
+
+    public void monsterUseMagic(Entity attacker, Entity target, superMagic selectedSpell) {
+        if (attacker.stats.mp < selectedSpell.mpCost) {
+            System.out.println("Not enough MP to cast " + selectedSpell.name);
+            return;
+        }
+
+        int damage = calculateMagicDamage(attacker, target, selectedSpell);
+
+        handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
+    }
+
+
 
     private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell) {
         int damage = 0;
@@ -226,65 +238,75 @@ public class BattleSystem {
     }
 
     public void monsterAI() {
+
         superMagic selectedSpell = null;
         Entity target = null;
         int maxPhysDmg = 0;
         int maxMagicDmg = 0;
+        do {
+            int realPressTurn = pressTurn;
+            System.out.println("Monster AI - Calculating damage for each party member and spell:");
+            System.out.println("Monster AI - Press Turn: " + pressTurn);
 
-        System.out.println("Monster AI - Calculating damage for each party member and spell:");
-
-        for (Entity partyMember : partyMembers) {
-            if (partyMember instanceof Player targetPlayer) {
-                int physicalDamage = calculateDamage(monster, targetPlayer, monster.getAttackType());
-                if (physicalDamage > maxPhysDmg) {
-                    maxPhysDmg = physicalDamage;
-                    target = targetPlayer;
+            for (Entity partyMember : partyMembers) {
+                if (partyMember instanceof Player targetPlayer) {
+                    int physicalDamage = calculateDamage(monster, targetPlayer, monster.getAttackType());
+                    if (physicalDamage > maxPhysDmg) {
+                        maxPhysDmg = physicalDamage;
+                        target = targetPlayer;
+                    }
                 }
-            }
-            if (partyMember instanceof shadowStandar targetMonster) {
-                int physicalDamage = calculateDamage(monster, targetMonster, monster.getAttackType());
-                if (physicalDamage > maxPhysDmg) {
-                    maxPhysDmg = physicalDamage;
-                    target = targetMonster;
-                }
-            }
-
-            for (int i = 0; i < monster.spells.size(); i++) {
-                superMagic spell = monster.spells.get(i);
-                int magicalDamage = calculateMagicDamage(monster, partyMember, spell);
-                magicalDamage = handleDamageAndPressTurnBasedOnWeakness(monster, partyMember, magicalDamage, spell);
-                if (magicalDamage > maxMagicDmg) {
-                    maxMagicDmg = magicalDamage;
-                    selectedSpell = spell;
-                    target = partyMember;
+                if (partyMember instanceof shadowStandar targetMonster) {
+                    int physicalDamage = calculateDamage(monster, targetMonster, monster.getAttackType());
+                    if (physicalDamage > maxPhysDmg) {
+                        maxPhysDmg = physicalDamage;
+                        target = targetMonster;
+                    }
                 }
 
-                System.out.println("  - Damage to " + partyMember.name + " from " + spell.name + " is " + magicalDamage);
+                for (int i = 0; i < monster.spells.size(); i++) {
+                    superMagic spell = monster.spells.get(i);
+                    int magicalDamage = calculateMagicDamage(monster, partyMember, spell);
+                    magicalDamage = handleDamageAndPressTurnBasedOnWeakness(monster, partyMember, magicalDamage, spell);
+                    if (magicalDamage > maxMagicDmg) {
+                        maxMagicDmg = magicalDamage;
+                        selectedSpell = spell;
+                        target = partyMember;
+                    }
+
+                    System.out.println("  - Damage to " + partyMember.name + " from " + spell.name + " is " + magicalDamage);
+                }
             }
-        }
 
-        System.out.println("Monster AI - Selected target: " + target.name);
-        System.out.println("Monster AI - Max Physical Damage: " + maxPhysDmg);
-        System.out.println("Monster AI - Max Magic Damage: " + maxMagicDmg);
+            System.out.println("Monster AI - Selected target: " + target.name);
+            System.out.println("Monster AI - Max Physical Damage: " + maxPhysDmg);
+            System.out.println("Monster AI - Max Magic Damage: " + maxMagicDmg);
 
-        // Encuentra al miembro al que el monstruo le haría más daño
-        // Decide si atacar físicamente o mágicamente
-        int physicalDamage = calculateDamage(monster, target, monster.getAttackType());
-        int magicalDamage = calculateMagicDamage(monster, target, selectedSpell);
+            // Encuentra al miembro al que el monstruo le haría más daño
+            // Decide si atacar físicamente o mágicamente
+            int physicalDamage = calculateDamage(monster, target, monster.getAttackType());
+            int magicalDamage = calculateMagicDamage(monster, target, selectedSpell);
 
-        System.out.println("Monster AI - Calculated Physical Damage: " + physicalDamage);
-        System.out.println("Monster AI - Calculated Magic Damage: " + magicalDamage);
+            System.out.println("Monster AI - Calculated Physical Damage: " + physicalDamage);
+            System.out.println("Monster AI - Calculated Magic Damage: " + magicalDamage);
 
-        if (physicalDamage > magicalDamage) {
-            if (target instanceof Player targetPlayer) {
-                attack(monster, targetPlayer);
+            //Los cáculos de IA Gastan turnos de PressTurn así que los Hardcodeamos
+            pressTurn = realPressTurn;
+
+            if (physicalDamage > magicalDamage) {
+                if (target instanceof Player targetPlayer) {
+                    monsterAttack(monster, targetPlayer);
+                }
+                if (target instanceof shadowStandar targetMonster) {
+                    monsterAttack(monster, targetMonster);
+                }
+            } else {
+                monsterUseMagic(monster, target, selectedSpell);
             }
-            if (target instanceof shadowStandar targetMonster) {
-                attack(monster, targetMonster);
-            }
-        } else {
-            useMagic(monster, target, selectedSpell);
-        }
+            System.out.println("Monster AI - Press Turn: " + pressTurn);
+
+        }while (pressTurn > 0);
+        nextTurn();
     }
 
     public void useItem(Entity item) {

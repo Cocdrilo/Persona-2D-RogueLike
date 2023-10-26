@@ -1,5 +1,6 @@
 package main;
 
+import entity.Player;
 import monster.shadowStandar;
 
 import java.awt.*;
@@ -523,16 +524,18 @@ public class UI {
             g2.drawRoundRect(x + 10, y, 65, 65, 20, 20);
         }
 
-        for (int i = 0; i < gp.party.partyMembers.size(); i++) {
-            image = gp.party.partyMembers.get(i).getCombatImage();
-            g2.drawImage(image, x + 140 + (i * 120), y, 64, 64, null);
+        for (int i = 1; i < gp.battleSystem.partyMembers.size(); i++) {
 
-            String partyHealthText = gp.party.partyMembers.get(i).stats.hp + "/" + gp.party.partyMembers.get(i).stats.maxHp;
-            String partyManaText = gp.party.partyMembers.get(i).stats.mp + "/" + gp.party.partyMembers.get(i).stats.maxMp;
+            shadowStandar monstruo = (shadowStandar) gp.battleSystem.partyMembers.get(i);
+            image = monstruo.getCombatImage();
+            g2.drawImage(image, x + 140 + ((i-1) * 120), y, 64, 64, null);
+
+            String partyHealthText = gp.battleSystem.partyMembers.get(i).stats.hp + "/" + gp.battleSystem.partyMembers.get(i).stats.maxHp;
+            String partyManaText = gp.battleSystem.partyMembers.get(i).stats.mp + "/" + gp.battleSystem.partyMembers.get(i).stats.maxMp;
             g2.setColor(Color.WHITE);
             g2.setFont(g2.getFont().deriveFont(24F));
-            g2.drawString(partyHealthText, x + 125 + (i * 120), y + 80);
-            g2.drawString(partyManaText, x + 125 + (i * 120), y + 97);
+            g2.drawString(partyHealthText, x + 125 + ((i-1) * 120), y + 80);
+            g2.drawString(partyManaText, x + 125 + ((i-1) * 120), y + 97);
 
             if (selectedIndex == i + 1) {
                 g2.setColor(Color.RED);
