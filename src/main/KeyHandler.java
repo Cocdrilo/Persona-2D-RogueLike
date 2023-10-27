@@ -82,12 +82,12 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.commandNum > 0 && !gp.ui.magicMenu && !gp.ui.itemMenu) {
                 gp.ui.commandNum--;
             } else if (!gp.ui.magicMenu && !gp.ui.itemMenu) {
-                gp.ui.commandNum = 4;
+                gp.ui.commandNum = 5;
             }
         }
 
         if (code == KeyEvent.VK_S) {
-            if (gp.ui.commandNum < 4 && !gp.ui.magicMenu && !gp.ui.itemMenu) {
+            if (gp.ui.commandNum < 5 && !gp.ui.magicMenu && !gp.ui.itemMenu) {
                 gp.ui.commandNum++;
             } else if (!gp.ui.magicMenu && !gp.ui.itemMenu) {
                 gp.ui.commandNum = 0;
@@ -121,6 +121,9 @@ public class KeyHandler implements KeyListener {
             }
             if (gp.ui.commandNum == 4) {
                 gp.battleSystem.fleeFromBattle();
+            }
+            if (gp.ui.commandNum == 5) {
+                gp.battleSystem.negotiateMonster();
             }
         }
     }

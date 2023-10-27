@@ -5,6 +5,7 @@ import entity.Entity;
 import entity.Player;
 import entity.partyManager;
 import monster.shadowStandar;
+import negotiation.NegotiationSystem;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -334,6 +335,13 @@ public class BattleSystem {
             System.out.println("Player has failed to escape");
             nextTurn();
         }
+    }
+
+    public void negotiateMonster(){
+        //Implementar la negociacion con el monstruo
+        NegotiationSystem negotiationSystem = new NegotiationSystem();
+        negotiationSystem.startNegotiation();
+        //gp.gameState = gp.negotiationState;
     }
 
 

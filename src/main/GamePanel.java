@@ -6,6 +6,7 @@ import entity.Entity;
 import entity.Player;
 import entity.partyManager;
 import monster.MonsterManager;
+import negotiation.NegotiationManager;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -51,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable{
     public Events eventHandler = new Events(this);
     public SpellManager spellManager = SpellManager.getInstance();
     public MonsterManager monsterManager = MonsterManager.getInstance();
+    public NegotiationManager negotiationManager = NegotiationManager.getInstance();
     SaveLoad saveLoad = new SaveLoad(this);
 
     //ENTITY AND OBJECT

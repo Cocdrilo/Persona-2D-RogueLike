@@ -485,12 +485,12 @@ public class UI {
         g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
 
-        String[] commandOptions = { "Attack", "Magic", "Item", "Defend", "Escape" };
+        String[] commandOptions = { "Attack", "Magic", "Item", "Defend", "Escape" , "Negotiate" };
 
         for (int i = 0; i < commandOptions.length; i++) {
-            g2.drawString(commandOptions[i], x + gp.tileSize / 2, y + gp.tileSize + i * 40);
+            g2.drawString(commandOptions[i], x + gp.tileSize / 2, y + gp.tileSize/2 + i * 40);
             if (commandNum == i) {
-                g2.drawString("->", x - gp.tileSize, y + gp.tileSize + i * 40);
+                g2.drawString("->", x - gp.tileSize, y + gp.tileSize/2 + i * 40);
             }
         }
     }
