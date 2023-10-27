@@ -7,6 +7,7 @@ import entity.Player;
 import entity.partyManager;
 import monster.MonsterManager;
 import negotiation.NegotiationManager;
+import negotiation.NegotiationSystem;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -30,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public BattleSystem battleSystem;
+    public NegotiationSystem negotiationSystem;
 
     //FPS
     int FPS = 60;
@@ -78,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int levelUpState = 8;
     public final int magicMenuState = 9;
     public final int battleItemsState = 10;
+    public final int negotiationState = 11;
 
 
     public GamePanel(){

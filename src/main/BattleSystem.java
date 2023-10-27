@@ -14,6 +14,7 @@ public class BattleSystem {
     public partyManager party;
     public shadowStandar monster;
     public GamePanel gp;
+    public NegotiationSystem negotiationSystem;
 
     private int turn = 0; // 0 = player, 1 = monster
     public int pressTurn = 8; // 2 turns per action, if hit weakness or crit 1 turn per action
@@ -339,7 +340,7 @@ public class BattleSystem {
 
     public void negotiateMonster(){
         //Implementar la negociacion con el monstruo
-        NegotiationSystem negotiationSystem = new NegotiationSystem();
+        negotiationSystem = new NegotiationSystem(monster);
         negotiationSystem.startNegotiation();
         //gp.gameState = gp.negotiationState;
     }

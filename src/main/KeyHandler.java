@@ -3,6 +3,7 @@ package main;
 import entity.Entity;
 import entity.Player;
 import monster.shadowStandar;
+import negotiation.NegotiationSystem;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -68,10 +69,17 @@ public class KeyHandler implements KeyListener {
         else if(gp.gameState == gp.magicMenuState){
             magicMenuState(code);
         }
+        //LEVEL UP STATE
         else if(gp.gameState == gp.levelUpState){
             levelState(code);
-        } else if (gp.gameState == gp.battleItemsState) {
+        }
+        //BATTLE ITEMS STATE
+        else if (gp.gameState == gp.battleItemsState) {
             battleItemsState(code);
+        }
+        //NEGOTIATION STATE
+        else if(gp.gameState == gp.negotiationState){
+            negotiationState(code);
         }
 
     }
@@ -123,6 +131,7 @@ public class KeyHandler implements KeyListener {
                 gp.battleSystem.fleeFromBattle();
             }
             if (gp.ui.commandNum == 5) {
+                gp.gameState = gp.negotiationState;
                 gp.battleSystem.negotiateMonster();
             }
         }
@@ -199,6 +208,51 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
+
+    public void negotiationState(int code){
+        int Opciones = gp.battleSystem.negotiationSystem.getNumOpciones();
+
+        if(code == KeyEvent.VK_W) {
+            if(gp.ui.commandNum>0){
+                gp.ui.commandNum--;
+                System.out.println(gp.ui.commandNum);
+            }
+            else{
+                gp.ui.commandNum= Opciones-1;
+                System.out.println(gp.ui.commandNum);
+            }
+        }
+
+        if(code == KeyEvent.VK_S) {
+            if(gp.ui.commandNum<Opciones-1){
+                gp.ui.commandNum++;
+                System.out.println(gp.ui.commandNum);
+            }
+            else{
+                gp.ui.commandNum=0;
+                System.out.println(gp.ui.commandNum);
+            }
+        }
+        if(code == KeyEvent.VK_Z){
+
+            gp.battleSystem.negotiationSystem.updateMeter();
+            if(gp.battleSystem.negotiationSystem.happyMeter >= 20){
+                System.out.println("Añadir a party");
+                gp.party.addMonsterToParty(gp.battleSystem.negotiationSystem.monster.name);
+                gp.gameState = gp.playState;
+            }
+
+            else if(gp.battleSystem.negotiationSystem.angryMeter >= 20){
+                System.out.println("Vuelve a combate");
+                gp.gameState = gp.combatState;
+            }
+
+            else{
+                gp.battleSystem.negotiationSystem.startNegotiation();
+            }
+        }
+    }
+
 
     //Necesita Fix
     public void levelState(int code){
