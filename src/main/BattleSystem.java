@@ -215,10 +215,7 @@ public class BattleSystem {
     }
 
     public void monsterUseMagic(Entity attacker, Entity target, superMagic selectedSpell) {
-        if (attacker.stats.mp < selectedSpell.mpCost) {
-            System.out.println("Not enough MP to cast " + selectedSpell.name);
-            return;
-        }
+        //Enemy monsters Dont Use Mana
 
         int damage = calculateMagicDamage(attacker, target, selectedSpell);
 
@@ -340,7 +337,7 @@ public class BattleSystem {
 
     public void negotiateMonster(){
         //Implementar la negociacion con el monstruo
-        negotiationSystem = new NegotiationSystem(monster);
+        negotiationSystem = new NegotiationSystem(this);
         negotiationSystem.startNegotiation();
         //gp.gameState = gp.negotiationState;
     }

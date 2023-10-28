@@ -195,6 +195,9 @@ public class Player extends Entity{
         }
         return dmgType;
     }
+    public void addMoney(int money){
+        stats.money += money;
+    }
 
     public void getPlayerImage(){
         standFront = setUp("/player/RaidouFront");
