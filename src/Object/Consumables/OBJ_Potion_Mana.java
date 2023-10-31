@@ -15,11 +15,11 @@ public class OBJ_Potion_Mana extends Entity {
         description = "Mana Potion heals +10 mp";
     }
 
-    public void use(Entity entity){
+    public void use(Entity entity) {
         entity.stats.mp += 10;
-        gp.gameState =gp.dialogueState;
+        gp.gameState = gp.dialogueState;
         gp.ui.currentDialogue = "You used a mana potion";
-        if(entity.stats.mp > entity.stats.maxMp){
+        if (entity.stats.mp > entity.stats.maxMp) {
             entity.stats.mp = entity.stats.maxMp;
         }
     }

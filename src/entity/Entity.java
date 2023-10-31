@@ -18,8 +18,8 @@ public class Entity {
     public GamePanel gp;
 
     //SOLID AREAS
-    public Rectangle solidArea = new Rectangle(0,0,48,48);
-    public int solidAreaDefaultX,SolidAreaDefaultY;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public int solidAreaDefaultX, SolidAreaDefaultY;
     //DIALOGOS
 
     public String dialogues[] = new String[20];
@@ -27,7 +27,7 @@ public class Entity {
 
     //ESTADOS DEL JUEGO
     public int WorldX, WorldY;
-    public String direction= "down";
+    public String direction = "down";
     public int spriteNum = 1;
     public boolean collisionOn = false;
 
@@ -55,7 +55,7 @@ public class Entity {
     //IMAGE DATA
     public BufferedImage image;
     public boolean collision = false;
-    public BufferedImage standFront,standLeft,standBack,standRight,walkDown1,walkDown2,walkLeft1,walkLeft2,walkRight1,walkRight2,walkUp1,walkUp2;
+    public BufferedImage standFront, standLeft, standBack, standRight, walkDown1, walkDown2, walkLeft1, walkLeft2, walkRight1, walkRight2, walkUp1, walkUp2;
 
     //Array de hechizos:
     public ArrayList<superMagic> spells;
@@ -76,16 +76,16 @@ public class Entity {
 
     //CombatMethods
 
-    public boolean isWeak(String attckType){
+    public boolean isWeak(String attckType) {
         for (String weakness : weaknesses) {
             if (Objects.equals(attckType, weakness)) {
                 return true;
             }
         }
         return false;
-        }
+    }
 
-    public boolean isResistant(String attckType){
+    public boolean isResistant(String attckType) {
         for (String resistance : resistances) {
             if (Objects.equals(attckType, resistance)) {
                 return true;
@@ -94,7 +94,7 @@ public class Entity {
         return false;
     }
 
-    public boolean isNull(String attckType){
+    public boolean isNull(String attckType) {
         for (String aNull : nulls) {
             if (Objects.equals(attckType, aNull)) {
                 return true;
@@ -103,7 +103,7 @@ public class Entity {
         return false;
     }
 
-    public boolean isRepelled(String attckType){
+    public boolean isRepelled(String attckType) {
         for (String repel : repells) {
             if (Objects.equals(attckType, repel)) {
                 return true;
@@ -122,7 +122,7 @@ public class Entity {
     //RND = Randomness factor (according to DragoonKain33, may be roughly between
     //0.95 and 1.05)
 
-    public double randomFactor(){
+    public double randomFactor() {
         double minFactor = 0.95;
         double maxFactor = 1.05;
 
@@ -134,12 +134,12 @@ public class Entity {
         return minFactor + (maxFactor - minFactor) * random.nextDouble();
     }
 
-    public int getPhysAttack(int monsterEndurance,int physDmg,int attackerStat){
-        return 5*(int)(Math.sqrt(((double) attackerStat/monsterEndurance)*Math.sqrt(physDmg)*randomFactor()));
+    public int getPhysAttack(int monsterEndurance, int physDmg, int attackerStat) {
+        return 5 * (int) (Math.sqrt(((double) attackerStat / monsterEndurance) * Math.sqrt(physDmg) * randomFactor()));
     }
 
-    public int getMagicAttack(int monsterEndurance,int spellDmg,int attackMagicStat){
-        return 5*(int)(Math.sqrt(((double) attackMagicStat /monsterEndurance)*Math.sqrt(spellDmg)*randomFactor()));
+    public int getMagicAttack(int monsterEndurance, int spellDmg, int attackMagicStat) {
+        return 5 * (int) (Math.sqrt(((double) attackMagicStat / monsterEndurance) * Math.sqrt(spellDmg) * randomFactor()));
     }
 
     public int getDefense() {
@@ -154,8 +154,8 @@ public class Entity {
 
     public String[] printSpells() {
         String[] spellNames = new String[this.spells.size()];
-        for(int spells=0;spells<this.spells.size();spells++){
-            spellNames[spells] = this.spells.get(spells).name +"  "+ (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
+        for (int spells = 0; spells < this.spells.size(); spells++) {
+            spellNames[spells] = this.spells.get(spells).name + "  " + (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
         }
         return spellNames;
     }
@@ -169,29 +169,29 @@ public class Entity {
     }
 
 
-    public Entity(GamePanel gp){
+    public Entity(GamePanel gp) {
 
         this.gp = gp;
         stats = new Entity_stats();
     }
 
-    public void setAction(){
+    public void setAction() {
 
     }
 
-    public void update(){
+    public void update() {
         setAction();
 
-        collisionOn=false;
+        collisionOn = false;
         gp.cCheck.checkTile(this);
-        gp.cCheck.checkObject(this,false);
-        gp.cCheck.checkEntity(this,gp.npc);
-        gp.cCheck.checkEntity(this,gp.monsters);
+        gp.cCheck.checkObject(this, false);
+        gp.cCheck.checkEntity(this, gp.npc);
+        gp.cCheck.checkEntity(this, gp.monsters);
         boolean contactPlayer = gp.cCheck.checkPlayer(this);
 
 
         //COLISON = FALSO ->PUEDE MOVER
-        if(!collisionOn){
+        if (!collisionOn) {
 
             switch (direction) {
                 case "up" -> WorldY -= speed;
@@ -202,72 +202,72 @@ public class Entity {
         }
 
         spriteCounter++;
-        if(spriteCounter > 12){
-            if(spriteNum==1){
-                spriteNum=2;
-            } else if (spriteNum==2) {
-                spriteNum=1;
+        if (spriteCounter > 12) {
+            if (spriteNum == 1) {
+                spriteNum = 2;
+            } else if (spriteNum == 2) {
+                spriteNum = 1;
             }
             spriteCounter = 0;
         }
     }
 
-    public BufferedImage setUp(String ImagePath){
+    public BufferedImage setUp(String ImagePath) {
         Toolbox tbox = new Toolbox();
         BufferedImage scaledImage = null;
 
-        try{
-            scaledImage = ImageIO.read(getClass().getResourceAsStream(ImagePath+".png"));
-            scaledImage = tbox.scaleImage(scaledImage,gp.tileSize,gp.tileSize);
-        }catch (IOException e){
+        try {
+            scaledImage = ImageIO.read(getClass().getResourceAsStream(ImagePath + ".png"));
+            scaledImage = tbox.scaleImage(scaledImage, gp.tileSize, gp.tileSize);
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return scaledImage;
     }
 
-    public void speak(){
+    public void speak() {
         gp.ui.currentName = name;
-        if(dialogues[dialogueIndex]==null){
-            dialogueIndex=0;
+        if (dialogues[dialogueIndex] == null) {
+            dialogueIndex = 0;
         }
         gp.ui.currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
 
         //HACE QUE EL NPC MIRE AL JUGADOR CUANDO LE HABLAS
 
-        switch (gp.player.direction){
+        switch (gp.player.direction) {
             case "up":
-                direction="down";
+                direction = "down";
                 break;
 
             case "down":
-                direction="up";
+                direction = "up";
                 break;
-            case"left":
-                direction="right";
+            case "left":
+                direction = "right";
                 break;
-            case"right":
-                direction="left";
+            case "right":
+                direction = "left";
                 break;
         }
 
     }
 
-    public void overWorldUse(Entity entity){
+    public void overWorldUse(Entity entity) {
 
     }
 
-    public void battleUse(Entity entity){
+    public void battleUse(Entity entity) {
 
     }
 
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2) {
 
         BufferedImage image = null;
         int ScreenX = WorldX - gp.player.WorldX + gp.player.screenX;
         int ScreenY = WorldY - gp.player.WorldY + gp.player.screenY;
 
-        if(WorldX + gp.tileSize > gp.player.WorldX - gp.player.screenX && WorldX - gp.tileSize <gp.player.WorldX + gp.player.screenX && WorldY + gp.tileSize > gp.player.WorldY - gp.player.screenY && WorldY - gp.tileSize < gp.player.WorldY + gp.player.screenX){
+        if (WorldX + gp.tileSize > gp.player.WorldX - gp.player.screenX && WorldX - gp.tileSize < gp.player.WorldX + gp.player.screenX && WorldY + gp.tileSize > gp.player.WorldY - gp.player.screenY && WorldY - gp.tileSize < gp.player.WorldY + gp.player.screenX) {
 
             // El jugador se está moviendo, selecciona la imagen correspondiente a la dirección de movimiento.
             switch (direction) {
@@ -300,8 +300,8 @@ public class Entity {
                     }
                     break;
             }
-            g2.drawImage(image,ScreenX,ScreenY,gp.tileSize,gp.tileSize,null);
+            g2.drawImage(image, ScreenX, ScreenY, gp.tileSize, gp.tileSize, null);
         }
-        }
+    }
 
 }

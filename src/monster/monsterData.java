@@ -29,23 +29,7 @@ public class monsterData {
 
     // Constructor con argumentos anotado con @JsonCreator
     @JsonCreator
-    public monsterData(
-            @JsonProperty("name") String name,
-            @JsonProperty("health") int health,
-            @JsonProperty("str") int str,
-            @JsonProperty("agi") int agi,
-            @JsonProperty("mag") int mag,
-            @JsonProperty("vit") int vit,
-            @JsonProperty("lvl") int lvl,
-            @JsonProperty("xpGiven") int xpGiven,
-            @JsonProperty("attackType") String attackType,
-            @JsonProperty("combatImagePath") String combatImagePath,
-            @JsonProperty("weaknesses") String[] weaknesses,
-            @JsonProperty("resistances") String[] resistances,
-            @JsonProperty("nulls") String[] nulls,
-            @JsonProperty("repells") String[] repells,
-            @JsonProperty("spells") String[] spells
-    ) {
+    public monsterData(@JsonProperty("name") String name, @JsonProperty("health") int health, @JsonProperty("str") int str, @JsonProperty("agi") int agi, @JsonProperty("mag") int mag, @JsonProperty("vit") int vit, @JsonProperty("lvl") int lvl, @JsonProperty("xpGiven") int xpGiven, @JsonProperty("attackType") String attackType, @JsonProperty("combatImagePath") String combatImagePath, @JsonProperty("weaknesses") String[] weaknesses, @JsonProperty("resistances") String[] resistances, @JsonProperty("nulls") String[] nulls, @JsonProperty("repells") String[] repells, @JsonProperty("spells") String[] spells) {
         this.name = name;
         this.hp = health;
         this.maxHp = this.hp;

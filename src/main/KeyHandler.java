@@ -12,12 +12,12 @@ import java.util.ArrayList;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed , enterPressed ,zPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, zPressed;
     public int pointsPerLevel = 0;
-    public int oldDex = 0,oldStr=0,oldMag=0,oldAgi=0;
+    public int oldDex = 0, oldStr = 0, oldMag = 0, oldAgi = 0;
 
 
-    public KeyHandler(GamePanel gp){
+    public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
 
@@ -31,46 +31,46 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
 
         //PLAY STATE
-        if(gp.gameState ==gp.playState){
+        if (gp.gameState == gp.playState) {
             playState(code);
         }
         //PAUSE STATE
-        else if(gp.gameState==gp.pauseState){
+        else if (gp.gameState == gp.pauseState) {
             pauseState(code);
         }
 
         //DIALOGUE STATE
-        else if(gp.gameState == gp.dialogueState){
+        else if (gp.gameState == gp.dialogueState) {
             dialogueState(code);
         }
 
         //Menu STATE
-        else if(gp.gameState == gp.enterMenuState){
+        else if (gp.gameState == gp.enterMenuState) {
             enterMenuState(code);
         }
 
         //TITLESCREEN STATE
-        else if(gp.gameState == gp.titleState){
+        else if (gp.gameState == gp.titleState) {
             titleState(code);
         }
         //STATUS STATE
-        else if(gp.gameState == gp.statusState){
+        else if (gp.gameState == gp.statusState) {
             statusState(code);
         }
         //INVENTORY STATE
-        else if(gp.gameState == gp.inventoryState){
+        else if (gp.gameState == gp.inventoryState) {
             inventoryState(code);
         }
         //COMBAT STATE
-        else if(gp.gameState == gp.combatState){
+        else if (gp.gameState == gp.combatState) {
             combatState(code);
         }
         //MAGIC MENU STATE
-        else if(gp.gameState == gp.magicMenuState){
+        else if (gp.gameState == gp.magicMenuState) {
             magicMenuState(code);
         }
         //LEVEL UP STATE
-        else if(gp.gameState == gp.levelUpState){
+        else if (gp.gameState == gp.levelUpState) {
             levelState(code);
         }
         //BATTLE ITEMS STATE
@@ -78,11 +78,11 @@ public class KeyHandler implements KeyListener {
             battleItemsState(code);
         }
         //NEGOTIATION STATE
-        else if(gp.gameState == gp.negotiationState){
+        else if (gp.gameState == gp.negotiationState) {
             negotiationState(code);
         }
         //NEGOTIATION REWARD STATE
-        else if(gp.gameState == gp.negotiationRewardState){
+        else if (gp.gameState == gp.negotiationRewardState) {
             negotiationRewardState(code);
         }
 
@@ -141,7 +141,7 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-    public void magicMenuState(int code){
+    public void magicMenuState(int code) {
         // Aquí obtenemos la cantidad de hechizos disponibles
         int numSpells = gp.player.spells.size();
         Entity attacker = gp.battleSystem.partyMembers.get(gp.battleSystem.currentPartyMemberIndex);
@@ -169,43 +169,42 @@ public class KeyHandler implements KeyListener {
                 gp.battleSystem.useMagic(attacker, gp.battleSystem.monster, attacker.spells.get(gp.ui.commandNum2));
             }
 
-            if(code == KeyEvent.VK_ESCAPE){
+            if (code == KeyEvent.VK_ESCAPE) {
                 gp.ui.commandNum2 = 0;
                 gp.ui.magicMenu = false;
                 gp.gameState = gp.combatState;
             }
         }
     }
-    public void battleItemsState(int code){
+
+    public void battleItemsState(int code) {
 
         ArrayList<Entity> consumableItems = gp.player.getItems();
-        int [] indexConsus = gp.player.saveItemIndexes();
+        int[] indexConsus = gp.player.saveItemIndexes();
 
-        if(gp.ui.commandNum == 2 && gp.ui.itemMenu){
-            if(code == KeyEvent.VK_W){
-                if(gp.ui.commandNum2>0){
+        if (gp.ui.commandNum == 2 && gp.ui.itemMenu) {
+            if (code == KeyEvent.VK_W) {
+                if (gp.ui.commandNum2 > 0) {
                     gp.ui.commandNum2--;
-                }
-                else{
-                    gp.ui.commandNum2 = consumableItems.size()-1;
+                } else {
+                    gp.ui.commandNum2 = consumableItems.size() - 1;
                 }
             }
-            if(code == KeyEvent.VK_S){
-                if(gp.ui.commandNum2<consumableItems.size()-1){
+            if (code == KeyEvent.VK_S) {
+                if (gp.ui.commandNum2 < consumableItems.size() - 1) {
                     gp.ui.commandNum2++;
-                }
-                else{
+                } else {
                     gp.ui.commandNum2 = 0;
                 }
             }
-            if(code == KeyEvent.VK_Z){
-                while(consumableItems.size()>0){
+            if (code == KeyEvent.VK_Z) {
+                while (consumableItems.size() > 0) {
                     gp.battleSystem.useItem(consumableItems.get(gp.ui.commandNum2));
                     consumableItems.remove(gp.ui.commandNum2);
                     gp.player.inventory.remove(indexConsus[gp.ui.commandNum2]);
                 }
             }
-            if(code == KeyEvent.VK_ESCAPE){
+            if (code == KeyEvent.VK_ESCAPE) {
                 gp.ui.commandNum2 = 0;
                 gp.ui.itemMenu = false;
                 gp.gameState = gp.combatState;
@@ -213,72 +212,67 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-    public void negotiationState(int code){
+    public void negotiationState(int code) {
         int Opciones = gp.battleSystem.negotiationSystem.getNumOpciones();
 
-        if(code == KeyEvent.VK_W && !gp.battleSystem.negotiationSystem.selectingReward) {
-            if(gp.ui.commandNum>0){
+        if (code == KeyEvent.VK_W && !gp.battleSystem.negotiationSystem.selectingReward) {
+            if (gp.ui.commandNum > 0) {
                 gp.ui.commandNum--;
                 System.out.println(gp.ui.commandNum);
-            }
-            else{
-                gp.ui.commandNum= Opciones-1;
+            } else {
+                gp.ui.commandNum = Opciones - 1;
                 System.out.println(gp.ui.commandNum);
             }
         }
 
-        if(code == KeyEvent.VK_S && !gp.battleSystem.negotiationSystem.selectingReward) {
-            if(gp.ui.commandNum<Opciones-1){
+        if (code == KeyEvent.VK_S && !gp.battleSystem.negotiationSystem.selectingReward) {
+            if (gp.ui.commandNum < Opciones - 1) {
                 gp.ui.commandNum++;
                 System.out.println(gp.ui.commandNum);
-            }
-            else{
-                gp.ui.commandNum=0;
+            } else {
+                gp.ui.commandNum = 0;
                 System.out.println(gp.ui.commandNum);
             }
         }
-        if(code == KeyEvent.VK_Z && !gp.battleSystem.negotiationSystem.selectingReward){
+        if (code == KeyEvent.VK_Z && !gp.battleSystem.negotiationSystem.selectingReward) {
             gp.battleSystem.negotiationSystem.updateMeter();
-            if(gp.battleSystem.negotiationSystem.selectingReward){
+            if (gp.battleSystem.negotiationSystem.selectingReward) {
                 gp.gameState = gp.negotiationRewardState;
             }
-            if(gp.battleSystem.negotiationSystem.endNegotiation){
-                if(gp.battleSystem.negotiationSystem.happyMeter >= 20){
+            if (gp.battleSystem.negotiationSystem.endNegotiation) {
+                if (gp.battleSystem.negotiationSystem.happyMeter >= 20) {
                     gp.gameState = gp.playState;
-                }
-                else if (gp.battleSystem.negotiationSystem.angryMeter >= 20){
+                } else if (gp.battleSystem.negotiationSystem.angryMeter >= 20) {
                     gp.gameState = gp.combatState;
                 }
-            }
-            else{
+            } else {
                 gp.battleSystem.negotiationSystem.startNegotiation();
             }
         }
     }
-    public void negotiationRewardState(int code){
+
+    public void negotiationRewardState(int code) {
         System.out.println("Selecting Reward");
-        if(code == KeyEvent.VK_W && gp.battleSystem.negotiationSystem.selectingReward) {
-            if(gp.ui.commandNum2>0){
+        if (code == KeyEvent.VK_W && gp.battleSystem.negotiationSystem.selectingReward) {
+            if (gp.ui.commandNum2 > 0) {
                 gp.ui.commandNum2--;
                 System.out.println(gp.ui.commandNum2);
-            }
-            else{
-                gp.ui.commandNum2= 2;
+            } else {
+                gp.ui.commandNum2 = 2;
                 System.out.println(gp.ui.commandNum2);
             }
         }
 
-        if(code == KeyEvent.VK_S && gp.battleSystem.negotiationSystem.selectingReward) {
-            if(gp.ui.commandNum2<2){
+        if (code == KeyEvent.VK_S && gp.battleSystem.negotiationSystem.selectingReward) {
+            if (gp.ui.commandNum2 < 2) {
                 gp.ui.commandNum2++;
                 System.out.println(gp.ui.commandNum2);
-            }
-            else{
-                gp.ui.commandNum2=0;
+            } else {
+                gp.ui.commandNum2 = 0;
                 System.out.println(gp.ui.commandNum2);
             }
         }
-        if(code == KeyEvent.VK_Z && gp.battleSystem.negotiationSystem.selectingReward){
+        if (code == KeyEvent.VK_Z && gp.battleSystem.negotiationSystem.selectingReward) {
             gp.battleSystem.negotiationSystem.happyMetterOptions(gp.ui.commandNum2);
             gp.gameState = gp.playState;
 
@@ -287,86 +281,84 @@ public class KeyHandler implements KeyListener {
 
 
     //Necesita Fix
-    public void levelState(int code){
+    public void levelState(int code) {
         System.out.println(oldStr);
 
-        if(code == KeyEvent.VK_W) {
-            if(gp.ui.commandNum>0){
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.commandNum > 0) {
                 gp.ui.commandNum--;
-            }
-            else{
-                gp.ui.commandNum=3;
+            } else {
+                gp.ui.commandNum = 3;
             }
         }
 
-        if(code == KeyEvent.VK_S) {
-            if(gp.ui.commandNum<3){
+        if (code == KeyEvent.VK_S) {
+            if (gp.ui.commandNum < 3) {
                 gp.ui.commandNum++;
-            }
-            else{
-                gp.ui.commandNum=0;
+            } else {
+                gp.ui.commandNum = 0;
             }
         }
-        if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D){
-            if(gp.ui.commandNum == 0){
-                if(pointsPerLevel>0){
+        if (code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D) {
+            if (gp.ui.commandNum == 0) {
+                if (pointsPerLevel > 0) {
                     gp.player.stats.vit++;
-                    gp.player.stats.maxHp+=5;
+                    gp.player.stats.maxHp += 5;
                     pointsPerLevel--;
                 }
             }
-            if(gp.ui.commandNum == 1){
-                if(pointsPerLevel>0){
+            if (gp.ui.commandNum == 1) {
+                if (pointsPerLevel > 0) {
                     gp.player.stats.str++;
                     pointsPerLevel--;
                 }
             }
-            if(gp.ui.commandNum == 2){
-                if(pointsPerLevel>0){
+            if (gp.ui.commandNum == 2) {
+                if (pointsPerLevel > 0) {
                     gp.player.stats.mag++;
-                    gp.player.stats.maxMp+=5;
+                    gp.player.stats.maxMp += 5;
                     pointsPerLevel--;
                 }
             }
-            if(gp.ui.commandNum == 3){
-                if(pointsPerLevel>0){
+            if (gp.ui.commandNum == 3) {
+                if (pointsPerLevel > 0) {
                     gp.player.stats.agi++;
                     pointsPerLevel--;
                 }
             }
         }
-        if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
+        if (code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
             if (gp.ui.commandNum == 0) {
                 gp.player.stats.vit--;
                 pointsPerLevel++;
-                if(gp.player.stats.vit <oldDex){
-                    gp.player.stats.vit =oldDex;
+                if (gp.player.stats.vit < oldDex) {
+                    gp.player.stats.vit = oldDex;
                     pointsPerLevel--;
                 }
-                gp.player.stats.maxHp-=5;
+                gp.player.stats.maxHp -= 5;
             }
             if (gp.ui.commandNum == 1) {
                 gp.player.stats.str--;
                 pointsPerLevel++;
-                if(gp.player.stats.str<oldStr){
-                    gp.player.stats.str=oldStr;
+                if (gp.player.stats.str < oldStr) {
+                    gp.player.stats.str = oldStr;
                     pointsPerLevel--;
                 }
             }
             if (gp.ui.commandNum == 2) {
                 gp.player.stats.mag--;
                 pointsPerLevel++;
-                if(gp.player.stats.mag<oldMag){
-                    gp.player.stats.mag=oldMag;
+                if (gp.player.stats.mag < oldMag) {
+                    gp.player.stats.mag = oldMag;
                     pointsPerLevel--;
                 }
-                gp.player.stats.maxMp-=5;
+                gp.player.stats.maxMp -= 5;
             }
-            if(gp.ui.commandNum == 3){
+            if (gp.ui.commandNum == 3) {
                 gp.player.stats.agi--;
                 pointsPerLevel++;
-                if(gp.player.stats.agi<oldAgi){
-                    gp.player.stats.agi=oldAgi;
+                if (gp.player.stats.agi < oldAgi) {
+                    gp.player.stats.agi = oldAgi;
                     pointsPerLevel--;
                 }
             }
@@ -374,149 +366,148 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.playState;
             }
         }
-        if(code == KeyEvent.VK_ENTER && pointsPerLevel == 0){
+        if (code == KeyEvent.VK_ENTER && pointsPerLevel == 0) {
             gp.gameState = gp.playState;
         }
     }
 
 
-    public void titleState(int code){
+    public void titleState(int code) {
 
-        if(code == KeyEvent.VK_W) {
-            if(gp.ui.commandNum>0){
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.commandNum > 0) {
                 gp.ui.commandNum--;
-            }
-            else{
-                gp.ui.commandNum=2;
+            } else {
+                gp.ui.commandNum = 2;
             }
         }
 
-        if(code == KeyEvent.VK_S) {
-            if(gp.ui.commandNum<2){
+        if (code == KeyEvent.VK_S) {
+            if (gp.ui.commandNum < 2) {
                 gp.ui.commandNum++;
-            }
-            else{
-                gp.ui.commandNum=0;
+            } else {
+                gp.ui.commandNum = 0;
             }
         }
-        if(code == KeyEvent.VK_Z){
-            if(gp.ui.commandNum == 0){
+        if (code == KeyEvent.VK_Z) {
+            if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.playState;
                 //gp.playMusic(0);
             }
-            if(gp.ui.commandNum == 1){
+            if (gp.ui.commandNum == 1) {
                 gp.saveLoad.load();
                 gp.gameState = gp.playState;
                 //gp.playMusic(0);
             }
-            if(gp.ui.commandNum == 2){
+            if (gp.ui.commandNum == 2) {
                 System.exit(0);
             }
         }
     }
-    public void playState(int code){
 
-        if(code == KeyEvent.VK_W) {
+    public void playState(int code) {
+
+        if (code == KeyEvent.VK_W) {
             upPressed = true;
         }
 
-        if(code == KeyEvent.VK_A) {
+        if (code == KeyEvent.VK_A) {
             leftPressed = true;
         }
 
-        if(code == KeyEvent.VK_S) {
+        if (code == KeyEvent.VK_S) {
             downPressed = true;
         }
 
-        if(code == KeyEvent.VK_D) {
+        if (code == KeyEvent.VK_D) {
             rightPressed = true;
         }
 
-        if(code == KeyEvent.VK_ESCAPE) {
-            gp.gameState= gp.pauseState;
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = gp.pauseState;
         }
 
-        if(code == KeyEvent.VK_Z) {
+        if (code == KeyEvent.VK_Z) {
             zPressed = true;
         }
 
-        if(code == KeyEvent.VK_ENTER){
+        if (code == KeyEvent.VK_ENTER) {
             gp.gameState = gp.enterMenuState;
         }
     }
-    public void pauseState(int code){
 
-        if(code == KeyEvent.VK_ESCAPE){
-            gp.gameState=gp.playState;
-        }
-    }
-    public void dialogueState(int code){
-        if(code == KeyEvent.VK_Z){
+    public void pauseState(int code) {
+
+        if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
     }
 
-    public void statusState(int code){
-        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE){
+    public void dialogueState(int code) {
+        if (code == KeyEvent.VK_Z) {
+            gp.gameState = gp.playState;
+        }
+    }
+
+    public void statusState(int code) {
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.enterMenuState;
         }
     }
 
-    public void inventoryState(int code){
+    public void inventoryState(int code) {
 
-        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE){
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.enterMenuState;
         }
 
-        if(code == KeyEvent.VK_W) {
-            if(gp.ui.slotRow !=0){
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.slotRow != 0) {
                 gp.ui.slotRow--;
             }
         }
 
-        if(code == KeyEvent.VK_A) {
-            if(gp.ui.slotCol !=0){
+        if (code == KeyEvent.VK_A) {
+            if (gp.ui.slotCol != 0) {
                 gp.ui.slotCol--;
             }
         }
 
-        if(code == KeyEvent.VK_S) {
-            if(gp.ui.slotRow !=6){
+        if (code == KeyEvent.VK_S) {
+            if (gp.ui.slotRow != 6) {
                 gp.ui.slotRow++;
             }
         }
 
-        if(code == KeyEvent.VK_D) {
-            if(gp.ui.slotCol !=10){
+        if (code == KeyEvent.VK_D) {
+            if (gp.ui.slotCol != 10) {
                 gp.ui.slotCol++;
             }
         }
-        if(code == KeyEvent.VK_Z) {
+        if (code == KeyEvent.VK_Z) {
             gp.player.selectItems();
         }
 
     }
 
-    public void enterMenuState(int code){
+    public void enterMenuState(int code) {
 
-        if(code == KeyEvent.VK_W) {
-            if(gp.ui.commandNum>0){
+        if (code == KeyEvent.VK_W) {
+            if (gp.ui.commandNum > 0) {
                 gp.ui.commandNum--;
-            }
-            else{
-                gp.ui.commandNum=3;
+            } else {
+                gp.ui.commandNum = 3;
             }
         }
 
-        if(code == KeyEvent.VK_S) {
-            if(gp.ui.commandNum<3){
+        if (code == KeyEvent.VK_S) {
+            if (gp.ui.commandNum < 3) {
                 gp.ui.commandNum++;
-            }
-            else{
-                gp.ui.commandNum=0;
+            } else {
+                gp.ui.commandNum = 0;
             }
         }
-        if(code == KeyEvent.VK_Z) {
+        if (code == KeyEvent.VK_Z) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.statusState;
             }
@@ -529,12 +520,12 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.dialogueState;
                 gp.ui.currentDialogue = "Has guardado el progreso";
             }
-            if (gp.ui.commandNum == 3){
+            if (gp.ui.commandNum == 3) {
                 System.exit(0);
             }
         }
 
-        if(code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE){
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }
 
@@ -546,19 +537,19 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
 
-        if(code == KeyEvent.VK_W) {
+        if (code == KeyEvent.VK_W) {
             upPressed = false;
         }
 
-        if(code == KeyEvent.VK_A) {
+        if (code == KeyEvent.VK_A) {
             leftPressed = false;
         }
 
-        if(code == KeyEvent.VK_S) {
+        if (code == KeyEvent.VK_S) {
             downPressed = false;
         }
 
-        if(code == KeyEvent.VK_D) {
+        if (code == KeyEvent.VK_D) {
             rightPressed = false;
         }
     }

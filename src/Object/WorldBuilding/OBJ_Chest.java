@@ -7,12 +7,12 @@ public class OBJ_Chest extends Entity {
 
     GamePanel gp;
 
-    public OBJ_Chest(GamePanel gp){
+    public OBJ_Chest(GamePanel gp) {
 
         super(gp);
 
         name = "chest";
-        collision=true;
+        collision = true;
         walkDown1 = setUp("/Objects/Cofre");
         isPickupeable = true;
 

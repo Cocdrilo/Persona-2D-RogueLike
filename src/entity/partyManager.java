@@ -12,7 +12,7 @@ public class partyManager {
     public ArrayList<shadowStandar> partyMembers;
     private GamePanel gp;
 
-    public partyManager(Player Leader , GamePanel gp) {
+    public partyManager(Player Leader, GamePanel gp) {
         this.Leader = Leader;
         this.partyMembers = new ArrayList<>();
         this.gp = gp;
@@ -39,10 +39,10 @@ public class partyManager {
     }
     //Debug Print Party
 
-    public void printParty(){
-        System.out.println("Party Leader: "+Leader.name);
+    public void printParty() {
+        System.out.println("Party Leader: " + Leader.name);
         System.out.println("Party Members: ");
-        for (shadowStandar member: partyMembers) {
+        for (shadowStandar member : partyMembers) {
             System.out.println(member.name);
         }
     }

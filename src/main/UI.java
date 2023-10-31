@@ -67,6 +67,7 @@ public class UI {
         }
 
     }
+
     public BufferedImage loadImage(String filePath) {
         try {
             return ImageIO.read(new File(filePath));
@@ -196,7 +197,7 @@ public class UI {
     public void drawStatusScreen() {
 
         //CREATE A FRAME
-        final int frameX = gp.tileSize/2;
+        final int frameX = gp.tileSize / 2;
         final int frameY = gp.tileSize;
         final int frameWidth = gp.tileSize * 5;
         final int frameHeight = gp.tileSize * 10;
@@ -290,7 +291,7 @@ public class UI {
         int memberY = frameY;
 
         for (int i = 0; i < gp.party.partyMembers.size(); i++) {
-            drawSubWindow(memberX, memberY, (frameWidth/2)+30, frameHeight);
+            drawSubWindow(memberX, memberY, (frameWidth / 2) + 30, frameHeight);
             g2.setColor(Color.white);
             g2.setFont(g2.getFont().deriveFont(24F));
 
@@ -343,7 +344,7 @@ public class UI {
 
 
             // Avanza a la siguiente posición Y para dibujar el siguiente miembro del grupo
-            memberX += gp.tileSize*3.5;
+            memberX += gp.tileSize * 3.5;
         }
 
     }
@@ -380,7 +381,7 @@ public class UI {
             int magicMenuHeight = height;
             drawMagicMenu(x, magicMenuY, magicMenuWidth, magicMenuHeight, BattleState);
         }
-        if(itemMenu) {
+        if (itemMenu) {
             x = x + width;
             int itemMenuY = y;
             int itemMenuWidth = gp.tileSize * 4;
@@ -485,12 +486,12 @@ public class UI {
         g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
 
-        String[] commandOptions = { "Attack", "Magic", "Item", "Defend", "Escape" , "Negotiate" };
+        String[] commandOptions = {"Attack", "Magic", "Item", "Defend", "Escape", "Negotiate"};
 
         for (int i = 0; i < commandOptions.length; i++) {
-            g2.drawString(commandOptions[i], x + gp.tileSize / 2, y + gp.tileSize/2 + i * 40);
+            g2.drawString(commandOptions[i], x + gp.tileSize / 2, y + gp.tileSize / 2 + i * 40);
             if (commandNum == i) {
-                g2.drawString("->", x - gp.tileSize, y + gp.tileSize/2 + i * 40);
+                g2.drawString("->", x - gp.tileSize, y + gp.tileSize / 2 + i * 40);
             }
         }
     }
@@ -528,14 +529,14 @@ public class UI {
 
             shadowStandar monstruo = (shadowStandar) gp.battleSystem.partyMembers.get(i);
             image = monstruo.getCombatImage();
-            g2.drawImage(image, x + 140 + ((i-1) * 120), y, 64, 64, null);
+            g2.drawImage(image, x + 140 + ((i - 1) * 120), y, 64, 64, null);
 
             String partyHealthText = gp.battleSystem.partyMembers.get(i).stats.hp + "/" + gp.battleSystem.partyMembers.get(i).stats.maxHp;
             String partyManaText = gp.battleSystem.partyMembers.get(i).stats.mp + "/" + gp.battleSystem.partyMembers.get(i).stats.maxMp;
             g2.setColor(Color.WHITE);
             g2.setFont(g2.getFont().deriveFont(24F));
-            g2.drawString(partyHealthText, x + 125 + ((i-1) * 120), y + 80);
-            g2.drawString(partyManaText, x + 125 + ((i-1) * 120), y + 97);
+            g2.drawString(partyHealthText, x + 125 + ((i - 1) * 120), y + 80);
+            g2.drawString(partyManaText, x + 125 + ((i - 1) * 120), y + 97);
 
             if (selectedIndex == i + 1) {
                 g2.setColor(Color.RED);
@@ -743,7 +744,7 @@ public class UI {
         // Configura el color del texto en blanco
         g2.setColor(Color.WHITE);
 
-        String[] attributes = {"vit", "str", "mag","agi"};
+        String[] attributes = {"vit", "str", "mag", "agi"};
         int y = 100; // Posición vertical inicial de las cadenas de texto
 
         for (int i = 0; i < attributes.length; i++) {
@@ -785,8 +786,8 @@ public class UI {
         }
     }
 
-    public void draw(Graphics2D g2){
-        this.g2=g2;
+    public void draw(Graphics2D g2) {
+        this.g2 = g2;
 
         g2.setFont(p5Hatty);
         //IMPORTANTE, LE QUITA EL DIFUMINADO RARO
@@ -794,39 +795,39 @@ public class UI {
 
         g2.setColor(Color.white);
 
-        if(gp.gameState== gp.titleState){
+        if (gp.gameState == gp.titleState) {
             drawTitleScreen();
         }
 
-        if(gp.gameState == gp.playState){
+        if (gp.gameState == gp.playState) {
             drawMessage();
         }
-            //pantalla de pausa
-        if(gp.gameState==gp.pauseState){
+        //pantalla de pausa
+        if (gp.gameState == gp.pauseState) {
             drawPauseScreen();
         }
-            //movidas de dialogos
-        if(gp.gameState==gp.dialogueState){
+        //movidas de dialogos
+        if (gp.gameState == gp.dialogueState) {
             drawDialogueScreen();
         }
 
         //PLAYER MENU  SCREEN
-        if(gp.gameState==gp.enterMenuState){
+        if (gp.gameState == gp.enterMenuState) {
             drawOptionsMenu();
         }
         // STATUS SCREEN
-        if(gp.gameState==gp.statusState){
+        if (gp.gameState == gp.statusState) {
             drawStatusScreen();
         }
         // INVENTORY SCREEN
-        if(gp.gameState==gp.inventoryState){
+        if (gp.gameState == gp.inventoryState) {
             drawInventoryScreen();
         }
         //Combat State
-        if(gp.gameState == gp.combatState || gp.gameState==gp.magicMenuState || gp.gameState==gp.battleItemsState){
+        if (gp.gameState == gp.combatState || gp.gameState == gp.magicMenuState || gp.gameState == gp.battleItemsState) {
             drawCombatScreen(gp.battleSystem);
         }
-        if(gp.gameState == gp.levelUpState){
+        if (gp.gameState == gp.levelUpState) {
             drawLevelupScreen();
         }
     }

@@ -1,4 +1,5 @@
 package battleNeeds;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,7 +25,8 @@ public class SpellManager {
     private void loadSpellsFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            spells = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<superMagic>>() {});
+            spells = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<superMagic>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
             // Manejar excepciones apropiadamente

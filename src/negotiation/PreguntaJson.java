@@ -1,4 +1,5 @@
 package negotiation;
+
 import java.util.List;
 
 public class PreguntaJson {

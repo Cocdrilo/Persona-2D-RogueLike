@@ -56,11 +56,11 @@ public class NegotiationSystem {
             happyMeter += 5;
             System.out.println("HappyMeter: " + happyMeter);
         }
-        if(happyMeter >= 20){
+        if (happyMeter >= 20) {
             System.out.println("Has ganado la negociación");
             selectingReward = true;
         }
-        if(angryMeter >= 20){
+        if (angryMeter >= 20) {
             System.out.println("Has perdido la negociación");
             endNegotiation = true;
         }
@@ -82,14 +82,13 @@ public class NegotiationSystem {
                 battleSystem.party.Leader.addMoney(random);
             }
         }
-        selectingReward= false;
+        selectingReward = false;
     }
 
     public int getNumOpciones() {
         System.out.println("NumOpciones: " + numOpciones);
         return numOpciones;
     }
-
 
 
 }

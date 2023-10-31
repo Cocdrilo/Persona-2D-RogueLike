@@ -11,11 +11,12 @@ import java.io.*;
 
 public class SaveLoad {
     GamePanel gp;
-    public SaveLoad(GamePanel gp){
+
+    public SaveLoad(GamePanel gp) {
         this.gp = gp;
     }
 
-    public Entity getObject(String itemName){
+    public Entity getObject(String itemName) {
         return switch (itemName) {
             case "Cota de malla" -> new OBJ_Armor(gp);
             case "chest" -> new OBJ_Chest(gp);
@@ -29,7 +30,8 @@ public class SaveLoad {
             default -> null;
         };
     }
-    public void save(){
+
+    public void save() {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
             DataStorage ds = new DataStorage();
@@ -49,15 +51,15 @@ public class SaveLoad {
             ds.money = gp.player.stats.money;
 
             //Player Inventory
-            for(int i = 0;i<gp.player.inventory.size();i++){
+            for (int i = 0; i < gp.player.inventory.size(); i++) {
                 ds.itemNames.add(gp.player.inventory.get(i).name);
                 //ds.itemAmounts.add(gp.player.inventory.get(i).amount);
 
             }
 
             //Player Equipment
-              ds.currentWeaponSlot = gp.player.getWeaponSlot();
-              ds.currentArmorSlot = gp.player.getArmorSlot();
+            ds.currentWeaponSlot = gp.player.getWeaponSlot();
+            ds.currentArmorSlot = gp.player.getArmorSlot();
 
             //Objects on Map
 
@@ -65,15 +67,16 @@ public class SaveLoad {
             //Write in the file
             oos.writeObject(ds);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Save Exception!");
         }
 
     }
-    public void load(){
+
+    public void load() {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));
-            DataStorage ds = (DataStorage)ois.readObject();
+            DataStorage ds = (DataStorage) ois.readObject();
 
             //Player Stats
             gp.player.stats.level = ds.level;
@@ -84,14 +87,14 @@ public class SaveLoad {
             gp.player.stats.mp = ds.mana;
             gp.player.stats.maxMp = ds.maxMana;
             gp.player.stats.str = ds.strength;
-            gp.player.stats.mag= ds.magic;
+            gp.player.stats.mag = ds.magic;
             gp.player.stats.agi = ds.agility;
             gp.player.stats.vit = ds.vitality;
             gp.player.stats.money = ds.money;
 
             //Player Inventory
             gp.player.inventory.clear();
-            for(int i = 0;i< ds.itemNames.size();i++){
+            for (int i = 0; i < ds.itemNames.size(); i++) {
                 gp.player.inventory.add(getObject(ds.itemNames.get(i)));
             }
             //Player Equipment
@@ -101,8 +104,7 @@ public class SaveLoad {
             gp.player.getPlayerImage();
 
 
-
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Load Exception!");
         }
     }

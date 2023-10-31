@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
     //Screen Settings
     final int originalTileSize = 16; //16*16
     final int scale = 3;
     public final int tileSize = originalTileSize * scale;
     public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12 ;
+    public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol; //768 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
@@ -50,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable{
     TileManager tileM = new TileManager(this);
     public CollisionCheck cCheck = new CollisionCheck(this);
     public AssetSetter Asetter = new AssetSetter(this);
-    public UI ui= new UI(this);
+    public UI ui = new UI(this);
     public Events eventHandler = new Events(this);
     public SpellManager spellManager = SpellManager.getInstance();
     public MonsterManager monsterManager = MonsterManager.getInstance();
@@ -58,9 +58,9 @@ public class GamePanel extends JPanel implements Runnable{
     SaveLoad saveLoad = new SaveLoad(this);
 
     //ENTITY AND OBJECT
-    public Player player = new Player(this,keyH);
-    public partyManager party = new partyManager(player,this);
-    public Entity obj [] = new Entity[10];
+    public Player player = new Player(this, keyH);
+    public partyManager party = new partyManager(player, this);
+    public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
     public Entity monsters[] = new Entity[20];
 
@@ -84,8 +84,8 @@ public class GamePanel extends JPanel implements Runnable{
     public final int negotiationRewardState = 12;
 
 
-    public GamePanel(){
-        this.setPreferredSize(new Dimension(screenWidth,screenHeight));
+    public GamePanel() {
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground((Color.black));
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
@@ -102,8 +102,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
 
-
-    public void setUpGame(){
+    public void setUpGame() {
 
         Asetter.setObject();
         Asetter.setNPC();
@@ -112,13 +111,13 @@ public class GamePanel extends JPanel implements Runnable{
         //playMusic(0);
         gameState = titleState;
 
-        tempScreen = new BufferedImage(screenWidth,screenHeight,BufferedImage.TYPE_INT_ARGB);
-        g2= (Graphics2D) tempScreen.getGraphics();
+        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) tempScreen.getGraphics();
 
         setFullScreen();
     }
 
-    public void startGameThread(){
+    public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -126,24 +125,23 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() {
 
-        double drawInterval = 1000000000/FPS;
+        double drawInterval = 1000000000 / FPS;
         double accumulator = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-        long timer =0;
+        long timer = 0;
         int drawCount = 0;
 
 
+        while (gameThread != null) {
 
-        while(gameThread !=null){
+            currentTime = System.nanoTime();
 
-            currentTime= System.nanoTime();
+            accumulator += (currentTime - lastTime) / drawInterval;
+            timer += (currentTime - lastTime);
+            lastTime = currentTime;
 
-            accumulator+=(currentTime-lastTime)/drawInterval;
-            timer+=(currentTime-lastTime);
-            lastTime=currentTime;
-
-            if(accumulator>=1){
+            if (accumulator >= 1) {
                 update();
                 drawToTempScreen();
                 drawToScreen();
@@ -151,38 +149,40 @@ public class GamePanel extends JPanel implements Runnable{
                 drawCount++;
             }
 
-            if(timer>=1000000000){
-                System.out.println("FPS:"+drawCount);
-                drawCount=0;
-                timer=0;
+            if (timer >= 1000000000) {
+                System.out.println("FPS:" + drawCount);
+                drawCount = 0;
+                timer = 0;
             }
         }
     }
-    public void update(){
+
+    public void update() {
 
 
-        if(gameState== playState){
+        if (gameState == playState) {
 
             //PLAYER ACT
             player.update();
 
             //NPC ACTUALZ
-            for (int npcInArray=0;npcInArray< npc.length;npcInArray++){
-                if(npc[npcInArray]!=null){
+            for (int npcInArray = 0; npcInArray < npc.length; npcInArray++) {
+                if (npc[npcInArray] != null) {
                     npc[npcInArray].update();
                 }
             }
-            for(int monsterInArray=0;monsterInArray<monsters.length;monsterInArray++){
-                if(monsters[monsterInArray]!=null){
+            for (int monsterInArray = 0; monsterInArray < monsters.length; monsterInArray++) {
+                if (monsters[monsterInArray] != null) {
                     monsters[monsterInArray].update();
                 }
             }
 
         }
-        if(gameState==pauseState){
+        if (gameState == pauseState) {
             //NOTHING
         }
     }
+
     public void drawToTempScreen() {
         // Limpia el búfer antes de dibujar
         g2.clearRect(0, 0, screenWidth, screenHeight);
@@ -238,23 +238,23 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
 
-    public void drawToScreen(){
+    public void drawToScreen() {
         Graphics g = getGraphics();
-        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null );
+        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
         g.dispose();
     }
 
-    public void playMusic(int i){
+    public void playMusic(int i) {
         music.setFile(i);
         music.play();
         music.loop();
     }
 
-    public void stopMusic(){
+    public void stopMusic() {
         music.stop();
     }
 
-    public void playerSe(int i){
+    public void playerSe(int i) {
 
         se.setFile(i);
         se.play();

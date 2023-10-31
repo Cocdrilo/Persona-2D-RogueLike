@@ -10,38 +10,38 @@ public class Sound {
     Clip clip;
     URL soundURL[] = new URL[30];
 
-    public Sound(){
+    public Sound() {
 
-        soundURL[0]= getClass().getResource("/Sound/BlueBoyAdventure.wav");
-        soundURL[1]= getClass().getResource("/Sound/Coin.wav");
-        soundURL[2]= getClass().getResource("/Sound/Unlock.wav");
-        soundURL[3]= getClass().getResource("/Sound/fanfare.wav");
-        soundURL[4]= getClass().getResource("/Sound/powerup.wav");
+        soundURL[0] = getClass().getResource("/Sound/BlueBoyAdventure.wav");
+        soundURL[1] = getClass().getResource("/Sound/Coin.wav");
+        soundURL[2] = getClass().getResource("/Sound/Unlock.wav");
+        soundURL[3] = getClass().getResource("/Sound/fanfare.wav");
+        soundURL[4] = getClass().getResource("/Sound/powerup.wav");
     }
 
-    public void setFile(int i){
+    public void setFile(int i) {
 
-        try{
+        try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
 
     }
 
-    public void play(){
+    public void play() {
 
         clip.start();
 
     }
 
-    public void loop(){
+    public void loop() {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public void stop(){
+    public void stop() {
         clip.stop();
     }
     //hola
