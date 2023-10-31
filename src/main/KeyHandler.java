@@ -254,6 +254,23 @@ public class KeyHandler implements KeyListener {
                 gp.battleSystem.negotiationSystem.startNegotiation();
             }
         }
+        if (code == KeyEvent.VK_Z && gp.battleSystem.negotiationSystem.moneyRequest){
+            gp.battleSystem.negotiationSystem.processMoneyRequest(gp.ui.commandNum);
+            if(gp.battleSystem.negotiationSystem.selectingReward){
+                gp.gameState = gp.negotiationRewardState;
+            }
+            if(gp.battleSystem.negotiationSystem.endNegotiation){
+                if(gp.battleSystem.negotiationSystem.happyMeter >= 20){
+                    gp.gameState = gp.playState;
+                }
+                else if (gp.battleSystem.negotiationSystem.angryMeter >= 20){
+                    gp.gameState = gp.combatState;
+                }
+            }
+            else{
+                gp.battleSystem.negotiationSystem.startNegotiation();
+            }
+        }
     }
     public void negotiationRewardState(int code){
         System.out.println("Selecting Reward");
