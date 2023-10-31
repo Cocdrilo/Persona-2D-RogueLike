@@ -18,6 +18,7 @@ public class NegotiationSystem {
     public int happyMeter = 0;
     public boolean endNegotiation = false;
     public boolean selectingReward = false;
+    public boolean moneyRequest = false;
 
     public NegotiationSystem(BattleSystem battleSystem) {
         negotiationManager = new NegotiationManager();
@@ -29,15 +30,25 @@ public class NegotiationSystem {
 
     public void startNegotiation() {
         numOpciones = 0;
-        Pregunta pregunta = randomizeQuestions();
-        System.out.println(pregunta.getTexto());
-        for (Opcion opcion : pregunta.getOpciones()) {
-            System.out.println(opcion.getId() + ". " + opcion.getTexto());
-            numOpciones++;
-        }
-        preguntasRealizadas.add(pregunta); // Añade la pregunta a la lista de preguntas realizadas
-        preguntas.remove(pregunta); // Elimina la pregunta de la lista de preguntas disponibles
 
+        // Decidir aleatoriamente si se hará una pregunta, se pedirá dinero o se pedirá un objeto.
+        int randomAction = (int) (Math.random() * 3);
+
+        if (randomAction == 0) {
+            Pregunta pregunta = randomizeQuestions();
+            System.out.println(pregunta.getTexto());
+            for (Opcion opcion : pregunta.getOpciones()) {
+                System.out.println(opcion.getId() + ". " + opcion.getTexto());
+                numOpciones++;
+            }
+            preguntasRealizadas.add(pregunta);
+            preguntas.remove(pregunta);
+        } else if (randomAction == 1) {
+            requestMoneyText();
+            moneyRequest = true;
+        } else if (randomAction == 2) {
+            requestItem();
+        }
     }
 
     private Pregunta randomizeQuestions() {
@@ -45,6 +56,42 @@ public class NegotiationSystem {
         int random = (int) (Math.random() * preguntas.size());
         return preguntas.get(random);
     }
+
+    public void requestMoneyText() {
+        int amountToRequest = (int) (Math.random() * 50) + 1; // Genera un número aleatorio entre 1 y 50
+        System.out.println("El oponente te está pidiendo " + amountToRequest + " monedas.");
+    }
+
+    public void processMoneyRequest(int selector) {
+        int amountToRequest = (int) (Math.random() * 50) + 1; // Genera un número aleatorio entre 1 y 50
+
+        if (selector == 0) {
+            if (battleSystem.party.Leader.stats.money >= amountToRequest) {
+                battleSystem.party.Leader.subtractMoney(amountToRequest);
+                System.out.println("Has pagado " + amountToRequest + " monedas.");
+                happyMeter += 5;
+            } else {
+                System.out.println("No tienes suficiente dinero para cumplir la solicitud.");
+                // Puedes manejar lo que ocurre si el jugador no tiene suficiente dinero.
+                angryMeter += 5;
+            }
+        } else if (selector == 1) {
+            System.out.println("Has rechazado la solicitud");
+            angryMeter += 5;
+        }
+    }
+
+
+    public void requestItem() {
+        // Aquí puedes implementar la lógica para pedir un objeto al jugador.
+        // Por ejemplo, puedes seleccionar un objeto aleatorio de la lista de objetos del jugador.
+        // Si el jugador tiene objetos disponibles, puedes agregar la lógica para darle un objeto al oponente.
+        // Asegúrate de que haya un mecanismo para verificar si el jugador tiene objetos disponibles.
+        // Puedes considerar la creación de una lista de objetos en la clase `Party` para esto.
+        // battleSystem.party.Leader.addItem(item); // Agregar un objeto al oponente.
+        System.out.println("El oponente está pidiendo un objeto.");
+    }
+
 
     public void updateMeter() {
 

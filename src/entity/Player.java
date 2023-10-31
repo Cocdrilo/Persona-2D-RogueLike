@@ -203,6 +203,7 @@ public class Player extends Entity {
     public void addMoney(int money) {
         stats.money += money;
     }
+    public void subtractMoney(int money){ stats.money -= money;}
 
     public void getPlayerImage() {
         standFront = setUp("/player/RaidouFront");
