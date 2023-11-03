@@ -2,6 +2,8 @@ package main;
 
 import entity.Player;
 import monster.shadowStandar;
+import negotiation.Opcion;
+import negotiation.Pregunta;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -566,6 +568,99 @@ public class UI {
             startX -= (iconWidth + iconSpacing);
         }
     }
+    public void drawNegotiationScreen(){
+        //WINDOW
+        int x = gp.tileSize;
+        int y = gp.tileSize ;
+        int width = gp.screenWidth-gp.tileSize*2;
+        int height = gp.tileSize * 10 ;
+
+        drawSubWindow(x, y, width, height);
+
+        //Draw Player Image on left center
+        x = gp.tileSize;
+        y = gp.tileSize * 3;
+        g2.drawImage(gp.player.standFront, x + 10, y + 10, 128, 128, null);
+
+        //Draw monster Image on right center
+        x = gp.screenWidth-gp.tileSize*5;
+        y = gp.tileSize * 3;
+        g2.drawImage(gp.battleSystem.monster.combatImage, x + 10, y + 10, 128, 128, null);
+
+        //Draw Question and Options at bottom center
+        x = gp.tileSize;
+        y = gp.tileSize * 8;
+        height = gp.tileSize * 5 ;
+        drawSubWindow(x, y, width, height);
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(24F));
+
+        // Check if it's a money request
+        if (gp.battleSystem.negotiationSystem.moneyRequest) {
+            String moneyRequestText = gp.battleSystem.negotiationSystem.requestMoneyText();
+            x = getXforCenterText(moneyRequestText);
+            g2.drawString(moneyRequestText, x, y + 60);
+            g2.drawString("Si", x, y + 90);
+            g2.drawString("No", x, y + 120);
+            if (commandNum2 == 0) {
+                g2.drawString("->", x- gp.tileSize, y + 90);
+            } else if (commandNum2 == 1) {
+                g2.drawString("->", x- gp.tileSize, y + 120);
+            }
+
+        } else {
+            Pregunta pregunta = gp.battleSystem.negotiationSystem.preguntaActual;
+            x = getXforCenterText(pregunta.getTexto());
+            g2.drawString(pregunta.getTexto(), x, y + 30);
+            int commandNumCounter = 0;
+            for (Opcion opcion : pregunta.getOpciones()) {
+                x = getXforCenterText(opcion.getTexto());
+                g2.drawString(opcion.getTexto(), x, y + 60);
+                if (commandNum == commandNumCounter) {
+                    g2.drawString("->", x - gp.tileSize, y + 60);
+                }
+                y += 30;
+                commandNumCounter++;
+
+            }
+        }
+    }
+    public void drawNegotiationRewardScreen(){
+        //Caja con añadir a Party
+        int x = gp.tileSize;
+        int y = gp.tileSize ;
+        int width = gp.screenWidth-gp.tileSize*2;
+        int height = gp.tileSize * 2 ;
+
+        drawSubWindow(x, y, width, height);
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        x = getXforCenterText("Añadir El Demonio a la Party");
+        g2.drawString("Añadir El Demonio a la Party", x, y + 30);
+        if(commandNum2 == 0){
+            g2.drawString("->", x- gp.tileSize, y + 30);
+        }
+
+        //Caja con Pedir Objetos
+        x = gp.tileSize;
+        y = gp.tileSize * 5;
+        drawSubWindow(x, y, width, height);
+        x = getXforCenterText("Pedir Objetos");
+        g2.drawString("Pedir Objetos", x, y + 30);
+        if(commandNum2 == 1){
+            g2.drawString("->", x- gp.tileSize, y + 30);
+        }
+
+        //Caja con Pedir Dinero
+        x = gp.tileSize;
+        y = gp.tileSize * 10;
+        drawSubWindow(x, y, width, height);
+        x = getXforCenterText("Pedir Dinero");
+        g2.drawString("Pedir Dinero", x, y + 30);
+        if(commandNum2 == 2){
+            g2.drawString("->", x- gp.tileSize, y + 30);
+        }
+    }
 
 
     public void drawOptionsMenu() {
@@ -827,6 +922,15 @@ public class UI {
         if (gp.gameState == gp.combatState || gp.gameState == gp.magicMenuState || gp.gameState == gp.battleItemsState) {
             drawCombatScreen(gp.battleSystem);
         }
+        //Negotiation State
+        if (gp.gameState == gp.negotiationState || gp.gameState == gp.moneyRequestState) {
+            drawNegotiationScreen();
+        }
+        //Negotiation Reward State
+        if (gp.gameState == gp.negotiationRewardState) {
+            drawNegotiationRewardScreen();
+        }
+        //Level Up State
         if (gp.gameState == gp.levelUpState) {
             drawLevelupScreen();
         }

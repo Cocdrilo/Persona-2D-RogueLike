@@ -7,6 +7,7 @@ import negotiation.NegotiationSystem;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 import java.util.ArrayList;
 
 public class KeyHandler implements KeyListener {
@@ -84,6 +85,10 @@ public class KeyHandler implements KeyListener {
         //NEGOTIATION REWARD STATE
         else if (gp.gameState == gp.negotiationRewardState) {
             negotiationRewardState(code);
+        }
+        //MONEY REQUEST STATE
+        else if (gp.gameState == gp.moneyRequestState) {
+            moneyRequestState(code);
         }
 
     }
@@ -234,6 +239,11 @@ public class KeyHandler implements KeyListener {
                 System.out.println(gp.ui.commandNum);
             }
         }
+
+        if(code == KeyEvent.VK_ESCAPE && !gp.battleSystem.negotiationSystem.selectingReward){
+            gp.gameState = gp.combatState;
+        }
+
         if (code == KeyEvent.VK_Z && !gp.battleSystem.negotiationSystem.selectingReward) {
             gp.battleSystem.negotiationSystem.updateMeter();
             if (gp.battleSystem.negotiationSystem.selectingReward) {
@@ -250,23 +260,54 @@ public class KeyHandler implements KeyListener {
             }
         }
         if (code == KeyEvent.VK_Z && gp.battleSystem.negotiationSystem.moneyRequest){
-            gp.battleSystem.negotiationSystem.processMoneyRequest(gp.ui.commandNum);
-            if(gp.battleSystem.negotiationSystem.selectingReward){
-                gp.gameState = gp.negotiationRewardState;
+            // Cambia al estado de solicitud de dinero
+            gp.gameState = gp.moneyRequestState;
+        }
+    }
+    public void moneyRequestState(int code) {
+        // En este estado, puedes manejar las opciones del jugador con respecto a la solicitud de dinero.
+
+        int Opciones = gp.battleSystem.negotiationSystem.getNumOpciones();
+
+        if (code == KeyEvent.VK_W && !gp.battleSystem.negotiationSystem.selectingReward) {
+            if (gp.ui.commandNum2 > 0) {
+                gp.ui.commandNum2--;
+                System.out.println(gp.ui.commandNum2);
+            } else {
+                gp.ui.commandNum2 = Opciones - 1;
+                System.out.println(gp.ui.commandNum2);
             }
-            if(gp.battleSystem.negotiationSystem.endNegotiation){
-                if(gp.battleSystem.negotiationSystem.happyMeter >= 20){
-                    gp.gameState = gp.playState;
-                }
-                else if (gp.battleSystem.negotiationSystem.angryMeter >= 20){
+        }
+
+        if (code == KeyEvent.VK_S && !gp.battleSystem.negotiationSystem.selectingReward) {
+            if (gp.ui.commandNum2 < Opciones - 1) {
+                gp.ui.commandNum2++;
+                System.out.println(gp.ui.commandNum2);
+            } else {
+                gp.ui.commandNum2 = 0;
+                System.out.println(gp.ui.commandNum2);
+            }
+        }
+
+        if (code == KeyEvent.VK_Z) {
+            // Aquí procesa la respuesta del jugador al pedido de dinero.
+            gp.battleSystem.negotiationSystem.processMoneyRequest(gp.ui.commandNum2);
+            gp.battleSystem.negotiationSystem.updateMeter();
+            if (gp.battleSystem.negotiationSystem.selectingReward) {
+                gp.gameState = gp.negotiationRewardState;
+            } else if (gp.battleSystem.negotiationSystem.endNegotiation) {
+                if (gp.battleSystem.negotiationSystem.happyMeter >= 20) {
+                    gp.gameState = gp.negotiationRewardState; // Cambiar a negotiationRewardState
+                } else if (gp.battleSystem.negotiationSystem.angryMeter >= 20) {
                     gp.gameState = gp.combatState;
                 }
-            }
-            else{
+            } else {
+                gp.gameState = gp.negotiationState;
                 gp.battleSystem.negotiationSystem.startNegotiation();
             }
         }
     }
+
 
     public void negotiationRewardState(int code) {
         System.out.println("Selecting Reward");

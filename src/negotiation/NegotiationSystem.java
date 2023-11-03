@@ -12,10 +12,12 @@ public class NegotiationSystem {
     public BattleSystem battleSystem;
     List<Pregunta> preguntas;
     List<Pregunta> preguntasRealizadas;
+    public Pregunta preguntaActual;
 
     private int numOpciones = 0;
     public int angryMeter = 0;
     public int happyMeter = 0;
+    public int moneyRequested = 0;
     public boolean endNegotiation = false;
     public boolean selectingReward = false;
     public boolean moneyRequest = false;
@@ -31,11 +33,16 @@ public class NegotiationSystem {
     public void startNegotiation() {
         numOpciones = 0;
 
-        // Decidir aleatoriamente si se hará una pregunta, se pedirá dinero o se pedirá un objeto.
-        int randomAction = (int) (Math.random() * 3);
+        // Modificar el rango de randomAction para evitar 0 en el primer ciclo
+        int randomAction = 0;  // Establecer un valor predeterminado diferente de 0 en el primer ciclo
+
+        if (!preguntasRealizadas.isEmpty()) {
+            randomAction = (int) (Math.random() * 2);
+        }
 
         if (randomAction == 0) {
             Pregunta pregunta = randomizeQuestions();
+            preguntaActual = pregunta;
             System.out.println(pregunta.getTexto());
             for (Opcion opcion : pregunta.getOpciones()) {
                 System.out.println(opcion.getId() + ". " + opcion.getTexto());
@@ -44,40 +51,43 @@ public class NegotiationSystem {
             preguntasRealizadas.add(pregunta);
             preguntas.remove(pregunta);
         } else if (randomAction == 1) {
-            requestMoneyText();
             moneyRequest = true;
+            numOpciones = 2;
+            requestMoney();
+            System.out.println(requestMoneyText());
         } else if (randomAction == 2) {
             requestItem();
         }
     }
 
-    private Pregunta randomizeQuestions() {
+    public Pregunta randomizeQuestions() {
         //Random Number from 0 to preguntas.size() - 1
         int random = (int) (Math.random() * preguntas.size());
         return preguntas.get(random);
     }
 
-    public void requestMoneyText() {
-        int amountToRequest = (int) (Math.random() * 50) + 1; // Genera un número aleatorio entre 1 y 50
-        System.out.println("El oponente te está pidiendo " + amountToRequest + " monedas.");
+    public void requestMoney() {
+        moneyRequested= (int) (Math.random() * 50) + 1;
+    }
+
+    public String requestMoneyText() {
+        return "El oponente te está pidiendo " + moneyRequested + " monedas.";
     }
 
     public void processMoneyRequest(int selector) {
-        int amountToRequest = (int) (Math.random() * 50) + 1; // Genera un número aleatorio entre 1 y 50
 
         if (selector == 0) {
-            if (battleSystem.party.Leader.stats.money >= amountToRequest) {
-                battleSystem.party.Leader.subtractMoney(amountToRequest);
-                System.out.println("Has pagado " + amountToRequest + " monedas.");
-                happyMeter += 5;
-            } else {
-                System.out.println("No tienes suficiente dinero para cumplir la solicitud.");
-                // Puedes manejar lo que ocurre si el jugador no tiene suficiente dinero.
-                angryMeter += 5;
+            if (battleSystem.party.Leader.stats.money >= moneyRequested) {
+                battleSystem.party.Leader.subtractMoney(moneyRequested);
+                System.out.println("Has pagado " + moneyRequested + " monedas.");
             }
+            else{
+                System.out.println("No tienes suficiente dinero");
+            }
+            moneyRequest = false;
         } else if (selector == 1) {
             System.out.println("Has rechazado la solicitud");
-            angryMeter += 5;
+            moneyRequest = false;
         }
     }
 
@@ -97,10 +107,10 @@ public class NegotiationSystem {
 
         int randomValue = (int) (Math.random() * 2) + 1; // Genera un número aleatorio entre 1 y 2
         if (randomValue == 1) {
-            angryMeter += 5;
+            angryMeter += 20;
             System.out.println("AngryMeter: " + angryMeter);
         } else if (randomValue == 2) {
-            happyMeter += 5;
+            happyMeter += 0;
             System.out.println("HappyMeter: " + happyMeter);
         }
         if (happyMeter >= 20) {
@@ -110,11 +120,11 @@ public class NegotiationSystem {
         if (angryMeter >= 20) {
             System.out.println("Has perdido la negociación");
             endNegotiation = true;
+            battleSystem.nextTurn();
         }
     }
 
     public void happyMetterOptions(int selector) {
-        System.out.println("Selector de recompensa: " + selector);
         //Opciones que tienes al Ganar la Negociación
         switch (selector) {
             case 0 ->
@@ -133,7 +143,6 @@ public class NegotiationSystem {
     }
 
     public int getNumOpciones() {
-        System.out.println("NumOpciones: " + numOpciones);
         return numOpciones;
     }
 

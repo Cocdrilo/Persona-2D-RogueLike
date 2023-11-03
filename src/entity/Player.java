@@ -75,7 +75,7 @@ public class Player extends Entity {
         stats.vit = 3;
         stats.exp = 0;
         stats.nextLevelExp = 10;
-        stats.money = 0;
+        stats.money = 50;
         stats.weapon = new OBJ_WEAPON_Slash(gp);
         stats.armor = new OBJ_Armor(gp);
         resistances = new String[]{};

@@ -82,6 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int battleItemsState = 10;
     public final int negotiationState = 11;
     public final int negotiationRewardState = 12;
+    public final int moneyRequestState = 13;
 
 
     public GamePanel() {
@@ -150,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS:" + drawCount);
+                //System.out.println("FPS:" + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
