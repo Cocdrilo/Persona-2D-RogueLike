@@ -19,13 +19,7 @@ public class superMagic {
 
     // Constructor con argumentos anotado con @JsonCreator
     @JsonCreator
-    public superMagic(@JsonProperty("name") String name,
-                      @JsonProperty("mpCost") int mpCost,
-                      @JsonProperty("hpCost") int hpCost,
-                      @JsonProperty("damage") int damage,
-                      @JsonProperty("hit") int hit,
-                      @JsonProperty("damageType") String damageType,
-                      @JsonProperty("description") String description) {
+    public superMagic(@JsonProperty("name") String name, @JsonProperty("mpCost") int mpCost, @JsonProperty("hpCost") int hpCost, @JsonProperty("damage") int damage, @JsonProperty("hit") int hit, @JsonProperty("damageType") String damageType, @JsonProperty("description") String description) {
         this.name = name;
         this.mpCost = mpCost;
         this.hpCost = hpCost;

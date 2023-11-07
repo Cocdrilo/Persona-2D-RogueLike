@@ -17,43 +17,43 @@ public class TileManager {
 
     public int mapTileNum[][];
 
-    public TileManager(GamePanel gp){
+    public TileManager(GamePanel gp) {
 
         this.gp = gp;
 
         tile = new Tile[10];
-        mapTileNum = new int [gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
         LoadMap("/Maps/Map01.txt");
     }
 
-    public void getTileImage(){
+    public void getTileImage() {
 
-        setUp(0,"Floor_1",false);
-        setUp(1,"WallMid",true);
-        setUp(2,"column",true);
+        setUp(0, "Floor_1", false);
+        setUp(1, "WallMid", true);
+        setUp(2, "column", true);
     }
 
-    public void setUp(int index,String imagePath,boolean collision){
+    public void setUp(int index, String imagePath, boolean collision) {
 
         Toolbox toolbox = new Toolbox();
 
         try {
-            tile[index]= new Tile();
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/" + imagePath +".png"));
-            tile[index].image = toolbox.scaleImage(tile[index].image,gp.tileSize, gp.tileSize);
-            tile[index].collision=collision;
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/" + imagePath + ".png"));
+            tile[index].image = toolbox.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            tile[index].collision = collision;
 
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void LoadMap(String map){
+    public void LoadMap(String map) {
 
-        try{
+        try {
 
             InputStream is = getClass().getResourceAsStream(map);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -61,21 +61,21 @@ public class TileManager {
             int col = 0;
             int row = 0;
 
-            while(col<gp.maxWorldCol && row< gp.maxWorldRow){
+            while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
 
                 String line = br.readLine();
 
-                while(col< gp.maxWorldCol ){
+                while (col < gp.maxWorldCol) {
 
                     String numbers[] = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
 
-                    mapTileNum[col][row]= num;
+                    mapTileNum[col][row] = num;
 
                     col++;
                 }
-                if(col == gp.maxWorldCol){
+                if (col == gp.maxWorldCol) {
                     col = 0;
                     row++;
                 }
@@ -83,17 +83,17 @@ public class TileManager {
             }
             br.close();
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
     }
 
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2) {
 
         int WorldCol = 0;
         int WorldRow = 0;
 
-        while(WorldCol < gp.maxWorldCol && WorldRow < gp.maxWorldRow){
+        while (WorldCol < gp.maxWorldCol && WorldRow < gp.maxWorldRow) {
 
             int tileNum = mapTileNum[WorldCol][WorldRow];
 
@@ -102,15 +102,15 @@ public class TileManager {
             int ScreenX = worldX - gp.player.WorldX + gp.player.screenX;
             int ScreenY = worldY - gp.player.WorldY + gp.player.screenY;
 
-            if(worldX + gp.tileSize > gp.player.WorldX - gp.player.screenX && worldX - gp.tileSize <gp.player.WorldX + gp.player.screenX && worldY + gp.tileSize > gp.player.WorldY - gp.player.screenY && worldY - gp.tileSize < gp.player.WorldY + gp.player.screenX){
+            if (worldX + gp.tileSize > gp.player.WorldX - gp.player.screenX && worldX - gp.tileSize < gp.player.WorldX + gp.player.screenX && worldY + gp.tileSize > gp.player.WorldY - gp.player.screenY && worldY - gp.tileSize < gp.player.WorldY + gp.player.screenX) {
 
-                g2.drawImage(tile[tileNum].image,ScreenX,ScreenY,null);
+                g2.drawImage(tile[tileNum].image, ScreenX, ScreenY, null);
             }
 
             WorldCol++;
 
-            if(WorldCol == gp.maxWorldCol){
-                WorldCol=0;
+            if (WorldCol == gp.maxWorldCol) {
+                WorldCol = 0;
                 WorldRow++;
             }
         }

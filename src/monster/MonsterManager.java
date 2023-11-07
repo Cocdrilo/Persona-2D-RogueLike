@@ -25,7 +25,8 @@ public class MonsterManager {
     private void loadMonstersFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            monsters = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<monsterData>>() {});
+            monsters = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<monsterData>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
             // Manejar excepciones apropiadamente

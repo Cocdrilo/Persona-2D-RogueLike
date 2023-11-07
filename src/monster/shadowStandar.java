@@ -6,16 +6,16 @@ import main.GamePanel;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class shadowStandar extends Entity{
+public class shadowStandar extends Entity {
 
-    public BufferedImage walkDown3,walkDown4,walkUp3,walkUp4,walkLeft3,walkLeft4,walkRight3,walkRight4;
+    public BufferedImage walkDown3, walkDown4, walkUp3, walkUp4, walkLeft3, walkLeft4, walkRight3, walkRight4;
 
     public int xpGiven;
     private String attackType;
     public BufferedImage combatImage;
     public String combatImagePath;
 
-    public shadowStandar(GamePanel gp,monsterData data) {
+    public shadowStandar(GamePanel gp, monsterData data) {
         super(gp);
         this.name = data.name;
         this.stats.hp = data.hp;
@@ -38,21 +38,21 @@ public class shadowStandar extends Entity{
         getImage();
     }
 
-    public String getAttackType(){
+    public String getAttackType() {
         return attackType;
     }
 
-    public int getPhysAttack(int playerEndurance,int attackerStat){
-        return 5*(int)(Math.sqrt(((double) attackerStat/playerEndurance)*randomFactor()));
+    public int getPhysAttack(int playerEndurance, int attackerStat) {
+        return 5 * (int) (Math.sqrt(((double) attackerStat / playerEndurance) * randomFactor()));
     }
 
 
-    public BufferedImage getCombatImage(){
+    public BufferedImage getCombatImage() {
         combatImage = setUp(combatImagePath);
         return combatImage;
     }
 
-    public void getImage(){
+    public void getImage() {
         walkDown1 = setUp("/Monsters/Demon1");
         walkDown2 = setUp("/Monsters/Demon2");
         walkDown3 = setUp("/Monsters/Demon3");
@@ -72,28 +72,29 @@ public class shadowStandar extends Entity{
 
 
     }
-    public void setAction(){
+
+    public void setAction() {
 
         //IA BASICA DE MOVIMIENTO ALEATORIO
         actionLockCounter++;
 
-        if(actionLockCounter == 90){
+        if (actionLockCounter == 90) {
             Random random = new Random();
-            int i = random.nextInt(100+1);
+            int i = random.nextInt(100 + 1);
 
-            if(i<=25){
-                direction="up";
+            if (i <= 25) {
+                direction = "up";
             }
-            if(i>25 && i<=50){
-                direction="down";
+            if (i > 25 && i <= 50) {
+                direction = "down";
             }
-            if(i>50 && i<=75){
-                direction="left";
+            if (i > 50 && i <= 75) {
+                direction = "left";
             }
-            if(i>75){
-                direction="right";
+            if (i > 75) {
+                direction = "right";
             }
-            actionLockCounter =0;
+            actionLockCounter = 0;
         }
     }
 

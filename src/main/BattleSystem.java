@@ -1,10 +1,12 @@
 package main;
+
 import Object.Consumables.*;
 import battleNeeds.superMagic;
 import entity.Entity;
 import entity.Player;
 import entity.partyManager;
 import monster.shadowStandar;
+import negotiation.NegotiationSystem;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,6 +15,7 @@ public class BattleSystem {
     public partyManager party;
     public shadowStandar monster;
     public GamePanel gp;
+    public NegotiationSystem negotiationSystem;
 
     private int turn = 0; // 0 = player, 1 = monster
     public int pressTurn = 8; // 2 turns per action, if hit weakness or crit 1 turn per action
@@ -35,16 +38,16 @@ public class BattleSystem {
         pressTurn = 8;
         System.out.println(pressTurn);
 
-        if(party.Leader.stats.hp<=0){
+        if (party.Leader.stats.hp <= 0) {
             System.out.println("Player has died");
             gp.gameState = gp.titleState;
         }
-        if(monster.stats.hp<=0){
+        if (monster.stats.hp <= 0) {
             System.out.println("Monster has died");
             endBattle();
         }
-        for(int i = 0; i<partyMembers.size();i++){
-            if(partyMembers.get(i).stats.hp<=0){
+        for (int i = 0; i < partyMembers.size(); i++) {
+            if (partyMembers.get(i).stats.hp <= 0) {
                 partyMembers.get(i).stats.hp = 0;
                 System.out.println(partyMembers.get(i).name + " has died");
                 partyMembers.remove(i);
@@ -56,7 +59,7 @@ public class BattleSystem {
         } else {
             turn = 0;
         }
-        if(turn == 1){
+        if (turn == 1) {
             monsterAI();
         }
 
@@ -85,6 +88,7 @@ public class BattleSystem {
             currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
         }
     }
+
     public void monsterAttack(Entity attacker, Entity target) {
         String weaponDmgType = "";
 
@@ -108,7 +112,7 @@ public class BattleSystem {
         if (attacker instanceof Player) {
             DmgPreModifier = ((Player) attacker).getPhysAttack(targetDEF, ((Player) attacker).stats.weapon.atk, ((Player) attacker).stats.str);
         } else if (attacker instanceof shadowStandar) {
-            DmgPreModifier = ((shadowStandar)attacker).getPhysAttack(targetDEF, attacker.stats.str);
+            DmgPreModifier = ((shadowStandar) attacker).getPhysAttack(targetDEF, attacker.stats.str);
         } else {
             // Manejar el caso en el que attacker no sea ni Player ni Monster
             DmgPreModifier = 0;
@@ -130,18 +134,18 @@ public class BattleSystem {
             pressTurn -= 3;
         } else if (target.isRepelled(weaponDmgType)) {
             handleRepelledDamage(target, damage, weaponDmgType);
-        }else{
-            pressTurn-=2;
+        } else {
+            pressTurn -= 2;
         }
     }
 
     private void handleDamageAndPressTurn(Entity attacker, Entity target, int damage, superMagic selectedSpell) {
         damage = handleDamageAndPressTurnBasedOnWeakness(attacker, target, damage, selectedSpell);
         if (damage > 0) {
-            if(target instanceof Player targetPlayer){
+            if (target instanceof Player targetPlayer) {
                 targetPlayer.stats.hp -= damage;
             }
-            if(target instanceof shadowStandar targetMonster){
+            if (target instanceof shadowStandar targetMonster) {
                 targetMonster.stats.hp -= damage;
             }
             System.out.println(target.name + " has received " + damage + " damage from " + selectedSpell.name);
@@ -169,7 +173,6 @@ public class BattleSystem {
     }
 
 
-
     private void handleRepelledDamage(Entity target, int DmgPreModifier, String weaponDmgType) {
         if (target.isWeak(weaponDmgType)) {
             DmgPreModifier *= 2;
@@ -178,7 +181,7 @@ public class BattleSystem {
         } else if (target.isNull(weaponDmgType)) {
             DmgPreModifier = 0;
         }
-        pressTurn -=3;
+        pressTurn -= 3;
 
         target.stats.hp -= DmgPreModifier;
         System.out.println(target.name + " has received " + DmgPreModifier + " damage");
@@ -187,7 +190,7 @@ public class BattleSystem {
 
     private superMagic selectSpell(Entity attacker) {
         ArrayList<superMagic> entitySpells = attacker.getSpells();
-        if(gp.ui.commandNum2 >=0 &&gp.ui.commandNum2 < entitySpells.size()){
+        if (gp.ui.commandNum2 >= 0 && gp.ui.commandNum2 < entitySpells.size()) {
             return entitySpells.get(gp.ui.commandNum2);
         }
         return null;
@@ -202,7 +205,7 @@ public class BattleSystem {
         int damage = calculateMagicDamage(attacker, target, selectedSpell);
 
         handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
-        if(pressTurn <= 0 || target.stats.hp <= 0){
+        if (pressTurn <= 0 || target.stats.hp <= 0) {
             nextTurn();
         }
         // Cambiar al siguiente miembro del partido
@@ -213,16 +216,12 @@ public class BattleSystem {
     }
 
     public void monsterUseMagic(Entity attacker, Entity target, superMagic selectedSpell) {
-        if (attacker.stats.mp < selectedSpell.mpCost) {
-            System.out.println("Not enough MP to cast " + selectedSpell.name);
-            return;
-        }
+        //Enemy monsters Dont Use Mana
 
         int damage = calculateMagicDamage(attacker, target, selectedSpell);
 
         handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
     }
-
 
 
     private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell) {
@@ -305,7 +304,7 @@ public class BattleSystem {
             }
             System.out.println("Monster AI - Press Turn: " + pressTurn);
 
-        }while (pressTurn > 0);
+        } while (pressTurn > 0);
         nextTurn();
     }
 
@@ -322,22 +321,29 @@ public class BattleSystem {
             nextTurn();
         }
     }
-    public void fleeFromBattle(){
+
+    public void fleeFromBattle() {
         //Implementar el escape de la batalla
         Random random = new Random();
         int randomNum = random.nextInt(100);
-        if(randomNum<50){
+        if (randomNum < 50) {
             System.out.println("Player has escaped");
             gp.gameState = gp.playState;
-        }
-        else{
+        } else {
             System.out.println("Player has failed to escape");
             nextTurn();
         }
     }
 
+    public void negotiateMonster() {
+        //Implementar la negociacion con el monstruo
+        negotiationSystem = new NegotiationSystem(this);
+        negotiationSystem.startNegotiation();
+        //gp.gameState = gp.negotiationState;
+    }
 
-    public void endBattle(){
+
+    public void endBattle() {
         //EXP calc
 
         party.Leader.stats.exp = party.Leader.stats.exp + monster.xpGiven;
@@ -348,7 +354,7 @@ public class BattleSystem {
         //Random de dinero
         //Random de Objetos
 
-        if(party.Leader.stats.exp>= party.Leader.stats.nextLevelExp){
+        if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
             //Level Up
             party.Leader.levelUp();
         }

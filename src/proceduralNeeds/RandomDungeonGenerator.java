@@ -1,6 +1,7 @@
 package proceduralNeeds;
 
 import java.util.*;
+
 import main.GamePanel;
 
 public class RandomDungeonGenerator {

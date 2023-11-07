@@ -1,0 +1,364 @@
+{
+  "preguntas": [
+    {
+      "id": 1,
+      "texto": "¿Qué hay más allá de la oscuridad?",
+      "opciones": [
+        {
+          "id": 1,
+          "texto": "La verdad eterna"
+        },
+        {
+          "id": 2,
+          "texto": "La perdición eterna"
+        },
+        {
+          "id": 3,
+          "texto": "No lo sé, pero estoy dispuesto a averiguarlo"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "texto": "¿Conoces el verdadero significado de la vida?",
+      "opciones": [
+        {
+          "id": 4,
+          "texto": "Sí, es sufrir"
+        },
+        {
+          "id": 5,
+          "texto": "No, la vida es un enigma"
+        },
+        {
+          "id": 6,
+          "texto": "El significado de la vida es poder y control"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "texto": "¿Qué secretos oculta el abismo?",
+      "opciones": [
+        {
+          "id": 7,
+          "texto": "El abismo oculta conocimiento insondable"
+        },
+        {
+          "id": 8,
+          "texto": "Solo el abismo conoce la verdad"
+        },
+        {
+          "id": 9,
+          "texto": "No me acercaría al abismo"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "texto": "¿Puedes sobrevivir a la eternidad solitaria?",
+      "opciones": [
+        {
+          "id": 10,
+          "texto": "La soledad es mi aliada"
+        },
+        {
+          "id": 11,
+          "texto": "Nadie puede soportar la eternidad solo"
+        },
+        {
+          "id": 12,
+          "texto": "La eternidad no me asusta"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "texto": "¿Qué sacrificarías por el conocimiento prohibido?",
+      "opciones": [
+        {
+          "id": 13,
+          "texto": "Sacrificaría mi alma"
+        },
+        {
+          "id": 14,
+          "texto": "No sacrificaría nada por ese conocimiento"
+        },
+        {
+          "id": 15,
+          "texto": "Sacrificaría a otros por mi beneficio"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "texto": "¿Te enfrentarías al juicio de los dioses?",
+      "opciones": [
+        {
+          "id": 16,
+          "texto": "Sí, desafiaría a los dioses"
+        },
+        {
+          "id": 17,
+          "texto": "No, respetaría su poder"
+        },
+        {
+          "id": 18,
+          "texto": "Los dioses no me interesan"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "texto": "¿Qué deseos oscuros anidan en tu corazón?",
+      "opciones": [
+        {
+          "id": 19,
+          "texto": "Deseo el poder supremo"
+        },
+        {
+          "id": 20,
+          "texto": "Deseo la inmortalidad"
+        },
+        {
+          "id": 21,
+          "texto": "No albergo deseos oscuros"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "texto": "¿Qué harías en un mundo sin esperanza?",
+      "opciones": [
+        {
+          "id": 22,
+          "texto": "Lucharía hasta el final"
+        },
+        {
+          "id": 23,
+          "texto": "Buscaría la manera de restaurar la esperanza"
+        },
+        {
+          "id": 24,
+          "texto": "Me rendiría"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "texto": "¿Te atreverías a desafiar al destino?",
+      "opciones": [
+        {
+          "id": 25,
+          "texto": "Sí, desafiaré mi destino"
+        },
+        {
+          "id": 26,
+          "texto": "El destino es inexorable"
+        },
+        {
+          "id": 27,
+          "texto": "No creo en el destino"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "texto": "¿Qué monstruos ocultos acechan en tu interior?",
+      "opciones": [
+        {
+          "id": 28,
+          "texto": "Monstruos sedientos de sangre"
+        },
+        {
+          "id": 29,
+          "texto": "Monstruos de dolor y sufrimiento"
+        },
+        {
+          "id": 30,
+          "texto": "Monstruos que buscan la redención"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "texto": "¿Qué sombras te persiguen en tus pesadillas?",
+      "opciones": [
+        {
+          "id": 31,
+          "texto": "Pesadillas de muerte y destrucción"
+        },
+        {
+          "id": 32,
+          "texto": "Pesadillas de traición y engaño"
+        },
+        {
+          "id": 33,
+          "texto": "No tengo pesadillas"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "texto": "¿Cuál es el precio de la inmortalidad?",
+      "opciones": [
+        {
+          "id": 34,
+          "texto": "El sufrimiento eterno"
+        },
+        {
+          "id": 35,
+          "texto": "La pérdida de la humanidad"
+        },
+        {
+          "id": 36,
+          "texto": "No hay precio demasiado alto"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "texto": "¿Te atreverías a cruzar el umbral de la locura?",
+      "opciones": [
+        {
+          "id": 37,
+          "texto": "Sí, abrazaría la locura"
+        },
+        {
+          "id": 38,
+          "texto": "La locura es un abismo sin fin"
+        },
+        {
+          "id": 39,
+          "texto": "La locura me aterra"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "texto": "¿Qué secretos aguardan en la penumbra de la mente?",
+      "opciones": [
+        {
+          "id": 40,
+          "texto": "Secretos oscuros y retorcidos"
+        },
+        {
+          "id": 41,
+          "texto": "Secretos olvidados por la razón"
+        },
+        {
+          "id": 42,
+          "texto": "No deseo conocer esos secretos"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "texto": "¿Puedes sobrevivir al abrazo de las tinieblas?",
+      "opciones": [
+        {
+          "id": 43,
+          "texto": "Sí, las tinieblas son mi refugio"
+        },
+        {
+          "id": 44,
+          "texto": "Las tinieblas consumirán todo"
+        },
+        {
+          "id": 45,
+          "texto": "Las tinieblas me aterran"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "texto": "¿Qué horrores acechan en la oscuridad?",
+      "opciones": [
+        {
+          "id": 46,
+          "texto": "Horrores más allá de la imaginación"
+        },
+        {
+          "id": 47,
+          "texto": "Los horrores son creaciones de la mente"
+        },
+        {
+          "id": 48,
+          "texto": "No temo a los horrores"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "texto": "¿Qué ofrenda harías al dios del caos?",
+      "opciones": [
+        {
+          "id": 49,
+          "texto": "Ofrendaría caos y destrucción"
+        },
+        {
+          "id": 50,
+          "texto": "No haría ninguna ofrenda"
+        },
+        {
+          "id": 51,
+          "texto": "No creo en dioses"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "texto": "¿Qué maldiciones cargas en tu alma?",
+      "opciones": [
+        {
+          "id": 52,
+          "texto": "Maldiciones de un pasado oscuro"
+        },
+        {
+          "id": 53,
+          "texto": "Maldiciones que nunca pueden ser redimidas"
+        },
+        {
+          "id": 54,
+          "texto": "No cargo con maldiciones"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "texto": "¿Puedes soportar el peso de la verdad absoluta?",
+      "opciones": [
+        {
+          "id": 55,
+          "texto": "Sí, la verdad es mi única guía"
+        },
+        {
+          "id": 56,
+          "texto": "La verdad es insoportable"
+        },
+        {
+          "id": 57,
+          "texto": "La verdad es relativa"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "texto": "¿Qué destino siniestro te aguarda?",
+      "opciones": [
+        {
+          "id": 58,
+          "texto": "Un destino de caos y destrucción"
+        },
+        {
+          "id": 59,
+          "texto": "Un destino incierto y misterioso"
+        },
+        {
+          "id": 60,
+          "texto": "No creo en el destino"
+        }
+      ]
+    }
+  ]
+}

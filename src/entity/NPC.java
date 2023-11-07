@@ -4,21 +4,22 @@ import main.GamePanel;
 
 import java.util.Random;
 
-public class NPC extends Entity{
+public class NPC extends Entity {
 
 
-    public NPC(GamePanel gp){
+    public NPC(GamePanel gp) {
         super(gp);
 
-        name="Old Man";
+        name = "Old Man";
         direction = "down";
         speed = 1;
 
         getImage();
-        setDialogue();;
+        setDialogue();
+        ;
     }
 
-    public void getImage(){
+    public void getImage() {
         walkDown1 = setUp("/NPC/oldman_down_1");
         walkDown2 = setUp("/NPC/oldman_down_2");
         walkLeft1 = setUp("/NPC/oldman_left_1");
@@ -30,38 +31,38 @@ public class NPC extends Entity{
 
     }
 
-    public void setDialogue(){
+    public void setDialogue() {
         dialogues[0] = "Greetings Traveler";
         dialogues[1] = "Testeando al maximo de lo que se puede hijodeputa";
         dialogues[2] = "En efecto soy godofredo el maximo exponente de \n tu abuela en pedo";
     }
 
-    public void setAction(){
+    public void setAction() {
 
         actionLockCounter++;
 
-        if(actionLockCounter == 90){
+        if (actionLockCounter == 90) {
             Random random = new Random();
-            int i = random.nextInt(100+1);
+            int i = random.nextInt(100 + 1);
 
-            if(i<=25){
-                direction="up";
+            if (i <= 25) {
+                direction = "up";
             }
-            if(i>25 && i<=50){
-                direction="down";
+            if (i > 25 && i <= 50) {
+                direction = "down";
             }
-            if(i>50 && i<=75){
-                direction="left";
+            if (i > 50 && i <= 75) {
+                direction = "left";
             }
-            if(i>75){
-                direction="right";
+            if (i > 75) {
+                direction = "right";
             }
-            actionLockCounter =0;
+            actionLockCounter = 0;
         }
 
     }
 
-    public void speak(){
+    public void speak() {
         super.speak();
     }
 }

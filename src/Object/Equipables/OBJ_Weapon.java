@@ -16,8 +16,9 @@ public class OBJ_Weapon extends Entity {
         isPickupeable = true;
         type = 3;
     }
-    public void setUpDescription(){
-        description = "["+ name +" ]\nAtk: "+atk+ " \nHit: " + hit + "\n Tipo de DMG: " + damageType;
+
+    public void setUpDescription() {
+        description = "[" + name + " ]\nAtk: " + atk + " \nHit: " + hit + "\n Tipo de DMG: " + damageType;
     }
 
 
