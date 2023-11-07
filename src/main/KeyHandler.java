@@ -223,20 +223,20 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_W && !gp.battleSystem.negotiationSystem.selectingReward) {
             if (gp.ui.commandNum > 0) {
                 gp.ui.commandNum--;
-                System.out.println(gp.ui.commandNum);
+                System.out.println("commandNum1 : " + gp.ui.commandNum2);
             } else {
                 gp.ui.commandNum = Opciones - 1;
-                System.out.println(gp.ui.commandNum);
+                System.out.println("commandNum1 : " + gp.ui.commandNum2);
             }
         }
 
         if (code == KeyEvent.VK_S && !gp.battleSystem.negotiationSystem.selectingReward) {
             if (gp.ui.commandNum < Opciones - 1) {
                 gp.ui.commandNum++;
-                System.out.println(gp.ui.commandNum);
+                System.out.println("commandNum1 : " + gp.ui.commandNum2);
             } else {
                 gp.ui.commandNum = 0;
-                System.out.println(gp.ui.commandNum);
+                System.out.println("commandNum1 : " + gp.ui.commandNum2);
             }
         }
 
@@ -272,27 +272,26 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_W && !gp.battleSystem.negotiationSystem.selectingReward) {
             if (gp.ui.commandNum2 > 0) {
                 gp.ui.commandNum2--;
-                System.out.println(gp.ui.commandNum2);
+                System.out.println("commandNum2 : " + gp.ui.commandNum2);
             } else {
                 gp.ui.commandNum2 = Opciones - 1;
-                System.out.println(gp.ui.commandNum2);
+                System.out.println("commandNum2 : " + gp.ui.commandNum2);
             }
         }
 
         if (code == KeyEvent.VK_S && !gp.battleSystem.negotiationSystem.selectingReward) {
             if (gp.ui.commandNum2 < Opciones - 1) {
                 gp.ui.commandNum2++;
-                System.out.println(gp.ui.commandNum2);
+                System.out.println("commandNum2 : " + gp.ui.commandNum2);
             } else {
                 gp.ui.commandNum2 = 0;
-                System.out.println(gp.ui.commandNum2);
+                System.out.println("commandNum2 : " + gp.ui.commandNum2);
             }
         }
 
         if (code == KeyEvent.VK_Z) {
             // Aquí procesa la respuesta del jugador al pedido de dinero.
             gp.battleSystem.negotiationSystem.processMoneyRequest(gp.ui.commandNum2);
-            gp.battleSystem.negotiationSystem.updateMeter();
             if (gp.battleSystem.negotiationSystem.selectingReward) {
                 gp.gameState = gp.negotiationRewardState;
             } else if (gp.battleSystem.negotiationSystem.endNegotiation) {

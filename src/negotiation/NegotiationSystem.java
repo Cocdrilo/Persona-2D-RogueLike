@@ -1,7 +1,6 @@
 package negotiation;
 
 import main.BattleSystem;
-import monster.shadowStandar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,7 @@ public class NegotiationSystem {
     public boolean endNegotiation = false;
     public boolean selectingReward = false;
     public boolean moneyRequest = false;
+    public boolean canRequestMoney = true;
 
     public NegotiationSystem(BattleSystem battleSystem) {
         negotiationManager = new NegotiationManager();
@@ -40,7 +40,7 @@ public class NegotiationSystem {
             randomAction = (int) (Math.random() * 2);
         }
 
-        if (randomAction == 0) {
+        if (randomAction == 0 || !canRequestMoney) {
             Pregunta pregunta = randomizeQuestions();
             preguntaActual = pregunta;
             System.out.println(pregunta.getTexto());
@@ -50,13 +50,14 @@ public class NegotiationSystem {
             }
             preguntasRealizadas.add(pregunta);
             preguntas.remove(pregunta);
-        } else if (randomAction == 1) {
+        } else if (randomAction == 1 && canRequestMoney) {
             moneyRequest = true;
             numOpciones = 2;
             requestMoney();
             System.out.println(requestMoneyText());
+            canRequestMoney = false;
         } else if (randomAction == 2) {
-            requestItem();
+            // No funcional actualmente requestItem();
         }
     }
 
@@ -75,11 +76,13 @@ public class NegotiationSystem {
     }
 
     public void processMoneyRequest(int selector) {
+        boolean moneyPayed = false;
 
         if (selector == 0) {
             if (battleSystem.party.Leader.stats.money >= moneyRequested) {
                 battleSystem.party.Leader.subtractMoney(moneyRequested);
                 System.out.println("Has pagado " + moneyRequested + " monedas.");
+                moneyPayed = true;
             }
             else{
                 System.out.println("No tienes suficiente dinero");
@@ -89,6 +92,25 @@ public class NegotiationSystem {
             System.out.println("Has rechazado la solicitud");
             moneyRequest = false;
         }
+        if (moneyPayed){
+            happyMeter += 5;
+            System.out.println("HappyMeter: " + happyMeter);
+        }
+        else{
+            angryMeter += 5;
+            System.out.println("AngryMeter: " + angryMeter);
+        }
+
+        if (happyMeter >= 20) {
+            System.out.println("Has ganado la negociación");
+            selectingReward = true;
+        }
+        if (angryMeter >= 20) {
+            System.out.println("Has perdido la negociación");
+            endNegotiation = true;
+            battleSystem.nextTurn();
+        }
+        moneyRequest = false;
     }
 
 
@@ -107,10 +129,10 @@ public class NegotiationSystem {
 
         int randomValue = (int) (Math.random() * 2) + 1; // Genera un número aleatorio entre 1 y 2
         if (randomValue == 1) {
-            angryMeter += 20;
+            angryMeter += 5;
             System.out.println("AngryMeter: " + angryMeter);
         } else if (randomValue == 2) {
-            happyMeter += 0;
+            happyMeter += 5;
             System.out.println("HappyMeter: " + happyMeter);
         }
         if (happyMeter >= 20) {
