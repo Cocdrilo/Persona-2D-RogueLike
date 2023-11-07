@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
     public BattleSystem battleSystem;
     public NegotiationSystem negotiationSystem;
+    public boolean fullScreenOn;
 
     //FPS
     int FPS = 60;
@@ -47,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     Sound music = new Sound();
     Sound se = new Sound();
+    Config config = new Config(this);
     TileManager tileM = new TileManager(this);
     public CollisionCheck cCheck = new CollisionCheck(this);
     public AssetSetter Asetter = new AssetSetter(this);
@@ -83,6 +85,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int negotiationState = 11;
     public final int negotiationRewardState = 12;
     public final int moneyRequestState = 13;
+    public final int optionsState = 14;
 
 
     public GamePanel() {
