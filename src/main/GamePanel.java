@@ -88,8 +88,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int optionsState = 14;
 
 
-    public GamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+    public GamePanel(){
+        this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground((Color.black));
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
@@ -117,8 +117,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
-
-        setFullScreen();
+        if(fullScreenOn){
+            setFullScreen();
+        }
     }
 
     public void startGameThread() {
