@@ -35,7 +35,7 @@ public class CollisionCheck {
                     entity.collisionOn = true;
                 }
             }
-            case "dowm" -> {
+            case "down" -> {
                 entityBottomRow = (entityBottomY + entity.speed) / gp.tileSize;
                 TileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 TileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
@@ -150,6 +150,7 @@ public class CollisionCheck {
 
         return index;
     }
+
 
     public boolean checkPlayer(Entity entity) {
 

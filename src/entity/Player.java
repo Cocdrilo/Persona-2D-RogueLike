@@ -321,6 +321,12 @@ public class Player extends Entity {
         }
     }
 
+    public void enemyContactPlayer(shadowStandar shadow) {
+        //Cambio a Combate
+        gp.battleSystem = new BattleSystem(gp.party, shadow, gp);
+        gp.gameState = gp.combatState;
+    }
+
     public void getOldStats() {
         keyH.oldStr = gp.player.stats.str;
         keyH.oldDex = gp.player.stats.vit;

@@ -1,9 +1,11 @@
 package monster;
 
 import entity.Entity;
+import main.BattleSystem;
 import main.GamePanel;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Random;
 
 public class shadowStandar extends Entity {
@@ -75,27 +77,69 @@ public class shadowStandar extends Entity {
 
     public void setAction() {
 
-        //IA BASICA DE MOVIMIENTO ALEATORIO
-        actionLockCounter++;
+        if (onPath){
+            int goalCol = (gp.player.WorldX + gp.player.solidArea.x+1)/gp.tileSize;
+            int goalRow = (gp.player.WorldY + gp.player.solidArea.y+1)/gp.tileSize;
 
-        if (actionLockCounter == 90) {
-            Random random = new Random();
-            int i = random.nextInt(100 + 1);
+            searchPath(goalCol, goalRow);
+        }
 
-            if (i <= 25) {
-                direction = "up";
+        else{
+            //IA BASICA DE MOVIMIENTO ALEATORIO
+            actionLockCounter++;
+
+            if (actionLockCounter == 90) {
+                Random random = new Random();
+                int i = random.nextInt(100 + 1);
+
+                if (i <= 25) {
+                    direction = "up";
+                }
+                if (i > 25 && i <= 50) {
+                    direction = "down";
+                }
+                if (i > 50 && i <= 75) {
+                    direction = "left";
+                }
+                if (i > 75) {
+                    direction = "right";
+                }
+                actionLockCounter = 0;
             }
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if (i > 50 && i <= 75) {
-                direction = "left";
-            }
-            if (i > 75) {
-                direction = "right";
-            }
-            actionLockCounter = 0;
         }
     }
+
+
+    public void update(){
+
+        super.update();
+
+        // Verifica la colisión con el jugador
+        if (gp.cCheck.checkPlayer(this)) {
+            gp.player.enemyContactPlayer(this);
+
+            // Establece la posición del monstruo en null
+            int monsterIndex = Arrays.asList(gp.monsters).indexOf(this);
+            if (monsterIndex != -1) {
+                gp.monsters[monsterIndex] = null;
+            }
+        }
+
+        int xDistance = Math.abs(WorldX - gp.player.WorldX);
+        int yDistance = Math.abs(WorldY - gp.player.WorldY);
+        int tileDistance = (xDistance + yDistance)/gp.tileSize;
+
+        if(!onPath && tileDistance < 5){
+            onPath = true;
+        }
+
+        //Agro Range
+        if(onPath && tileDistance > 10){
+            onPath = false;
+        }
+
+    }
+
+
 
 }

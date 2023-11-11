@@ -1,9 +1,11 @@
 package entity;
 
 import battleNeeds.superMagic;
+import main.BattleSystem;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Toolbox;
+import monster.shadowStandar;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,7 +20,7 @@ public class Entity {
     public GamePanel gp;
 
     //SOLID AREAS
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea = new Rectangle(1, 1, 47, 47);
     public int solidAreaDefaultX, SolidAreaDefaultY;
     //DIALOGOS
 
@@ -30,6 +32,7 @@ public class Entity {
     public String direction = "down";
     public int spriteNum = 1;
     public boolean collisionOn = false;
+    public boolean onPath = false;
 
 
     //ATRIBUTOS DE PERSONAJES
@@ -59,6 +62,14 @@ public class Entity {
 
     //Array de hechizos:
     public ArrayList<superMagic> spells;
+
+    public Entity(GamePanel gp) {
+
+        this.gp = gp;
+        stats = new Entity_stats();
+    }
+
+
 
     public void fillSpells(String[] spellNames) {
         spells = new ArrayList<>();
@@ -169,26 +180,13 @@ public class Entity {
     }
 
 
-    public Entity(GamePanel gp) {
-
-        this.gp = gp;
-        stats = new Entity_stats();
-    }
-
     public void setAction() {
 
     }
 
     public void update() {
         setAction();
-
-        collisionOn = false;
-        gp.cCheck.checkTile(this);
-        gp.cCheck.checkObject(this, false);
-        gp.cCheck.checkEntity(this, gp.npc);
-        gp.cCheck.checkEntity(this, gp.monsters);
-        boolean contactPlayer = gp.cCheck.checkPlayer(this);
-
+        checkCollisiOn();
 
         //COLISON = FALSO ->PUEDE MOVER
         if (!collisionOn) {
@@ -210,6 +208,95 @@ public class Entity {
             }
             spriteCounter = 0;
         }
+    }
+
+    public void checkCollisiOn(){
+        collisionOn = false;
+        gp.cCheck.checkTile(this);
+        gp.cCheck.checkObject(this, false);
+        gp.cCheck.checkEntity(this, gp.npc);
+        gp.cCheck.checkEntity(this, gp.monsters);
+        boolean contactPlayer = gp.cCheck.checkPlayer(this);
+    }
+
+    public void searchPath(int goalCol,int goalRow) {
+
+        int startCol = (WorldX + solidArea.x)/gp.tileSize;
+        int startRow = (WorldY + solidArea.y)/gp.tileSize;
+
+        gp.pathFinder.setNode(startCol, startRow, goalCol, goalRow);
+        if(gp.pathFinder.search()){
+            //Next WorldX&&Next WorldY
+            int nextX = gp.pathFinder.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pathFinder.pathList.get(0).row * gp.tileSize;
+            //SolidAreaPosition
+            int entityLeftX = WorldX + solidArea.x;
+            int entityTopY = WorldY + solidArea.y;
+            int entityRightX = WorldX +solidArea.x + solidArea.width;
+            int entityBottomY = WorldY + solidArea.y + solidArea.height;
+
+            if(entityTopY > nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+                direction = "up";
+            }
+
+            else if (entityTopY < nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+                direction = "down";
+            }
+
+            else if (entityTopY >= nextY && entityBottomY < nextY + gp.tileSize){
+                //Left | right
+                if(entityLeftX > nextX){
+                    direction = "left";
+                }
+                if (entityLeftX < nextX){
+                    direction = "right";
+                }
+            }
+            else if (entityTopY > nextY && entityLeftX > nextX){
+                //up or left
+                direction = "up";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "left";
+                }
+            }
+
+            else if (entityTopY > nextY && entityLeftX < nextX){
+                //Up or right
+                direction = "up";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "right";
+                }
+            }
+            else if (entityTopY < nextY && entityLeftX > nextX){
+                direction = "down";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "left";
+                }
+            }
+            else if (entityTopY < nextY && entityLeftX < nextX){
+                direction = "down";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "right";
+                }
+            }
+            else{
+                System.out.println("No se que hacer");
+            }
+        }
+
+        /*
+        int nextCol = gp.pathFinder.pathList.get(0).col;
+        int nextRow = gp.pathFinder.pathList.get(0).row;
+        if(nextCol == goalCol && nextRow == goalRow){
+            onPath = false;
+        }
+
+         */
+
     }
 
     public BufferedImage setUp(String ImagePath) {
@@ -236,19 +323,10 @@ public class Entity {
         //HACE QUE EL NPC MIRE AL JUGADOR CUANDO LE HABLAS
 
         switch (gp.player.direction) {
-            case "up":
-                direction = "down";
-                break;
-
-            case "down":
-                direction = "up";
-                break;
-            case "left":
-                direction = "right";
-                break;
-            case "right":
-                direction = "left";
-                break;
+            case "up" -> direction = "down";
+            case "down" -> direction = "up";
+            case "left" -> direction = "right";
+            case "right" -> direction = "left";
         }
 
     }
