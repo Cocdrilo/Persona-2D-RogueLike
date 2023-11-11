@@ -45,6 +45,7 @@ public class BattleSystem {
         if (monster.stats.hp <= 0) {
             System.out.println("Monster has died");
             endBattle();
+            return;
         }
         for (int i = 0; i < partyMembers.size(); i++) {
             if (partyMembers.get(i).stats.hp <= 0) {
@@ -304,8 +305,7 @@ public class BattleSystem {
             }
             System.out.println("Monster AI - Press Turn: " + pressTurn);
 
-        } while (pressTurn > 0);
-        nextTurn();
+        } while (pressTurn >= 0);
     }
 
     public void useItem(Entity item) {

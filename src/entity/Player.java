@@ -65,11 +65,11 @@ public class Player extends Entity {
         name = "Raidou";
 
         stats.level = 1;
-        stats.maxHp = 70;
+        stats.maxHp = 190;
         stats.hp = stats.maxHp;
         stats.maxMp = 41;
         stats.mp = stats.maxMp;
-        stats.str = 6;
+        stats.str = 30;
         stats.agi = 3;
         stats.mag = 2;
         stats.vit = 3;
