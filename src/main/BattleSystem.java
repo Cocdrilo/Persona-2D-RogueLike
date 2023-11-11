@@ -328,6 +328,7 @@ public class BattleSystem {
         int randomNum = random.nextInt(100);
         if (randomNum < 50) {
             System.out.println("Player has escaped");
+            gp.Asetter.respawnMonster();
             gp.gameState = gp.playState;
         } else {
             System.out.println("Player has failed to escape");
@@ -353,6 +354,7 @@ public class BattleSystem {
 
         //Random de dinero
         //Random de Objetos
+        gp.Asetter.respawnMonster();
 
         if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
             //Level Up

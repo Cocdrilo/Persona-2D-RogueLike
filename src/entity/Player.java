@@ -60,7 +60,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         WorldX = 300;
         WorldY = 250;
-        speed = 4;
+        speed = 10;
         direction = "down";
         name = "Raidou";
 
@@ -69,7 +69,7 @@ public class Player extends Entity {
         stats.hp = stats.maxHp;
         stats.maxMp = 41;
         stats.mp = stats.maxMp;
-        stats.str = 3;
+        stats.str = 6;
         stats.agi = 3;
         stats.mag = 2;
         stats.vit = 3;

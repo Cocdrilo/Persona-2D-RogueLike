@@ -10,6 +10,7 @@ import monster.monsterData;
 import monster.shadowStandar;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AssetSetter {
 
@@ -54,10 +55,43 @@ public class AssetSetter {
         gp.npc[0].WorldY = gp.tileSize * 4;
     }
 
-    public void setMonster() {
+    public void setMonsters() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
-        gp.monsters[0] = new shadowStandar(gp, availableMonsters.get(6));
-        gp.monsters[0].WorldX = gp.tileSize * 8;
-        gp.monsters[0].WorldY = gp.tileSize * 4;
+
+        for (int i = 0; i < 3; i++) {
+            gp.monsters[i] = generateRandomMonster(availableMonsters);
+        }
+    }
+
+    private shadowStandar generateRandomMonster(ArrayList<monsterData> availableMonsters) {
+        Random random = new Random();
+        int randomIndex = random.nextInt(availableMonsters.size());
+        monsterData randomMonsterData = availableMonsters.get(randomIndex);
+
+        int monsterTileCol = random.nextInt(49);
+        int monsterTileRow = random.nextInt(49);
+
+        // Check if the tile at the monster's location has index 0
+        while (gp.tileM.mapTileNum[monsterTileCol][monsterTileRow] != 0) {
+            monsterTileCol = random.nextInt(49);
+            monsterTileRow = random.nextInt(49);
+        }
+
+        shadowStandar monster = new shadowStandar(gp, randomMonsterData);
+        monster.WorldX = gp.tileSize * monsterTileCol;
+        monster.WorldY = gp.tileSize * monsterTileRow;
+
+        return monster;
+    }
+
+    public void respawnMonster() {
+        ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
+        for(int i = 0; i < 6; i++){
+            if(gp.monsters[i] == null){
+                gp.monsters[i] = generateRandomMonster(availableMonsters);
+            }
+        }
+        System.out.println("Monsters respawned");
+
     }
 }
