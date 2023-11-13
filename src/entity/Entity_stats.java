@@ -3,6 +3,9 @@ package entity;
 import Object.Equipables.OBJ_Armor;
 import Object.Equipables.OBJ_Weapon;
 
+/**
+ * This class represents the statistics and equipment of an entity, particularly a player.
+ */
 public class Entity_stats {
     //PLAYER STATS
     public int level;
@@ -23,6 +26,9 @@ public class Entity_stats {
     public OBJ_Armor armor;
     public Entity accessory;
 
+    /**
+     * Initializes the player's statistics and equipment with default values.
+     */
     public Entity_stats() {
         //PLAYER STATS DEFAULT
         level = 1;

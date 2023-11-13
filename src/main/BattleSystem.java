@@ -11,6 +11,9 @@ import negotiation.NegotiationSystem;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The BattleSystem class handles turn-based battles between the player's party and monsters.
+ */
 public class BattleSystem {
     public partyManager party;
     public shadowStandar monster;
@@ -22,6 +25,13 @@ public class BattleSystem {
     public ArrayList<Entity> partyMembers; // Lista de miembros del partido
     public int currentPartyMemberIndex; // Índice del miembro del partido que está atacando
 
+    /**
+     * Constructs a BattleSystem object with the specified party, monster, and GamePanel.
+     *
+     * @param party   The player's party.
+     * @param monster The enemy monster.
+     * @param gp      The GamePanel.
+     */
     public BattleSystem(partyManager party, shadowStandar monster, GamePanel gp) {
         this.party = party; // Asigna la party
         this.monster = monster;
@@ -34,6 +44,9 @@ public class BattleSystem {
         this.currentPartyMemberIndex = 0; // Inicialmente, el primer miembro del partido ataca
     }
 
+    /**
+     * Proceeds to the next turn in the battle, resetting the pressTurn.
+     */
     public void nextTurn() {
         pressTurn = 8;
         System.out.println(pressTurn);
@@ -65,6 +78,12 @@ public class BattleSystem {
 
     }
 
+    /**
+     * Handles an attack by an entity against another entity.
+     *
+     * @param attacker The attacking entity.
+     * @param target   The target entity.
+     */
     public void attack(Entity attacker, Entity target) {
         String weaponDmgType = "";
 
@@ -89,6 +108,12 @@ public class BattleSystem {
         }
     }
 
+    /**
+     * Handles a monster's attack against a target entity.
+     *
+     * @param attacker The monster attacking entity.
+     * @param target   The target entity.
+     */
     public void monsterAttack(Entity attacker, Entity target) {
         String weaponDmgType = "";
 
@@ -105,6 +130,14 @@ public class BattleSystem {
     }
 
 
+    /**
+     * Calculates the damage inflicted by an attacker to a target entity based on the weapon's damage type.
+     *
+     * @param attacker      The attacking entity.
+     * @param target        The target entity.
+     * @param weaponDmgType The damage type of the weapon.
+     * @return The calculated damage value.
+     */
     private int calculateDamage(Entity attacker, Entity target, String weaponDmgType) {
         int targetDEF = target.getDefense();
         int DmgPreModifier;
@@ -122,6 +155,13 @@ public class BattleSystem {
         return Math.max(0, DmgPreModifier); // Ensure damage is non-negative
     }
 
+    /**
+     * Handles damage calculation and pressTurn reduction based on weapon damage type and entity weaknesses.
+     *
+     * @param target        The entity being attacked.
+     * @param damage        The calculated damage.
+     * @param weaponDmgType The damage type of the attack.
+     */
     private void handleDamageAndPressTurn(Entity target, int damage, String weaponDmgType) {
         if (target.isWeak(weaponDmgType)) {
             damage *= 2;
@@ -139,6 +179,14 @@ public class BattleSystem {
         }
     }
 
+    /**
+     * Handles damage and press turn based on the attacker's selected spell.
+     *
+     * @param attacker      The attacking entity.
+     * @param target        The target entity.
+     * @param damage        The calculated damage value.
+     * @param selectedSpell The selected spell.
+     */
     private void handleDamageAndPressTurn(Entity attacker, Entity target, int damage, superMagic selectedSpell) {
         damage = handleDamageAndPressTurnBasedOnWeakness(attacker, target, damage, selectedSpell);
         if (damage > 0) {
@@ -173,6 +221,13 @@ public class BattleSystem {
     }
 
 
+    /**
+     * Handles damage calculation and pressTurn reduction for attacks that are repelled.
+     *
+     * @param target         The entity being attacked.
+     * @param DmgPreModifier The pre-modified damage.
+     * @param weaponDmgType  The damage type of the attack.
+     */
     private void handleRepelledDamage(Entity target, int DmgPreModifier, String weaponDmgType) {
         if (target.isWeak(weaponDmgType)) {
             DmgPreModifier *= 2;
@@ -188,6 +243,12 @@ public class BattleSystem {
     }
 
 
+    /**
+     * Selects a magic spell for the attacker to use based on user input.
+     *
+     * @param attacker The entity performing the magic attack.
+     * @return The selected magic spell, or null if no spell was selected.
+     */
     private superMagic selectSpell(Entity attacker) {
         ArrayList<superMagic> entitySpells = attacker.getSpells();
         if (gp.ui.commandNum2 >= 0 && gp.ui.commandNum2 < entitySpells.size()) {
@@ -196,6 +257,13 @@ public class BattleSystem {
         return null;
     }
 
+    /**
+     * Performs a magic attack from the attacker to the target entity using a selected spell.
+     *
+     * @param attacker      The entity performing the magic attack.
+     * @param target        The entity being attacked.
+     * @param selectedSpell The magic spell used for the attack.
+     */
     public void useMagic(Entity attacker, Entity target, superMagic selectedSpell) {
         if (attacker.stats.mp < selectedSpell.mpCost) {
             System.out.println("Not enough MP to cast " + selectedSpell.name);
@@ -215,6 +283,13 @@ public class BattleSystem {
         }
     }
 
+    /**
+     * Performs a magic attack from the monster to the target entity using a selected spell.
+     *
+     * @param attacker      The monster performing the magic attack.
+     * @param target        The entity being attacked.
+     * @param selectedSpell The magic spell used for the attack.
+     */
     public void monsterUseMagic(Entity attacker, Entity target, superMagic selectedSpell) {
         //Enemy monsters Dont Use Mana
 
@@ -224,6 +299,14 @@ public class BattleSystem {
     }
 
 
+    /**
+     * Calculates the damage dealt by an attacker to a target entity using magic spells.
+     *
+     * @param attacker      The entity performing the magic attack.
+     * @param target        The entity being attacked.
+     * @param selectedSpell The magic spell used for the attack.
+     * @return The calculated damage.
+     */
     private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell) {
         int damage = 0;
 
@@ -236,6 +319,9 @@ public class BattleSystem {
         return damage;
     }
 
+    /**
+     * Handles the AI decision-making for the monster's attacks and spells.
+     */
     public void monsterAI() {
 
         superMagic selectedSpell = null;
@@ -308,12 +394,21 @@ public class BattleSystem {
         nextTurn();
     }
 
+    /**
+     * Uses a health potion item to restore health to a party member.
+     *
+     * @param item The health potion item to be used.
+     */
     public void useItem(Entity item) {
         if (item instanceof OBJ_Potion_Health healthPotion) {
             healthPotion.battleUse(partyMembers.get(currentPartyMemberIndex));
         }
     }
 
+    /**
+     * Allows the player to defend during their turn.
+     * Reduces the damage received in the next turn.
+     */
     public void defend() {
         if (turn == 0) {
             // El jugador decide defender, reduce el daño recibido en el siguiente turno
@@ -322,6 +417,10 @@ public class BattleSystem {
         }
     }
 
+    /**
+     * Implements the player's attempt to flee from the battle.
+     * The outcome of the escape attempt is determined randomly.
+     */
     public void fleeFromBattle() {
         //Implementar el escape de la batalla
         Random random = new Random();
@@ -335,6 +434,10 @@ public class BattleSystem {
         }
     }
 
+    /**
+     * Initiates the negotiation process with the monster.
+     * The NegotiationSystem is responsible for handling the negotiation.
+     */
     public void negotiateMonster() {
         //Implementar la negociacion con el monstruo
         negotiationSystem = new NegotiationSystem(this);
@@ -343,6 +446,9 @@ public class BattleSystem {
     }
 
 
+    /**
+     * Ends the battle, granting experience points to the player and handling loot.
+     */
     public void endBattle() {
         //EXP calc
 

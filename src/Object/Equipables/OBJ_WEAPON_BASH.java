@@ -3,7 +3,17 @@ package Object.Equipables;
 import Object.Equipables.OBJ_Weapon;
 import main.GamePanel;
 
+/**
+ * Represents a bashing-type weapon in the game, extending the OBJ_Weapon class.
+ * This specific weapon class sets attributes for a bashing weapon, such as name, damage type, attack power, hit accuracy, and price.
+ */
 public class OBJ_WEAPON_BASH extends OBJ_Weapon {
+
+    /**
+     * Creates a bashing weapon with specific attributes.
+     *
+     * @param gp The GamePanel instance.
+     */
     public OBJ_WEAPON_BASH(GamePanel gp) {
         super(gp);
         name = "Bashing Weapon";

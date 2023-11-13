@@ -5,8 +5,17 @@ import entity.Player;
 import main.GamePanel;
 import monster.shadowStandar;
 
+/**
+ * Represents a Health Potion object in the game.
+ * This potion can be used in both battle and the overworld to heal the user.
+ */
 public class OBJ_Potion_Health extends Entity {
 
+    /**
+     * Creates a Health Potion object.
+     *
+     * @param gp The GamePanel instance.
+     */
     public OBJ_Potion_Health(GamePanel gp) {
         super(gp);
         name = "Health Potion";
@@ -17,6 +26,11 @@ public class OBJ_Potion_Health extends Entity {
         description = "Health Potion heals +10 hp";
     }
 
+    /**
+     * Uses the Health Potion in a battle scenario to heal the entity.
+     *
+     * @param entity The entity using the Health Potion.
+     */
     public void battleUse(Entity entity) {
         if (entity instanceof Player healeablePlayer) {
             gp.playerSe(4);
@@ -38,6 +52,11 @@ public class OBJ_Potion_Health extends Entity {
         }
     }
 
+    /**
+     * Uses the Health Potion in the overworld to heal the entity and update game state.
+     *
+     * @param entity The entity using the Health Potion.
+     */
     public void overWorldUse(Entity entity) {
         gp.playerSe(4);
         if (entity instanceof Player healeablePlayer) {

@@ -4,8 +4,19 @@ import java.util.*;
 
 import main.GamePanel;
 
+/**
+ * Generates a random dungeon layout using a simple algorithm.
+ * The generated dungeon consists of rooms and corridors connecting them.
+ */
 public class RandomDungeonGenerator {
 
+    /**
+     * Generates a random dungeon layout.
+     *
+     * @param gp       The GamePanel instance.
+     * @param numRooms The number of rooms to generate in the dungeon.
+     * @return A 2D array representing the generated dungeon layout.
+     */
     public static int[][] generateDungeon(GamePanel gp, int numRooms) {
         int[][] world = new int[gp.maxWorldRow][gp.maxWorldCol];
 
@@ -59,9 +70,20 @@ public class RandomDungeonGenerator {
         return world;
     }
 
+    /**
+     * Represents a room in the dungeon with its position and dimensions.
+     */
     static class Room {
         int x, y, width, height;
 
+        /**
+         * Constructs a new Room with the specified position and dimensions.
+         *
+         * @param x      The x-coordinate of the top-left corner of the room.
+         * @param y      The y-coordinate of the top-left corner of the room.
+         * @param width  The width of the room.
+         * @param height The height of the room.
+         */
         public Room(int x, int y, int width, int height) {
             this.x = x;
             this.y = y;
@@ -70,6 +92,12 @@ public class RandomDungeonGenerator {
         }
     }
 
+    /**
+     * Connects rooms in the dungeon layout with corridors.
+     *
+     * @param world The 2D array representing the dungeon layout.
+     * @param rooms The list of rooms in the dungeon.
+     */
     static void connectRooms(int[][] world, List<Room> rooms) {
         Random random = new Random();
         int minCorridorLength = 2;

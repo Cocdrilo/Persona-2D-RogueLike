@@ -10,6 +10,9 @@ import java.awt.event.KeyListener;
 import java.security.Key;
 import java.util.ArrayList;
 
+/**
+ * Key handler for the game implementing the KeyListener interface.
+ */
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
@@ -18,14 +21,29 @@ public class KeyHandler implements KeyListener {
     public int oldDex = 0, oldStr = 0, oldMag = 0, oldAgi = 0;
 
 
+    /**
+     * Constructor initializing the key handler with a reference to the game panel.
+     *
+     * @param gp Reference to the game panel.
+     */
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
 
+    /**
+     * Invoked when a key is typed; not used in this implementation.
+     *
+     * @param e Key event.
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * Invoked when a key is pressed.
+     *
+     * @param e Key event.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
 
@@ -94,10 +112,15 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.optionsState) {
             optionsState(code);
         }
-        
+
 
     }
 
+    /**
+     * Handles key events for the combat state.
+     *
+     * @param code Key code.
+     */
     public void combatState(int code) {
 
         if (code == KeyEvent.VK_W) {
@@ -151,6 +174,11 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * Handles key events for the magic menu state.
+     *
+     * @param code Key code.
+     */
     public void magicMenuState(int code) {
         // Aquí obtenemos la cantidad de hechizos disponibles
         int numSpells = gp.player.spells.size();
@@ -187,6 +215,11 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * Handles key events for the battle items state.
+     *
+     * @param code Key code.
+     */
     public void battleItemsState(int code) {
 
         ArrayList<Entity> consumableItems = gp.player.getItems();
@@ -222,6 +255,11 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * Handles key events for the negotiation state.
+     *
+     * @param code Key code.
+     */
     public void negotiationState(int code) {
         int Opciones = gp.battleSystem.negotiationSystem.getNumOpciones();
 
@@ -245,7 +283,7 @@ public class KeyHandler implements KeyListener {
             }
         }
 
-        if(code == KeyEvent.VK_ESCAPE && !gp.battleSystem.negotiationSystem.selectingReward){
+        if (code == KeyEvent.VK_ESCAPE && !gp.battleSystem.negotiationSystem.selectingReward) {
             gp.gameState = gp.combatState;
         }
 
@@ -264,11 +302,17 @@ public class KeyHandler implements KeyListener {
                 gp.battleSystem.negotiationSystem.startNegotiation();
             }
         }
-        if (code == KeyEvent.VK_Z && gp.battleSystem.negotiationSystem.moneyRequest){
+        if (code == KeyEvent.VK_Z && gp.battleSystem.negotiationSystem.moneyRequest) {
             // Cambia al estado de solicitud de dinero
             gp.gameState = gp.moneyRequestState;
         }
     }
+
+    /**
+     * Handles key events for the money request state.
+     *
+     * @param code Key code.
+     */
     public void moneyRequestState(int code) {
         // En este estado, puedes manejar las opciones del jugador con respecto a la solicitud de dinero.
 
@@ -313,6 +357,11 @@ public class KeyHandler implements KeyListener {
     }
 
 
+    /**
+     * Handles key events for the negotiation reward state.
+     *
+     * @param code Key code.
+     */
     public void negotiationRewardState(int code) {
         System.out.println("Selecting Reward");
         if (code == KeyEvent.VK_W && gp.battleSystem.negotiationSystem.selectingReward) {
@@ -343,6 +392,12 @@ public class KeyHandler implements KeyListener {
 
 
     //Necesita Fix
+
+    /**
+     * Handles key events for the level up state.
+     *
+     * @param code Key code.
+     */
     public void levelState(int code) {
         System.out.println(oldStr);
 
@@ -434,6 +489,11 @@ public class KeyHandler implements KeyListener {
     }
 
 
+    /**
+     * Handles key events for the title state.
+     *
+     * @param code Key code.
+     */
     public void titleState(int code) {
 
         if (code == KeyEvent.VK_W) {
@@ -467,6 +527,11 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * Handles key events for the play state.
+     *
+     * @param code Key code.
+     */
     public void playState(int code) {
 
         if (code == KeyEvent.VK_W) {
@@ -498,6 +563,11 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * Handles key events for the pause state.
+     *
+     * @param code Key code.
+     */
     public void pauseState(int code) {
 
         if (code == KeyEvent.VK_ESCAPE) {
@@ -505,18 +575,33 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    /**
+     * Handles key events for the dialogue state.
+     *
+     * @param code Key code.
+     */
     public void dialogueState(int code) {
         if (code == KeyEvent.VK_Z) {
             gp.gameState = gp.playState;
         }
     }
 
+    /**
+     * Handles key events for the status state.
+     *
+     * @param code Key code.
+     */
     public void statusState(int code) {
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.enterMenuState;
         }
     }
 
+    /**
+     * Handles key events for the inventory state.
+     *
+     * @param code Key code.
+     */
     public void inventoryState(int code) {
 
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_ESCAPE) {
@@ -552,6 +637,11 @@ public class KeyHandler implements KeyListener {
 
     }
 
+    /**
+     * Handles key events for the enter menu state.
+     *
+     * @param code Key code.
+     */
     public void enterMenuState(int code) {
 
         if (code == KeyEvent.VK_W) {
@@ -596,17 +686,12 @@ public class KeyHandler implements KeyListener {
 
     }
 
+    /**
+     * Handles key events for the options state.
+     *
+     * @param code Key code.
+     */
     public void optionsState(int code) {
-        /*
-        if(gp.ui.subState == 3){
-            if(gp.ui.commandNum3 == 0 && code == KeyEvent.VK_Z){
-                gp.ui.subState = 0;
-                gp.gameState = gp.titleState;
-            }
-            else if(gp.ui.commandNum3 == 1 && code == KeyEvent.VK_Z){
-                gp.ui.subState = 0;
-            }
-        }*/
 
         if (code == KeyEvent.VK_ENTER) {
             gp.gameState = gp.enterMenuState;
@@ -634,26 +719,26 @@ public class KeyHandler implements KeyListener {
             }
         }
         if (code == KeyEvent.VK_A) {
-            if(gp.ui.subState == 0){
-                if(gp.ui.commandNum3 == 1 && gp.music.volumeScale > 0){
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum3 == 1 && gp.music.volumeScale > 0) {
                     gp.music.volumeScale--;
                     gp.music.checkVolume();
                     gp.playerSe(5);
                 }
-                if(gp.ui.commandNum3 == 2 && gp.se.volumeScale > 0){
+                if (gp.ui.commandNum3 == 2 && gp.se.volumeScale > 0) {
                     gp.se.volumeScale--;
                     gp.playerSe(5);
                 }
             }
         }
         if (code == KeyEvent.VK_D) {
-            if(gp.ui.subState == 0){
-                if(gp.ui.commandNum3 == 1 && gp.music.volumeScale < 5){
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum3 == 1 && gp.music.volumeScale < 5) {
                     gp.music.volumeScale++;
                     gp.music.checkVolume();
                     gp.playerSe(5);
                 }
-                if(gp.ui.commandNum3 == 2 && gp.se.volumeScale < 5){
+                if (gp.ui.commandNum3 == 2 && gp.se.volumeScale < 5) {
                     gp.se.volumeScale++;
                     gp.playerSe(5);
                 }
@@ -662,7 +747,7 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_Z) {
 
-            if(gp.ui.subState==0){
+            if (gp.ui.subState == 0) {
                 if (gp.ui.commandNum3 == 0) {
                     if (!gp.fullScreenOn) {
                         gp.fullScreenOn = true;
@@ -675,29 +760,28 @@ public class KeyHandler implements KeyListener {
 
             //CONTROL
             if (gp.ui.commandNum3 == 3) {
-                gp.ui.subState=2;
+                gp.ui.subState = 2;
             }
             //END GAME
             if (gp.ui.commandNum3 == 4) {
-                gp.ui.subState=3;
+                gp.ui.subState = 3;
             }
             //BACK
             if (gp.ui.commandNum3 == 5) {
-                gp.ui.subState=0;
-                gp.ui.commandNum3=0;
-                gp.gameState=gp.enterMenuState;
+                gp.ui.subState = 0;
+                gp.ui.commandNum3 = 0;
+                gp.gameState = gp.enterMenuState;
             }
 
             //END GAME YES/NO
-            if(gp.ui.subState == 3 && gp.ui.commandNum3 == 0){
-                gp.ui.subState=0;
+            if (gp.ui.subState == 3 && gp.ui.commandNum3 == 0) {
+                gp.ui.subState = 0;
                 //gp.stopMusic();
                 gp.gameState = gp.titleState;
-            }
-            else if(gp.ui.subState == 3 && gp.ui.commandNum3 == 1){
+            } else if (gp.ui.subState == 3 && gp.ui.commandNum3 == 1) {
                 System.out.println("No");
-                gp.ui.subState=0;
-                gp.ui.commandNum3=4;
+                gp.ui.subState = 0;
+                gp.ui.commandNum3 = 4;
                 gp.gameState = gp.optionsState;
             }
 
@@ -710,7 +794,11 @@ public class KeyHandler implements KeyListener {
     }
 
 
-
+    /**
+     * Invoked when a key is released.
+     *
+     * @param e Key event.
+     */
     @Override
     public void keyReleased(KeyEvent e) {
 

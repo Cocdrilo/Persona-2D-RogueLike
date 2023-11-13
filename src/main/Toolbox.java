@@ -3,8 +3,19 @@ package main;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * The Toolbox class provides utility methods for image manipulation.
+ */
 public class Toolbox {
 
+    /**
+     * Scales the given BufferedImage to the specified width and height.
+     *
+     * @param original The original BufferedImage to be scaled.
+     * @param width    The desired width of the scaled image.
+     * @param height   The desired height of the scaled image.
+     * @return A new BufferedImage that is a scaled version of the original image.
+     */
     public BufferedImage scaleImage(BufferedImage original, int width, int height) {
 
         BufferedImage scaledImage = new BufferedImage(width, height, original.getType());

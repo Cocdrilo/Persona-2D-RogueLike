@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * The main panel for the game, responsible for rendering and updating the game state.
+ */
 public class GamePanel extends JPanel implements Runnable {
     //Screen Settings
     final int originalTileSize = 16; //16*16
@@ -88,14 +91,20 @@ public class GamePanel extends JPanel implements Runnable {
     public final int optionsState = 14;
 
 
-    public GamePanel(){
-        this.setPreferredSize(new Dimension(screenWidth,screenHeight));
+    /**
+     * Creates a new instance of the GamePanel class.
+     */
+    public GamePanel() {
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground((Color.black));
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
     }
 
+    /**
+     * Sets the game to full screen mode.
+     */
     public void setFullScreen() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -106,6 +115,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
+    /**
+     * Initializes the game.
+     */
     public void setUpGame() {
 
         Asetter.setObject();
@@ -117,11 +129,14 @@ public class GamePanel extends JPanel implements Runnable {
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
-        if(fullScreenOn){
+        if (fullScreenOn) {
             setFullScreen();
         }
     }
 
+    /**
+     * Starts the game thread.
+     */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -162,6 +177,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Updates the game state.
+     */
     public void update() {
 
 
@@ -188,6 +206,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Draws the game to the temporary screen.
+     */
     public void drawToTempScreen() {
         // Limpia el búfer antes de dibujar
         g2.clearRect(0, 0, screenWidth, screenHeight);
@@ -243,22 +264,38 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
+    /**
+     * Draws the game to the actual screen.
+     */
     public void drawToScreen() {
         Graphics g = getGraphics();
         g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
         g.dispose();
     }
 
+    /**
+     * Plays the specified music track.
+     *
+     * @param i The index of the music track.
+     */
     public void playMusic(int i) {
         music.setFile(i);
         music.play();
         music.loop();
     }
 
+    /**
+     * Stops the currently playing music.
+     */
     public void stopMusic() {
         music.stop();
     }
 
+    /**
+     * Plays a sound effect.
+     *
+     * @param i The index of the sound effect.
+     */
     public void playerSe(int i) {
 
         se.setFile(i);

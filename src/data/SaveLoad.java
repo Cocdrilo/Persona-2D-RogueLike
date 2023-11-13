@@ -9,13 +9,27 @@ import main.GamePanel;
 
 import java.io.*;
 
+/**
+ * The SaveLoad class is responsible for saving and loading game data, including player stats, inventory, and game objects.
+ */
 public class SaveLoad {
     GamePanel gp;
 
+    /**
+     * Constructs a SaveLoad instance with a reference to the GamePanel.
+     *
+     * @param gp The GamePanel to associate with this SaveLoad instance.
+     */
     public SaveLoad(GamePanel gp) {
         this.gp = gp;
     }
 
+    /**
+     * Retrieve an Entity object based on the item name.
+     *
+     * @param itemName The name of the item.
+     * @return An Entity object corresponding to the provided item name.
+     */
     public Entity getObject(String itemName) {
         return switch (itemName) {
             case "Cota de malla" -> new OBJ_Armor(gp);
@@ -31,6 +45,9 @@ public class SaveLoad {
         };
     }
 
+    /**
+     * Save game data to a file.
+     */
     public void save() {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
@@ -73,6 +90,9 @@ public class SaveLoad {
 
     }
 
+    /**
+     * Load game data from a file.
+     */
     public void load() {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));

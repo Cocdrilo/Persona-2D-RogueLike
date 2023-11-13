@@ -2,6 +2,9 @@ package main;
 
 import java.awt.*;
 
+/**
+ * Manages and checks events in the game world.
+ */
 public class Events {
 
     GamePanel gp;
@@ -10,6 +13,11 @@ public class Events {
     int prevEventX, prevEventY;
     boolean canTouchEvent = true;
 
+    /**
+     * Initializes the Events class with the specified GamePanel.
+     *
+     * @param gp The GamePanel instance.
+     */
     public Events(GamePanel gp) {
         this.gp = gp;
 
@@ -35,6 +43,9 @@ public class Events {
         }
     }
 
+    /**
+     * Checks for events based on player's location and triggers corresponding actions.
+     */
     public void checkEvent() {
 
         //COMPROBAR SI EL JUGADOR ESTA EN AL MENOS 1 TILE AWAY DEL EVENTO
@@ -57,6 +68,14 @@ public class Events {
 
     }
 
+    /**
+     * Checks if the player has hit an event at the specified column and row.
+     *
+     * @param col          The column of the event.
+     * @param row          The row of the event.
+     * @param reqDirection The required direction for the event to be triggered ("any" allows any direction).
+     * @return True if the player has hit the event, otherwise false.
+     */
     public boolean hit(int col, int row, String reqDirection) {
 
         boolean hit = false;
@@ -82,19 +101,34 @@ public class Events {
         return hit;
     }
 
+    /**
+     * Triggers a damage event in the pit, changing the game state and displaying a message.
+     *
+     * @param gameState The new game state.
+     */
     public void damagePit(int gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "Te caiste mongo";
         canTouchEvent = false;
     }
 
-    public void HealPool(int gameState) {
+    /**
+     * Allows the player to heal in a healing pool if the 'z' key is pressed.
+     *
+     * @param gameState The new game state.
+     */
+    public void healPool(int gameState) {
         if (gp.keyH.zPressed) {
             gp.gameState = gameState;
             gp.ui.currentDialogue = "Te curaste";
         }
     }
 
+    /**
+     * Teleports the player to a specific tile on the game map.
+     *
+     * @param gameState The new game state.
+     */
     public void teleportTile(int gameState) {
         gp.gameState = gameState;
         gp.player.WorldX = 25;

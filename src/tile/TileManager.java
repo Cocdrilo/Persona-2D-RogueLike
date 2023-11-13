@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * Manages tiles and the game world map.
+ */
 public class TileManager {
 
     GamePanel gp;
@@ -17,6 +20,11 @@ public class TileManager {
 
     public int mapTileNum[][];
 
+    /**
+     * Constructs a TileManager with the specified GamePanel.
+     *
+     * @param gp The GamePanel associated with this TileManager.
+     */
     public TileManager(GamePanel gp) {
 
         this.gp = gp;
@@ -28,6 +36,9 @@ public class TileManager {
         LoadMap("/Maps/Map01.txt");
     }
 
+    /**
+     * Loads tile images and sets up the tile array.
+     */
     public void getTileImage() {
 
         setUp(0, "Floor_1", false);
@@ -35,6 +46,13 @@ public class TileManager {
         setUp(2, "column", true);
     }
 
+    /**
+     * Sets up a tile with the specified index, image path, and collision status.
+     *
+     * @param index     The index of the tile.
+     * @param imagePath The image path of the tile.
+     * @param collision The collision status of the tile.
+     */
     public void setUp(int index, String imagePath, boolean collision) {
 
         Toolbox toolbox = new Toolbox();
@@ -51,6 +69,11 @@ public class TileManager {
 
     }
 
+    /**
+     * Loads the game world map from a text file.
+     *
+     * @param map The path to the map file.
+     */
     public void LoadMap(String map) {
 
         try {
@@ -88,6 +111,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * Draws the visible tiles of the game world.
+     *
+     * @param g2 The graphics context used for drawing.
+     */
     public void draw(Graphics2D g2) {
 
         int WorldCol = 0;

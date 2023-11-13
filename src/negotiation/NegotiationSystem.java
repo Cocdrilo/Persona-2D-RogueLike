@@ -5,6 +5,9 @@ import main.BattleSystem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the negotiation system in the game.
+ */
 public class NegotiationSystem {
     private NegotiationManager negotiationManager;
 
@@ -22,6 +25,11 @@ public class NegotiationSystem {
     public boolean moneyRequest = false;
     public boolean canRequestMoney = true;
 
+    /**
+     * Constructs a new NegotiationSystem.
+     *
+     * @param battleSystem The BattleSystem associated with the negotiation.
+     */
     public NegotiationSystem(BattleSystem battleSystem) {
         negotiationManager = new NegotiationManager();
         preguntas = negotiationManager.getPreguntas();
@@ -30,6 +38,9 @@ public class NegotiationSystem {
 
     }
 
+    /**
+     * Starts the negotiation process.
+     */
     public void startNegotiation() {
         numOpciones = 0;
 
@@ -61,20 +72,38 @@ public class NegotiationSystem {
         }
     }
 
+    /**
+     * Randomly selects a question from the available questions.
+     *
+     * @return The randomly selected question.
+     */
     public Pregunta randomizeQuestions() {
         //Random Number from 0 to preguntas.size() - 1
         int random = (int) (Math.random() * preguntas.size());
         return preguntas.get(random);
     }
 
+    /**
+     * Initiates a money request.
+     */
     public void requestMoney() {
-        moneyRequested= (int) (Math.random() * 50) + 1;
+        moneyRequested = (int) (Math.random() * 50) + 1;
     }
 
+    /**
+     * Generates a text describing the opponent's money request.
+     *
+     * @return The money request text.
+     */
     public String requestMoneyText() {
         return "El oponente te está pidiendo " + moneyRequested + " monedas.";
     }
 
+    /**
+     * Processes the player's response to a money request.
+     *
+     * @param selector The player's response (0 for accept, 1 for reject).
+     */
     public void processMoneyRequest(int selector) {
         boolean moneyPayed = false;
 
@@ -83,8 +112,7 @@ public class NegotiationSystem {
                 battleSystem.party.Leader.subtractMoney(moneyRequested);
                 System.out.println("Has pagado " + moneyRequested + " monedas.");
                 moneyPayed = true;
-            }
-            else{
+            } else {
                 System.out.println("No tienes suficiente dinero");
             }
             moneyRequest = false;
@@ -92,11 +120,10 @@ public class NegotiationSystem {
             System.out.println("Has rechazado la solicitud");
             moneyRequest = false;
         }
-        if (moneyPayed){
+        if (moneyPayed) {
             happyMeter += 5;
             System.out.println("HappyMeter: " + happyMeter);
-        }
-        else{
+        } else {
             angryMeter += 5;
             System.out.println("AngryMeter: " + angryMeter);
         }
@@ -113,7 +140,9 @@ public class NegotiationSystem {
         moneyRequest = false;
     }
 
-
+    /**
+     * Initiates a request for an item from the player.
+     */
     public void requestItem() {
         // Aquí puedes implementar la lógica para pedir un objeto al jugador.
         // Por ejemplo, puedes seleccionar un objeto aleatorio de la lista de objetos del jugador.
@@ -125,6 +154,9 @@ public class NegotiationSystem {
     }
 
 
+    /**
+     * Updates the negotiation meters based on a random event.
+     */
     public void updateMeter() {
 
         int randomValue = (int) (Math.random() * 2) + 1; // Genera un número aleatorio entre 1 y 2
@@ -146,6 +178,11 @@ public class NegotiationSystem {
         }
     }
 
+    /**
+     * Handles options when the player wins the negotiation.
+     *
+     * @param selector The selected option.
+     */
     public void happyMetterOptions(int selector) {
         //Opciones que tienes al Ganar la Negociación
         switch (selector) {
@@ -164,6 +201,11 @@ public class NegotiationSystem {
         selectingReward = false;
     }
 
+    /**
+     * Gets the number of available options in the negotiation.
+     *
+     * @return The number of options.
+     */
     public int getNumOpciones() {
         return numOpciones;
     }

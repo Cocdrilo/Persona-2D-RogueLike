@@ -4,6 +4,9 @@ package data;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class represents a data storage that holds the player stats, inventory, and objects on the map.
+ */
 public class DataStorage implements Serializable {
 
     //PLAYER STATS
@@ -27,10 +30,10 @@ public class DataStorage implements Serializable {
     int currentArmorSlot;
 
     //Objects on map
-    String mapObjectNames[][];
-    int mapObjectWorldX[][];
-    int mapObjectWorldY[][];
-    String mapObjectLootNames[][];
-    boolean mapObjectOpened[][];
+    String[][] mapObjectNames;
+    int[][] mapObjectWorldX;
+    int[][] mapObjectWorldY;
+    String[][] mapObjectLootNames;
+    boolean[][] mapObjectOpened;
 
 }

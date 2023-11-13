@@ -4,9 +4,17 @@ import main.GamePanel;
 
 import java.util.Random;
 
+/**
+ * This class represents a non-playable character (NPC) entity.
+ */
 public class NPC extends Entity {
 
-
+    /**
+     * Constructs an NPC with the specified GamePanel.
+     * Initializes the NPC's name, direction, speed, images, and dialogue.
+     *
+     * @param gp The GamePanel associated with the NPC.
+     */
     public NPC(GamePanel gp) {
         super(gp);
 
@@ -19,6 +27,9 @@ public class NPC extends Entity {
         ;
     }
 
+    /**
+     * Loads NPC images for different directions.
+     */
     public void getImage() {
         walkDown1 = setUp("/NPC/oldman_down_1");
         walkDown2 = setUp("/NPC/oldman_down_2");
@@ -31,12 +42,18 @@ public class NPC extends Entity {
 
     }
 
+    /**
+     * Sets the dialogue for the NPC.
+     */
     public void setDialogue() {
         dialogues[0] = "Greetings Traveler";
         dialogues[1] = "Testeando al maximo de lo que se puede hijodeputa";
         dialogues[2] = "En efecto soy godofredo el maximo exponente de \n tu abuela en pedo";
     }
 
+    /**
+     * Defines the NPC's action and movement.
+     */
     public void setAction() {
 
         actionLockCounter++;
@@ -62,6 +79,9 @@ public class NPC extends Entity {
 
     }
 
+    /**
+     * Overrides the speak method from the base class.
+     */
     public void speak() {
         super.speak();
     }

@@ -14,6 +14,11 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+/**
+ * This class represents the user interface (UI) for the game.
+ * It includes methods for drawing various screens such as the title screen,
+ * status screen, dialogue screen, and combat screen.
+ */
 public class UI {
 
     GamePanel gp;
@@ -34,7 +39,7 @@ public class UI {
     public String currentDialogue = "";
     public String currentName = "";
     public int commandNum = 0;
-    public int commandNum2 ;
+    public int commandNum2;
     public int commandNum3 = 0;
     public int subState = 0;
     public boolean magicMenu = false;
@@ -45,6 +50,11 @@ public class UI {
     public int slotRow = 0;
 
 
+    /**
+     * Constructs a new UI instance.
+     *
+     * @param gp The GamePanel instance associated with this UI.
+     */
     public UI(GamePanel gp) {
 
         this.gp = gp;
@@ -72,6 +82,12 @@ public class UI {
 
     }
 
+    /**
+     * Loads an image from the specified file path.
+     *
+     * @param filePath The file path of the image to be loaded.
+     * @return The loaded BufferedImage.
+     */
     public BufferedImage loadImage(String filePath) {
         try {
             return ImageIO.read(new File(filePath));
@@ -82,22 +98,43 @@ public class UI {
     }
 
 
+    /**
+     * Adds a message to the message list for scrolling display.
+     *
+     * @param text The text message to be added.
+     */
     public void addMessage(String text) {
         messageList.add(text);
         messageCounter.add(0);
     }
 
+    /**
+     * Calculates the X-coordinate for centering text on the screen.
+     *
+     * @param text The text for which the X-coordinate is calculated.
+     * @return The X-coordinate for centering the text.
+     */
     public int getXforCenterText(String text) {
 
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return gp.screenWidth / 2 - length / 2;
     }
 
+    /**
+     * Calculates the X-coordinate for aligning text to the right.
+     *
+     * @param text  The text for which the X-coordinate is calculated.
+     * @param tailX The tail X-coordinate to align the text to.
+     * @return The X-coordinate for aligning the text to the right.
+     */
     public int getXforAlignToRightText(String text, int tailX) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return tailX - length;
     }
 
+    /**
+     * Draws the pause screen with a "PAUSED" message.
+     */
     public void drawPauseScreen() {
 
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 100F));
@@ -109,6 +146,14 @@ public class UI {
 
     }
 
+    /**
+     * Draws a sub-window with rounded corners.
+     *
+     * @param x      The X-coordinate of the sub-window.
+     * @param y      The Y-coordinate of the sub-window.
+     * @param width  The width of the sub-window.
+     * @param height The height of the sub-window.
+     */
     public void drawSubWindow(int x, int y, int width, int height) {
 
         Color rgb = new Color(0, 0, 0, 50);
@@ -121,6 +166,9 @@ public class UI {
         g2.fillRect(x, y, width, 5);
     }
 
+    /**
+     * Draws the dialogue screen with character names and text.
+     */
     public void drawDialogueScreen() {
         //WINDOW
         int x = 0;
@@ -153,6 +201,9 @@ public class UI {
 
     }
 
+    /**
+     * Draws the title screen with game title and menu options.
+     */
     public void drawTitleScreen() {
 
         g2.drawImage(titleImage, 0, 0, gp.screenWidth, gp.screenHeight, null);
@@ -198,6 +249,9 @@ public class UI {
 
     }
 
+    /**
+     * Draws the status screen showing player and party information.
+     */
     public void drawStatusScreen() {
 
         //CREATE A FRAME
@@ -353,6 +407,11 @@ public class UI {
 
     }
 
+    /**
+     * Draws the combat screen with panels for monsters, turn order, and commands.
+     *
+     * @param BattleState The BattleSystem instance representing the current battle state.
+     */
     public void drawCombatScreen(BattleSystem BattleState) {
         g2.setFont(franklin);
 
@@ -407,6 +466,15 @@ public class UI {
         drawTurnIcons(BattleState.pressTurn);
     }
 
+    /**
+     * Draws the item menu during combat, displaying available items for the player.
+     *
+     * @param x              The X-coordinate of the item menu.
+     * @param itemMenuY      The Y-coordinate of the item menu.
+     * @param itemMenuWidth  The width of the item menu.
+     * @param itemMenuHeight The height of the item menu.
+     * @param battleState    The BattleSystem instance representing the current battle state.
+     */
     private void drawItemMenu(int x, int itemMenuY, int itemMenuWidth, int itemMenuHeight, BattleSystem battleState) {
         g2.setColor(Color.MAGENTA);
         g2.fillRect(x, itemMenuY, itemMenuWidth, itemMenuHeight);
@@ -431,6 +499,15 @@ public class UI {
 
     }
 
+    /**
+     * Draws the magic menu during combat, displaying available spells for the player.
+     *
+     * @param x           The X-coordinate of the magic menu.
+     * @param y           The Y-coordinate of the magic menu.
+     * @param width       The width of the magic menu.
+     * @param height      The height of the magic menu.
+     * @param BattleState The BattleSystem instance representing the current battle state.
+     */
     private void drawMagicMenu(int x, int y, int width, int height, BattleSystem BattleState) {
         g2.setColor(Color.MAGENTA);
         g2.fillRect(x, y, width, height);
@@ -452,6 +529,15 @@ public class UI {
         }
     }
 
+    /**
+     * Draws the panel for displaying information about the current monster in combat.
+     *
+     * @param x           The X-coordinate of the monster panel.
+     * @param y           The Y-coordinate of the monster panel.
+     * @param width       The width of the monster panel.
+     * @param height      The height of the monster panel.
+     * @param BattleState The BattleSystem instance representing the current battle state.
+     */
     private void drawMonsterPanel(int x, int y, int width, int height, BattleSystem BattleState) {
         g2.setColor(Color.BLUE);
         g2.fillRect(x, y, width, height);
@@ -476,12 +562,28 @@ public class UI {
         g2.drawString(monsterHealthText, barX + 5, barY - 5);
     }
 
+    /**
+     * Draws the panel for displaying the turn order during combat.
+     *
+     * @param x      The X-coordinate of the turn order panel.
+     * @param y      The Y-coordinate of the turn order panel.
+     * @param width  The width of the turn order panel.
+     * @param height The height of the turn order panel.
+     */
     private void drawTurnOrderPanel(int x, int y, int width, int height) {
         g2.setColor(Color.GREEN);
         g2.fillRect(x, y, width, height);
         drawSubWindow(x, y, width, height);
     }
 
+    /**
+     * Draws the command menu during combat, displaying available commands for the player.
+     *
+     * @param x      The X-coordinate of the command menu.
+     * @param y      The Y-coordinate of the command menu.
+     * @param width  The width of the command menu.
+     * @param height The height of the command menu.
+     */
     private void drawCommandMenu(int x, int y, int width, int height) {
         g2.setColor(Color.RED);
         g2.fillRect(x, y, width, height);
@@ -501,6 +603,16 @@ public class UI {
     }
 
 
+    /**
+     * Draws the player and party panel during combat, displaying player and party information.
+     *
+     * @param x             The X-coordinate of the player and party panel.
+     * @param y             The Y-coordinate of the player and party panel.
+     * @param width         The width of the player and party panel.
+     * @param height        The height of the player and party panel.
+     * @param selectedIndex The index of the selected party member.
+     * @param BattleState   The BattleSystem instance representing the current battle state.
+     */
     private void drawPlayerAndPartyPanel(int x, int y, int width, int height, int selectedIndex, BattleSystem BattleState) {
         g2.setColor(Color.YELLOW);
         g2.fillRect(x, y, width, height);
@@ -521,6 +633,13 @@ public class UI {
         g2.drawString(playerManaText, x + 5, y + 97);
     }
 
+    /**
+     * Draws the player character during combat, highlighting the selected party member.
+     *
+     * @param x             The X-coordinate of the player.
+     * @param y             The Y-coordinate of the player.
+     * @param selectedIndex The index of the selected party member.
+     */
     private void drawPlayer(int x, int y, int selectedIndex) {
         image = gp.player.standFront;
         g2.drawImage(image, x + 10, y, 64, 64, null);
@@ -549,6 +668,11 @@ public class UI {
         }
     }
 
+    /**
+     * Draws the turn icons during combat, indicating the order of turns based on the press turn value.
+     *
+     * @param pressTurn The press turn value indicating the turn order in combat.
+     */
     private void drawTurnIcons(int pressTurn) {
         int iconWidth = 64;
         int iconHeight = 64;
@@ -570,12 +694,16 @@ public class UI {
             startX -= (iconWidth + iconSpacing);
         }
     }
-    public void drawNegotiationScreen(){
+
+    /**
+     * Draws the negotiation screen during combat, displaying player, monster, and available options.
+     */
+    public void drawNegotiationScreen() {
         //WINDOW
         int x = gp.tileSize;
-        int y = gp.tileSize ;
-        int width = gp.screenWidth-gp.tileSize*2;
-        int height = gp.tileSize * 10 ;
+        int y = gp.tileSize;
+        int width = gp.screenWidth - gp.tileSize * 2;
+        int height = gp.tileSize * 10;
 
         drawSubWindow(x, y, width, height);
 
@@ -585,14 +713,14 @@ public class UI {
         g2.drawImage(gp.player.standFront, x + 10, y + 10, 128, 128, null);
 
         //Draw monster Image on right center
-        x = gp.screenWidth-gp.tileSize*5;
+        x = gp.screenWidth - gp.tileSize * 5;
         y = gp.tileSize * 3;
         g2.drawImage(gp.battleSystem.monster.combatImage, x + 10, y + 10, 128, 128, null);
 
         //Draw Question and Options at bottom center
         x = gp.tileSize;
         y = gp.tileSize * 8;
-        height = gp.tileSize * 5 ;
+        height = gp.tileSize * 5;
         drawSubWindow(x, y, width, height);
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(24F));
@@ -605,9 +733,9 @@ public class UI {
             g2.drawString("Si", x, y + 90);
             g2.drawString("No", x, y + 120);
             if (commandNum2 == 0) {
-                g2.drawString("->", x- gp.tileSize, y + 90);
+                g2.drawString("->", x - gp.tileSize, y + 90);
             } else if (commandNum2 == 1) {
-                g2.drawString("->", x- gp.tileSize, y + 120);
+                g2.drawString("->", x - gp.tileSize, y + 120);
             }
 
         } else {
@@ -627,20 +755,24 @@ public class UI {
             }
         }
     }
-    public void drawNegotiationRewardScreen(){
+
+    /**
+     * Draws the negotiation reward screen, displaying options for adding a demon to the party, asking for items, or asking for money.
+     */
+    public void drawNegotiationRewardScreen() {
         //Caja con añadir a Party
         int x = gp.tileSize;
-        int y = gp.tileSize ;
-        int width = gp.screenWidth-gp.tileSize*2;
-        int height = gp.tileSize * 2 ;
+        int y = gp.tileSize;
+        int width = gp.screenWidth - gp.tileSize * 2;
+        int height = gp.tileSize * 2;
 
         drawSubWindow(x, y, width, height);
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(24F));
         x = getXforCenterText("Añadir El Demonio a la Party");
         g2.drawString("Añadir El Demonio a la Party", x, y + 30);
-        if(commandNum2 == 0){
-            g2.drawString("->", x- gp.tileSize, y + 30);
+        if (commandNum2 == 0) {
+            g2.drawString("->", x - gp.tileSize, y + 30);
         }
 
         //Caja con Pedir Objetos
@@ -649,8 +781,8 @@ public class UI {
         drawSubWindow(x, y, width, height);
         x = getXforCenterText("Pedir Objetos");
         g2.drawString("Pedir Objetos", x, y + 30);
-        if(commandNum2 == 1){
-            g2.drawString("->", x- gp.tileSize, y + 30);
+        if (commandNum2 == 1) {
+            g2.drawString("->", x - gp.tileSize, y + 30);
         }
 
         //Caja con Pedir Dinero
@@ -659,12 +791,14 @@ public class UI {
         drawSubWindow(x, y, width, height);
         x = getXforCenterText("Pedir Dinero");
         g2.drawString("Pedir Dinero", x, y + 30);
-        if(commandNum2 == 2){
-            g2.drawString("->", x- gp.tileSize, y + 30);
+        if (commandNum2 == 2) {
+            g2.drawString("->", x - gp.tileSize, y + 30);
         }
     }
 
-
+    /**
+     * Draws the options menu, allowing the player to access various game settings.
+     */
     public void drawOptionsMenu() {
         //Displayea un frame con las opciones de status inventario guardar etc
         final int frameX = gp.tileSize;
@@ -726,6 +860,9 @@ public class UI {
 
     }
 
+    /**
+     * Draws the inventory screen, displaying the player's items and allowing item selection.
+     */
     public void drawInventoryScreen() {
 
         //FRAME COMO TAL
@@ -804,10 +941,18 @@ public class UI {
 
     }
 
+    /**
+     * Retrieves the index of the selected item slot based on the current row and column.
+     *
+     * @return The index of the selected item slot.
+     */
     public int getItemIndexSlot() {
         return slotCol + (slotRow * 7);
     }
 
+    /**
+     * Draws the current game message on the screen.
+     */
     public void drawMessage() {
         int messageX = gp.tileSize;
         int messageY = gp.tileSize * 4;
@@ -833,6 +978,9 @@ public class UI {
         }
     }
 
+    /**
+     * Draws the level-up screen, allowing the player to allocate stat points after leveling up.
+     */
     public void drawLevelupScreen() {
         // Configura el color de fondo en negro
         g2.setColor(Color.BLACK);
@@ -890,6 +1038,13 @@ public class UI {
         }
     }
 
+    /**
+     * Draws the graphical elements based on the current game state, including title screens, messages, dialogue screens,
+     * player menus, status screens, inventory screens, combat screens, negotiation screens, negotiation reward screens,
+     * level-up screens, options screens, and more.
+     *
+     * @param g2 The Graphics2D object used for drawing.
+     */
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
@@ -946,204 +1101,230 @@ public class UI {
         if (gp.gameState == gp.optionsState) {
             drawOptionsScreen();
         }
+    }
+
+    /**
+     * Draws the game options screen, providing access to settings such as full screen, music volume, and sound effects volume.
+     */
+    public void drawOptionsScreen() {
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(32F));
+
+        //SUB WINDOW
+
+        int frameX = gp.tileSize * 4;
+        int frameY = gp.tileSize;
+        int frameWidth = gp.tileSize * 8;
+        int frameHeight = gp.tileSize * 10;
+        drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+        switch (subState) {
+            case 0:
+                options_top(frameX, frameY);
+                break;
+            case 1:
+                options_fullScreenNotification(frameX, frameY);
+                break;
+            case 2:
+                options_control(frameX, frameY);
+                break;
+            case 3:
+                options_endGameConfirmation(frameX, frameY);
+                break;
+        }
+    }
+
+    /**
+     * Draws the top-level options screen, including settings for full screen, music, sound effects, controls, and quitting the game.
+     *
+     * @param frameX The X-coordinate of the frame.
+     * @param frameY The Y-coordinate of the frame.
+     */
+    public void options_top(int frameX, int frameY) {
+        int textX;
+        int textY;
+
+
+        //TITLE
+        String text = "Options";
+        textX = getXforCenterText(text);
+        textY = frameY + gp.tileSize;
+        g2.drawString(text, textX, textY);
+
+
+        //FULL SCREEN
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize * 2;
+        g2.drawString("Full Screen", textX, textY);
+        if (commandNum3 == 0) {
+            g2.drawString(">", textX - 25, textY);
         }
 
-        public void drawOptionsScreen() {
-            g2.setColor(Color.white);
-            g2.setFont(g2.getFont().deriveFont(32F));
-
-            //SUB WINDOW
-
-            int frameX = gp.tileSize * 4;
-            int frameY = gp.tileSize;
-            int frameWidth = gp.tileSize * 8;
-            int frameHeight = gp.tileSize * 10;
-            drawSubWindow(frameX, frameY, frameWidth, frameHeight);
-
-            switch (subState) {
-                case 0:
-                    options_top(frameX, frameY);
-                    break;
-                case 1:
-                    options_fullScreenNotification(frameX, frameY);
-                    break;
-                case 2:
-                    options_control(frameX, frameY);
-                    break;
-                case 3:
-                    options_endGameConfirmation(frameX, frameY);
-                    break;
-            }
+        //MUSIC
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize;
+        g2.drawString("Music", textX, textY);
+        if (commandNum3 == 1) {
+            g2.drawString(">", textX - 25, textY);
         }
 
-        public void options_top(int frameX, int frameY) {
-            int textX;
-            int textY;
-
-
-            //TITLE
-            String text = "Options";
-            textX = getXforCenterText(text);
-            textY = frameY + gp.tileSize;
-            g2.drawString(text, textX, textY);
-
-
-            //FULL SCREEN
-            textX = frameX + gp.tileSize;
-            textY += gp.tileSize * 2;
-            g2.drawString("Full Screen", textX, textY);
-            if (commandNum3 == 0) {
-                g2.drawString(">", textX - 25, textY);
-            }
-
-            //MUSIC
-            textX = frameX + gp.tileSize;
-            textY += gp.tileSize;
-            g2.drawString("Music", textX, textY);
-            if (commandNum3 == 1) {
-                g2.drawString(">", textX - 25, textY);
-            }
-
-            //SE
-            textX = frameX + gp.tileSize;
-            textY += gp.tileSize;
-            g2.drawString("SE", textX, textY);
-            if (commandNum3 == 2) {
-                g2.drawString(">", textX - 25, textY);
-            }
-
-            //CONTROL
-            textX = frameX + gp.tileSize;
-            textY += gp.tileSize;
-            g2.drawString("Control", textX, textY);
-            if (commandNum3 == 3) {
-                g2.drawString(">", textX - 25, textY);
-            }
-
-            //END GAME
-            textX = frameX + gp.tileSize;
-            textY += gp.tileSize;
-            g2.drawString("End Game", textX, textY);
-            if (commandNum3 == 4) {
-                g2.drawString(">", textX - 25, textY);
-            }
-
-            //BACK
-            textX = frameX + gp.tileSize;
-            textY += gp.tileSize * 2;
-            g2.drawString("Back", textX, textY);
-            if (commandNum3 == 5) {
-                g2.drawString(">", textX - 25, textY);
-            }
-
-            //FULL SCREEN CHECK BOX
-            textX = frameX + (int) (gp.tileSize * 4.5);
-            textY = frameY + gp.tileSize * 2 + 24;
-            g2.setStroke(new BasicStroke(3));
-            g2.drawRect(textX, textY, 24, 24);
-            if (gp.fullScreenOn == true) {
-                g2.fillRect(textX, textY, 24, 24);
-            }
-
-            //MUSIC VOLUME
-            textY += gp.tileSize;
-            g2.drawRect(textX, textY, 120, 24); // 120/5=24
-            int volumeWidth = 24 * gp.music.volumeScale;
-            g2.fillRect(textX, textY, volumeWidth, 24);
-
-            //SE VOLUME
-            textY += gp.tileSize;
-            g2.drawRect(textX, textY, 120, 24);
-            volumeWidth = 24 * gp.se.volumeScale;
-            g2.fillRect(textX, textY, volumeWidth, 24);
-
-            gp.config.saveConfig();
+        //SE
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize;
+        g2.drawString("SE", textX, textY);
+        if (commandNum3 == 2) {
+            g2.drawString(">", textX - 25, textY);
         }
 
-        public void options_fullScreenNotification(int frameX, int frameY) {
-            int textX = frameX + gp.tileSize;
-            int textY = frameY + gp.tileSize * 2;
-
-            currentDialogue = "This change will take effect \nafter restarting";
-            for (String line : currentDialogue.split("\n")) {
-                g2.drawString(line, textX, textY);
-                textY += 40;
-            }
-
-            //BACK
-            textY = frameY + gp.tileSize * 9;
-            textX += gp.tileSize * 5;
-            g2.drawString("ESC", textX, textY);
-
+        //CONTROL
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize;
+        g2.drawString("Control", textX, textY);
+        if (commandNum3 == 3) {
+            g2.drawString(">", textX - 25, textY);
         }
 
-
-        public void options_control(int frameX, int frameY) {
-
-            int textX;
-            int textY;
-
-            //TITLE
-            String text = "Control";
-            textX = getXforCenterText(text);
-            textY = frameY + gp.tileSize;
-            g2.drawString(text, textX, textY);
-
-            textX = frameX + gp.tileSize;
-            textY += gp.tileSize * 2;
-            g2.drawString("Move", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-            g2.drawString("Confirm/Take", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-            g2.drawString("Menu", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-            g2.drawString("Pause/Back", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-
-            textX = (int)(frameX + gp.tileSize * 5.5);
-            textY = frameY + gp.tileSize * 3;
-            g2.drawString("WASD", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-            g2.drawString("Z", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-            g2.drawString("ENTER", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-            g2.drawString("ESCAPE", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
-            g2.drawString("ESC", textX, textY);
-            textY += (int) (gp.tileSize * 1.5);
+        //END GAME
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize;
+        g2.drawString("End Game", textX, textY);
+        if (commandNum3 == 4) {
+            g2.drawString(">", textX - 25, textY);
         }
 
-        public void options_endGameConfirmation(int frameX, int frameY){
-            int textX = frameX + gp.tileSize;
-            int textY = frameY + gp.tileSize*3;
+        //BACK
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize * 2;
+        g2.drawString("Back", textX, textY);
+        if (commandNum3 == 5) {
+            g2.drawString(">", textX - 25, textY);
+        }
 
-            currentDialogue = "Quit the game and \nreturn to the title screen?";
-            for(String line: currentDialogue.split("\n")){
-                g2.drawString(line,textX,textY);
-                textY += 40;
-            }
+        //FULL SCREEN CHECK BOX
+        textX = frameX + (int) (gp.tileSize * 4.5);
+        textY = frameY + gp.tileSize * 2 + 24;
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRect(textX, textY, 24, 24);
+        if (gp.fullScreenOn == true) {
+            g2.fillRect(textX, textY, 24, 24);
+        }
 
-            //YES
+        //MUSIC VOLUME
+        textY += gp.tileSize;
+        g2.drawRect(textX, textY, 120, 24); // 120/5=24
+        int volumeWidth = 24 * gp.music.volumeScale;
+        g2.fillRect(textX, textY, volumeWidth, 24);
 
-            String text = "YES";
-            textX = getXforCenterText(text);
-            textY += gp.tileSize*3;
-            g2.drawString(text,textX,textY);
-            if(commandNum3 == 0){
-                g2.drawString(">",textX-25,textY);
-            }
+        //SE VOLUME
+        textY += gp.tileSize;
+        g2.drawRect(textX, textY, 120, 24);
+        volumeWidth = 24 * gp.se.volumeScale;
+        g2.fillRect(textX, textY, volumeWidth, 24);
 
-            //NO
+        gp.config.saveConfig();
+    }
 
-            text = "NO";
-            textX = getXforCenterText(text);
-            textY += gp.tileSize;
-            g2.drawString(text,textX,textY);
-            if(commandNum3 == 1){
-                g2.drawString(">",textX-25,textY);
-            }
+    /**
+     * Draws the full-screen notification screen, providing information about the change requiring a game restart.
+     *
+     * @param frameX The X-coordinate of the frame.
+     * @param frameY The Y-coordinate of the frame.
+     */
+    public void options_fullScreenNotification(int frameX, int frameY) {
+        int textX = frameX + gp.tileSize;
+        int textY = frameY + gp.tileSize * 2;
 
+        currentDialogue = "This change will take effect \nafter restarting";
+        for (String line : currentDialogue.split("\n")) {
+            g2.drawString(line, textX, textY);
+            textY += 40;
+        }
+
+        //BACK
+        textY = frameY + gp.tileSize * 9;
+        textX += gp.tileSize * 5;
+        g2.drawString("ESC", textX, textY);
+
+    }
+
+    /**
+     * Draws the control options screen, providing information about control mappings.
+     *
+     * @param frameX The X-coordinate of the frame.
+     * @param frameY The Y-coordinate of the frame.
+     */
+    public void options_control(int frameX, int frameY) {
+
+        int textX;
+        int textY;
+
+        //TITLE
+        String text = "Control";
+        textX = getXforCenterText(text);
+        textY = frameY + gp.tileSize;
+        g2.drawString(text, textX, textY);
+
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize * 2;
+        g2.drawString("Move", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("Confirm/Take", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("Menu", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("Pause/Back", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+
+        textX = (int) (frameX + gp.tileSize * 5.5);
+        textY = frameY + gp.tileSize * 3;
+        g2.drawString("WASD", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("Z", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("ENTER", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("ESCAPE", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+        g2.drawString("ESC", textX, textY);
+        textY += (int) (gp.tileSize * 1.5);
+    }
+
+    /**
+     * Draws the end-game confirmation screen, prompting the player to confirm quitting the game.
+     *
+     * @param frameX The X-coordinate of the frame.
+     * @param frameY The Y-coordinate of the frame.
+     */
+    public void options_endGameConfirmation(int frameX, int frameY) {
+        int textX = frameX + gp.tileSize;
+        int textY = frameY + gp.tileSize * 3;
+
+        currentDialogue = "Quit the game and \nreturn to the title screen?";
+        for (String line : currentDialogue.split("\n")) {
+            g2.drawString(line, textX, textY);
+            textY += 40;
+        }
+
+        //YES
+
+        String text = "YES";
+        textX = getXforCenterText(text);
+        textY += gp.tileSize * 3;
+        g2.drawString(text, textX, textY);
+        if (commandNum3 == 0) {
+            g2.drawString(">", textX - 25, textY);
+        }
+
+        //NO
+
+        text = "NO";
+        textX = getXforCenterText(text);
+        textY += gp.tileSize;
+        g2.drawString(text, textX, textY);
+        if (commandNum3 == 1) {
+            g2.drawString(">", textX - 25, textY);
         }
 
     }
+
+}

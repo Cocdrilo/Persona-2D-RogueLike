@@ -11,17 +11,28 @@ import monster.shadowStandar;
 
 import java.util.ArrayList;
 
+/**
+ * The AssetSetter class is responsible for setting up and initializing various game assets, such as objects, NPCs, and monsters.
+ */
 public class AssetSetter {
 
     GamePanel gp;
     KeyHandler keyH;
 
+    /**
+     * Constructs an AssetSetter object with the specified GamePanel.
+     *
+     * @param gp The GamePanel in which the game assets will be set up.
+     */
     public AssetSetter(GamePanel gp) {
 
         this.gp = gp;
 
     }
 
+    /**
+     * Sets up game objects, such as doors, stairs, chests, weapons, and consumables, at specific locations in the game world.
+     */
     public void setObject() {
 
         gp.obj[0] = new OBJ_Door(gp);
@@ -47,6 +58,10 @@ public class AssetSetter {
 
     }
 
+
+    /**
+     * Sets up non-playable characters (NPCs) at specific locations in the game world.
+     */
     public void setNPC() {
 
         gp.npc[0] = new NPC(gp);
@@ -54,6 +69,9 @@ public class AssetSetter {
         gp.npc[0].WorldY = gp.tileSize * 4;
     }
 
+    /**
+     * Sets up monsters at specific locations in the game world.
+     */
     public void setMonster() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
         gp.monsters[0] = new shadowStandar(gp, availableMonsters.get(6));

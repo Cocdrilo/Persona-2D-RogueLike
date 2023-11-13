@@ -6,6 +6,9 @@ import main.GamePanel;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+/**
+ * Represents a standard shadow monster in the game.
+ */
 public class shadowStandar extends Entity {
 
     public BufferedImage walkDown3, walkDown4, walkUp3, walkUp4, walkLeft3, walkLeft4, walkRight3, walkRight4;
@@ -15,6 +18,12 @@ public class shadowStandar extends Entity {
     public BufferedImage combatImage;
     public String combatImagePath;
 
+    /**
+     * Constructs a shadow standard monster with data from the provided monster data.
+     *
+     * @param gp   The GamePanel instance.
+     * @param data The monster data used for initialization.
+     */
     public shadowStandar(GamePanel gp, monsterData data) {
         super(gp);
         this.name = data.name;
@@ -38,20 +47,40 @@ public class shadowStandar extends Entity {
         getImage();
     }
 
+    /**
+     * Gets the type of attack used by the monster.
+     *
+     * @return The attack type.
+     */
     public String getAttackType() {
         return attackType;
     }
 
+    /**
+     * Calculates the physical attack damage based on player endurance and attacker's stat.
+     *
+     * @param playerEndurance Player's endurance stat.
+     * @param attackerStat    Attacker's stat.
+     * @return The calculated physical attack damage.
+     */
     public int getPhysAttack(int playerEndurance, int attackerStat) {
         return 5 * (int) (Math.sqrt(((double) attackerStat / playerEndurance) * randomFactor()));
     }
 
 
+    /**
+     * Gets the combat image of the monster.
+     *
+     * @return The combat image.
+     */
     public BufferedImage getCombatImage() {
         combatImage = setUp(combatImagePath);
         return combatImage;
     }
 
+    /**
+     * Loads images for different walking directions.
+     */
     public void getImage() {
         walkDown1 = setUp("/Monsters/Demon1");
         walkDown2 = setUp("/Monsters/Demon2");
@@ -73,6 +102,9 @@ public class shadowStandar extends Entity {
 
     }
 
+    /**
+     * Sets the action for the monster (basic random movement).
+     */
     public void setAction() {
 
         //IA BASICA DE MOVIMIENTO ALEATORIO
