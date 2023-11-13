@@ -1,5 +1,6 @@
 package main;
 
+import Pathfinding.PathFinder;
 import battleNeeds.SpellManager;
 import data.SaveLoad;
 import entity.Entity;
@@ -52,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     Sound music = new Sound();
     Sound se = new Sound();
     Config config = new Config(this);
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
     public CollisionCheck cCheck = new CollisionCheck(this);
     public AssetSetter Asetter = new AssetSetter(this);
     public UI ui = new UI(this);
@@ -61,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     public MonsterManager monsterManager = MonsterManager.getInstance();
     public NegotiationManager negotiationManager = NegotiationManager.getInstance();
     SaveLoad saveLoad = new SaveLoad(this);
+    public PathFinder pathFinder = new PathFinder(this);
 
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
@@ -122,7 +124,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         Asetter.setObject();
         Asetter.setNPC();
-        Asetter.setMonster();
+        Asetter.setMonsters();
 
         //playMusic(0);
         gameState = titleState;

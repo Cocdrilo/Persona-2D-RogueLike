@@ -2,28 +2,14 @@ package main;
 
 import entity.Entity;
 
-/**
- * Handles collision checks between entities and the game environment.
- */
-
 public class CollisionCheck {
 
     GamePanel gp;
 
-    /**
-     * Initializes a new CollisionCheck with the given GamePanel reference.
-     *
-     * @param gp The GamePanel where collision checks will take place.
-     */
     public CollisionCheck(GamePanel gp) {
         this.gp = gp;
     }
 
-    /**
-     * Checks for tile-based collision for the given entity in the game world.
-     *
-     * @param entity The entity for which collision is checked.
-     */
     public void checkTile(Entity entity) {
 
         int entityLeftX = entity.WorldX + entity.solidArea.x;
@@ -77,13 +63,6 @@ public class CollisionCheck {
 
     }
 
-    /**
-     * Checks for object-based collision for the given entity in the game world.
-     *
-     * @param entity The entity for which collision is checked.
-     * @param player Flag indicating if the entity is the player.
-     * @return The index of the collided object, or 999 if no collision occurred.
-     */
     public int checkObject(Entity entity, boolean player) {
 
         int index = 999;
@@ -129,14 +108,6 @@ public class CollisionCheck {
     }
 
     //COLISION CON OTRAS ENTIDADES
-
-    /**
-     * Checks for collision with other entities in the game world.
-     *
-     * @param entity The entity for which collision is checked.
-     * @param target Array of entities to check for collision.
-     * @return The index of the collided entity, or 999 if no collision occurred.
-     */
     public int checkEntity(Entity entity, Entity[] target) {
 
         int index = 999;
@@ -180,12 +151,7 @@ public class CollisionCheck {
         return index;
     }
 
-    /**
-     * Checks for collision with the player entity in the game world.
-     *
-     * @param entity The entity for which collision is checked.
-     * @return True if the player is hit, false otherwise.
-     */
+
     public boolean checkPlayer(Entity entity) {
 
         boolean hitPlayer = false;

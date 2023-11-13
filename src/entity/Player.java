@@ -13,9 +13,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-/**
- * This class represents the player character in the game.
- */
 public class Player extends Entity {
 
     public final int screenX;
@@ -28,12 +25,6 @@ public class Player extends Entity {
     public ArrayList<Entity> inventory = new ArrayList<>();
     public boolean defending = false;
 
-    /**
-     * Constructs a player with the specified GamePanel and KeyHandler.
-     *
-     * @param gp   The GamePanel associated with the player.
-     * @param keyH The KeyHandler for player input.
-     */
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -58,9 +49,6 @@ public class Player extends Entity {
 
     //DEBUG
 
-    /**
-     * Prints debug information about the player's spells.
-     */
     public void debugPlayerSpells() {
         System.out.println("DEBUG: Player spells:");
         for (superMagic spell : this.spells) {
@@ -69,22 +57,19 @@ public class Player extends Entity {
 
     }
 
-    /**
-     * Sets the default values for the player's attributes and equipment.
-     */
     public void setDefaultValues() {
         WorldX = 300;
         WorldY = 250;
-        speed = 4;
+        speed = 10;
         direction = "down";
         name = "Raidou";
 
         stats.level = 1;
-        stats.maxHp = 70;
+        stats.maxHp = 190;
         stats.hp = stats.maxHp;
         stats.maxMp = 41;
         stats.mp = stats.maxMp;
-        stats.str = 3;
+        stats.str = 30;
         stats.agi = 3;
         stats.mag = 2;
         stats.vit = 3;
@@ -99,9 +84,6 @@ public class Player extends Entity {
         repells = new String[]{};
     }
 
-    /**
-     * Sets the initial items in the player's inventory.
-     */
     public void setItems() {
 
         inventory.add(stats.weapon);
@@ -109,11 +91,6 @@ public class Player extends Entity {
 
     }
 
-    /**
-     * Gets the index of the weapon in the player's inventory.
-     *
-     * @return The index of the weapon or -1 if not found.
-     */
     public int getWeaponSlot() {
         int weaponSlot = -1; // Valor predeterminado para indicar que no se ha encontrado un arma en el inventario
         for (int i = 0; i < inventory.size(); i++) {
@@ -125,11 +102,6 @@ public class Player extends Entity {
         return weaponSlot;
     }
 
-    /**
-     * Gets the index of the armor in the player's inventory.
-     *
-     * @return The index of the armor or -1 if not found.
-     */
     public int getArmorSlot() {
         int armorSlot = -1; // Valor predeterminado para indicar que no se ha encontrado armadura en el inventario
         for (int i = 0; i < inventory.size(); i++) {
@@ -141,11 +113,6 @@ public class Player extends Entity {
         return armorSlot;
     }
 
-    /**
-     * Prints the consumable items in the player's inventory.
-     *
-     * @return An array of consumable item names.
-     */
     public String[] printItems() {
         String[] Items = new String[inventory.size()];
         int ItemsIndex = 0;
@@ -162,11 +129,6 @@ public class Player extends Entity {
         return consumableItems;
     }
 
-    /**
-     * Gets the consumable items in the player's inventory.
-     *
-     * @return A list of consumable items.
-     */
     public ArrayList<Entity> getItems() {
         ArrayList<Entity> Items = new ArrayList<>();
         for (int i = 0; i < inventory.size(); i++) {
@@ -177,11 +139,6 @@ public class Player extends Entity {
         return Items;
     }
 
-    /**
-     * Saves the indexes of consumable items in the player's inventory.
-     *
-     * @return An array of item indexes.
-     */
     public int[] saveItemIndexes() {
         int[] itemIndexes = new int[inventory.size()];
         int itemCounter = 0;
@@ -198,9 +155,6 @@ public class Player extends Entity {
         return consumableItemsIndex;
     }
 
-    /**
-     * Selects an item from the player's inventory and applies its effects.
-     */
     public void selectItems() {
 
         int itemIndex = gp.ui.getItemIndexSlot();
@@ -226,11 +180,6 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Gets the player's defense value, taking into account armor.
-     *
-     * @return The player's defense value.
-     */
     public int getDefense() {
         int defReturn = 0;
         if (stats.armor != null) {
@@ -241,11 +190,6 @@ public class Player extends Entity {
         return defReturn;
     }
 
-    /**
-     * Gets the damage type of the player's weapon.
-     *
-     * @return The damage type of the weapon.
-     */
     public String getWeaponDmgType() {
         String dmgType = "";
         if (stats.weapon != null) {
@@ -256,27 +200,11 @@ public class Player extends Entity {
         return dmgType;
     }
 
-    /**
-     * Adds money to the player's currency.
-     *
-     * @param money The amount of money to add.
-     */
     public void addMoney(int money) {
         stats.money += money;
     }
+    public void subtractMoney(int money){ stats.money -= money;}
 
-    /**
-     * Subtracts money from the player's currency.
-     *
-     * @param money The amount of money to subtract.
-     */
-    public void subtractMoney(int money) {
-        stats.money -= money;
-    }
-
-    /**
-     * Loads the player's character image assets.
-     */
     public void getPlayerImage() {
         standFront = setUp("/player/RaidouFront");
         standLeft = setUp("/player/RaidouLeft");
@@ -292,9 +220,6 @@ public class Player extends Entity {
         walkUp2 = setUp("/player/RaidouBackWalk2");
     }
 
-    /**
-     * Updates the player's position and checks for collisions.
-     */
     public void update() {
 
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed) {
@@ -356,11 +281,6 @@ public class Player extends Entity {
 
     }
 
-    /**
-     * Interacts with an NPC when the 'Z' key is pressed.
-     *
-     * @param i The index of the NPC to interact with.
-     */
     private void interactNPC(int i) {
         if (i != 999) {
             if (gp.keyH.zPressed) {
@@ -372,11 +292,6 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Handles interactions with objects in the game world.
-     *
-     * @param i The index of the object to interact with.
-     */
     public void ObjectInteractions(int i) {
 
         if (i != 999) {
@@ -384,11 +299,6 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Allows the player to pick up objects in the game world.
-     *
-     * @param i The index of the object to pick up.
-     */
     public void pickUpObject(int i) {
         if (i != 999 && gp.keyH.zPressed && gp.obj[i].isPickupeable) {
             String text = "";
@@ -401,11 +311,6 @@ public class Player extends Entity {
     }
 
 
-    /**
-     * Initiates a battle with a monster when the player comes into contact with it.
-     *
-     * @param i The index of the monster to battle.
-     */
     public void contactMonster(int i) {
         if (i != 999) {
             shadowStandar shadow = (shadowStandar) gp.monsters[i];
@@ -416,9 +321,12 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Saves the old player's statistics for level-up calculations.
-     */
+    public void enemyContactPlayer(shadowStandar shadow) {
+        //Cambio a Combate
+        gp.battleSystem = new BattleSystem(gp.party, shadow, gp);
+        gp.gameState = gp.combatState;
+    }
+
     public void getOldStats() {
         keyH.oldStr = gp.player.stats.str;
         keyH.oldDex = gp.player.stats.vit;
@@ -426,9 +334,6 @@ public class Player extends Entity {
         keyH.oldAgi = gp.player.stats.agi;
     }
 
-    /**
-     * Initiates a level-up sequence.
-     */
     public void levelUp() {
         keyH.pointsPerLevel = keyH.pointsPerLevel + 3;
         getOldStats();
@@ -437,11 +342,6 @@ public class Player extends Entity {
         stats.nextLevelExp = stats.nextLevelExp * 2;
     }
 
-    /**
-     * Draws the player character on the screen.
-     *
-     * @param graficos2d The graphics object to draw the player.
-     */
     public void draw(Graphics2D graficos2d) {
 
         BufferedImage image = null;

@@ -58,6 +58,7 @@ public class BattleSystem {
         if (monster.stats.hp <= 0) {
             System.out.println("Monster has died");
             endBattle();
+            return;
         }
         for (int i = 0; i < partyMembers.size(); i++) {
             if (partyMembers.get(i).stats.hp <= 0) {
@@ -390,8 +391,7 @@ public class BattleSystem {
             }
             System.out.println("Monster AI - Press Turn: " + pressTurn);
 
-        } while (pressTurn > 0);
-        nextTurn();
+        } while (pressTurn >= 0);
     }
 
     /**
@@ -427,6 +427,7 @@ public class BattleSystem {
         int randomNum = random.nextInt(100);
         if (randomNum < 50) {
             System.out.println("Player has escaped");
+            gp.Asetter.respawnMonster();
             gp.gameState = gp.playState;
         } else {
             System.out.println("Player has failed to escape");
@@ -459,6 +460,7 @@ public class BattleSystem {
 
         //Random de dinero
         //Random de Objetos
+        gp.Asetter.respawnMonster();
 
         if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
             //Level Up

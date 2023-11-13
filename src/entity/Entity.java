@@ -1,9 +1,11 @@
 package entity;
 
 import battleNeeds.superMagic;
+import main.BattleSystem;
 import main.GamePanel;
 import main.KeyHandler;
 import main.Toolbox;
+import monster.shadowStandar;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,15 +15,12 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-/**
- * This class represents an entity in the game.
- */
 public class Entity {
 
     public GamePanel gp;
 
     //SOLID AREAS
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea = new Rectangle(1, 1, 47, 47);
     public int solidAreaDefaultX, SolidAreaDefaultY;
     //DIALOGOS
 
@@ -33,6 +32,7 @@ public class Entity {
     public String direction = "down";
     public int spriteNum = 1;
     public boolean collisionOn = false;
+    public boolean onPath = false;
 
 
     //ATRIBUTOS DE PERSONAJES
@@ -63,11 +63,14 @@ public class Entity {
     //Array de hechizos:
     public ArrayList<superMagic> spells;
 
-    /**
-     * Fills the list of spells based on their names.
-     *
-     * @param spellNames An array of spell names to be added.
-     */
+    public Entity(GamePanel gp) {
+
+        this.gp = gp;
+        stats = new Entity_stats();
+    }
+
+
+
     public void fillSpells(String[] spellNames) {
         spells = new ArrayList<>();
 
@@ -84,12 +87,6 @@ public class Entity {
 
     //CombatMethods
 
-    /**
-     * Checks if the entity is weak to a particular attack type.
-     *
-     * @param attckType The attack type to check.
-     * @return True if the entity is weak to the attack type, false otherwise.
-     */
     public boolean isWeak(String attckType) {
         for (String weakness : weaknesses) {
             if (Objects.equals(attckType, weakness)) {
@@ -99,12 +96,6 @@ public class Entity {
         return false;
     }
 
-    /**
-     * Checks if the entity is resistant to a particular attack type.
-     *
-     * @param attckType The attack type to check.
-     * @return True if the entity is resistant to the attack type, false otherwise.
-     */
     public boolean isResistant(String attckType) {
         for (String resistance : resistances) {
             if (Objects.equals(attckType, resistance)) {
@@ -114,12 +105,6 @@ public class Entity {
         return false;
     }
 
-    /**
-     * Checks if the entity is null (has no reaction) to a particular attack type.
-     *
-     * @param attckType The attack type to check.
-     * @return True if the entity has no reaction to the attack type, false otherwise.
-     */
     public boolean isNull(String attckType) {
         for (String aNull : nulls) {
             if (Objects.equals(attckType, aNull)) {
@@ -129,12 +114,6 @@ public class Entity {
         return false;
     }
 
-    /**
-     * Checks if the entity repels a particular attack type.
-     *
-     * @param attckType The attack type to check.
-     * @return True if the entity repels the attack type, false otherwise.
-     */
     public boolean isRepelled(String attckType) {
         for (String repel : repells) {
             if (Objects.equals(attckType, repel)) {
@@ -154,11 +133,6 @@ public class Entity {
     //RND = Randomness factor (according to DragoonKain33, may be roughly between
     //0.95 and 1.05)
 
-    /**
-     * Calculates a random factor between a specified range.
-     *
-     * @return A random factor between 0.95 and 1.05.
-     */
     public double randomFactor() {
         double minFactor = 0.95;
         double maxFactor = 1.05;
@@ -171,56 +145,24 @@ public class Entity {
         return minFactor + (maxFactor - minFactor) * random.nextDouble();
     }
 
-    /**
-     * Calculates physical attack damage based on various factors.
-     *
-     * @param monsterEndurance The endurance of the target monster.
-     * @param physDmg          The physical damage.
-     * @param attackerStat     The attacker's stat.
-     * @return The calculated physical attack damage.
-     */
     public int getPhysAttack(int monsterEndurance, int physDmg, int attackerStat) {
         return 5 * (int) (Math.sqrt(((double) attackerStat / monsterEndurance) * Math.sqrt(physDmg) * randomFactor()));
     }
 
-    /**
-     * Calculates magic attack damage based on various factors.
-     *
-     * @param monsterEndurance The endurance of the target monster.
-     * @param spellDmg         The spell damage.
-     * @param attackMagicStat  The attacker's magic stat.
-     * @return The calculated magic attack damage.
-     */
     public int getMagicAttack(int monsterEndurance, int spellDmg, int attackMagicStat) {
         return 5 * (int) (Math.sqrt(((double) attackMagicStat / monsterEndurance) * Math.sqrt(spellDmg) * randomFactor()));
     }
 
-    /**
-     * Gets the entity's defense value.
-     *
-     * @return The entity's defense value.
-     */
     public int getDefense() {
         return stats.vit;
     }
     //Spell Methods
 
     // Métodos para agregar, quitar y acceder a hechizos del jugador
-
-    /**
-     * Adds a spell to the list of spells.
-     *
-     * @param spell The spell to add.
-     */
     public void addSpell(superMagic spell) {
         spells.add(spell);
     }
 
-    /**
-     * Prints the names and costs of the available spells.
-     *
-     * @return An array of spell names with their respective costs.
-     */
     public String[] printSpells() {
         String[] spellNames = new String[this.spells.size()];
         for (int spells = 0; spells < this.spells.size(); spells++) {
@@ -238,26 +180,13 @@ public class Entity {
     }
 
 
-    public Entity(GamePanel gp) {
-
-        this.gp = gp;
-        stats = new Entity_stats();
-    }
-
     public void setAction() {
 
     }
 
     public void update() {
         setAction();
-
-        collisionOn = false;
-        gp.cCheck.checkTile(this);
-        gp.cCheck.checkObject(this, false);
-        gp.cCheck.checkEntity(this, gp.npc);
-        gp.cCheck.checkEntity(this, gp.monsters);
-        boolean contactPlayer = gp.cCheck.checkPlayer(this);
-
+        checkCollisiOn();
 
         //COLISON = FALSO ->PUEDE MOVER
         if (!collisionOn) {
@@ -279,6 +208,95 @@ public class Entity {
             }
             spriteCounter = 0;
         }
+    }
+
+    public void checkCollisiOn(){
+        collisionOn = false;
+        gp.cCheck.checkTile(this);
+        gp.cCheck.checkObject(this, false);
+        gp.cCheck.checkEntity(this, gp.npc);
+        gp.cCheck.checkEntity(this, gp.monsters);
+        boolean contactPlayer = gp.cCheck.checkPlayer(this);
+    }
+
+    public void searchPath(int goalCol,int goalRow) {
+
+        int startCol = (WorldX + solidArea.x)/gp.tileSize;
+        int startRow = (WorldY + solidArea.y)/gp.tileSize;
+
+        gp.pathFinder.setNode(startCol, startRow, goalCol, goalRow);
+        if(gp.pathFinder.search()){
+            //Next WorldX&&Next WorldY
+            int nextX = gp.pathFinder.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pathFinder.pathList.get(0).row * gp.tileSize;
+            //SolidAreaPosition
+            int entityLeftX = WorldX + solidArea.x;
+            int entityTopY = WorldY + solidArea.y;
+            int entityRightX = WorldX +solidArea.x + solidArea.width;
+            int entityBottomY = WorldY + solidArea.y + solidArea.height;
+
+            if(entityTopY > nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+                direction = "up";
+            }
+
+            else if (entityTopY < nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+                direction = "down";
+            }
+
+            else if (entityTopY >= nextY && entityBottomY < nextY + gp.tileSize){
+                //Left | right
+                if(entityLeftX > nextX){
+                    direction = "left";
+                }
+                if (entityLeftX < nextX){
+                    direction = "right";
+                }
+            }
+            else if (entityTopY > nextY && entityLeftX > nextX){
+                //up or left
+                direction = "up";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "left";
+                }
+            }
+
+            else if (entityTopY > nextY && entityLeftX < nextX){
+                //Up or right
+                direction = "up";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "right";
+                }
+            }
+            else if (entityTopY < nextY && entityLeftX > nextX){
+                direction = "down";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "left";
+                }
+            }
+            else if (entityTopY < nextY && entityLeftX < nextX){
+                direction = "down";
+                checkCollisiOn();
+                if(collisionOn){
+                    direction = "right";
+                }
+            }
+            else{
+                System.out.println("No se que hacer");
+            }
+        }
+
+        /*
+        int nextCol = gp.pathFinder.pathList.get(0).col;
+        int nextRow = gp.pathFinder.pathList.get(0).row;
+        if(nextCol == goalCol && nextRow == goalRow){
+            onPath = false;
+        }
+
+         */
+
     }
 
     public BufferedImage setUp(String ImagePath) {
@@ -305,19 +323,10 @@ public class Entity {
         //HACE QUE EL NPC MIRE AL JUGADOR CUANDO LE HABLAS
 
         switch (gp.player.direction) {
-            case "up":
-                direction = "down";
-                break;
-
-            case "down":
-                direction = "up";
-                break;
-            case "left":
-                direction = "right";
-                break;
-            case "right":
-                direction = "left";
-                break;
+            case "up" -> direction = "down";
+            case "down" -> direction = "up";
+            case "left" -> direction = "right";
+            case "right" -> direction = "left";
         }
 
     }

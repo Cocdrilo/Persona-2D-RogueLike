@@ -19,6 +19,7 @@ public class TileManager {
     public Tile[] tile;
 
     public int mapTileNum[][];
+    public boolean drawPath = true;
 
     /**
      * Constructs a TileManager with the specified GamePanel.
@@ -141,6 +142,20 @@ public class TileManager {
                 WorldCol = 0;
                 WorldRow++;
             }
+        }
+        if (drawPath){
+            g2.setColor(new Color (255,0,0,70));
+
+            for(int i = 0; i <gp.pathFinder.pathList.size();i++){
+
+                int worldX = gp.pathFinder.pathList.get(i).col * gp.tileSize;
+                int worldY = gp.pathFinder.pathList.get(i).row * gp.tileSize;
+                int ScreenX = worldX - gp.player.WorldX + gp.player.screenX;
+                int ScreenY = worldY - gp.player.WorldY + gp.player.screenY;
+
+                g2.fillRect(ScreenX,ScreenY,gp.tileSize,gp.tileSize);
+            }
+
         }
     }
 
