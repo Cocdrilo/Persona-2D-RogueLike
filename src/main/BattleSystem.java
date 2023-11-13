@@ -391,7 +391,8 @@ public class BattleSystem {
             }
             System.out.println("Monster AI - Press Turn: " + pressTurn);
 
-        } while (pressTurn >= 0);
+        } while (pressTurn > 0);
+        pressTurn = 8;
     }
 
     /**

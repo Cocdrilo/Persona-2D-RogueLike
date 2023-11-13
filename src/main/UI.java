@@ -31,6 +31,7 @@ public class UI {
     BufferedImage titleImage;
     BufferedImage pressTurnIcon1;
     BufferedImage pressTurnIcon2;
+    BufferedImage backgroundCombat;
 
     //ArrayList de text para que sean Scrolling
     ArrayList<String> messageList = new ArrayList<>();
@@ -76,6 +77,7 @@ public class UI {
             titleImage = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/Dungeon.png"));
             pressTurnIcon1 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIcon.png"));
             pressTurnIcon2 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIconHalfTurn.png"));
+            backgroundCombat = ImageIO.read(getClass().getResourceAsStream("/BattleImages/Combat_Background.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -413,6 +415,12 @@ public class UI {
      * @param BattleState The BattleSystem instance representing the current battle state.
      */
     public void drawCombatScreen(BattleSystem BattleState) {
+
+        //Draw Background Screen with image
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.drawImage(backgroundCombat, 0, 0, gp.screenWidth, gp.screenHeight, null);
+
         g2.setFont(franklin);
 
         int x = (int) (gp.tileSize * 2.5);
@@ -428,10 +436,11 @@ public class UI {
         y = gp.tileSize * 5;
         width = gp.tileSize * 2;
         height = (int) (gp.tileSize * 6.5);
-        drawTurnOrderPanel(x, y, width, height);
+        //drawTurnOrderPanel(x, y, width, height);
 
         // Draw the command menu
-        x = gp.tileSize * 2;
+        x = 5;
+        y = gp.tileSize/2;
         width = (gp.tileSize * 3);
         height = gp.tileSize * 5;
         drawCommandMenu(x, y, width, height);
@@ -440,21 +449,21 @@ public class UI {
         if (magicMenu) {
             x = x + width;
             int magicMenuY = y;
-            int magicMenuWidth = gp.tileSize * 4;
+            int magicMenuWidth = gp.tileSize * 3;
             int magicMenuHeight = height;
             drawMagicMenu(x, magicMenuY, magicMenuWidth, magicMenuHeight, BattleState);
         }
         if (itemMenu) {
             x = x + width;
             int itemMenuY = y;
-            int itemMenuWidth = gp.tileSize * 4;
+            int itemMenuWidth = gp.tileSize * 3;
             int itemMenuHeight = height;
             drawItemMenu(x, itemMenuY, itemMenuWidth, itemMenuHeight, BattleState);
         }
 
         // Draw the player and party panel
-        x = (int) (gp.tileSize * 2.5) + 15;
-        y = gp.tileSize * 10;
+        x = (int)(gp.tileSize * 3.5);
+        y = (int) (gp.tileSize * 7.5);
         width = gp.screenWidth - gp.tileSize * 5;
         height = gp.tileSize * 4;
 
@@ -476,10 +485,8 @@ public class UI {
      * @param battleState    The BattleSystem instance representing the current battle state.
      */
     private void drawItemMenu(int x, int itemMenuY, int itemMenuWidth, int itemMenuHeight, BattleSystem battleState) {
-        g2.setColor(Color.MAGENTA);
-        g2.fillRect(x, itemMenuY, itemMenuWidth, itemMenuHeight);
-
-        g2.setColor(Color.BLACK);
+        drawSubWindow(x, itemMenuY, itemMenuWidth, itemMenuHeight);
+        g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
 
         String[] entityItemNames = battleState.party.Leader.printItems();
@@ -492,7 +499,7 @@ public class UI {
             g2.drawString(spellText, x + 15, itemOptionY + i * gp.tileSize);
 
             if (i == gp.ui.commandNum2) {
-                g2.drawString("->", x, itemOptionY + i * gp.tileSize);
+                g2.drawString("->", x+3, itemOptionY + i * gp.tileSize);
             }
         }
 
@@ -509,10 +516,9 @@ public class UI {
      * @param BattleState The BattleSystem instance representing the current battle state.
      */
     private void drawMagicMenu(int x, int y, int width, int height, BattleSystem BattleState) {
-        g2.setColor(Color.MAGENTA);
-        g2.fillRect(x, y, width, height);
+        drawSubWindow(x, y, width, height);
 
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
 
         String[] entitySpellNames = BattleState.partyMembers.get(BattleState.currentPartyMemberIndex).printSpells();
@@ -524,7 +530,7 @@ public class UI {
             g2.drawString(spellText, x + 15, magicOptionY + i * gp.tileSize);
 
             if (i == gp.ui.commandNum2) {
-                g2.drawString("->", x, magicOptionY + i * gp.tileSize);
+                g2.drawString("->", x + 3, magicOptionY + i * gp.tileSize);
             }
         }
     }
@@ -539,27 +545,22 @@ public class UI {
      * @param BattleState The BattleSystem instance representing the current battle state.
      */
     private void drawMonsterPanel(int x, int y, int width, int height, BattleSystem BattleState) {
-        g2.setColor(Color.BLUE);
-        g2.fillRect(x, y, width, height);
-        drawSubWindow(x, y, width, height);
 
-        x = gp.tileSize * 6;
+        x = gp.tileSize * 6+30;
         y = (int) (gp.tileSize * 1.5);
 
         image = BattleState.monster.getCombatImage();
-        g2.drawImage(image, x - 18, y - 5, 150, 150, null);
+        g2.drawImage(image, x , y, 150, 150, null);
 
         int maxHealth = BattleState.monster.stats.maxHp;
         int currentHealth = BattleState.monster.stats.hp;
-        int barWidth = 150;
-        int barHeight = 10;
-        int barX = x - 18;
+        int barX = x + 25;
         int barY = y + 150;
 
         String monsterHealthText = BattleState.monster.stats.hp + "/" + maxHealth;
         g2.setColor(Color.WHITE);
         g2.setFont(g2.getFont().deriveFont(24F));
-        g2.drawString(monsterHealthText, barX + 5, barY - 5);
+        g2.drawString(monsterHealthText, barX, barY - 5);
     }
 
     /**
@@ -570,11 +571,12 @@ public class UI {
      * @param width  The width of the turn order panel.
      * @param height The height of the turn order panel.
      */
+
+    /*
     private void drawTurnOrderPanel(int x, int y, int width, int height) {
-        g2.setColor(Color.GREEN);
-        g2.fillRect(x, y, width, height);
         drawSubWindow(x, y, width, height);
     }
+    */
 
     /**
      * Draws the command menu during combat, displaying available commands for the player.
@@ -585,8 +587,6 @@ public class UI {
      * @param height The height of the command menu.
      */
     private void drawCommandMenu(int x, int y, int width, int height) {
-        g2.setColor(Color.RED);
-        g2.fillRect(x, y, width, height);
         drawSubWindow(x, y, width, height);
 
         g2.setColor(Color.WHITE);
@@ -597,7 +597,7 @@ public class UI {
         for (int i = 0; i < commandOptions.length; i++) {
             g2.drawString(commandOptions[i], x + gp.tileSize / 2, y + gp.tileSize / 2 + i * 40);
             if (commandNum == i) {
-                g2.drawString("->", x - gp.tileSize, y + gp.tileSize / 2 + i * 40);
+                g2.drawString("->", x - 2, y + gp.tileSize / 2 + i * 40);
             }
         }
     }
@@ -614,9 +614,6 @@ public class UI {
      * @param BattleState   The BattleSystem instance representing the current battle state.
      */
     private void drawPlayerAndPartyPanel(int x, int y, int width, int height, int selectedIndex, BattleSystem BattleState) {
-        g2.setColor(Color.YELLOW);
-        g2.fillRect(x, y, width, height);
-        drawSubWindow(x, y, width, height);
 
         drawPlayer(x, y, selectedIndex);
 
@@ -652,7 +649,7 @@ public class UI {
 
             shadowStandar monstruo = (shadowStandar) gp.battleSystem.partyMembers.get(i);
             image = monstruo.getCombatImage();
-            g2.drawImage(image, x + 140 + ((i - 1) * 120), y, 64, 64, null);
+            g2.drawImage(image, x + 128 + ((i - 1) * 120), y, 64, 64, null);
 
             String partyHealthText = gp.battleSystem.partyMembers.get(i).stats.hp + "/" + gp.battleSystem.partyMembers.get(i).stats.maxHp;
             String partyManaText = gp.battleSystem.partyMembers.get(i).stats.mp + "/" + gp.battleSystem.partyMembers.get(i).stats.maxMp;
@@ -661,9 +658,9 @@ public class UI {
             g2.drawString(partyHealthText, x + 125 + ((i - 1) * 120), y + 80);
             g2.drawString(partyManaText, x + 125 + ((i - 1) * 120), y + 97);
 
-            if (selectedIndex == i + 1) {
+            if (selectedIndex == i) {
                 g2.setColor(Color.RED);
-                g2.drawRoundRect(x + 140 + (i * 120), y, 65, 65, 20, 20);
+                g2.drawRoundRect(x + 128 + ((i -1) * 120), y+1, 65, 65, 20, 20);
             }
         }
     }
