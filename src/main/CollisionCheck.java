@@ -2,14 +2,27 @@ package main;
 
 import entity.Entity;
 
+/**
+ * Manages collision checks for entities and the game environment.
+ */
 public class CollisionCheck {
 
     GamePanel gp;
 
+    /**
+     * Initializes the CollisionCheck with the specified GamePanel.
+     *
+     * @param gp The GamePanel instance to associate with the CollisionCheck.
+     */
     public CollisionCheck(GamePanel gp) {
         this.gp = gp;
     }
 
+    /**
+     * Checks for collisions with tiles in the game environment.
+     *
+     * @param entity The entity for which to check collisions.
+     */
     public void checkTile(Entity entity) {
 
         int entityLeftX = entity.WorldX + entity.solidArea.x;
@@ -63,6 +76,13 @@ public class CollisionCheck {
 
     }
 
+    /**
+     * Checks for collisions with objects in the game environment.
+     *
+     * @param entity The entity for which to check collisions.
+     * @param player Flag indicating whether the entity is the player.
+     * @return The index of the object with which the entity collided.
+     */
     public int checkObject(Entity entity, boolean player) {
 
         int index = 999;
@@ -108,6 +128,14 @@ public class CollisionCheck {
     }
 
     //COLISION CON OTRAS ENTIDADES
+
+    /**
+     * Checks for collisions with other entities in the game environment.
+     *
+     * @param entity The entity for which to check collisions.
+     * @param target Array of entities to check collisions against.
+     * @return The index of the entity with which the collision occurred.
+     */
     public int checkEntity(Entity entity, Entity[] target) {
 
         int index = 999;
@@ -152,6 +180,12 @@ public class CollisionCheck {
     }
 
 
+    /**
+     * Checks for collisions with the player entity.
+     *
+     * @param entity The entity for which to check collisions.
+     * @return True if a collision with the player occurred, false otherwise.
+     */
     public boolean checkPlayer(Entity entity) {
 
         boolean hitPlayer = false;

@@ -12,7 +12,6 @@ Falta por hacer: seleccionar con X si lo va a hacer alejandro y con + si lo va a
 -Poder poner pantalla completa:+
 -Save File en un txt:+
 -Cargar partida desde el txt:+
--Sistema de tiendas:
 -Transicionar Mapas:
 -Pathfinding (que te sigan los mobs que cojan agro o npcs)
 -Loot fuera de combate:
