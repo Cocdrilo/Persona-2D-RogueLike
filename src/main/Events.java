@@ -60,7 +60,7 @@ public class Events {
         //COMPROBAR SI EL JUGADOR ESTA EN UN EVENTO
         if (canTouchEvent) {
             //DAMAGE PIT
-            if (hit(9, 4, "any")) {
+            if (hit(5, 5, "any")) {
                 damagePit(gp.dialogueState);
             }
         }
@@ -108,6 +108,7 @@ public class Events {
      */
     public void damagePit(int gameState) {
         gp.gameState = gameState;
+        gp.player.stats.hp-=10;
         gp.ui.currentDialogue = "Te caiste mongo";
         canTouchEvent = false;
     }

@@ -52,7 +52,6 @@ public class Player extends Entity {
 
         setDefaultValues();
         getPlayerImage();
-        setItems();
         fillSpells(defaultSpells);
         debugPlayerSpells();
     }
