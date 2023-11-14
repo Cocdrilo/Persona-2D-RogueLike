@@ -1,122 +1,130 @@
 package battleNeeds;
 
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-/**
- * The {@code BattleAnimations} class manages battle animations, such as attack, magic, and escape animations.
- * It handles the loading of images, animation coordinates, and animation speed.
- *
- * <p>
- * The class uses a timer to control the animation speed and coordinates to move the images smoothly.
- * </p>
- */
 public class BattleAnimations {
-    private BufferedImage meleImage;  // La imagen del personaje o arma
-    private BufferedImage rangedImage;  // La imagen del personaje o arma
-    private int x, y;  // Coordenadas actuales de la imagen
-    private int targetX, targetY;  // Coordenadas a las que se desplazará la imagen
-    private int animationSpeed;  // Velocidad de la animación
-    private Timer animationTimer;  // Temporizador para controlar la animación
+    private Image meleeSlash1;
+    private Image meleeSlash2;
+    private Image meleeSlash3;
+    private Image meleeSlash4;
 
-    /**
-     * Constructs a new {@code BattleAnimations} instance.
-     * Loads the melee and ranged attack images and initializes coordinates and animation speed.
-     */
+    private Image magicBlast1;
+    private Image magicBlast2;
+    private Image magicBlast3;  // Same image as magicBlast4
+    private Image magicBlast4;  // Same image as magicBlast3
+
+    private int animationDuration = 1400;
+    private long startTime;
+
+    private Timer meleeAnimationTimer;
+    private Timer magicAnimationTimer;
+    private int meleeFrameCount = 0;
+    private int magicFrameCount = 0;
+
     public BattleAnimations() {
-        this.meleImage = loadImage("res/Objects/weapon_Maza.png");
-        this.rangedImage = loadImage("res/Objects/Stairs.png");
-        x = 0;
-        y = 0;
-        targetX = 0;
-        targetY = 0;
-        animationSpeed = 5;  // Ajusta la velocidad según tus necesidades
-        animationTimer = new Timer(1000 / 60, e -> animate());
+        // Load melee animation images
+        meleeSlash1 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_1.png");
+        meleeSlash2 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_2.png");
+        meleeSlash3 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_3.png");
+        meleeSlash4 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_4.png");
+
+        // Load magic animation images
+        magicBlast1 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball1.png");
+        magicBlast2 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball2.png");
+        magicBlast3 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball3.png");
+        magicBlast4 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball3.png");
+
+        // Set up melee animation timer
+        meleeAnimationTimer = createAnimationTimer();
+
+        // Set up magic animation timer
+        magicAnimationTimer = createAnimationTimer();
     }
 
-    /**
-     * Initiates the attack animation with the specified target coordinates.
-     *
-     * @param targetX The x-coordinate of the target for the animation.
-     * @param targetY The y-coordinate of the target for the animation.
-     */
-    public void attackAnimation(int targetX, int targetY) {
-        this.targetX = targetX;
-        this.targetY = targetY;
-        animationTimer.start();
+    private Timer createAnimationTimer() {
+        return new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                meleeFrameCount++;
+                magicFrameCount++;  // Increment magic frame count as well
+                if (meleeFrameCount > 3) {
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
     }
 
-    /**
-     * Initiates the magic animation with the specified target coordinates.
-     *
-     * @param targetX The x-coordinate of the target for the animation.
-     * @param targetY The y-coordinate of the target for the animation.
-     */
-    public void magicAnimation(int targetX, int targetY) {
-        this.targetX = targetX;
-        this.targetY = targetY;
-        animationTimer.start();
+    public void playMeleeAttackAnimation(Graphics2D g2d, int targetX, int targetY) {
+        startTime = System.currentTimeMillis();
+        meleeFrameCount = 0;
+
+        meleeAnimationTimer.start();
+
+        Timer drawTimer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drawMeleeFrame(g2d, targetX, targetY);
+
+                if (System.currentTimeMillis() - startTime >= animationDuration) {
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
+
+        drawTimer.start();
     }
 
-    /**
-     * Initiates the escape animation with the specified target coordinates.
-     *
-     * @param targetX The x-coordinate of the target for the animation.
-     * @param targetY The y-coordinate of the target for the animation.
-     */
-    public void escapeAnimation(int targetX, int targetY) {
-        this.targetX = targetX;
-        this.targetY = targetY;
-        animationTimer.start();
+    public void playMagicAttackAnimation(Graphics2D g2d, int targetX, int targetY) {
+        startTime = System.currentTimeMillis();
+        magicFrameCount = 0;
+
+        magicAnimationTimer.start();
+
+        Timer drawTimer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drawMagicFrame(g2d, targetX, targetY);
+
+                if (System.currentTimeMillis() - startTime >= animationDuration) {
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
+
+        drawTimer.start();
     }
 
-    /**
-     * Draws the current melee attack animation image at its current coordinates.
-     *
-     * @param g The graphics object used for drawing.
-     */
-    public void draw(Graphics g) {
-        g.drawImage(meleImage, x, y, null);
-    }
-
-    /**
-     * Animates the movement of the image to the target coordinates.
-     * Adjusts the image coordinates based on the animation speed until it reaches the target coordinates.
-     * Stops the animation timer when the image reaches the target coordinates.
-     */
-    private void animate() {
-        if (x < targetX) {
-            x += animationSpeed;
-        } else if (x > targetX) {
-            x -= animationSpeed;
+    private void drawMeleeFrame(Graphics2D g2d, int targetX, int targetY) {
+        switch (meleeFrameCount) {
+            case 0 -> g2d.drawImage(meleeSlash1, targetX, targetY, null);
+            case 1 -> g2d.drawImage(meleeSlash2, targetX, targetY, null);
+            case 2 -> g2d.drawImage(meleeSlash3, targetX, targetY, null);
+            case 3 -> g2d.drawImage(meleeSlash4, targetX, targetY, null);
         }
-        if (y < targetY) {
-            y += animationSpeed;
-        } else if (y > targetY) {
-            y -= animationSpeed;
-        }
+    }
 
-        if (x == targetX && y == targetY) {
-            animationTimer.stop();
+    private void drawMagicFrame(Graphics2D g2d, int targetX, int targetY) {
+        switch (magicFrameCount) {
+            case 0 -> g2d.drawImage(magicBlast1, targetX, targetY, null);
+            case 1 -> g2d.drawImage(magicBlast2, targetX, targetY, null);
+            case 2 -> g2d.drawImage(magicBlast3, targetX, targetY, null);
+            case 3 -> g2d.drawImage(magicBlast4, targetX, targetY, null);
         }
     }
 
-    /**
-     * Loads an image from the specified file path.
-     *
-     * @param filename The path to the image file.
-     * @return The loaded BufferedImage, or {@code null} in case of an error.
-     */
     private static BufferedImage loadImage(String filename) {
         try {
             return ImageIO.read(new File(filename));
         } catch (IOException e) {
             e.printStackTrace(System.err);
-            return null; // En caso de error, devuelve null
+            return null;
         }
     }
 }

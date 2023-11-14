@@ -25,6 +25,8 @@ public class partyManager {
         this.Leader = Leader;
         this.partyMembers = new ArrayList<>();
         this.gp = gp;
+        addMonsterToParty("Mascara Sonriente");
+        addMonsterToParty("Cuervo Oscuro");
     }
 
     /**
