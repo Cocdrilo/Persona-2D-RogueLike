@@ -777,6 +777,8 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.subState == 3 && gp.ui.commandNum3 == 0) {//YES
                 gp.ui.subState = 0;
                 gp.stopMusic();
+                gp.player.inventory.clear();
+                gp.player.setDefaultValues();
                 gp.setUpGame();
             } else if (gp.ui.subState == 3 && gp.ui.commandNum3 == 1) {//NO
                 gp.ui.subState = 0;
