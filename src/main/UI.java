@@ -704,6 +704,10 @@ public class UI {
         int width = gp.screenWidth - gp.tileSize * 2;
         int height = gp.tileSize * 10;
 
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.drawImage(backgroundCombat, 0, 0, gp.screenWidth, gp.screenHeight, null);
+
         drawSubWindow(x, y, width, height);
 
         //Draw Player Image on left center
