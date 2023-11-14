@@ -68,13 +68,14 @@ public class BattleSystem {
             endBattle();
             return;
         }
-        for (int i = 0; i < partyMembers.size(); i++) {
+        for (int i = partyMembers.size() - 1; i >= 0; i--) {
             if (partyMembers.get(i).stats.hp <= 0) {
                 partyMembers.get(i).stats.hp = 0;
                 System.out.println(partyMembers.get(i).name + " has died");
                 partyMembers.remove(i);
             }
         }
+
         // Cambiar el turno al siguiente
         if (turn == 0) {
             turn = 1;
@@ -85,6 +86,22 @@ public class BattleSystem {
             monsterAI();
         }
 
+    }
+
+    private void checkForCharacterDeath() {
+        // Check if the player's leader has died
+        if (party.Leader.stats.hp <= 0) {
+            System.out.println("Player has died");
+            gp.gameState = gp.titleState; // Or handle game over as needed
+        }
+
+        // Check if any party member has died
+        for (int i = partyMembers.size() - 1; i >= 0; i--) {
+            if (partyMembers.get(i).stats.hp <= 0) {
+                partyMembers.remove(i);
+                System.out.println(partyMembers.get(i).name + " has died");
+            }
+        }
     }
 
     /**
@@ -407,6 +424,8 @@ public class BattleSystem {
                 getTargetSlot(target);
             }
             System.out.println("Monster AI - Press Turn: " + pressTurn);
+
+            checkForCharacterDeath();
 
         } while (pressTurn > 0);
         pressTurn = 8;
