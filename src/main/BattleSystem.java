@@ -10,6 +10,7 @@ import monster.shadowStandar;
 import negotiation.NegotiationSystem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -93,14 +94,31 @@ public class BattleSystem {
         if (party.Leader.stats.hp <= 0) {
             System.out.println("Player has died");
             gp.gameState = gp.titleState; // Or handle game over as needed
+            return;
         }
 
-        // Check if any party member has died
-        for (int i = partyMembers.size() - 1; i >= 0; i--) {
-            if (partyMembers.get(i).stats.hp <= 0) {
-                partyMembers.remove(i);
-                System.out.println(partyMembers.get(i).name + " has died");
+        // Use an Iterator to safely remove dead party members
+        Iterator<Entity> iterator = partyMembers.iterator();
+        while (iterator.hasNext()) {
+            Entity partyMember = iterator.next();
+            if (partyMember.stats.hp <= 0) {
+                shadowStandar monstruo = (shadowStandar) partyMember;
+                iterator.remove();
+                party.removeMonsterFromParty(monstruo);
+                System.out.println(partyMember.name + " has died");
             }
+        }
+
+        // Check if all party members have died
+        if (partyMembers.isEmpty()) {
+            System.out.println("All party members have died");
+            // Handle game over or other logic here
+        }
+
+        // Check if the enemy has died
+        if (monster.stats.hp <= 0) {
+            System.out.println("Monster has died");
+            endBattle();
         }
     }
 
