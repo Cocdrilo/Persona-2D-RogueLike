@@ -774,12 +774,11 @@ public class KeyHandler implements KeyListener {
             }
 
             //END GAME YES/NO
-            if (gp.ui.subState == 3 && gp.ui.commandNum3 == 0) {
+            if (gp.ui.subState == 3 && gp.ui.commandNum3 == 0) {//YES
                 gp.ui.subState = 0;
-                //gp.stopMusic();
-                gp.gameState = gp.titleState;
-            } else if (gp.ui.subState == 3 && gp.ui.commandNum3 == 1) {
-                System.out.println("No");
+                gp.stopMusic();
+                gp.setUpGame();
+            } else if (gp.ui.subState == 3 && gp.ui.commandNum3 == 1) {//NO
                 gp.ui.subState = 0;
                 gp.ui.commandNum3 = 4;
                 gp.gameState = gp.optionsState;
