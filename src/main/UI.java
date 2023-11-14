@@ -37,6 +37,8 @@ public class UI {
     ArrayList<String> messageList = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
 
+    private int selectedIndex = 0;
+
     public String currentDialogue = "";
     public String currentName = "";
     public int commandNum = 0;
@@ -468,7 +470,7 @@ public class UI {
         height = gp.tileSize * 4;
 
         // Code for Resalting the one who is attacking
-        int selectedIndex = BattleState.currentPartyMemberIndex;
+        selectedIndex = BattleState.currentPartyMemberIndex;
         drawPlayerAndPartyPanel(x, y, width, height, selectedIndex, BattleState);
 
         // Draw the turn icons
@@ -1082,6 +1084,86 @@ public class UI {
         //Combat State
         if (gp.gameState == gp.combatState || gp.gameState == gp.magicMenuState || gp.gameState == gp.battleItemsState) {
             drawCombatScreen(gp.battleSystem);
+            if (gp.battleSystem.playerIsAttacking) {
+                int enemyX = gp.tileSize * 6+30;
+                int enemyY = (int) (gp.tileSize * 2);
+                gp.battleAnimations.playMeleeAttackAnimation(g2, enemyX, enemyY);
+                // Other attack logic...
+                gp.battleSystem.playerIsAttacking = false;
+            }
+
+            else if (gp.battleSystem.monsterIsAttacking) {
+                System.out.println("Monster is attacking");
+
+                int x = (int)(gp.tileSize * 3.5);
+                int y = (int) (gp.tileSize * 7);
+
+                //switch Case de selectedIndex var
+                switch (gp.battleSystem.attackedSlot) {
+                    case 0 -> {
+                        gp.battleAnimations.playMeleeAttackAnimation(g2, x,y);
+                        System.out.println("Attacking 1");
+                    }
+
+                    case 1 ->{
+                        System.out.println("Attacking 2");
+                        gp.battleAnimations.playMeleeAttackAnimation(g2, x + 128 + ((1 - 1) * 120) + 120,y);
+                    }
+
+                    case 2 -> {
+                        System.out.println("Attacking 3");
+                        gp.battleAnimations.playMeleeAttackAnimation(g2, x + 128 + (120),y);
+                    }
+                    case 3 ->{
+                        System.out.println("Attacking 4");
+                        gp.battleAnimations.playMeleeAttackAnimation(g2, x + 128 + ((3 - 1) * 120),y);
+
+                    }
+                    default -> System.out.println("Error");
+
+                }
+                // Other attack logic...
+                gp.battleSystem.monsterIsAttacking = false;
+            }
+            else if(gp.battleSystem.playerMagic){
+                int enemyX = gp.tileSize * 6+30;
+                int enemyY = (int) (gp.tileSize * 2);
+                gp.battleAnimations.playMagicAttackAnimation(g2, enemyX, enemyY);
+                // Other attack logic...
+                gp.battleSystem.playerMagic= false;
+            }
+            else if(gp.battleSystem.monsterMagic){
+                int x = (int)(gp.tileSize * 3.5);
+                int y = (int) (gp.tileSize * 7.5);
+
+                //switch Case de selectedIndex var
+                switch (gp.battleSystem.attackedSlot) {
+                    case 0 -> {
+                        gp.battleAnimations.playMagicAttackAnimation(g2, x,y);
+                        System.out.println("Attacking 1");
+                    }
+
+                    case 1 ->{
+                        System.out.println("Attacking 2");
+                        gp.battleAnimations.playMagicAttackAnimation(g2, x + 128 + ((1 - 1) * 120) + 120,y);
+                    }
+
+                    case 2 -> {
+                        System.out.println("Attacking 3");
+                        gp.battleAnimations.playMagicAttackAnimation(g2, x + 128 + (120),y);
+                    }
+                    case 3 ->{
+                        System.out.println("Attacking 4");
+                        gp.battleAnimations.playMagicAttackAnimation(g2, x + 128 + ((3 - 1) * 120),y);
+
+                    }
+                    default -> System.out.println("Error");
+
+                }
+                // Other attack logic...
+                gp.battleSystem.monsterMagic= false;
+            }
+
         }
         //Negotiation State
         if (gp.gameState == gp.negotiationState || gp.gameState == gp.moneyRequestState) {

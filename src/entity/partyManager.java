@@ -26,8 +26,7 @@ public class partyManager {
         this.partyMembers = new ArrayList<>();
         this.gp = gp;
         addMonsterToParty("Mascara Sonriente");
-        addMonsterToParty("Mascara Sonriente");
-        addMonsterToParty("Mascara Sonriente");
+        addMonsterToParty("Cuervo Oscuro");
     }
 
     /**

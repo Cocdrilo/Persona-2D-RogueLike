@@ -1,6 +1,7 @@
 package main;
 
 import Pathfinding.PathFinder;
+import battleNeeds.BattleAnimations;
 import battleNeeds.SpellManager;
 import data.SaveLoad;
 import entity.Entity;
@@ -35,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public BattleSystem battleSystem;
-    public NegotiationSystem negotiationSystem;
+    public BattleAnimations battleAnimations = new BattleAnimations();
     public boolean fullScreenOn;
 
     //FPS
@@ -259,6 +260,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             // Dibuja la interfaz de usuario encima de todo
             ui.draw(g2);
+
 
             // Limpia la lista de entidades
             entityList.clear();

@@ -1,6 +1,7 @@
 package main;
 
 import Object.Consumables.*;
+import battleNeeds.BattleAnimations;
 import battleNeeds.superMagic;
 import entity.Entity;
 import entity.Player;
@@ -19,11 +20,17 @@ public class BattleSystem {
     public shadowStandar monster;
     public GamePanel gp;
     public NegotiationSystem negotiationSystem;
+    private BattleAnimations battleAnimations;
 
     private int turn = 0; // 0 = player, 1 = monster
     public int pressTurn = 8; // 2 turns per action, if hit weakness or crit 1 turn per action
     public ArrayList<Entity> partyMembers; // Lista de miembros del partido
     public int currentPartyMemberIndex; // Índice del miembro del partido que está atacando
+    public int attackedSlot = 0;
+    public boolean playerIsAttacking = false;
+    public boolean monsterIsAttacking = false;
+    public boolean playerMagic = false;
+    public boolean monsterMagic = false;
 
     /**
      * Constructs a BattleSystem object with the specified party, monster, and GamePanel.
@@ -38,6 +45,7 @@ public class BattleSystem {
         this.gp = gp;
         this.partyMembers = new ArrayList<>(); // Inicializa la lista de miembros del partido
         this.partyMembers.add(party.Leader); // Agrega al líder a la lista
+        battleAnimations = new BattleAnimations();
 
         // Agrega a los miembros del partido a la lista
         this.partyMembers.addAll(party.partyMembers);
@@ -96,6 +104,8 @@ public class BattleSystem {
 
         System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
 
+        playerIsAttacking = true;
+
         target.stats.hp = target.stats.hp - calculateDamage(attacker, target, weaponDmgType);
 
         if (pressTurn <= 0 || target.stats.hp <= 0) {
@@ -125,6 +135,8 @@ public class BattleSystem {
         }
 
         System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
+
+        monsterIsAttacking = true;
 
         target.stats.hp = target.stats.hp - calculateDamage(attacker, target, weaponDmgType);
 
@@ -272,6 +284,7 @@ public class BattleSystem {
         }
 
         int damage = calculateMagicDamage(attacker, target, selectedSpell);
+        playerMagic = true;
 
         handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
         if (pressTurn <= 0 || target.stats.hp <= 0) {
@@ -295,6 +308,7 @@ public class BattleSystem {
         //Enemy monsters Dont Use Mana
 
         int damage = calculateMagicDamage(attacker, target, selectedSpell);
+        monsterMagic = true;
 
         handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
     }
@@ -382,17 +396,30 @@ public class BattleSystem {
             if (physicalDamage > magicalDamage) {
                 if (target instanceof Player targetPlayer) {
                     monsterAttack(monster, targetPlayer);
+                    getTargetSlot(targetPlayer);
                 }
                 if (target instanceof shadowStandar targetMonster) {
                     monsterAttack(monster, targetMonster);
+                    getTargetSlot(targetMonster);
                 }
             } else {
                 monsterUseMagic(monster, target, selectedSpell);
+                getTargetSlot(target);
             }
             System.out.println("Monster AI - Press Turn: " + pressTurn);
 
         } while (pressTurn > 0);
         pressTurn = 8;
+    }
+
+    public void getTargetSlot(Entity target){
+        String nombre = target.name;
+        System.out.println(nombre);
+        partyMembers.forEach((partyMember) -> {
+            if (partyMember.name.equals(nombre)) {
+                attackedSlot = partyMembers.indexOf(partyMember);
+            }
+        });
     }
 
     /**
