@@ -20,7 +20,7 @@ public class BattleAnimations {
     private Image magicBlast3;  // Same image as magicBlast4
     private Image magicBlast4;  // Same image as magicBlast3
 
-    private int animationDuration = 1400;
+    private int animationDuration = 500;
     private long startTime;
 
     private Timer meleeAnimationTimer;
@@ -49,13 +49,15 @@ public class BattleAnimations {
     }
 
     private Timer createAnimationTimer() {
-        return new Timer(100, new ActionListener() {
+        return new Timer(50, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 meleeFrameCount++;
                 magicFrameCount++;  // Increment magic frame count as well
                 if (meleeFrameCount > 3) {
                     ((Timer) e.getSource()).stop();
+                    meleeFrameCount = 0;
+                    magicFrameCount = 0;
                 }
             }
         });
@@ -87,7 +89,7 @@ public class BattleAnimations {
 
         magicAnimationTimer.start();
 
-        Timer drawTimer = new Timer(100, new ActionListener() {
+        Timer drawTimer = new Timer(20, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 drawMagicFrame(g2d, targetX, targetY);

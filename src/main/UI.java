@@ -1091,7 +1091,7 @@ public class UI {
             if (gp.battleSystem.playerIsAttacking) {
                 int enemyX = gp.tileSize * 6+30;
                 int enemyY = (int) (gp.tileSize * 2);
-                gp.battleAnimations.playMeleeAttackAnimation(g2, enemyX, enemyY);
+                gp.battleAnimations.playMeleeAttackAnimation(g2, enemyX +25, enemyY -10);
                 // Other attack logic...
                 gp.battleSystem.playerIsAttacking = false;
             }
@@ -1132,7 +1132,7 @@ public class UI {
             else if(gp.battleSystem.playerMagic){
                 int enemyX = gp.tileSize * 6+30;
                 int enemyY = (int) (gp.tileSize * 2);
-                gp.battleAnimations.playMagicAttackAnimation(g2, enemyX, enemyY);
+                gp.battleAnimations.playMagicAttackAnimation(g2, enemyX +25 , enemyY -10 );
                 // Other attack logic...
                 gp.battleSystem.playerMagic= false;
             }

@@ -12,6 +12,7 @@ import negotiation.NegotiationSystem;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The BattleSystem class handles turn-based battles between the player's party and monsters.
@@ -445,6 +446,13 @@ public class BattleSystem {
 
             checkForCharacterDeath();
 
+            // Pausa de 1 segundo entre ataques sin bloquear la animación
+            long startTime = System.currentTimeMillis();
+            long elapsedTime = 0;
+            while (elapsedTime < 200) { // 1000 milisegundos = 1 segundo
+                // Aquí puedes realizar otras operaciones o actualizaciones de la interfaz gráfica
+                elapsedTime = System.currentTimeMillis() - startTime;
+            }
         } while (pressTurn > 0);
         pressTurn = 8;
     }
