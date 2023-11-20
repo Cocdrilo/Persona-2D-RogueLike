@@ -77,7 +77,6 @@ public class OBJ_Potion_Health extends Entity {
                 healeableMonster.stats.hp = healeableMonster.stats.maxHp;
             }
         }
-        gp.gameState = gp.playState;
     }
 
 }
