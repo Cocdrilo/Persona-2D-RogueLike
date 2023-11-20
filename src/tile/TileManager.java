@@ -1,5 +1,6 @@
 package tile;
 
+import entity.Drawable;
 import main.GamePanel;
 import main.Toolbox;
 
@@ -13,7 +14,7 @@ import java.io.InputStreamReader;
 /**
  * Manages tiles and the game world map.
  */
-public class TileManager {
+public class TileManager implements Drawable {
 
     GamePanel gp;
     public Tile[] tile;
@@ -117,6 +118,7 @@ public class TileManager {
      *
      * @param g2 The graphics context used for drawing.
      */
+    @Override
     public void draw(Graphics2D g2) {
 
         int WorldCol = 0;

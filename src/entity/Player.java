@@ -3,6 +3,7 @@ package entity;
 import Object.Equipables.OBJ_Armor;
 import Object.Equipables.OBJ_WEAPON_Slash;
 import Object.Equipables.OBJ_Weapon;
+import Object.WorldBuilding.OBJ_Chest;
 import battleNeeds.superMagic;
 import main.BattleSystem;
 import main.GamePanel;
@@ -13,10 +14,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-/**
- * Represents the player entity in the game, extending the Entity class.
- * Manages movement, interaction, combat, and player statistics.
- */
 public class Player extends Entity {
 
     public final int screenX;
@@ -29,12 +26,6 @@ public class Player extends Entity {
     public ArrayList<Entity> inventory = new ArrayList<>();
     public boolean defending = false;
 
-    /**
-     * Constructs a new Player instance with the specified GamePanel and KeyHandler.
-     *
-     * @param gp     The GamePanel associated with the player.
-     * @param keyH   The KeyHandler used to handle player input.
-     */
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -52,15 +43,13 @@ public class Player extends Entity {
 
         setDefaultValues();
         getPlayerImage();
+        setItems();
         fillSpells(defaultSpells);
         debugPlayerSpells();
     }
 
     //DEBUG
 
-    /**
-     * Displays the player's spells for debugging purposes.
-     */
     public void debugPlayerSpells() {
         System.out.println("DEBUG: Player spells:");
         for (superMagic spell : this.spells) {
@@ -69,9 +58,6 @@ public class Player extends Entity {
 
     }
 
-    /**
-     * Sets default values for the player entity.
-     */
     public void setDefaultValues() {
         WorldX = 300;
         WorldY = 250;
@@ -99,9 +85,6 @@ public class Player extends Entity {
         repells = new String[]{};
     }
 
-    /**
-     * Sets the initial items for the player entity.
-     */
     public void setItems() {
 
         inventory.add(stats.weapon);
@@ -109,11 +92,6 @@ public class Player extends Entity {
 
     }
 
-    /**
-     * Gets the index of the currently equipped weapon in the player's inventory.
-     *
-     * @return The index of the weapon, or -1 if not found.
-     */
     public int getWeaponSlot() {
         int weaponSlot = -1; // Valor predeterminado para indicar que no se ha encontrado un arma en el inventario
         for (int i = 0; i < inventory.size(); i++) {
@@ -125,11 +103,6 @@ public class Player extends Entity {
         return weaponSlot;
     }
 
-    /**
-     * Gets the index of the currently equipped armor in the player's inventory.
-     *
-     * @return The index of the armor, or -1 if not found.
-     */
     public int getArmorSlot() {
         int armorSlot = -1; // Valor predeterminado para indicar que no se ha encontrado armadura en el inventario
         for (int i = 0; i < inventory.size(); i++) {
@@ -141,11 +114,6 @@ public class Player extends Entity {
         return armorSlot;
     }
 
-    /**
-     * Prints the names of consumable items in the player's inventory.
-     *
-     * @return An array of strings representing consumable item names.
-     */
     public String[] printItems() {
         String[] Items = new String[inventory.size()];
         int ItemsIndex = 0;
@@ -162,11 +130,6 @@ public class Player extends Entity {
         return consumableItems;
     }
 
-    /**
-     * Gets a list of consumable items in the player's inventory.
-     *
-     * @return The list of consumable items.
-     */
     public ArrayList<Entity> getItems() {
         ArrayList<Entity> Items = new ArrayList<>();
         for (int i = 0; i < inventory.size(); i++) {
@@ -177,11 +140,6 @@ public class Player extends Entity {
         return Items;
     }
 
-    /**
-     * Saves the indexes of consumable items in the player's inventory.
-     *
-     * @return An array of indexes representing consumable items.
-     */
     public int[] saveItemIndexes() {
         int[] itemIndexes = new int[inventory.size()];
         int itemCounter = 0;
@@ -198,9 +156,6 @@ public class Player extends Entity {
         return consumableItemsIndex;
     }
 
-    /**
-     * Selects an item from the player's inventory and performs actions accordingly.
-     */
     public void selectItems() {
 
         int itemIndex = gp.ui.getItemIndexSlot();
@@ -216,6 +171,10 @@ public class Player extends Entity {
             if (selectedItem instanceof OBJ_Armor) {
                 stats.armor = (OBJ_Armor) selectedItem;
             }
+            if (selectedItem instanceof OBJ_Chest cofre){
+                cofre.use();
+                inventory.remove(itemIndex);
+            }
 
             if (selectedItem.type == 5) {
                 //CONSUMIBLE
@@ -226,11 +185,6 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Gets the defense value of the player, considering equipped armor.
-     *
-     * @return The defense value.
-     */
     public int getDefense() {
         int defReturn = 0;
         if (stats.armor != null) {
@@ -241,11 +195,6 @@ public class Player extends Entity {
         return defReturn;
     }
 
-    /**
-     * Gets the damage type of the equipped weapon.
-     *
-     * @return The damage type.
-     */
     public String getWeaponDmgType() {
         String dmgType = "";
         if (stats.weapon != null) {
@@ -256,27 +205,11 @@ public class Player extends Entity {
         return dmgType;
     }
 
-    /**
-     * Adds money to the player's wallet.
-     *
-     * @param money The amount of money to add.
-     */
     public void addMoney(int money) {
         stats.money += money;
     }
+    public void subtractMoney(int money){ stats.money -= money;}
 
-    /**
-     * Subtracts money from the player's wallet.
-     *
-     * @param money The amount of money to subtract.
-     */
-    public void subtractMoney(int money) {
-        stats.money -= money;
-    }
-
-    /**
-     * Sets up player images based on file paths.
-     */
     public void getPlayerImage() {
         standFront = setUp("/player/RaidouFront");
         standLeft = setUp("/player/RaidouLeft");
@@ -292,9 +225,6 @@ public class Player extends Entity {
         walkUp2 = setUp("/player/RaidouBackWalk2");
     }
 
-    /**
-     * Updates the player's state based on input and collisions.
-     */
     public void update() {
 
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed) {
@@ -356,11 +286,6 @@ public class Player extends Entity {
 
     }
 
-    /**
-     * Interacts with an NPC when the 'z' key is pressed.
-     *
-     * @param i The index of the NPC.
-     */
     private void interactNPC(int i) {
         if (i != 999) {
             if (gp.keyH.zPressed) {
@@ -372,11 +297,6 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Handles interactions with objects.
-     *
-     * @param i The index of the object.
-     */
     public void ObjectInteractions(int i) {
 
         if (i != 999) {
@@ -384,11 +304,6 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Picks up an object when the 'z' key is pressed.
-     *
-     * @param i The index of the object.
-     */
     public void pickUpObject(int i) {
         if (i != 999 && gp.keyH.zPressed && gp.obj[i].isPickupeable) {
             String text = "";
@@ -400,11 +315,7 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Initiates combat when the player contacts a monster.
-     *
-     * @param i The index of the monster.
-     */
+
     public void contactMonster(int i) {
         if (i != 999) {
             shadowStandar shadow = (shadowStandar) gp.monsters[i];
@@ -415,20 +326,12 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Initiates combat when an enemy contacts the player.
-     *
-     * @param shadow The enemy entity.
-     */
     public void enemyContactPlayer(shadowStandar shadow) {
         //Cambio a Combate
         gp.battleSystem = new BattleSystem(gp.party, shadow, gp);
         gp.gameState = gp.combatState;
     }
 
-    /**
-     * Retrieves old statistics for level up comparison.
-     */
     public void getOldStats() {
         keyH.oldStr = gp.player.stats.str;
         keyH.oldDex = gp.player.stats.vit;
@@ -436,9 +339,6 @@ public class Player extends Entity {
         keyH.oldAgi = gp.player.stats.agi;
     }
 
-    /**
-     * Initiates the level-up sequence.
-     */
     public void levelUp() {
         keyH.pointsPerLevel = keyH.pointsPerLevel + 3;
         getOldStats();
@@ -447,11 +347,7 @@ public class Player extends Entity {
         stats.nextLevelExp = stats.nextLevelExp * 2;
     }
 
-    /**
-     * Draws the player on the screen.
-     *
-     * @param graficos2d The graphics context.
-     */
+    @Override
     public void draw(Graphics2D graficos2d) {
 
         BufferedImage image = null;
