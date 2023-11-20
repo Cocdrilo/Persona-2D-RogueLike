@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-public class Entity {
+public abstract class Entity implements Drawable{
 
     public GamePanel gp;
 
@@ -339,6 +339,7 @@ public class Entity {
 
     }
 
+    @Override
     public void draw(Graphics2D g2) {
 
         BufferedImage image = null;

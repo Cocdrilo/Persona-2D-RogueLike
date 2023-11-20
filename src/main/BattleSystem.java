@@ -10,9 +10,7 @@ import monster.shadowStandar;
 import negotiation.NegotiationSystem;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The BattleSystem class handles turn-based battles between the player's party and monsters.
@@ -95,31 +93,14 @@ public class BattleSystem {
         if (party.Leader.stats.hp <= 0) {
             System.out.println("Player has died");
             gp.gameState = gp.titleState; // Or handle game over as needed
-            return;
         }
 
-        // Use an Iterator to safely remove dead party members
-        Iterator<Entity> iterator = partyMembers.iterator();
-        while (iterator.hasNext()) {
-            Entity partyMember = iterator.next();
-            if (partyMember.stats.hp <= 0) {
-                shadowStandar monstruo = (shadowStandar) partyMember;
-                iterator.remove();
-                party.removeMonsterFromParty(monstruo);
-                System.out.println(partyMember.name + " has died");
+        // Check if any party member has died
+        for (int i = partyMembers.size() - 1; i >= 0; i--) {
+            if (partyMembers.get(i).stats.hp <= 0) {
+                partyMembers.remove(i);
+                System.out.println(partyMembers.get(i).name + " has died");
             }
-        }
-
-        // Check if all party members have died
-        if (partyMembers.isEmpty()) {
-            System.out.println("All party members have died");
-            // Handle game over or other logic here
-        }
-
-        // Check if the enemy has died
-        if (monster.stats.hp <= 0) {
-            System.out.println("Monster has died");
-            endBattle();
         }
     }
 
@@ -446,13 +427,6 @@ public class BattleSystem {
 
             checkForCharacterDeath();
 
-            // Pausa de 1 segundo entre ataques sin bloquear la animación
-            long startTime = System.currentTimeMillis();
-            long elapsedTime = 0;
-            while (elapsedTime < 200) { // 1000 milisegundos = 1 segundo
-                // Aquí puedes realizar otras operaciones o actualizaciones de la interfaz gráfica
-                elapsedTime = System.currentTimeMillis() - startTime;
-            }
         } while (pressTurn > 0);
         pressTurn = 8;
     }

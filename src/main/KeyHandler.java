@@ -774,18 +774,12 @@ public class KeyHandler implements KeyListener {
             }
 
             //END GAME YES/NO
-            if (gp.ui.subState == 3 && gp.ui.commandNum3 == 0) {//YES
+            if (gp.ui.subState == 3 && gp.ui.commandNum3 == 0) {
                 gp.ui.subState = 0;
-                gp.stopMusic();
-                gp.player.inventory.clear();
-                gp.player.setDefaultValues();
-                if(!gp.party.partyMembers.isEmpty()){
-                    for (int i = 0; i < gp.party.partyMembers.size(); i++) {
-                        gp.party.removeMonsterFromParty(gp.party.partyMembers.get(i));
-                    }
-                }
-                gp.setUpGame();
-            } else if (gp.ui.subState == 3 && gp.ui.commandNum3 == 1) {//NO
+                //gp.stopMusic();
+                gp.gameState = gp.titleState;
+            } else if (gp.ui.subState == 3 && gp.ui.commandNum3 == 1) {
+                System.out.println("No");
                 gp.ui.subState = 0;
                 gp.ui.commandNum3 = 4;
                 gp.gameState = gp.optionsState;

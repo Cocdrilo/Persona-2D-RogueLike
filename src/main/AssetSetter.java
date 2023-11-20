@@ -12,30 +12,17 @@ import monster.shadowStandar;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * The AssetSetter class is responsible for initializing and setting up various game assets
- * such as doors, stairs, chests, NPCs, and monsters in the game world.
- * It works in conjunction with the GamePanel to place these assets at specific locations.
- */
 public class AssetSetter {
 
     GamePanel gp;
     KeyHandler keyH;
 
-    /**
-     * Initializes the AssetSetter with the specified GamePanel.
-     *
-     * @param gp The GamePanel instance to associate with the AssetSetter.
-     */
     public AssetSetter(GamePanel gp) {
 
         this.gp = gp;
 
     }
 
-    /**
-     * Sets up objects in the game world.
-     */
     public void setObject() {
 
         gp.obj[0] = new OBJ_Door(gp);
@@ -61,9 +48,6 @@ public class AssetSetter {
 
     }
 
-    /**
-     * Sets up non-player characters (NPCs) in the game world.
-     */
     public void setNPC() {
 
         gp.npc[0] = new NPC(gp);
@@ -71,9 +55,6 @@ public class AssetSetter {
         gp.npc[0].WorldY = gp.tileSize * 4;
     }
 
-    /**
-     * Sets up monsters in the game world.
-     */
     public void setMonsters() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
 
@@ -82,12 +63,6 @@ public class AssetSetter {
         }
     }
 
-    /**
-     * Generates a random monster from the available monster data.
-     *
-     * @param availableMonsters The list of available monster data.
-     * @return A randomly generated monster.
-     */
     private shadowStandar generateRandomMonster(ArrayList<monsterData> availableMonsters) {
         Random random = new Random();
         int randomIndex = random.nextInt(availableMonsters.size());
@@ -109,9 +84,6 @@ public class AssetSetter {
         return monster;
     }
 
-    /**
-     * Respawns monsters in the game world.
-     */
     public void respawnMonster() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
         for(int i = 0; i < 6; i++){
