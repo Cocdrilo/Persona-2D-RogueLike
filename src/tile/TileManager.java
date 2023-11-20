@@ -30,15 +30,31 @@ public class TileManager implements Drawable {
      * @param gp The GamePanel associated with this TileManager.
      */
     public TileManager(GamePanel gp) {
-
         this.gp = gp;
 
         tile = new Tile[10];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
 
-        LoadMap("/Maps/Map01.txt");
+        if (loadedGame) {
+            // Load existing map
+            LoadMap("/Maps/Map01.txt");
+        } else {
+            // Generate a new random dungeon map
+            generateRandomDungeon();
+        }
+    }
 
+    /**
+     * Generates a random dungeon map using the RandomDungeonGenerator class.
+     */
+    private void generateRandomDungeon() {
+        int numRooms = 10; // Adjust the number of rooms as needed
+        int[][] dungeon = RandomDungeonGenerator.generateDungeon(gp, numRooms);
+
+        // Set the generated dungeon as the current map
+
+        mapTileNum = dungeon;
     }
 
     /**

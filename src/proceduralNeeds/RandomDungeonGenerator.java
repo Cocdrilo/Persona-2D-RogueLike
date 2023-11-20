@@ -19,7 +19,6 @@ public class RandomDungeonGenerator {
         this.dungeon = generateDungeon(gp, numRooms);
 
         // Save the dungeon layout to a text file in the /res/Maps/ folder
-        saveDungeonToFile(dungeon, "res/Maps/dungeon_layout.txt");
     }
 
 
@@ -30,7 +29,7 @@ public class RandomDungeonGenerator {
      * @param numRooms The number of rooms to generate in the dungeon.
      * @return A 2D array representing the generated dungeon layout.
      */
-    private static int[][] generateDungeon(GamePanel gp, int numRooms) {
+    public static int[][] generateDungeon(GamePanel gp, int numRooms) {
         int[][] world = new int[gp.maxWorldRow][gp.maxWorldCol];
 
         // Initialize the world grid with walls (1)
