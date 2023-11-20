@@ -3,7 +3,6 @@ package entity;
 import Object.Equipables.OBJ_Armor;
 import Object.Equipables.OBJ_WEAPON_Slash;
 import Object.Equipables.OBJ_Weapon;
-import Object.WorldBuilding.OBJ_Chest;
 import battleNeeds.superMagic;
 import main.BattleSystem;
 import main.GamePanel;
@@ -170,10 +169,6 @@ public class Player extends Entity {
 
             if (selectedItem instanceof OBJ_Armor) {
                 stats.armor = (OBJ_Armor) selectedItem;
-            }
-            if (selectedItem instanceof OBJ_Chest cofre){
-                cofre.use();
-                inventory.remove(itemIndex);
             }
 
             if (selectedItem.type == 5) {
@@ -347,7 +342,6 @@ public class Player extends Entity {
         stats.nextLevelExp = stats.nextLevelExp * 2;
     }
 
-    @Override
     public void draw(Graphics2D graficos2d) {
 
         BufferedImage image = null;

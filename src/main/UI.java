@@ -1,6 +1,5 @@
 package main;
 
-import entity.Drawable;
 import entity.Player;
 import monster.shadowStandar;
 import negotiation.Opcion;
@@ -20,7 +19,7 @@ import javax.imageio.ImageIO;
  * It includes methods for drawing various screens such as the title screen,
  * status screen, dialogue screen, and combat screen.
  */
-public class UI implements Drawable {
+public class UI {
 
     GamePanel gp;
     Graphics2D g2;
@@ -1049,7 +1048,6 @@ public class UI implements Drawable {
      *
      * @param g2 The Graphics2D object used for drawing.
      */
-    @Override
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
