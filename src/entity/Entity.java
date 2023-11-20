@@ -85,7 +85,7 @@ public abstract class Entity implements Drawable{
         }
     }
 
-    //CombatMethods
+    //CombatMethodss
 
     public boolean isWeak(String attckType) {
         for (String weakness : weaknesses) {
