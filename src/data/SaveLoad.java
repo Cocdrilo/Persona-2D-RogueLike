@@ -122,6 +122,7 @@ public class SaveLoad {
             gp.player.stats.armor = (OBJ_Armor) gp.player.inventory.get(ds.currentArmorSlot);
             gp.player.getDefense();
             gp.player.getPlayerImage();
+            gp.tileM.loadedGame = true;
 
 
         } catch (Exception e) {

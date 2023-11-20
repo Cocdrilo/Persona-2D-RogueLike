@@ -3,6 +3,7 @@ package tile;
 import entity.Drawable;
 import main.GamePanel;
 import main.Toolbox;
+import proceduralNeeds.RandomDungeonGenerator;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,6 +22,7 @@ public class TileManager implements Drawable {
 
     public int mapTileNum[][];
     public boolean drawPath = true;
+    public boolean loadedGame = false;
 
     /**
      * Constructs a TileManager with the specified GamePanel.
@@ -33,9 +35,10 @@ public class TileManager implements Drawable {
 
         tile = new Tile[10];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-
         getTileImage();
+
         LoadMap("/Maps/Map01.txt");
+
     }
 
     /**

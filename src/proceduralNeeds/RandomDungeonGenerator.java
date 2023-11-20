@@ -1,5 +1,7 @@
 package proceduralNeeds;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import main.GamePanel;
@@ -9,6 +11,17 @@ import main.GamePanel;
  * The generated dungeon consists of rooms and corridors connecting them.
  */
 public class RandomDungeonGenerator {
+    int [][] dungeon;
+
+    public RandomDungeonGenerator() {
+        GamePanel gp = new GamePanel(); // Assuming GamePanel has maxWorldRow and maxWorldCol defined
+        int numRooms = 10; // Adjust the number of rooms as needed
+        this.dungeon = generateDungeon(gp, numRooms);
+
+        // Save the dungeon layout to a text file in the /res/Maps/ folder
+        saveDungeonToFile(dungeon, "res/Maps/dungeon_layout.txt");
+    }
+
 
     /**
      * Generates a random dungeon layout.
@@ -17,7 +30,7 @@ public class RandomDungeonGenerator {
      * @param numRooms The number of rooms to generate in the dungeon.
      * @return A 2D array representing the generated dungeon layout.
      */
-    public static int[][] generateDungeon(GamePanel gp, int numRooms) {
+    private static int[][] generateDungeon(GamePanel gp, int numRooms) {
         int[][] world = new int[gp.maxWorldRow][gp.maxWorldCol];
 
         // Initialize the world grid with walls (1)
@@ -69,6 +82,20 @@ public class RandomDungeonGenerator {
 
         return world;
     }
+
+    private static void saveDungeonToFile(int[][] dungeon, String fileName) {
+        try (PrintWriter writer = new PrintWriter(fileName)) {
+            for (int row = 0; row < dungeon.length; row++) {
+                for (int col = 0; col < dungeon[0].length; col++) {
+                    writer.print(dungeon[row][col] + " ");
+                }
+                writer.println();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace(System.err);
+        }
+    }
+
 
     /**
      * Represents a room in the dungeon with its position and dimensions.
