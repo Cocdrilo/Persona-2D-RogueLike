@@ -37,6 +37,8 @@ public class shadowStandar extends Entity {
         this.stats.vit = data.vit;
         this.stats.level = data.lvl;
         this.xpGiven = data.xpGiven;
+        this.stats.nextLevelExp = stats.level * 20;
+        this.stats.exp = 0;
         this.attackType = data.attackType;
         this.combatImagePath = data.combatImagePath;
         this.resistances = data.resistances;
@@ -67,6 +69,43 @@ public class shadowStandar extends Entity {
      */
     public int getPhysAttack(int playerEndurance, int attackerStat) {
         return 5 * (int) (Math.sqrt(((double) attackerStat / playerEndurance) * randomFactor()));
+    }
+
+    /**
+     * Increases the level of the shadowStandar instance and allocates
+     * a random number of points to its stats upon leveling up.
+     * The total number of points distributed is fixed at 3, and they are
+     * randomly assigned to the available stats (hp, str, agi, mag).
+     * The distribution ensures that each stat receives at least 1 point.
+     *
+     * @see Random
+     */
+    public void levelUp() {
+        stats.level++;
+        stats.nextLevelExp = stats.nextLevelExp * 2;
+
+        // Randomly distribute 3 points among stats
+        Random random = new Random();
+        int totalPoints = 3;
+
+        while (totalPoints > 0) {
+            int pointsToAdd = random.nextInt(3) + 1; // Randomly choose 1 to 3 points
+
+            // Randomly choose a stat to add points to
+            int statChoice = random.nextInt(4); // Assuming you have 4 stats (hp, str, agi, mag)
+
+            switch (statChoice) {
+                case 0 -> this.stats.hp += pointsToAdd;
+                case 1 -> this.stats.str += pointsToAdd;
+                case 2 -> this.stats.agi += pointsToAdd;
+                case 3 -> this.stats.mag += pointsToAdd;
+
+                // Add more cases if you have additional stats
+            }
+
+            totalPoints -= pointsToAdd;
+        }
+        System.out.println("Level up!" +name+" is now level "+stats.level);
     }
 
 

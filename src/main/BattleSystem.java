@@ -495,7 +495,7 @@ public class BattleSystem {
 
 
     /**
-     * Ends the battle, granting experience points to the player and handling loot.
+     * Ends the battle, granting experience points to the player and party and handling loot.
      */
     public void endBattle() {
         //EXP calc
@@ -509,21 +509,26 @@ public class BattleSystem {
         //Random de Objetos
         gp.Asetter.respawnMonster();
 
-        if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
-            //Level Up
-            party.Leader.levelUp();
-        }
-        /*
         for(int i = 0; i < party.partyMembers.size(); i++){
+            //Exp /2 por cada miembro del partido para que no esten al mismo level o mas que el Lider y porque se reparte entre los miembros
+            party.partyMembers.get(i).stats.exp = party.partyMembers.get(i).stats.exp + (monster.xpGiven / 2 );
+
             if(party.partyMembers.get(i).stats.exp>= party.partyMembers.get(i).stats.nextLevelExp){
                 //Level Up
                 party.partyMembers.get(i).levelUp();
+                System.out.println(party.partyMembers.get(i).name + " has leveled up");
             }
         }
-         */
-        else {
-            gp.gameState = gp.playState;
+
+        if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
+            //Level Up
+            party.Leader.levelUp();
+            System.out.println("Player has leveled up");
+            return;
+        }
+
+        gp.gameState = gp.playState;
+
         }
 
     }
-}

@@ -63,9 +63,9 @@ public class Player extends Entity {
         direction = "down";
         name = "Raidou";
 
-        setRandomCol();
-        setRandomRow();
-        System.out.println("DEBUG: Player position: " + WorldX + ", " + WorldY);
+        setRandomPos();
+
+        System.out.println("DEBUG: Player position: " + WorldX / gp.tileSize + ", " + WorldY / gp.tileSize);
 
         stats.level = 1;
         stats.maxHp = 190;
@@ -87,13 +87,9 @@ public class Player extends Entity {
         repells = new String[]{};
     }
 
-    public void setRandomCol() {
+    public void setRandomPos() {
         int[] datos = gp.tileM.setPlayerRandomPosition();
         WorldX = datos[0]*gp.tileSize;
-    }
-
-    public void setRandomRow() {
-        int[] datos = gp.tileM.setPlayerRandomPosition();
         WorldY = datos[1]*gp.tileSize;
     }
 

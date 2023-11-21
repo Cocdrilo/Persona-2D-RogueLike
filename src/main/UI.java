@@ -279,7 +279,7 @@ public class UI implements Drawable {
         textY += lineHeight;
         g2.drawString("EXP", textX, textY);
         textY += lineHeight;
-        g2.drawString("NEXT_EXP", textX, textY);
+        g2.drawString("NEXT EXP", textX, textY);
         textY += lineHeight;
         g2.drawString("HP", textX, textY);
         textY += lineHeight;
@@ -371,8 +371,12 @@ public class UI implements Drawable {
             g2.drawString("Level: " + valor, textX, textY);
             textY += lineHeight;
 
-            valor = String.valueOf(member.stats.nextLevelExp);
+            valor = String.valueOf(member.stats.exp);
             g2.drawString("EXP: " + valor, textX, textY);
+            textY += lineHeight;
+
+            valor = String.valueOf(member.stats.nextLevelExp);
+            g2.drawString("NEXT EXP: " + valor, textX, textY);
             textY += lineHeight;
 
             valor = String.valueOf(member.stats.hp + "/" + member.stats.maxHp);

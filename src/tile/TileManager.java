@@ -102,6 +102,7 @@ public class TileManager implements Drawable {
             row = Toolbox.getRandomNumber(gp.maxWorldRow);
         } while (mapTileNum[col][row] != 0); // Repeat until a ground tile is found
 
+
         // Set the player's position to the found coordinates
         return new int[]{col, row};
     }
