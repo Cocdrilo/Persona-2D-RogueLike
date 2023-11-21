@@ -65,7 +65,7 @@ public class TileManager implements Drawable {
 
         setUp(0, "Floor_1", false);
         setUp(1, "WallMid", true);
-        setUp(2, "column", true);
+        setUp(2, "pitchBlack", true);
 
     }
 

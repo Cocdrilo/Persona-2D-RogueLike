@@ -1,6 +1,7 @@
 package main;
 
 import Object.Consumables.OBJ_Potion_Health;
+import Object.Consumables.OBJ_Potion_Mana;
 import Object.Equipables.OBJ_WEAPON_BASH;
 import Object.WorldBuilding.OBJ_Chest;
 import Object.WorldBuilding.OBJ_Door;
@@ -24,29 +25,54 @@ public class AssetSetter {
     }
 
     public void setObject() {
-
-        gp.obj[0] = new OBJ_Door(gp);
-        gp.obj[0].WorldX = gp.tileSize * 5;
-        gp.obj[0].WorldY = gp.tileSize * 5;
-
-        gp.obj[1] = new OBJ_Stairs(gp);
-        gp.obj[1].WorldX = gp.tileSize * 5;
-        gp.obj[1].WorldY = gp.tileSize * 10;
-
-        gp.obj[2] = new OBJ_Chest(gp);
-        gp.obj[2].WorldX = gp.tileSize * 8;
-        gp.obj[2].WorldY = gp.tileSize * 10;
-
-        gp.obj[3] = new OBJ_WEAPON_BASH(gp);
-        gp.obj[3].WorldX = gp.tileSize * 16;
-        gp.obj[3].WorldY = gp.tileSize * 5;
-
-        gp.obj[4] = new OBJ_Potion_Health(gp);
-        gp.obj[4].WorldX = gp.tileSize * 16;
-        gp.obj[4].WorldY = gp.tileSize * 6;
-
-
+        generateRandomObjects();
     }
+
+    private void generateRandomObjects() {
+        Random random = new Random();
+
+        // Generar cofres
+        int numChests = random.nextInt(3) + 1; // Entre 1 y 3 cofres
+        for (int i = 0; i < numChests; i++) {
+            int chestTileCol = random.nextInt(49);
+            int chestTileRow = random.nextInt(49);
+
+            // Verificar si el tile en la ubicación del cofre tiene índice 0
+            while (gp.tileM.mapTileNum[chestTileCol][chestTileRow] != 0) {
+                chestTileCol = random.nextInt(49);
+                chestTileRow = random.nextInt(49);
+            }
+
+            // Generar un cofre y asignar su posición
+            OBJ_Chest chest = new OBJ_Chest(gp);
+            chest.WorldX = gp.tileSize * chestTileCol;
+            chest.WorldY = gp.tileSize * chestTileRow;
+
+            gp.obj[i] = chest;
+        }
+
+        // Generar pociones
+        for (int i = numChests; i < numChests + 2; i++) {
+            int potionTileCol = random.nextInt(49);
+            int potionTileRow = random.nextInt(49);
+
+            // Verificar si el tile en la ubicación de la poción tiene índice 0
+            while (gp.tileM.mapTileNum[potionTileCol][potionTileRow] != 0) {
+                potionTileCol = random.nextInt(49);
+                potionTileRow = random.nextInt(49);
+            }
+
+            // Generar una poción (puede ser health o mana) y asignar su posición
+            if (random.nextBoolean()) {
+                gp.obj[i] = new OBJ_Potion_Health(gp);
+            } else {
+                gp.obj[i] = new OBJ_Potion_Mana(gp);
+            }
+            gp.obj[i].WorldX = gp.tileSize * potionTileCol;
+            gp.obj[i].WorldY = gp.tileSize * potionTileRow;
+        }
+    }
+
 
     public void setNPC() {
         gp.npc[0] = new NPC(gp);
