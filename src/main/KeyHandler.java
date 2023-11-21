@@ -784,7 +784,9 @@ public class KeyHandler implements KeyListener {
                         gp.party.removeMonsterFromParty(gp.party.partyMembers.get(i));
                     }
                 }
+
                 gp.setUpGame();
+
             } else if (gp.ui.subState == 3 && gp.ui.commandNum3 == 1) {//NO
                 gp.ui.subState = 0;
                 gp.ui.commandNum3 = 4;

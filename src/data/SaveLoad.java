@@ -54,6 +54,8 @@ public class SaveLoad {
             DataStorage ds = new DataStorage();
 
             //Player Stats
+            ds.playerX = gp.player.WorldX;
+            ds.playerY = gp.player.WorldY;
             ds.level = gp.player.stats.level;
             ds.exp = gp.player.stats.exp;
             ds.nextLevelExp = gp.player.stats.nextLevelExp;
@@ -70,7 +72,6 @@ public class SaveLoad {
             //Player Inventory
             for (int i = 0; i < gp.player.inventory.size(); i++) {
                 ds.itemNames.add(gp.player.inventory.get(i).name);
-                //ds.itemAmounts.add(gp.player.inventory.get(i).amount);
 
             }
 
@@ -79,6 +80,17 @@ public class SaveLoad {
             ds.currentArmorSlot = gp.player.getArmorSlot();
 
             //Objects on Map
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] != null) {
+                    ds.mapObjectNames[i] = gp.obj[i].name;
+                    ds.mapObjectWorldX[i] = gp.obj[i].WorldX;
+                    ds.mapObjectWorldY[i] = gp.obj[i].WorldY;
+                    //System.out.println("Saved: " + gp.obj[i].name + "," + gp.obj[i].WorldX + "," + gp.obj[i].WorldY);
+                }
+                else {
+
+                }
+            }
 
 
             //Write in the file
@@ -99,6 +111,8 @@ public class SaveLoad {
             DataStorage ds = (DataStorage) ois.readObject();
 
             //Player Stats
+            gp.player.WorldX = ds.playerX;
+            gp.player.WorldY = ds.playerY;
             gp.player.stats.level = ds.level;
             gp.player.stats.exp = ds.exp;
             gp.player.stats.nextLevelExp = ds.nextLevelExp;
@@ -122,6 +136,14 @@ public class SaveLoad {
             gp.player.stats.armor = (OBJ_Armor) gp.player.inventory.get(ds.currentArmorSlot);
             gp.player.getDefense();
             gp.player.getPlayerImage();
+
+            //Objects on map
+            for (int i = 0; i < gp.obj.length/2; i++) {
+                    gp.obj[i].name = ds.mapObjectNames[i];
+                    gp.obj[i].WorldX = ds.mapObjectWorldX[i];
+                    gp.obj[i].WorldY = ds.mapObjectWorldY[i];
+                    //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
+            }
 
 
         } catch (Exception e) {

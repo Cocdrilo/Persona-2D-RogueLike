@@ -1,6 +1,7 @@
 package data;
 
 
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 public class DataStorage implements Serializable {
 
     //PLAYER STATS
+    int playerX;
+    int playerY;
     int level;
     int exp;
     int nextLevelExp;
@@ -25,15 +28,13 @@ public class DataStorage implements Serializable {
 
     //Player inventory
     ArrayList<String> itemNames = new ArrayList<>();
-    ArrayList<Integer> itemAmounts = new ArrayList<>();
     int currentWeaponSlot;
     int currentArmorSlot;
 
     //Objects on map
-    String[][] mapObjectNames;
-    int[][] mapObjectWorldX;
-    int[][] mapObjectWorldY;
-    String[][] mapObjectLootNames;
-    boolean[][] mapObjectOpened;
+    String[] mapObjectNames = new String[10];
+    int[] mapObjectWorldX = new int[10];
+    int[] mapObjectWorldY = new int[10];
+    BufferedImage[] mapObjectImages = new BufferedImage[10];
 
 }

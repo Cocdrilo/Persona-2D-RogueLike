@@ -278,7 +278,7 @@ public class Entity {
         setAction();
         checkCollisiOn();
 
-        //COLISON = FALSO ->PUEDE MOVER
+        //COLISION = FALSO ->PUEDE MOVER
         if (!collisionOn) {
 
             switch (direction) {
