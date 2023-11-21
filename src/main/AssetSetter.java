@@ -49,10 +49,27 @@ public class AssetSetter {
     }
 
     public void setNPC() {
-
         gp.npc[0] = new NPC(gp);
-        gp.npc[0].WorldX = gp.tileSize * 4;
-        gp.npc[0].WorldY = gp.tileSize * 4;
+
+        // Obtener la posición aleatoria cercana al jugador
+        int[] playerPosition = gp.tileM.setPlayerRandomPosition();
+        int playerCol = playerPosition[0];
+        int playerRow = playerPosition[1];
+
+        // Definir un rango de distancia en el que aparecerá el NPC respecto al jugador
+        int distanceRange = 5;
+
+        // Generar posiciones aleatorias dentro del rango especificado
+        int npcTileCol;
+        int npcTileRow;
+        do {
+            npcTileCol = Toolbox.getRandomNumberInRange(playerCol - distanceRange, playerCol + distanceRange, gp.maxWorldCol);
+            npcTileRow = Toolbox.getRandomNumberInRange(playerRow - distanceRange, playerRow + distanceRange, gp.maxWorldRow);
+        } while (gp.tileM.mapTileNum[npcTileCol][npcTileRow] != 0); // Asegurarse de que esté en un suelo
+
+        // Establecer la posición del NPC en las coordenadas encontradas
+        gp.npc[0].WorldX = gp.tileSize * npcTileCol;
+        gp.npc[0].WorldY = gp.tileSize * npcTileRow;
     }
 
     public void setMonsters() {
