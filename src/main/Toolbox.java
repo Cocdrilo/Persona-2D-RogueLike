@@ -8,6 +8,11 @@ import java.awt.image.BufferedImage;
  */
 public class Toolbox {
 
+    public static int getRandomNumber(int maxWorldCol) {
+        //gets a random Numer between 1 and 49
+        return (int) (Math.random() * maxWorldCol-1) + 1;
+    }
+
     /**
      * Scales the given BufferedImage to the specified width and height.
      *

@@ -39,7 +39,7 @@ public class Player extends Entity {
         SolidAreaDefaultY = solidArea.y;
 
         stats = new Entity_stats();
-        String defaultSpells[] = {"Zio", "Agi"};
+        String[] defaultSpells = {"Zio", "Agi"};
 
         setDefaultValues();
         getPlayerImage();
@@ -59,11 +59,13 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        WorldX = 300;
-        WorldY = 250;
         speed = 10;
         direction = "down";
         name = "Raidou";
+
+        setRandomCol();
+        setRandomRow();
+        System.out.println("DEBUG: Player position: " + WorldX + ", " + WorldY);
 
         stats.level = 1;
         stats.maxHp = 190;
@@ -83,6 +85,16 @@ public class Player extends Entity {
         weaknesses = new String[]{};
         nulls = new String[]{};
         repells = new String[]{};
+    }
+
+    public void setRandomCol() {
+        int[] datos = gp.tileM.setPlayerRandomPosition();
+        WorldX = datos[0]*gp.tileSize;
+    }
+
+    public void setRandomRow() {
+        int[] datos = gp.tileM.setPlayerRandomPosition();
+        WorldY = datos[1]*gp.tileSize;
     }
 
     public void setItems() {

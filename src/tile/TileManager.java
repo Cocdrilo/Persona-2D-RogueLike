@@ -20,7 +20,8 @@ public class TileManager implements Drawable {
     GamePanel gp;
     public Tile[] tile;
 
-    public int mapTileNum[][];
+    public int[][] mapTileNum;
+    private int[][] oldmapTileNum;
     public boolean drawPath = true;
     public boolean loadedGame = false;
 
@@ -38,10 +39,11 @@ public class TileManager implements Drawable {
 
         if (loadedGame) {
             // Load existing map
-            LoadMap("/Maps/Map01.txt");
+            mapTileNum = oldmapTileNum;
         } else {
             // Generate a new random dungeon map
             generateRandomDungeon();
+            oldmapTileNum = mapTileNum;
         }
     }
 
@@ -88,6 +90,20 @@ public class TileManager implements Drawable {
             e.printStackTrace();
         }
 
+    }
+
+    public int[] setPlayerRandomPosition() {
+        int col;
+        int row;
+
+        do {
+            // Generate random coordinates within the map boundaries
+            col = Toolbox.getRandomNumber(gp.maxWorldCol);
+            row = Toolbox.getRandomNumber(gp.maxWorldRow);
+        } while (mapTileNum[col][row] != 0); // Repeat until a ground tile is found
+
+        // Set the player's position to the found coordinates
+        return new int[]{col, row};
     }
 
     /**
