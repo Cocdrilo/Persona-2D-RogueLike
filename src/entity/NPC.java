@@ -47,8 +47,8 @@ public class NPC extends Entity {
      */
     public void setDialogue() {
         dialogues[0] = "Greetings Traveler";
-        dialogues[1] = "Testeando al maximo de lo que se puede hijodeputa";
-        dialogues[2] = "En efecto soy godofredo el maximo exponente de \n tu abuela en pedo";
+        dialogues[1] = "Be Carefull With The Shadows";
+        dialogues[2] = "Dont die and make sure  \n you keep alive";
     }
 
     /**

@@ -303,8 +303,6 @@ public class Player extends Entity {
             if (gp.keyH.zPressed) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
-                gp.party.addMonsterToParty("Ice golem");
-                gp.party.printParty();
             }
         }
     }
