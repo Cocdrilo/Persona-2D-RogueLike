@@ -11,14 +11,73 @@ import main.GamePanel;
  * The generated dungeon consists of rooms and corridors connecting them.
  */
 public class RandomDungeonGenerator {
-    int [][] dungeon;
 
-    public RandomDungeonGenerator() {
-        GamePanel gp = new GamePanel(); // Assuming GamePanel has maxWorldRow and maxWorldCol defined
+    //Main de debug para probar como funcionaría
+
+    /*
+
+    public static void main(String[] args) {
+        RandomDungeonGenerator rdg = new RandomDungeonGenerator();
+        rdg.postProcessDungeon();
+        for (int i = 0;i<50;i++){
+            for(int j = 0; j<50;j++){
+                System.out.print(rdg.dungeon[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+     */
+
+    public int [][] dungeon;
+    GamePanel gp;
+
+    public RandomDungeonGenerator(GamePanel gp) {
+        this.gp = gp;
         int numRooms = 10; // Adjust the number of rooms as needed
         this.dungeon = generateDungeon(gp, numRooms);
+        postProcessDungeon();
 
         // Save the dungeon layout to a text file in the /res/Maps/ folder
+    }
+
+    /**
+     * Post-processes the dungeon to remove consecutive walls and replace them with black tiles.
+     */
+    public void postProcessDungeon() {
+        for (int row = 0; row < dungeon.length ; row++) {
+            for (int col = 0; col < dungeon[0].length ; col++) {
+                if (dungeon[row][col] == 1 && !isInnerWall(row, col)) {
+                    dungeon[row][col] = 2; // Cambiar a tile de vacío
+                }
+            }
+        }
+    }
+
+    private boolean isInnerWall(int row, int col) {
+        // Verificar si el muro tiene un suelo a un tile de distancia
+        boolean isTopEdge = row - 1 < 0;
+        boolean isBottomEdge = row + 1 >= dungeon.length;
+        boolean isLeftEdge = col - 1 < 0;
+        boolean isRightEdge = col + 1 >= dungeon[0].length;
+
+        // Comprobaciones válidas dentro de los límites de la matriz
+        if (!isTopEdge && dungeon[row - 1][col] == 0) {
+            return true;
+        }
+        if (!isBottomEdge && dungeon[row + 1][col] == 0) {
+            return true;
+        }
+        if (!isLeftEdge && dungeon[row][col - 1] == 0) {
+            return true;
+        }
+        if (!isRightEdge && dungeon[row][col + 1] == 0) {
+            return true;
+        }
+
+        // Verificar si está en el borde y es una pared interna
+        return (isTopEdge || isBottomEdge) && dungeon[row][col] == 0 ||
+                (isLeftEdge || isRightEdge) && dungeon[row][col] == 0;
     }
 
 

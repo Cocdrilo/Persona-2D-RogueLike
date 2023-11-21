@@ -51,12 +51,11 @@ public class TileManager implements Drawable {
      * Generates a random dungeon map using the RandomDungeonGenerator class.
      */
     private void generateRandomDungeon() {
-        int numRooms = 10; // Adjust the number of rooms as needed
-        int[][] dungeon = RandomDungeonGenerator.generateDungeon(gp, numRooms);
+        RandomDungeonGenerator rdg = new RandomDungeonGenerator(gp);
 
         // Set the generated dungeon as the current map
 
-        mapTileNum = dungeon;
+        mapTileNum = rdg.dungeon;
     }
 
     /**
@@ -67,6 +66,7 @@ public class TileManager implements Drawable {
         setUp(0, "Floor_1", false);
         setUp(1, "WallMid", true);
         setUp(2, "column", true);
+
     }
 
     /**
