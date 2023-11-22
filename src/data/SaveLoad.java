@@ -136,12 +136,14 @@ public class SaveLoad {
             gp.player.getPlayerImage();
 
             //Objects on map
-            for (int i = 0; i < gp.obj.length/2; i++) {
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] != null) {
                     gp.obj[i].name = ds.mapObjectNames[i];
                     gp.obj[i].WorldX = ds.mapObjectWorldX[i];
                     gp.obj[i].WorldY = ds.mapObjectWorldY[i];
                     gp.obj[i].isVisible = ds.mapObjectVisibility[i];
                     //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
+                }
             }
 
 
