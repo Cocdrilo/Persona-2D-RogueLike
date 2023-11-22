@@ -47,6 +47,7 @@ public class Entity {
     public Entity_stats stats;
     public String description = "";
     public boolean isPickupeable = false;
+    public boolean isVisible = true;
 
     //Maps de Resistencias y Debilidades.
     public String resistances[];
@@ -454,9 +455,14 @@ public class Entity {
      */
     public void draw(Graphics2D g2) {
 
+        if (!isVisible) {
+            return;
+        }
+
         BufferedImage image = null;
         int ScreenX = WorldX - gp.player.WorldX + gp.player.screenX;
         int ScreenY = WorldY - gp.player.WorldY + gp.player.screenY;
+
 
         if (WorldX + gp.tileSize > gp.player.WorldX - gp.player.screenX && WorldX - gp.tileSize < gp.player.WorldX + gp.player.screenX && WorldY + gp.tileSize > gp.player.WorldY - gp.player.screenY && WorldY - gp.tileSize < gp.player.WorldY + gp.player.screenX) {
 

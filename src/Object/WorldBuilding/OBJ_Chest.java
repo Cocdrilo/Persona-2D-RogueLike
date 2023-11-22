@@ -25,5 +25,6 @@ public class OBJ_Chest extends Entity {
         walkDown1 = setUp("/Objects/Cofre");
         isPickupeable = true;
 
+
     }
 }

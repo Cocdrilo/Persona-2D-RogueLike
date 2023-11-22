@@ -85,10 +85,8 @@ public class SaveLoad {
                     ds.mapObjectNames[i] = gp.obj[i].name;
                     ds.mapObjectWorldX[i] = gp.obj[i].WorldX;
                     ds.mapObjectWorldY[i] = gp.obj[i].WorldY;
+                    ds.mapObjectVisibility[i] = gp.obj[i].isVisible;
                     //System.out.println("Saved: " + gp.obj[i].name + "," + gp.obj[i].WorldX + "," + gp.obj[i].WorldY);
-                }
-                else {
-
                 }
             }
 
@@ -142,6 +140,7 @@ public class SaveLoad {
                     gp.obj[i].name = ds.mapObjectNames[i];
                     gp.obj[i].WorldX = ds.mapObjectWorldX[i];
                     gp.obj[i].WorldY = ds.mapObjectWorldY[i];
+                    gp.obj[i].isVisible = ds.mapObjectVisibility[i];
                     //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
             }
 

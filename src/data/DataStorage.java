@@ -35,6 +35,6 @@ public class DataStorage implements Serializable {
     String[] mapObjectNames = new String[10];
     int[] mapObjectWorldX = new int[10];
     int[] mapObjectWorldY = new int[10];
-    BufferedImage[] mapObjectImages = new BufferedImage[10];
+    boolean[] mapObjectVisibility = new boolean[10];
 
 }
