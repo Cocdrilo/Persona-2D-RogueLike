@@ -9,8 +9,6 @@ import main.GamePanel;
  */
 public class OBJ_Chest extends Entity {
 
-    GamePanel gp;
-
     /**
      * Creates a chest object with specific attributes.
      *
@@ -24,7 +22,14 @@ public class OBJ_Chest extends Entity {
         collision = true;
         walkDown1 = setUp("/Objects/Cofre");
         isPickupeable = true;
+        
+    }
 
-
+    public void use(){
+        int goldInChest = (int) (Math.random() * 100);
+        gp.playerSe(4);
+        gp.gameState = gp.dialogueState;
+        gp.ui.currentDialogue = "Chest Opened with this gold : " + goldInChest ;
+        gp.party.Leader.addMoney(goldInChest);
     }
 }
