@@ -5,6 +5,7 @@ import Object.Consumables.*;
 import Object.WorldBuilding.*;
 import entity.Entity;
 import main.GamePanel;
+import monster.shadowStandar;
 
 
 import java.io.*;
@@ -54,6 +55,8 @@ public class SaveLoad {
             DataStorage ds = new DataStorage();
 
             //Player Stats
+            ds.playerX = gp.player.WorldX;
+            ds.playerY = gp.player.WorldY;
             ds.level = gp.player.stats.level;
             ds.exp = gp.player.stats.exp;
             ds.nextLevelExp = gp.player.stats.nextLevelExp;
@@ -70,7 +73,6 @@ public class SaveLoad {
             //Player Inventory
             for (int i = 0; i < gp.player.inventory.size(); i++) {
                 ds.itemNames.add(gp.player.inventory.get(i).name);
-                //ds.itemAmounts.add(gp.player.inventory.get(i).amount);
 
             }
 
@@ -79,13 +81,40 @@ public class SaveLoad {
             ds.currentArmorSlot = gp.player.getArmorSlot();
 
             //Objects on Map
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] != null) {
+                    ds.mapObjectNames[i] = gp.obj[i].name;
+                    ds.mapObjectWorldX[i] = gp.obj[i].WorldX;
+                    ds.mapObjectWorldY[i] = gp.obj[i].WorldY;
+                    ds.mapObjectVisibility[i] = gp.obj[i].isVisible;
+                    //System.out.println("Saved: " + gp.obj[i].name + "," + gp.obj[i].WorldX + "," + gp.obj[i].WorldY);
+                }
+            }
 
+            //Party
+            for(int i = 0;i<gp.party.partyMembers.size();i++){
+                ds.monsterName[i] = gp.party.partyMembers.get(i).name;
+                ds.monsterLevel[i] = gp.party.partyMembers.get(i).stats.level;
+                ds.monsterEXP[i] = gp.party.partyMembers.get(i).stats.exp;
+                ds.monsterNextLevelEXP[i] = gp.party.partyMembers.get(i).stats.nextLevelExp;
+                ds.monsterMaxLife[i] = gp.party.partyMembers.get(i).stats.maxHp;
+                ds.monsterLife[i] = gp.party.partyMembers.get(i).stats.hp;
+                ds.monsterMana[i] = gp.party.partyMembers.get(i).stats.mp;
+                ds.monsterMaxMana[i] = gp.party.partyMembers.get(i).stats.maxMp;
+                ds.monsterStrength[i] = gp.party.partyMembers.get(i).stats.str;
+                ds.monsterMagic[i] = gp.party.partyMembers.get(i).stats.mag;
+                ds.monsterAgility[i] = gp.party.partyMembers.get(i).stats.agi;
+                ds.monsterVitality[i] = gp.party.partyMembers.get(i).stats.vit;
+                ds.membersInParty++;
+            }
+            System.out.println("Members in party: " + ds.membersInParty);
 
             //Write in the file
             oos.writeObject(ds);
 
         } catch (Exception e) {
             System.out.println("Save Exception!");
+            e.printStackTrace(System.out);
         }
 
     }
@@ -99,6 +128,8 @@ public class SaveLoad {
             DataStorage ds = (DataStorage) ois.readObject();
 
             //Player Stats
+            gp.player.WorldX = ds.playerX;
+            gp.player.WorldY = ds.playerY;
             gp.player.stats.level = ds.level;
             gp.player.stats.exp = ds.exp;
             gp.player.stats.nextLevelExp = ds.nextLevelExp;
@@ -123,9 +154,33 @@ public class SaveLoad {
             gp.player.getDefense();
             gp.player.getPlayerImage();
 
+            //Objects on map
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] != null) {
+                    gp.obj[i].name = ds.mapObjectNames[i];
+                    gp.obj[i].WorldX = ds.mapObjectWorldX[i];
+                    gp.obj[i].WorldY = ds.mapObjectWorldY[i];
+                    gp.obj[i].isVisible = ds.mapObjectVisibility[i];
+                    //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
+                }
+            }
+            //partyLoad
+
+            System.out.println("Members in party: " + ds.membersInParty);
+            gp.party.partyMembers.clear();
+            for(int i = 0;i<ds.membersInParty;i++){
+                gp.party.addMonsterToParty(ds.monsterName[i]);
+                gp.party.partyMembers.get(i).swapStats(ds.monsterLevel[i],ds.monsterEXP[i],ds.monsterNextLevelEXP[i],ds.monsterLife[i],ds.monsterMaxLife[i],ds.monsterMana[i],ds.monsterMaxMana[i],ds.monsterStrength[i],ds.monsterAgility[i],ds.monsterMagic[i],ds.monsterVitality[i]);
+
+            }
+
+            ds.membersInParty = 0;
+
+
 
         } catch (Exception e) {
             System.out.println("Load Exception!");
+            e.printStackTrace(System.out);
         }
     }
 }
