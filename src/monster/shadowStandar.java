@@ -49,6 +49,21 @@ public class shadowStandar extends Entity {
         getImage();
     }
 
+    public void swapStats(int level,int experience,int nextLevelExperience,int hp,int maxHp,int mp,int maxMp,int str,int agi,int mag,int vit){
+        this.stats.hp = hp;
+        this.stats.maxHp = maxHp;
+        this.stats.exp = experience;
+        this.stats.nextLevelExp = nextLevelExperience;
+        this.stats.mp = mp;
+        this.stats.maxMp = maxMp;
+        this.stats.str = str;
+        this.stats.agi = agi;
+        this.stats.mag = mag;
+        this.stats.vit = vit;
+        this.stats.level = level;
+    }
+
+
     /**
      * Gets the type of attack used by the monster.
      *
