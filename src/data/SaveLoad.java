@@ -5,6 +5,7 @@ import Object.Consumables.*;
 import Object.WorldBuilding.*;
 import entity.Entity;
 import main.GamePanel;
+import monster.shadowStandar;
 
 
 import java.io.*;
@@ -90,6 +91,13 @@ public class SaveLoad {
                 }
             }
 
+            //Party
+            for (int i = 0; i < gp.party.partyMembers.size(); i++) {
+                ds.party.set(i,gp.party.partyMembers.get(i));
+            }
+
+            System.out.println("Nº de huecos: "+ds.party.size());
+            System.out.println("Nº de compañeros: "+gp.party.partyMembers.size());
 
             //Write in the file
             oos.writeObject(ds);
@@ -144,6 +152,11 @@ public class SaveLoad {
                     gp.obj[i].isVisible = ds.mapObjectVisibility[i];
                     //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
                 }
+            }
+
+            //Party
+            for (int i = 0; i < gp.party.partyMembers.size()+1; i++) {
+                gp.party.partyMembers.set(i, (shadowStandar) ds.party.get(i));
             }
 
 

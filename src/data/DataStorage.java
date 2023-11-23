@@ -1,6 +1,8 @@
 package data;
 
 
+import entity.Entity;
+
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,5 +38,8 @@ public class DataStorage implements Serializable {
     int[] mapObjectWorldX = new int[10];
     int[] mapObjectWorldY = new int[10];
     boolean[] mapObjectVisibility = new boolean[10];
+
+    //Party
+    public ArrayList<Entity> party = new ArrayList<Entity>();
 
 }
