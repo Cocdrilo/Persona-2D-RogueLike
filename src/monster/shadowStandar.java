@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Represents a standard shadow monster in the game.
  */
-public class shadowStandar extends Entity {
+public class shadowStandar extends Entity{
 
     public BufferedImage walkDown3, walkDown4, walkUp3, walkUp4, walkLeft3, walkLeft4, walkRight3, walkRight4;
 
@@ -48,6 +48,20 @@ public class shadowStandar extends Entity {
         speed = 1;
         getImage();
     }
+    public void swapStats(int level,int experience,int nextLevelExperience,int hp,int maxHp,int mp,int maxMp,int str,int agi,int mag,int vit){
+        this.stats.hp = hp;
+        this.stats.maxHp = maxHp;
+        this.stats.exp = experience;
+        this.stats.nextLevelExp = nextLevelExperience;
+        this.stats.mp = mp;
+        this.stats.maxMp = maxMp;
+        this.stats.str = str;
+        this.stats.agi = agi;
+        this.stats.mag = mag;
+        this.stats.vit = vit;
+        this.stats.level = level;
+    }
+
 
     /**
      * Gets the type of attack used by the monster.

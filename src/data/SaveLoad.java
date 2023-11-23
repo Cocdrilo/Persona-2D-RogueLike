@@ -92,18 +92,29 @@ public class SaveLoad {
             }
 
             //Party
-            for (int i = 0; i < gp.party.partyMembers.size(); i++) {
-                ds.party.set(i,gp.party.partyMembers.get(i));
+            for(int i = 0;i<gp.party.partyMembers.size();i++){
+                ds.monsterName[i] = gp.party.partyMembers.get(i).name;
+                ds.monsterLevel[i] = gp.party.partyMembers.get(i).stats.level;
+                ds.monsterEXP[i] = gp.party.partyMembers.get(i).stats.exp;
+                ds.monsterNextLevelEXP[i] = gp.party.partyMembers.get(i).stats.nextLevelExp;
+                ds.monsterMaxLife[i] = gp.party.partyMembers.get(i).stats.maxHp;
+                ds.monsterLife[i] = gp.party.partyMembers.get(i).stats.hp;
+                ds.monsterMana[i] = gp.party.partyMembers.get(i).stats.mp;
+                ds.monsterMaxMana[i] = gp.party.partyMembers.get(i).stats.maxMp;
+                ds.monsterStrength[i] = gp.party.partyMembers.get(i).stats.str;
+                ds.monsterMagic[i] = gp.party.partyMembers.get(i).stats.mag;
+                ds.monsterAgility[i] = gp.party.partyMembers.get(i).stats.agi;
+                ds.monsterVitality[i] = gp.party.partyMembers.get(i).stats.vit;
+                ds.membersInParty++;
             }
-
-            System.out.println("Nº de huecos: "+ds.party.size());
-            System.out.println("Nº de compañeros: "+gp.party.partyMembers.size());
+            System.out.println("Members in party: " + ds.membersInParty);
 
             //Write in the file
             oos.writeObject(ds);
 
         } catch (Exception e) {
             System.out.println("Save Exception!");
+            e.printStackTrace(System.out);
         }
 
     }
@@ -153,15 +164,23 @@ public class SaveLoad {
                     //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
                 }
             }
+            //partyLoad
 
-            //Party
-            for (int i = 0; i < gp.party.partyMembers.size()+1; i++) {
-                gp.party.partyMembers.set(i, (shadowStandar) ds.party.get(i));
+            System.out.println("Members in party: " + ds.membersInParty);
+            gp.party.partyMembers.clear();
+            for(int i = 0;i<ds.membersInParty;i++){
+                gp.party.addMonsterToParty(ds.monsterName[i]);
+                gp.party.partyMembers.get(i).swapStats(ds.monsterLevel[i],ds.monsterEXP[i],ds.monsterNextLevelEXP[i],ds.monsterLife[i],ds.monsterMaxLife[i],ds.monsterMana[i],ds.monsterMaxMana[i],ds.monsterStrength[i],ds.monsterAgility[i],ds.monsterMagic[i],ds.monsterVitality[i]);
+
             }
+
+            ds.membersInParty = 0;
+
 
 
         } catch (Exception e) {
             System.out.println("Load Exception!");
+            e.printStackTrace(System.out);
         }
     }
 }
