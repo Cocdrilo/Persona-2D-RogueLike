@@ -39,7 +39,7 @@ public class Player extends Entity {
         SolidAreaDefaultY = solidArea.y;
 
         stats = new Entity_stats();
-        String[] defaultSpells = {"Zio", "Agi"};
+        String[] defaultSpells = {"Zio", "Agi","Fatal End"};
 
         setDefaultValues();
         getPlayerImage();

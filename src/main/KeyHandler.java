@@ -204,7 +204,14 @@ public class KeyHandler implements KeyListener {
             // Verificar si estamos dentro del submenu de magia antes de activar el hechizo
             if (code == KeyEvent.VK_Z) {
                 // Aquí activa el hechizo seleccionado (sin pasar una variable)
-                gp.battleSystem.useMagic(attacker, gp.battleSystem.monster, attacker.spells.get(gp.ui.commandNum2));
+
+                if (attacker instanceof Player playerAttacker) {
+                    // Realiza un casting a Player
+                    gp.battleSystem.useMagic(gp.battleSystem.party.Leader, gp.battleSystem.monster, playerAttacker.spells.get(gp.ui.commandNum2));
+                } else if (attacker instanceof shadowStandar monsterAttacker) {
+                    // Realiza un casting a shadowStandar
+                    gp.battleSystem.useMagic(monsterAttacker, gp.battleSystem.monster, monsterAttacker.spells.get(gp.ui.commandNum2));
+                }
             }
 
             if (code == KeyEvent.VK_ESCAPE) {

@@ -166,9 +166,16 @@ public abstract class Entity implements Drawable{
     public String[] printSpells() {
         String[] spellNames = new String[this.spells.size()];
         for (int spells = 0; spells < this.spells.size(); spells++) {
-            spellNames[spells] = this.spells.get(spells).name + "  " + (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
+            spellNames[spells] = this.spells.get(spells).name + "  " + (this.spells.get(spells).mpCost == 0 ? "hp: " + this.spells.get(spells).hpCost+"%" : "mp: " + this.spells.get(spells).mpCost);
         }
         return spellNames;
+    }
+    public String[] getCosts(){
+        String[] spellCosts = new String[this.spells.size()];
+        for (int spells = 0; spells < this.spells.size(); spells++) {
+            spellCosts[spells] = (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
+        }
+        return spellCosts;
     }
 
     public void removeSpell(superMagic spell) {
@@ -284,7 +291,7 @@ public abstract class Entity implements Drawable{
                 }
             }
             else{
-                System.out.println("No se que hacer");
+                //System.out.println("No se que hacer");
             }
         }
 

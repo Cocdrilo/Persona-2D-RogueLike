@@ -551,7 +551,7 @@ public class UI implements Drawable {
         drawSubWindow(x, y, width, height);
 
         g2.setColor(Color.WHITE);
-        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.setFont(g2.getFont().deriveFont(18F));
 
         String[] entitySpellNames = BattleState.partyMembers.get(BattleState.currentPartyMemberIndex).printSpells();
 
@@ -649,10 +649,10 @@ public class UI implements Drawable {
 
         drawPlayer(x, y, selectedIndex);
 
-        int maxHealth2 = gp.player.stats.maxHp;
-        int currentHealth2 = gp.player.stats.hp;
-        int maxMana = gp.player.stats.maxMp;
-        int currentMana = gp.player.stats.mp;
+        int maxHealth2 = gp.battleSystem.party.Leader.stats.maxHp;
+        int currentHealth2 = gp.battleSystem.party.Leader.stats.hp;
+        int maxMana = gp.battleSystem.party.Leader.stats.maxMp;
+        int currentMana = gp.battleSystem.party.Leader.stats.mp;
 
         String playerHealthText = currentHealth2 + "/" + maxHealth2;
         String playerManaText = currentMana + "/" + maxMana;
@@ -1012,9 +1012,9 @@ public class UI implements Drawable {
     }
 
     public void drawCombatMessage() {
-        int messageX = gp.screenWidth-gp.tileSize*8;
+        int messageX = (int) (gp.screenWidth-gp.tileSize*6.5);    //gp.tileSize;
         int messageY = gp.tileSize * 4;
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 18F));
 
         for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
 

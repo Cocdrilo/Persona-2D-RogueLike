@@ -119,7 +119,7 @@ public class BattleSystem {
             weaponDmgType = ((shadowStandar) attacker).getAttackType();
         }
 
-        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
+        System.out.println(attacker.name + " has attacked " + target + " with " + weaponDmgType);
 
         playerIsAttacking = true;
 
@@ -151,7 +151,7 @@ public class BattleSystem {
             weaponDmgType = ((shadowStandar) attacker).getAttackType();
         }
 
-        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
+        System.out.println(attacker.name + " has attacked " + target + " with " + weaponDmgType);
 
         monsterIsAttacking = true;
 
@@ -301,23 +301,48 @@ public class BattleSystem {
      * @param selectedSpell The magic spell used for the attack.
      */
     public void useMagic(Entity attacker, Entity target, superMagic selectedSpell) {
-        if (attacker.stats.mp < selectedSpell.mpCost) {
-            System.out.println("Not enough MP to cast " + selectedSpell.name);
-            return;
+        if(selectedSpell.mpCost > 0){
+            if (attacker.stats.mp < selectedSpell.mpCost) {
+                System.out.println("Not enough MP to cast " + selectedSpell.name);
+                return;
+            }
+
+            int damage = calculateMagicDamage(attacker, target, selectedSpell);
+            playerMagic = true;
+
+            handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
+
+            if (pressTurn <= 0 || target.stats.hp <= 0) {
+                nextTurn();
+            }
+            // Cambiar al siguiente miembro del partido
+            currentPartyMemberIndex++;
+            if (currentPartyMemberIndex >= partyMembers.size()) {
+                currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
+            }
+        }
+        else if(selectedSpell.hpCost>0){
+            if (attacker.stats.hp < attacker.stats.maxHp % selectedSpell.hpCost) {
+                System.out.println("Not enough HP to cast " + selectedSpell.name);
+                return;
+            }
+
+            boolean phys = true;
+            int damage = calculateMagicDamage(attacker, target, selectedSpell,phys);
+            playerMagic = true;
+
+            handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
+
+            if (pressTurn <= 0 || target.stats.hp <= 0) {
+                nextTurn();
+            }
+            // Cambiar al siguiente miembro del partido
+            currentPartyMemberIndex++;
+            if (currentPartyMemberIndex >= partyMembers.size()) {
+                currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
+            }
         }
 
-        int damage = calculateMagicDamage(attacker, target, selectedSpell);
-        playerMagic = true;
-
-        handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
-        if (pressTurn <= 0 || target.stats.hp <= 0) {
-            nextTurn();
-        }
-        // Cambiar al siguiente miembro del partido
-        currentPartyMemberIndex++;
-        if (currentPartyMemberIndex >= partyMembers.size()) {
-            currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
-        }
     }
 
     /**
@@ -350,8 +375,24 @@ public class BattleSystem {
 
         if (attacker instanceof Player playerAttacker) {
             damage = playerAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, playerAttacker.stats.mag);
+            playerAttacker.stats.mp -= selectedSpell.mpCost;
         } else if (attacker instanceof shadowStandar monsterAttacker) {
             damage = monsterAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, monsterAttacker.stats.mag);
+            monsterAttacker.stats.mp -= selectedSpell.mpCost;
+        }
+
+        return damage;
+    }
+
+    private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell,boolean isphys) {
+        int damage = 0;
+
+        if (attacker instanceof Player playerAttacker) {
+            damage = playerAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, playerAttacker.stats.str);
+            playerAttacker.stats.hp -= playerAttacker.stats.maxHp % selectedSpell.hpCost;
+        } else if (attacker instanceof shadowStandar monsterAttacker) {
+            damage = monsterAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, monsterAttacker.stats.str);
+            monsterAttacker.stats.hp -= monsterAttacker.stats.maxHp % selectedSpell.hpCost;
         }
 
         return damage;
