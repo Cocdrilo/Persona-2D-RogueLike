@@ -31,14 +31,14 @@ public class NPC extends Entity {
      * Loads NPC images for different directions.
      */
     public void getImage() {
-        walkDown1 = setUp("/NPC/oldman_down_1");
-        walkDown2 = setUp("/NPC/oldman_down_2");
-        walkLeft1 = setUp("/NPC/oldman_left_1");
-        walkLeft2 = setUp("/NPC/oldman_left_2");
-        walkRight1 = setUp("/NPC/oldman_right_1");
-        walkRight2 = setUp("/NPC/oldman_right_2");
-        walkUp1 = setUp("/NPC/oldman_up_1");
-        walkUp2 = setUp("/NPC/oldman_up_2");
+        walkDown1 = setUp("/NPC/oldman_down_1",gp.tileSize,gp.tileSize);
+        walkDown2 = setUp("/NPC/oldman_down_2",gp.tileSize,gp.tileSize);
+        walkLeft1 = setUp("/NPC/oldman_left_1" ,gp.tileSize,gp.tileSize);
+        walkLeft2 = setUp("/NPC/oldman_left_2" ,gp.tileSize,gp.tileSize);
+        walkRight1 = setUp("/NPC/oldman_right_1" ,gp.tileSize,gp.tileSize);
+        walkRight2 = setUp("/NPC/oldman_right_2" ,gp.tileSize,gp.tileSize);
+        walkUp1 = setUp("/NPC/oldman_up_1" ,gp.tileSize,gp.tileSize);
+        walkUp2 = setUp("/NPC/oldman_up_2" ,gp.tileSize,gp.tileSize);
 
     }
 

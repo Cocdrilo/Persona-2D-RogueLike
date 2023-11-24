@@ -115,7 +115,7 @@ public class shadowStandar extends Entity {
      * @return The combat image.
      */
     public BufferedImage getCombatImage() {
-        combatImage = setUp(combatImagePath);
+        combatImage = setUp(combatImagePath,gp.tileSize,gp.tileSize);
         return combatImage;
     }
 
@@ -123,24 +123,43 @@ public class shadowStandar extends Entity {
      * Loads images for different walking directions.
      */
     public void getImage() {
-        walkDown1 = setUp("/Monsters/Demon1");
-        walkDown2 = setUp("/Monsters/Demon2");
-        walkDown3 = setUp("/Monsters/Demon3");
-        walkDown4 = setUp("/Monsters/Demon4");
-        walkLeft1 = setUp("/Monsters/Demon1");
-        walkLeft2 = setUp("/Monsters/Demon2");
-        walkLeft3 = setUp("/Monsters/Demon3");
-        walkLeft4 = setUp("/Monsters/Demon4");
-        walkRight1 = setUp("/Monsters/Demon1");
-        walkRight2 = setUp("/Monsters/Demon2");
-        walkRight3 = setUp("/Monsters/Demon3");
-        walkRight4 = setUp("/Monsters/Demon4");
-        walkUp1 = setUp("/Monsters/Demon1");
-        walkUp2 = setUp("/Monsters/Demon2");
-        walkUp3 = setUp("/Monsters/Demon3");
-        walkUp4 = setUp("/Monsters/Demon4");
+        walkDown1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
+        walkDown2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
+        walkDown3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
+        walkDown4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
+        walkLeft1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
+        walkLeft2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
+        walkLeft3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
+        walkLeft4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
+        walkRight1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
+        walkRight2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
+        walkRight3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
+        walkRight4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
+        walkUp1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
+        walkUp2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
+        walkUp3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
+        walkUp4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
+    }
 
+    public void swaptoBossImage(){
+        int i = 5;
 
+        walkDown1 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
+        walkDown2 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
+        walkDown3 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
+        walkDown4 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
+        walkLeft1 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
+        walkLeft2 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
+        walkLeft3 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
+        walkLeft4 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
+        walkRight1 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
+        walkRight2 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
+        walkRight3 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
+        walkRight4 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
+        walkUp1 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
+        walkUp2 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
+        walkUp3 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
+        walkUp4 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
     }
 
     /**

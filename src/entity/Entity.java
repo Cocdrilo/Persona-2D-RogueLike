@@ -299,18 +299,19 @@ public abstract class Entity implements Drawable{
 
     }
 
-    public BufferedImage setUp(String ImagePath) {
+    public BufferedImage setUp(String ImagePath,int width, int height) {
         Toolbox tbox = new Toolbox();
         BufferedImage scaledImage = null;
 
         try {
             scaledImage = ImageIO.read(getClass().getResourceAsStream(ImagePath + ".png"));
-            scaledImage = tbox.scaleImage(scaledImage, gp.tileSize, gp.tileSize);
+            scaledImage = tbox.scaleImage(scaledImage, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return scaledImage;
     }
+
 
     public void speak() {
         gp.ui.currentName = name;

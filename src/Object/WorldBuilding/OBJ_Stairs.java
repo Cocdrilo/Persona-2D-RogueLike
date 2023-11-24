@@ -23,7 +23,7 @@ public class OBJ_Stairs extends Entity {
         super(gp);
 
         name = "stairs";
-        walkDown1 = setUp("/Objects/Stairs");
+        walkDown1 = setUp("/Objects/Stairs",gp.tileSize,gp.tileSize);
         collision = false;
     }
 }

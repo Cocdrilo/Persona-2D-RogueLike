@@ -116,15 +116,8 @@ public class RandomDungeonGenerator {
                 bossRoomX = 1;
                 yield 1;
             }
-            case 1 -> { // Top-right corner
-                bossRoomX = gp.maxWorldCol - bossRoomSize - 1;
-                yield 1;
-            }
-            case 2 -> { // Bottom-left corner
-                bossRoomX = 1;
-                yield gp.maxWorldRow - bossRoomSize - 1;
-            }
-            case 3 -> { // Bottom-right corner
+
+            case 2 -> { // Bottom-right corner
                 bossRoomX = gp.maxWorldCol - bossRoomSize - 1;
                 yield gp.maxWorldRow - bossRoomSize - 1;
             }
@@ -135,13 +128,14 @@ public class RandomDungeonGenerator {
             }
         };
 
-        specialRoomX = bossRoomX;
-        specialRoomY = bossRoomY;
+        // Calcular el centro de la sala especial
+        specialRoomX = bossRoomX + bossRoomSize / 2;
+        specialRoomY = bossRoomY + bossRoomSize / 2;
 
         for (int y = bossRoomY; y < bossRoomY + bossRoomSize; y++) {
             for (int x = bossRoomX; x < bossRoomX + bossRoomSize; x++) {
                 world[y][x] = 0; // Boss room floor is represented by '0'
-                rooms.add(new Room(bossRoomX, bossRoomY, bossRoomSize, bossRoomSize,true));
+                rooms.add(new Room(specialRoomX - bossRoomSize / 2, specialRoomY - bossRoomSize / 2, bossRoomSize, bossRoomSize, true));
                 System.out.println("Boss room set at: " + bossRoomX + " " + bossRoomY);
             }
         }

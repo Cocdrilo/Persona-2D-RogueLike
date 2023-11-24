@@ -21,7 +21,7 @@ public class OBJ_WEAPON_Slash extends OBJ_Weapon {
         atk = 42;
         hit = 97;
         price = 100;
-        walkDown1 = setUp("/Objects/weapon_duel_sword");
+        walkDown1 = setUp("/Objects/weapon_duel_sword",gp.tileSize,gp.tileSize);
         setUpDescription();
     }
 }

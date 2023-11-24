@@ -62,8 +62,8 @@ public class TileManager implements Drawable {
     }
 
     public void setSpecialRoom(int x, int y){
-        specialRoomX = x ;
-        specialRoomY = y ;
+        specialRoomX = x -2;
+        specialRoomY = y -2;
         System.out.println("Special room set at: " + specialRoomX + " " + specialRoomY);
     }
 

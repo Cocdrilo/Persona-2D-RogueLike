@@ -22,7 +22,7 @@ public class OBJ_Potion_Mana extends Entity {
         collision = true;
         isPickupeable = true;
         type = 5;
-        walkDown1 = setUp("/Objects/manaPotion");
+        walkDown1 = setUp("/Objects/manaPotion",gp.tileSize,gp.tileSize);
         description = "Mana Potion heals +10 mp";
     }
 

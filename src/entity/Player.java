@@ -219,18 +219,18 @@ public class Player extends Entity {
     public void subtractMoney(int money){ stats.money -= money;}
 
     public void getPlayerImage() {
-        standFront = setUp("/player/RaidouFront");
-        standLeft = setUp("/player/RaidouLeft");
-        standRight = setUp("/player/RaidouRight");
-        standBack = setUp("/player/RaidouBack");
-        walkDown1 = setUp("/player/RaidouFrontWalk1");
-        walkDown2 = setUp("/player/RaidouFrontWalk2");
-        walkLeft1 = setUp("/player/RaidouLeftWalk1");
-        walkLeft2 = setUp("/player/RaidouLeftWalk2");
-        walkRight1 = setUp("/player/RaidouRightWalk1");
-        walkRight2 = setUp("/player/RaidouRightWalk2");
-        walkUp1 = setUp("/player/RaidouBackWalk1");
-        walkUp2 = setUp("/player/RaidouBackWalk2");
+        standFront = setUp("/player/RaidouFront",gp.tileSize,gp.tileSize);
+        standLeft = setUp("/player/RaidouLeft" ,gp.tileSize,gp.tileSize);
+        standRight = setUp("/player/RaidouRight" ,gp.tileSize,gp.tileSize);
+        standBack = setUp("/player/RaidouBack" ,gp.tileSize,gp.tileSize);
+        walkDown1 = setUp("/player/RaidouFrontWalk1" ,gp.tileSize,gp.tileSize);
+        walkDown2 = setUp("/player/RaidouFrontWalk2" ,gp.tileSize,gp.tileSize);
+        walkLeft1 = setUp("/player/RaidouLeftWalk1" ,gp.tileSize,gp.tileSize);
+        walkLeft2 = setUp("/player/RaidouLeftWalk2" ,gp.tileSize,gp.tileSize);
+        walkRight1 = setUp("/player/RaidouRightWalk1" ,gp.tileSize,gp.tileSize);
+        walkRight2 = setUp("/player/RaidouRightWalk2" ,gp.tileSize,gp.tileSize);
+        walkUp1 = setUp("/player/RaidouBackWalk1" ,gp.tileSize,gp.tileSize);
+        walkUp2 = setUp("/player/RaidouBackWalk2" ,gp.tileSize,gp.tileSize);
     }
 
     public void update() {

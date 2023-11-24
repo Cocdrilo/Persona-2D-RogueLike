@@ -132,19 +132,17 @@ public class AssetSetter {
         int randomIndex = random.nextInt(availableMonsters.size());
         monsterData randomMonsterData = availableMonsters.get(randomIndex);
 
-        int monsterTileCol = 3;
-        int monsterTileRow = 3;
-
         shadowStandar monster = new shadowStandar(gp, randomMonsterData);
-        monster.WorldX = gp.tileM.specialRoomX * monsterTileCol;
-        monster.WorldY = gp.tileM.specialRoomY * monsterTileRow;
+        monster.WorldX = gp.tileM.specialRoomX*gp.tileSize +2*gp.tileSize;
+        monster.WorldY = gp.tileM.specialRoomY*gp.tileSize +1*gp.tileSize;
         monster.speed = 0;
+        monster.swaptoBossImage();
 
         return monster;
     }
 
     public void setBoss(){
-        ArrayList<monsterData> availableBosses = gp.monsterManager.getMonsters();
+        ArrayList<monsterData> availableBosses = gp.monsterManager.getBosses();
 
         gp.monsters[9] = generateRandomBoss(availableBosses);
         gp.monsters[9].speed = 0;

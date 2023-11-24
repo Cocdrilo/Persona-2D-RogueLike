@@ -23,7 +23,7 @@ public class OBJ_Door extends Entity {
         super(gp);
 
         name = "door";
-        walkDown1 = setUp("/Objects/PuertaCerrada");
+        walkDown1 = setUp("/Objects/PuertaCerrada",gp.tileSize,gp.tileSize);
         collision = true;
     }
 }
