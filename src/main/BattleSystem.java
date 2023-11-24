@@ -542,10 +542,17 @@ public class BattleSystem {
      * The NegotiationSystem is responsible for handling the negotiation.
      */
     public void negotiateMonster() {
-        //Implementar la negociacion con el monstruo
-        negotiationSystem = new NegotiationSystem(this);
-        negotiationSystem.startNegotiation();
-        //gp.gameState = gp.negotiationState;
+        if(monster.boss){
+            System.out.println("You can't negotiate with a boss");
+            gp.ui.addMessage("You can't negotiate with a boss");
+        }
+        else{
+            //Implementar la negociacion con el monstruo
+            negotiationSystem = new NegotiationSystem(this);
+            negotiationSystem.startNegotiation();
+            //gp.gameState = gp.negotiationState;
+        }
+
     }
 
 
