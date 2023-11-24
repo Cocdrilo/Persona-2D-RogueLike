@@ -37,6 +37,7 @@ public class UI implements Drawable {
 
     //ArrayList de text para que sean Scrolling
     ArrayList<String> messageList = new ArrayList<>();
+    ArrayList<String> combatMessageList = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
 
     private Timer timer;
@@ -524,19 +525,6 @@ public class UI implements Drawable {
      *
      */
 
-
-    public void drawEscapeFailed(){
-        g2.setColor(Color.red);
-        g2.setFont(g2.getFont().deriveFont(44F));
-        String text = "Attempt to escape failed";
-        int x = getXforCenterText(text);
-        int y = gp.tileSize * 2;
-
-        g2.drawString(text, x, y);
-
-        timer.restart();
-
-    }
 
     /**
      * Draws the magic menu during combat, displaying available spells for the player.

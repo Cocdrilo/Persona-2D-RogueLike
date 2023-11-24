@@ -33,7 +33,7 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(14, 15, 26, 29);
+        solidArea = new Rectangle(14, 53, 26, 32);
 
         solidAreaDefaultX = solidArea.x;
         SolidAreaDefaultY = solidArea.y;
@@ -219,18 +219,18 @@ public class Player extends Entity {
     public void subtractMoney(int money){ stats.money -= money;}
 
     public void getPlayerImage() {
-        standFront = setUp("/player/RaidouFront",gp.tileSize,gp.tileSize);
-        standLeft = setUp("/player/RaidouLeft" ,gp.tileSize,gp.tileSize);
-        standRight = setUp("/player/RaidouRight" ,gp.tileSize,gp.tileSize);
-        standBack = setUp("/player/RaidouBack" ,gp.tileSize,gp.tileSize);
-        walkDown1 = setUp("/player/RaidouFrontWalk1" ,gp.tileSize,gp.tileSize);
-        walkDown2 = setUp("/player/RaidouFrontWalk2" ,gp.tileSize,gp.tileSize);
-        walkLeft1 = setUp("/player/RaidouLeftWalk1" ,gp.tileSize,gp.tileSize);
-        walkLeft2 = setUp("/player/RaidouLeftWalk2" ,gp.tileSize,gp.tileSize);
-        walkRight1 = setUp("/player/RaidouRightWalk1" ,gp.tileSize,gp.tileSize);
-        walkRight2 = setUp("/player/RaidouRightWalk2" ,gp.tileSize,gp.tileSize);
-        walkUp1 = setUp("/player/RaidouBackWalk1" ,gp.tileSize,gp.tileSize);
-        walkUp2 = setUp("/player/RaidouBackWalk2" ,gp.tileSize,gp.tileSize);
+        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize*1.5),gp.tileSize*2);
+        standLeft = setUp("/player/NuevoPlayer/Left" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        standRight = setUp("/player/NuevoPlayer/Right" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        standBack = setUp("/player/NuevoPlayer/Back" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkDown1 = setUp("/player/NuevoPlayer/Front2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkDown2 = setUp("/player/NuevoPlayer/Front3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkLeft1 = setUp("/player/NuevoPlayer/Left2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkLeft2 = setUp("/player/NuevoPlayer/Left3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkRight1 = setUp("/player/NuevoPlayer/Right2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkRight2 = setUp("/player/NuevoPlayer/Right3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkUp1 = setUp("/player/NuevoPlayer/Back2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkUp2 = setUp("/player/NuevoPlayer/Back3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
     }
 
     public void update() {
