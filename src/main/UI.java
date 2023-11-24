@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 /**
  * This class represents the user interface (UI) for the game.
@@ -37,6 +38,8 @@ public class UI implements Drawable {
     //ArrayList de text para que sean Scrolling
     ArrayList<String> messageList = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
+
+    private Timer timer;
 
     private int selectedIndex = 0;
 
@@ -84,6 +87,9 @@ public class UI implements Drawable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        int duracionTextoEnMilisegundos = 4000; // 4 segundos
+        timer = new Timer(duracionTextoEnMilisegundos, e -> draw(g2));
 
     }
 
@@ -510,6 +516,25 @@ public class UI implements Drawable {
             }
         }
 
+
+    }
+
+    /**
+     * Draws Attempt to escape failed on screen
+     *
+     */
+
+
+    public void drawEscapeFailed(){
+        g2.setColor(Color.red);
+        g2.setFont(g2.getFont().deriveFont(44F));
+        String text = "Attempt to escape failed";
+        int x = getXforCenterText(text);
+        int y = gp.tileSize * 2;
+
+        g2.drawString(text, x, y);
+
+        timer.restart();
 
     }
 
@@ -986,6 +1011,31 @@ public class UI implements Drawable {
         }
     }
 
+    public void drawCombatMessage() {
+        int messageX = gp.screenWidth-gp.tileSize*8;
+        int messageY = gp.tileSize * 4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+
+        for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
+
+            if (messageList.get(messagePosition) != null) {
+                g2.setColor(Color.white);
+                g2.drawString(messageList.get(messagePosition), messageX, messageY);
+
+                //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
+
+                int counter = messageCounter.get(messagePosition) + 1;
+                messageCounter.set(messagePosition, counter);
+                messageY += 50;
+
+                if (messageCounter.get(messagePosition) > 120) {
+                    messageList.remove(messagePosition);
+                    messageCounter.remove(messagePosition);
+                }
+            }
+        }
+    }
+
     /**
      * Draws the level-up screen, allowing the player to allocate stat points after leveling up.
      */
@@ -1094,6 +1144,7 @@ public class UI implements Drawable {
         //Combat State
         if (gp.gameState == gp.combatState || gp.gameState == gp.magicMenuState || gp.gameState == gp.battleItemsState) {
             drawCombatScreen(gp.battleSystem);
+            drawCombatMessage();
             if (gp.battleSystem.playerIsAttacking) {
                 int enemyX = gp.tileSize * 6+30;
                 int enemyY = (int) (gp.tileSize * 2);

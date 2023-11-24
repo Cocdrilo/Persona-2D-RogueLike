@@ -236,12 +236,15 @@ public class BattleSystem {
         if (target.isWeak(selectedSpell.damageType)) {
             damage *= 2;
             pressTurn--;
+            gp.ui.addMessage("Weakpoint Hitted on " + target.name);
         } else if (target.isResistant(selectedSpell.damageType)) {
             damage /= 2;
             pressTurn -= 2;
+            gp.ui.addMessage("Attack resisted by " + target.name);
         } else if (target.isNull(selectedSpell.damageType)) {
             damage = 0;
             pressTurn -= 3;
+            gp.ui.addMessage("Attack nulled by " + target.name);
         } else if (target.isRepelled(selectedSpell.damageType)) {
             handleRepelledDamage(attacker, damage, selectedSpell.damageType);
         } else {
@@ -261,9 +264,12 @@ public class BattleSystem {
     private void handleRepelledDamage(Entity target, int DmgPreModifier, String weaponDmgType) {
         if (target.isWeak(weaponDmgType)) {
             DmgPreModifier *= 2;
+            gp.ui.addMessage("The attack was repelled and dealt " + DmgPreModifier + " damage to " + target.name);
         } else if (target.isResistant(weaponDmgType)) {
             DmgPreModifier /= 2;
+            gp.ui.addMessage("The attack was repelled and dealt " + DmgPreModifier + " damage to " + target.name);
         } else if (target.isNull(weaponDmgType)) {
+            gp.ui.addMessage("The attack was repelled and then nulled");
             DmgPreModifier = 0;
         }
         pressTurn -= 3;
@@ -470,16 +476,24 @@ public class BattleSystem {
      */
     public void fleeFromBattle() {
         //Implementar el escape de la batalla
-        Random random = new Random();
-        int randomNum = random.nextInt(100);
-        if (randomNum < 50) {
-            System.out.println("Player has escaped");
-            gp.Asetter.respawnMonster();
-            gp.gameState = gp.playState;
-        } else {
-            System.out.println("Player has failed to escape");
-            nextTurn();
+        if(!monster.boss){
+            Random random = new Random();
+            int randomNum = random.nextInt(100);
+            if (randomNum < 50) {
+                System.out.println("Player has escaped");
+                gp.Asetter.respawnMonster();
+                gp.gameState = gp.playState;
+            } else {
+                System.out.println("Player has failed to escape");
+                gp.ui.addMessage("Player Failed to escape");
+                nextTurn();
+            }
         }
+        else{
+            System.out.println("You can't escape from a boss");
+            gp.ui.addMessage("You can't escape from a boss");
+        }
+
     }
 
     /**

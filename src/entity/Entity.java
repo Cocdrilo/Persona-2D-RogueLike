@@ -380,7 +380,7 @@ public abstract class Entity implements Drawable{
                     }
                     break;
             }
-            g2.drawImage(image, ScreenX, ScreenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, ScreenX, ScreenY, image.getWidth(), image.getHeight(), null);
         }
     }
 

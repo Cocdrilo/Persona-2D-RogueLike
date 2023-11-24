@@ -19,6 +19,7 @@ public class shadowStandar extends Entity {
     private String attackType;
     public BufferedImage combatImage;
     public String combatImagePath;
+    public boolean boss = false;
 
     /**
      * Constructs a shadow standard monster with data from the provided monster data.
@@ -142,7 +143,7 @@ public class shadowStandar extends Entity {
     }
 
     public void swaptoBossImage(){
-        int i = 5;
+        int i = 3;
 
         walkDown1 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
         walkDown2 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
@@ -160,6 +161,10 @@ public class shadowStandar extends Entity {
         walkUp2 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
         walkUp3 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
         walkUp4 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
+
+        solidArea.width = gp.tileSize*i;
+        solidArea.height = gp.tileSize*i;
+        boss = true;
     }
 
     /**
