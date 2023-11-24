@@ -568,6 +568,13 @@ public class BattleSystem {
         //Loot calc
 
         //Random de dinero
+        Random random = new Random();
+        int randomNum = random.nextInt(100);
+        if (randomNum < 50) {
+            gp.ui.messageList.add("Player has recived " + randomNum + " money");
+            gp.player.stats.money = gp.player.stats.money + randomNum;
+        }
+
         //Random de Objetos
         gp.Asetter.respawnMonster();
 

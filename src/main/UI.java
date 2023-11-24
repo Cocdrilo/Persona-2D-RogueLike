@@ -36,7 +36,7 @@ public class UI implements Drawable {
     BufferedImage backgroundCombat;
 
     //ArrayList de text para que sean Scrolling
-    ArrayList<String> messageList = new ArrayList<>();
+    public ArrayList<String> messageList = new ArrayList<>();
     ArrayList<String> combatMessageList = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
 
