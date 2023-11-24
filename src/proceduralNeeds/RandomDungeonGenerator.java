@@ -12,23 +12,6 @@ import main.GamePanel;
  */
 public class RandomDungeonGenerator {
 
-    //Main de debug para probar como funcionaría
-
-    /*
-
-    public static void main(String[] args) {
-        RandomDungeonGenerator rdg = new RandomDungeonGenerator();
-        rdg.postProcessDungeon();
-        for (int i = 0;i<50;i++){
-            for(int j = 0; j<50;j++){
-                System.out.print(rdg.dungeon[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
-     */
-
     public int [][] dungeon;
     GamePanel gp;
 
@@ -48,6 +31,7 @@ public class RandomDungeonGenerator {
      * Post-processes the dungeon to remove consecutive walls and replace them with black tiles.
      */
     public void postProcessDungeon() {
+        Random random = new Random();
         for (int row = 0; row < dungeon.length ; row++) {
             for (int col = 0; col < dungeon[0].length ; col++) {
                 if (dungeon[row][col] == 1 && !isInnerWall(row, col)) {
@@ -55,6 +39,35 @@ public class RandomDungeonGenerator {
                 }
             }
         }
+        // Ahora realiza la mezcla aleatoria de suelos
+
+        for (int row = 0; row < dungeon.length; row++) {
+            for (int col = 0; col < dungeon[0].length; col++) {
+                if (dungeon[row][col] == 0) {
+                    // Probabilidad de cambiar el tipo de tile
+                    if (random.nextDouble() < 0.5) {
+                        // Cambiar aleatoriamente a tipo 0, 3, 4 o 5
+                        int randomFloorType = random.nextInt(3) + 3;
+                        dungeon[row][col] = randomFloorType;
+                    }
+                }
+            }
+        }
+
+        //Mezcla de Muros aleatoria
+        for (int row = 0; row < dungeon.length; row++) {
+            for (int col = 0; col < dungeon[0].length; col++) {
+                if (dungeon[row][col] == 1) {
+                    // Probabilidad de cambiar el tipo de tile
+                    if (random.nextDouble() < 0.5) {
+                        // Cambiar aleatoriamente a tipo 0, 3, 4 o 5
+                        int randomFloorType = random.nextInt(4) + 6;
+                        dungeon[row][col] = randomFloorType;
+                    }
+                }
+            }
+        }
+        System.out.println("Dungeon post-processing complete.");
     }
 
     private boolean isInnerWall(int row, int col) {

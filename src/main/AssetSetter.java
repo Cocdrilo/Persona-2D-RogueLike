@@ -92,7 +92,8 @@ public class AssetSetter {
             do {
                 npcTileCol = Toolbox.getRandomNumberInRange(playerCol - distanceRange, playerCol + distanceRange, gp.maxWorldCol);
                 npcTileRow = Toolbox.getRandomNumberInRange(playerRow - distanceRange, playerRow + distanceRange, gp.maxWorldRow);
-            } while (gp.tileM.mapTileNum[npcTileCol][npcTileRow] != 0); // Asegurarse de que esté en un suelo
+                // Asegurarse de que esté en un suelo 1,3,4 o 5
+            } while (gp.tileM.mapTileNum[npcTileCol][npcTileRow] != 0);
 
             // Establecer la posición del NPC en las coordenadas encontradas
             gp.npc[0].WorldX = gp.tileSize * npcTileCol;
@@ -121,10 +122,11 @@ public class AssetSetter {
         int monsterTileCol = random.nextInt(49);
         int monsterTileRow = random.nextInt(49);
 
-        // Check if the tile at the monster's location has index 0
-        while (gp.tileM.mapTileNum[monsterTileCol][monsterTileRow] != 0) {
+        // Check if the tile at the monster's location has index 0 , 3,4 or 5
+        while (gp.tileM.mapTileNum[monsterTileCol][monsterTileRow] != 0 && gp.tileM.mapTileNum[monsterTileCol][monsterTileRow] != 3 && gp.tileM.mapTileNum[monsterTileCol][monsterTileRow] != 4 && gp.tileM.mapTileNum[monsterTileCol][monsterTileRow] != 5) {
             monsterTileCol = random.nextInt(49);
             monsterTileRow = random.nextInt(49);
+            System.out.println("Monster repet of bounds");
         }
 
         shadowStandar monster = new shadowStandar(gp, randomMonsterData);

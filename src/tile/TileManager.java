@@ -73,8 +73,15 @@ public class TileManager implements Drawable {
     public void getTileImage() {
 
         setUp(0, "Floor_1", false);
-        setUp(1, "WallMid", true);
+        setUp(1, "Wall_1", true);
         setUp(2, "pitchBlack", true);
+        setUp(3,"Floor_2",false);
+        setUp(4,"Floor_3",false);
+        setUp(5,"Floor_4",false);
+        setUp(6,"Wall_2",true);
+        setUp(7,"Wall_3",true);
+        setUp(8,"Wall_4",true);
+        setUp(9,"Wall_5",true);
 
     }
 
