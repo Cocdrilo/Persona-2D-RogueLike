@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Calm Pesce",
+    "health": 82,
+    "str": 6,
+    "agi": 6,
+    "mag": 3,
+    "vit": 4,
+    "lvl": 1,
+    "xpGiven": 40,
+    "attackType": "Piercing",
+    "combatImagePath": "/Monsters/MonstersBattleDisplay/DemonPig",
+    "weaknesses": ["Wind"],
+    "resistances": [],
+    "nulls": [],
+    "repells": [],
+    "spells": ["Bufu","Zio"]
+  },
+  {
+    "name": "Mascara Sonriente",
+    "health": 73,
+    "str": 5,
+    "agi": 3,
+    "mag": 5,
+    "vit": 3,
+    "lvl": 1,
+    "xpGiven": 32,
+    "attackType": "Piercing",
+    "combatImagePath": "/Monsters/MonstersBattleDisplay/Pixie",
+    "weaknesses": ["Ice","Elec"],
+    "resistances": ["Fire"],
+    "nulls": [],
+    "repells": [],
+    "spells": ["Agi","Zio"]
+  },
+  {
+    "name": "Cuervo Oscuro",
+    "health": 138,
+    "str": 8,
+    "agi": 5,
+    "mag": 4,
+    "vit": 4,
+    "lvl": 2,
+    "xpGiven": 48,
+    "attackType": "Piercing",
+    "combatImagePath": "/Monsters/MonstersBattleDisplay/Escorpion",
+    "weaknesses": ["Elec"],
+    "resistances": [],
+    "nulls": ["Fire","Wind"],
+    "repells": [],
+    "spells": ["Agi","Garu"]
+  }
+  ]

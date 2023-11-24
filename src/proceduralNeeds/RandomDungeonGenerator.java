@@ -32,6 +32,9 @@ public class RandomDungeonGenerator {
     public int [][] dungeon;
     GamePanel gp;
 
+    public int specialRoomX;
+    public int specialRoomY;
+
     public RandomDungeonGenerator(GamePanel gp) {
         this.gp = gp;
         int numRooms = 10; // Adjust the number of rooms as needed
@@ -88,18 +91,61 @@ public class RandomDungeonGenerator {
      * @param numRooms The number of rooms to generate in the dungeon.
      * @return A 2D array representing the generated dungeon layout.
      */
-    public static int[][] generateDungeon(GamePanel gp, int numRooms) {
+    public int[][] generateDungeon(GamePanel gp, int numRooms) {
         int[][] world = new int[gp.maxWorldRow][gp.maxWorldCol];
+
+        // Generate random rooms
+        Random random = new Random();
+
+        List<Room> rooms = new ArrayList<>();
 
         // Initialize the world grid with walls (1)
         for (int row = 0; row < gp.maxWorldRow; row++) {
             Arrays.fill(world[row], 1);
         }
 
-        // Generate random rooms
-        Random random = new Random();
+        // Generate boss room randomly
+        int bossRoomSize = 5;
 
-        List<Room> rooms = new ArrayList<>();
+        int corner = random.nextInt(4); // 0, 1, 2, or 3
+
+        int bossRoomX, bossRoomY;
+
+        bossRoomY = switch (corner) {
+            case 0 -> { // Top-left corner
+                bossRoomX = 1;
+                yield 1;
+            }
+            case 1 -> { // Top-right corner
+                bossRoomX = gp.maxWorldCol - bossRoomSize - 1;
+                yield 1;
+            }
+            case 2 -> { // Bottom-left corner
+                bossRoomX = 1;
+                yield gp.maxWorldRow - bossRoomSize - 1;
+            }
+            case 3 -> { // Bottom-right corner
+                bossRoomX = gp.maxWorldCol - bossRoomSize - 1;
+                yield gp.maxWorldRow - bossRoomSize - 1;
+            }
+            default -> {
+                // This should never happen
+                bossRoomX = 1;
+                yield 1;
+            }
+        };
+
+        specialRoomX = bossRoomX;
+        specialRoomY = bossRoomY;
+
+        for (int y = bossRoomY; y < bossRoomY + bossRoomSize; y++) {
+            for (int x = bossRoomX; x < bossRoomX + bossRoomSize; x++) {
+                world[y][x] = 0; // Boss room floor is represented by '0'
+                rooms.add(new Room(bossRoomX, bossRoomY, bossRoomSize, bossRoomSize,true));
+                System.out.println("Boss room set at: " + bossRoomX + " " + bossRoomY);
+            }
+        }
+
 
         for (int i = 0; i < numRooms; i++) {
             int roomWidth = random.nextInt(10) + 3; // Width is always 2 tiles
@@ -108,7 +154,7 @@ public class RandomDungeonGenerator {
             int roomX = random.nextInt(gp.maxWorldCol - roomWidth - 2) + 1; // Random x position with 1-unit buffer
             int roomY = random.nextInt(gp.maxWorldRow - roomHeight - 2) + 1; // Random y position with 1-unit buffer
 
-            // Check if the room overlaps with existing rooms
+            // Check if the room overlaps with existing rooms or boss room
             boolean overlaps = false;
             for (int y = roomY - 1; y < roomY + roomHeight + 1; y++) {
                 for (int x = roomX - 1; x < roomX + roomWidth + 1; x++) {
@@ -131,7 +177,7 @@ public class RandomDungeonGenerator {
                 }
 
                 // Store the room's position and dimensions
-                rooms.add(new Room(roomX, roomY, roomWidth, roomHeight));
+                rooms.add(new Room(roomX, roomY, roomWidth, roomHeight,false));
             }
         }
 
@@ -140,6 +186,16 @@ public class RandomDungeonGenerator {
 
         return world;
     }
+
+    /**
+     * Getter para obtener las coordenadas de la sala especial.
+     *
+     * @return Un array de dos elementos donde [0] es la coordenada X y [1] es la coordenada Y.
+     */
+    public int[] getSpecialRoomCoordinates() {
+        return new int[]{specialRoomX, specialRoomY};
+    }
+
 
     private static void saveDungeonToFile(int[][] dungeon, String fileName) {
         try (PrintWriter writer = new PrintWriter(fileName)) {
@@ -160,6 +216,7 @@ public class RandomDungeonGenerator {
      */
     static class Room {
         int x, y, width, height;
+        boolean special;
 
         /**
          * Constructs a new Room with the specified position and dimensions.
@@ -169,11 +226,12 @@ public class RandomDungeonGenerator {
          * @param width  The width of the room.
          * @param height The height of the room.
          */
-        public Room(int x, int y, int width, int height) {
+        public Room(int x, int y, int width, int height,boolean special) {
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
+            this.special = special;
         }
     }
 
@@ -201,42 +259,41 @@ public class RandomDungeonGenerator {
             int corridorLength = random.nextInt(maxCorridorLength - minCorridorLength + 1) + minCorridorLength;
 
             // Generate horizontal corridor
-            if (x1 < x2) {
-                for (int x = x1; x <= x2; x++) {
-                    for (int y = y1 - corridorLength / 2; y <= y1 + corridorLength / 2; y++) {
-                        if (x >= 0 && x < world[0].length && y >= 0 && y < world.length) {
-                            world[y][x] = 0; // Corridor is represented by '0'
-                        }
-                    }
-                }
-            } else {
-                for (int x = x2; x <= x1; x++) {
-                    for (int y = y1 - corridorLength / 2; y <= y1 + corridorLength / 2; y++) {
-                        if (x >= 0 && x < world[0].length && y >= 0 && y < world.length) {
-                            world[y][x] = 0; // Corridor is represented by '0'
-                        }
+            for (int x = Math.min(x1, x2); x <= Math.max(x1, x2); x++) {
+                for (int y = y1 - corridorLength / 2; y <= y1 + corridorLength / 2; y++) {
+                    if (y >= 0 && y < world.length && x >= 0 && x < world[0].length) {
+                        world[y][x] = 0; // Corridor is represented by '0'
                     }
                 }
             }
 
             // Generate vertical corridor
-            if (y1 < y2) {
-                for (int y = y1; y <= y2; y++) {
-                    for (int x = x2 - corridorLength / 2; x <= x2 + corridorLength / 2; x++) {
-                        if (x >= 0 && x < world[0].length && y >= 0 && y < world.length) {
-                            world[y][x] = 0; // Corridor is represented by '0'
-                        }
+            for (int y = Math.min(y1, y2); y <= Math.max(y1, y2); y++) {
+                for (int x = x2 - corridorLength / 2; x <= x2 + corridorLength / 2; x++) {
+                    if (x >= 0 && x < world[0].length && y >= 0 && y < world.length) {
+                        world[y][x] = 0; // Corridor is represented by '0'
                     }
                 }
-            } else {
-                for (int y = y2; y <= y1; y++) {
-                    for (int x = x2 - corridorLength / 2; x <= x2 + corridorLength / 2; x++) {
-                        if (x >= 0 && x < world[0].length && y >= 0 && y < world.length) {
-                            world[y][x] = 0; // Corridor is represented by '0'
-                        }
-                    }
+            }
+
+            // Ensure the entrance to the special room is always 1x1
+            if (room2.special) {
+                int entranceX, entranceY;
+
+                if (Math.abs(x2 - x1) > Math.abs(y2 - y1)) {
+                    int directionX = (x2 - x1) / Math.max(1, Math.abs(x2 - x1));
+                    entranceX = x2 - directionX;
+                    entranceY = y2;
+                } else {
+                    int directionY = (y2 - y1) / Math.max(1, Math.abs(y2 - y1));
+                    entranceX = x2;
+                    entranceY = y2 - directionY;
                 }
+
+                world[entranceY][entranceX] = 0; // Corridor entrance to special room is 1x1
             }
         }
     }
 }
+
+

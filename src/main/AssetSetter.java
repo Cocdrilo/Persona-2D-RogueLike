@@ -16,7 +16,6 @@ import java.util.Random;
 public class AssetSetter {
 
     GamePanel gp;
-    KeyHandler keyH;
 
     public AssetSetter(GamePanel gp) {
 
@@ -26,6 +25,7 @@ public class AssetSetter {
 
     public void setObject() {
         generateRandomObjects();
+        setBoss();
     }
 
     private void generateRandomObjects() {
@@ -127,6 +127,31 @@ public class AssetSetter {
         return monster;
     }
 
+    private shadowStandar generateRandomBoss(ArrayList<monsterData> availableMonsters) {
+        Random random = new Random();
+        int randomIndex = random.nextInt(availableMonsters.size());
+        monsterData randomMonsterData = availableMonsters.get(randomIndex);
+
+        int monsterTileCol = 3;
+        int monsterTileRow = 3;
+
+        shadowStandar monster = new shadowStandar(gp, randomMonsterData);
+        monster.WorldX = gp.tileM.specialRoomX * monsterTileCol;
+        monster.WorldY = gp.tileM.specialRoomY * monsterTileRow;
+        monster.speed = 0;
+
+        return monster;
+    }
+
+    public void setBoss(){
+        ArrayList<monsterData> availableBosses = gp.monsterManager.getMonsters();
+
+        gp.monsters[9] = generateRandomBoss(availableBosses);
+        gp.monsters[9].speed = 0;
+        System.out.println("Boss set at " + gp.monsters[9].WorldX + " " + gp.monsters[9].WorldY);
+    }
+
+
     public void respawnMonster() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
         for(int i = 0; i < 6; i++){
@@ -137,4 +162,5 @@ public class AssetSetter {
         System.out.println("Monsters respawned");
 
     }
+
 }

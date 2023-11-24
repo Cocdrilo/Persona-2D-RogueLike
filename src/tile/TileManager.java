@@ -24,6 +24,8 @@ public class TileManager implements Drawable {
     private int[][] oldmapTileNum;
     public boolean drawPath = true;
     public boolean loadedGame = false;
+    public int specialRoomX;
+    public int specialRoomY;
 
     /**
      * Constructs a TileManager with the specified GamePanel.
@@ -56,6 +58,13 @@ public class TileManager implements Drawable {
         // Set the generated dungeon as the current map
 
         mapTileNum = rdg.dungeon;
+        setSpecialRoom(rdg.specialRoomX, rdg.specialRoomY);
+    }
+
+    public void setSpecialRoom(int x, int y){
+        specialRoomX = x ;
+        specialRoomY = y ;
+        System.out.println("Special room set at: " + specialRoomX + " " + specialRoomY);
     }
 
     /**
