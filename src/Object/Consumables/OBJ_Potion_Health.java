@@ -22,7 +22,7 @@ public class OBJ_Potion_Health extends Entity {
         collision = true;
         isPickupeable = true;
         type = 5;
-        walkDown1 = setUp("/Objects/healthPotion");
+        walkDown1 = setUp("/Objects/healthPotion",gp.tileSize,gp.tileSize);
         description = "Health Potion heals +10 hp";
     }
 

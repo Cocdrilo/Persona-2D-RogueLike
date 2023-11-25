@@ -22,7 +22,7 @@ public class OBJ_Chest extends Entity {
 
         name = "chest";
         collision = true;
-        walkDown1 = setUp("/Objects/Cofre");
+        walkDown1 = setUp("/Objects/Cofre",gp.tileSize,gp.tileSize);
         isPickupeable = true;
         description = "Chest With Gold Inside should be opened";
     }

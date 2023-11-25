@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Arcángel Jefe",
+    "health": 300,
+    "str": 6,
+    "agi": 8,
+    "mag": 6,
+    "vit": 10,
+    "lvl": 5,
+    "xpGiven": 200,
+    "attackType": "Bashing",
+    "combatImagePath": "/Monsters/MonstersBattleDisplay/Archangel",
+    "weaknesses": ["Wind"],
+    "resistances": ["Fire"],
+    "nulls": [],
+    "repells": [],
+    "spells": ["Garula", "Bufula"]
+  },
+  {
+    "name": "Arcángel de la Luz",
+    "health": 280,
+    "str": 5,
+    "agi": 9,
+    "mag": 6,
+    "vit": 8,
+    "lvl": 6,
+    "xpGiven": 220,
+    "attackType": "Bashing",
+    "combatImagePath": "/Monsters/MonstersBattleDisplay/Archangel",
+    "weaknesses": ["Dark"],
+    "resistances": ["Ice"],
+    "nulls": [],
+    "repells": ["Fire"],
+    "spells": ["Agilao", "Zionga"]
+  },
+  {
+    "name": "Ice Archangel",
+    "health": 258,
+    "str": 8,
+    "agi": 8,
+    "mag": 4,
+    "vit": 4,
+    "lvl": 4,
+    "xpGiven": 228,
+    "attackType": "Piercing",
+    "combatImagePath": "/Monsters/MonstersBattleDisplay/Archangel",
+    "weaknesses": ["Elec"],
+    "resistances": [],
+    "nulls": ["Fire","Wind"],
+    "repells": [],
+    "spells": ["Bufula","Garudyne"]
+  }
+  ]

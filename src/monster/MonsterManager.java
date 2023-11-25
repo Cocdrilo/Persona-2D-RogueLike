@@ -13,12 +13,15 @@ import java.util.ArrayList;
 public class MonsterManager {
     private static MonsterManager instance;
     private ArrayList<monsterData> monsters;
+    private ArrayList<monsterData> bosses;
 
     /**
      * Private constructor to ensure singleton pattern and load monsters from a specified JSON file.
      */
     private MonsterManager() {
         loadMonstersFromFile("res/Jsons/monsters.json"); // Ajusta la ruta según la ubicación de tu archivo JSON
+        loadBossesFromFile("res/Jsons/bosses.json");
+
     }
 
     /**
@@ -49,6 +52,17 @@ public class MonsterManager {
         }
     }
 
+    private void loadBossesFromFile(String filePath) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            bosses = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<monsterData>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Manejar excepciones apropiadamente
+        }
+    }
+
     /**
      * Returns the list of monster data.
      *
@@ -57,4 +71,5 @@ public class MonsterManager {
     public ArrayList<monsterData> getMonsters() {
         return monsters;
     }
+    public ArrayList<monsterData> getBosses() { return bosses; }
 }

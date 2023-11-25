@@ -120,7 +120,7 @@
       "damageType": "Wind"
     },
     {
-      "name": "Panta Rhei",
+      "name": "Rhei",
       "description": "Deals severe Wind damage to 1 foe. Odin exclusive, nontransferable.",
       "damage": 200,
       "hit": 98,
@@ -128,7 +128,7 @@
       "damageType": "Wind"
     },
     {
-      "name": "Power Slash",
+      "name": "PSlash",
       "hpCost": 8,
       "damage": 88,
       "hit": 92,

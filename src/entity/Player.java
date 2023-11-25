@@ -33,13 +33,13 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(14, 15, 26, 29);
+        solidArea = new Rectangle(14, 53, 26, 32);
 
         solidAreaDefaultX = solidArea.x;
         SolidAreaDefaultY = solidArea.y;
 
         stats = new Entity_stats();
-        String defaultSpells[] = {"Zio", "Agi"};
+        String[] defaultSpells = {"Zio", "Agi","Fatal End"};
 
         setDefaultValues();
         getPlayerImage();
@@ -59,18 +59,20 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        WorldX = 300;
-        WorldY = 250;
         speed = 10;
         direction = "down";
         name = "Raidou";
+
+        setRandomPos();
+
+        System.out.println("DEBUG: Player position: " + WorldX / gp.tileSize + ", " + WorldY / gp.tileSize);
 
         stats.level = 1;
         stats.maxHp = 190;
         stats.hp = stats.maxHp;
         stats.maxMp = 41;
         stats.mp = stats.maxMp;
-        stats.str = 30;
+        stats.str = 7;
         stats.agi = 3;
         stats.mag = 2;
         stats.vit = 3;
@@ -83,6 +85,12 @@ public class Player extends Entity {
         weaknesses = new String[]{};
         nulls = new String[]{};
         repells = new String[]{};
+    }
+
+    public void setRandomPos() {
+        int[] datos = gp.tileM.setPlayerRandomPosition();
+        WorldX = datos[0]*gp.tileSize;
+        WorldY = datos[1]*gp.tileSize;
     }
 
     public void setItems() {
@@ -211,18 +219,18 @@ public class Player extends Entity {
     public void subtractMoney(int money){ stats.money -= money;}
 
     public void getPlayerImage() {
-        standFront = setUp("/player/RaidouFront");
-        standLeft = setUp("/player/RaidouLeft");
-        standRight = setUp("/player/RaidouRight");
-        standBack = setUp("/player/RaidouBack");
-        walkDown1 = setUp("/player/RaidouFrontWalk1");
-        walkDown2 = setUp("/player/RaidouFrontWalk2");
-        walkLeft1 = setUp("/player/RaidouLeftWalk1");
-        walkLeft2 = setUp("/player/RaidouLeftWalk2");
-        walkRight1 = setUp("/player/RaidouRightWalk1");
-        walkRight2 = setUp("/player/RaidouRightWalk2");
-        walkUp1 = setUp("/player/RaidouBackWalk1");
-        walkUp2 = setUp("/player/RaidouBackWalk2");
+        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize*1.5),gp.tileSize*2);
+        standLeft = setUp("/player/NuevoPlayer/Left" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        standRight = setUp("/player/NuevoPlayer/Right" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        standBack = setUp("/player/NuevoPlayer/Back" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkDown1 = setUp("/player/NuevoPlayer/Front2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkDown2 = setUp("/player/NuevoPlayer/Front3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkLeft1 = setUp("/player/NuevoPlayer/Left2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkLeft2 = setUp("/player/NuevoPlayer/Left3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkRight1 = setUp("/player/NuevoPlayer/Right2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkRight2 = setUp("/player/NuevoPlayer/Right3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkUp1 = setUp("/player/NuevoPlayer/Back2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+        walkUp2 = setUp("/player/NuevoPlayer/Back3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
     }
 
     public void update() {
@@ -291,16 +299,15 @@ public class Player extends Entity {
             if (gp.keyH.zPressed) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
-                gp.party.addMonsterToParty("Ice golem");
-                gp.party.printParty();
             }
         }
     }
 
     public void ObjectInteractions(int i) {
 
-        if (i != 999) {
-
+        if (i != 999 && gp.keyH.zPressed && gp.obj[i].name.equals("stairs")) {
+            gp.stopMusic();
+            gp.gameState = gp.endScreenState;
         }
     }
 

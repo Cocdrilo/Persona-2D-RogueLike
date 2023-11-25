@@ -50,6 +50,12 @@ public class BattleSystem {
         // Agrega a los miembros del partido a la lista
         this.partyMembers.addAll(party.partyMembers);
         this.currentPartyMemberIndex = 0; // Inicialmente, el primer miembro del partido ataca
+
+        if(monster.boss){
+            System.out.println("Boss Battle");
+            gp.music.stop();
+            gp.playMusic(6);
+        }
     }
 
     /**
@@ -100,6 +106,7 @@ public class BattleSystem {
             if (partyMembers.get(i).stats.hp <= 0) {
                 partyMembers.remove(i);
                 System.out.println(partyMembers.get(i).name + " has died");
+                gp.party.partyMembers.remove(i-1);
             }
         }
     }
@@ -119,7 +126,7 @@ public class BattleSystem {
             weaponDmgType = ((shadowStandar) attacker).getAttackType();
         }
 
-        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
+        System.out.println(attacker.name + " has attacked " + target + " with " + weaponDmgType);
 
         playerIsAttacking = true;
 
@@ -151,7 +158,7 @@ public class BattleSystem {
             weaponDmgType = ((shadowStandar) attacker).getAttackType();
         }
 
-        System.out.println(attacker + " has attacked " + target + " with " + weaponDmgType);
+        System.out.println(attacker.name + " has attacked " + target + " with " + weaponDmgType);
 
         monsterIsAttacking = true;
 
@@ -236,12 +243,15 @@ public class BattleSystem {
         if (target.isWeak(selectedSpell.damageType)) {
             damage *= 2;
             pressTurn--;
+            gp.ui.addMessage("Weakpoint Hitted on " + target.name);
         } else if (target.isResistant(selectedSpell.damageType)) {
             damage /= 2;
             pressTurn -= 2;
+            gp.ui.addMessage("Attack resisted by " + target.name);
         } else if (target.isNull(selectedSpell.damageType)) {
             damage = 0;
             pressTurn -= 3;
+            gp.ui.addMessage("Attack nulled by " + target.name);
         } else if (target.isRepelled(selectedSpell.damageType)) {
             handleRepelledDamage(attacker, damage, selectedSpell.damageType);
         } else {
@@ -261,9 +271,12 @@ public class BattleSystem {
     private void handleRepelledDamage(Entity target, int DmgPreModifier, String weaponDmgType) {
         if (target.isWeak(weaponDmgType)) {
             DmgPreModifier *= 2;
+            gp.ui.addMessage("The attack was repelled and dealt " + DmgPreModifier + " damage to " + target.name);
         } else if (target.isResistant(weaponDmgType)) {
             DmgPreModifier /= 2;
+            gp.ui.addMessage("The attack was repelled and dealt " + DmgPreModifier + " damage to " + target.name);
         } else if (target.isNull(weaponDmgType)) {
+            gp.ui.addMessage("The attack was repelled and then nulled");
             DmgPreModifier = 0;
         }
         pressTurn -= 3;
@@ -295,23 +308,48 @@ public class BattleSystem {
      * @param selectedSpell The magic spell used for the attack.
      */
     public void useMagic(Entity attacker, Entity target, superMagic selectedSpell) {
-        if (attacker.stats.mp < selectedSpell.mpCost) {
-            System.out.println("Not enough MP to cast " + selectedSpell.name);
-            return;
+        if(selectedSpell.mpCost > 0){
+            if (attacker.stats.mp < selectedSpell.mpCost) {
+                System.out.println("Not enough MP to cast " + selectedSpell.name);
+                return;
+            }
+
+            int damage = calculateMagicDamage(attacker, target, selectedSpell);
+            playerMagic = true;
+
+            handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
+
+            if (pressTurn <= 0 || target.stats.hp <= 0) {
+                nextTurn();
+            }
+            // Cambiar al siguiente miembro del partido
+            currentPartyMemberIndex++;
+            if (currentPartyMemberIndex >= partyMembers.size()) {
+                currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
+            }
+        }
+        else if(selectedSpell.hpCost>0){
+            if (attacker.stats.hp < attacker.stats.maxHp % selectedSpell.hpCost) {
+                System.out.println("Not enough HP to cast " + selectedSpell.name);
+                return;
+            }
+
+            boolean phys = true;
+            int damage = calculateMagicDamage(attacker, target, selectedSpell,phys);
+            playerMagic = true;
+
+            handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
+
+            if (pressTurn <= 0 || target.stats.hp <= 0) {
+                nextTurn();
+            }
+            // Cambiar al siguiente miembro del partido
+            currentPartyMemberIndex++;
+            if (currentPartyMemberIndex >= partyMembers.size()) {
+                currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
+            }
         }
 
-        int damage = calculateMagicDamage(attacker, target, selectedSpell);
-        playerMagic = true;
-
-        handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
-        if (pressTurn <= 0 || target.stats.hp <= 0) {
-            nextTurn();
-        }
-        // Cambiar al siguiente miembro del partido
-        currentPartyMemberIndex++;
-        if (currentPartyMemberIndex >= partyMembers.size()) {
-            currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
-        }
     }
 
     /**
@@ -344,8 +382,24 @@ public class BattleSystem {
 
         if (attacker instanceof Player playerAttacker) {
             damage = playerAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, playerAttacker.stats.mag);
+            playerAttacker.stats.mp -= selectedSpell.mpCost;
         } else if (attacker instanceof shadowStandar monsterAttacker) {
             damage = monsterAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, monsterAttacker.stats.mag);
+            monsterAttacker.stats.mp -= selectedSpell.mpCost;
+        }
+
+        return damage;
+    }
+
+    private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell,boolean isphys) {
+        int damage = 0;
+
+        if (attacker instanceof Player playerAttacker) {
+            damage = playerAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, playerAttacker.stats.str);
+            playerAttacker.stats.hp -= playerAttacker.stats.maxHp % selectedSpell.hpCost;
+        } else if (attacker instanceof shadowStandar monsterAttacker) {
+            damage = monsterAttacker.getMagicAttack(target.getDefense(), selectedSpell.damage, monsterAttacker.stats.str);
+            monsterAttacker.stats.hp -= monsterAttacker.stats.maxHp % selectedSpell.hpCost;
         }
 
         return damage;
@@ -470,16 +524,24 @@ public class BattleSystem {
      */
     public void fleeFromBattle() {
         //Implementar el escape de la batalla
-        Random random = new Random();
-        int randomNum = random.nextInt(100);
-        if (randomNum < 50) {
-            System.out.println("Player has escaped");
-            gp.Asetter.respawnMonster();
-            gp.gameState = gp.playState;
-        } else {
-            System.out.println("Player has failed to escape");
-            nextTurn();
+        if(!monster.boss){
+            Random random = new Random();
+            int randomNum = random.nextInt(100);
+            if (randomNum < 50) {
+                System.out.println("Player has escaped");
+                gp.Asetter.respawnMonster();
+                gp.gameState = gp.playState;
+            } else {
+                System.out.println("Player has failed to escape");
+                gp.ui.addMessage("Player Failed to escape");
+                nextTurn();
+            }
         }
+        else{
+            System.out.println("You can't escape from a boss");
+            gp.ui.addMessage("You can't escape from a boss");
+        }
+
     }
 
     /**
@@ -487,15 +549,22 @@ public class BattleSystem {
      * The NegotiationSystem is responsible for handling the negotiation.
      */
     public void negotiateMonster() {
-        //Implementar la negociacion con el monstruo
-        negotiationSystem = new NegotiationSystem(this);
-        negotiationSystem.startNegotiation();
-        //gp.gameState = gp.negotiationState;
+        if(monster.boss){
+            System.out.println("You can't negotiate with a boss");
+            gp.ui.addMessage("You can't negotiate with a boss");
+        }
+        else{
+            //Implementar la negociacion con el monstruo
+            negotiationSystem = new NegotiationSystem(this);
+            negotiationSystem.startNegotiation();
+            //gp.gameState = gp.negotiationState;
+        }
+
     }
 
 
     /**
-     * Ends the battle, granting experience points to the player and handling loot.
+     * Ends the battle, granting experience points to the player and party and handling loot.
      */
     public void endBattle() {
         //EXP calc
@@ -503,27 +572,47 @@ public class BattleSystem {
         party.Leader.stats.exp = party.Leader.stats.exp + monster.xpGiven;
         System.out.println("Player has recived " + monster.xpGiven + " exp");
 
-        //Loot calc
 
         //Random de dinero
-        //Random de Objetos
-        gp.Asetter.respawnMonster();
+        Random random = new Random();
+        int randomNum = random.nextInt(100);
+        if (randomNum < 50) {
+            gp.ui.messageList.add("Player has recived " + randomNum + " money");
+            gp.player.stats.money = gp.player.stats.money + randomNum;
+        }
+
+        for(int i = 0; i < party.partyMembers.size(); i++){
+            //Exp /2 por cada miembro del partido para que no esten al mismo level o mas que el Lider y porque se reparte entre los miembros
+            party.partyMembers.get(i).stats.exp = party.partyMembers.get(i).stats.exp + (monster.xpGiven / 2 );
+
+            if(party.partyMembers.get(i).stats.exp>= party.partyMembers.get(i).stats.nextLevelExp){
+                //Level Up
+                party.partyMembers.get(i).levelUp();
+                System.out.println(party.partyMembers.get(i).name + " has leveled up");
+            }
+        }
+
+        if(monster.boss){
+            gp.stopMusic();
+            gp.playMusic(0);
+            gp.Asetter.summonStairs(monster.WorldX,monster.WorldY);
+        }
 
         if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
             //Level Up
             party.Leader.levelUp();
+            System.out.println("Player has leveled up");
+            return;
         }
-        /*
-        for(int i = 0; i < party.partyMembers.size(); i++){
-            if(party.partyMembers.get(i).stats.exp>= party.partyMembers.get(i).stats.nextLevelExp){
-                //Level Up
-                party.partyMembers.get(i).levelUp();
-            }
+
+        if(!monster.boss){
+            //Random de Objetos
+            gp.Asetter.respawnMonster();
         }
-         */
-        else {
-            gp.gameState = gp.playState;
+
+
+        gp.gameState = gp.playState;
+
         }
 
     }
-}
