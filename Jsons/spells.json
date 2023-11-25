@@ -1,0 +1,234 @@
+[
+    {
+      "name": "Agi",
+      "mpCost": 4,
+      "damage": 40,
+      "hit": 98,
+      "damageType": "Fire",
+      "description": "SingleTarget light Fire Damage."
+    },
+    {
+      "name": "Agilao",
+      "mpCost": 8,
+      "damage": 100,
+      "hit": 98,
+      "damageType": "Fire",
+      "description": "SingleTarget medium Fire Damage."
+    },
+    {
+      "name": "Agidyne",
+      "mpCost": 12,
+      "damage": 160,
+      "hit": 98,
+      "damageType": "Fire",
+      "description": "SingleTarget heavy Fire Damage."
+    },
+    {
+      "name": "Ragnarok",
+      "mpCost": 48,
+      "damage": 200,
+      "hit": 98,
+      "damageType": "Fire",
+      "description": "SingleTarget severe Fire Damage."
+    },
+    {
+      "name": "Bufu",
+      "description": "Deals light Ice damage to 1 foe.",
+      "damage": 40,
+      "hit": 98,
+      "mpCost": 4,
+      "damageType": "Ice"
+    },
+    {
+      "name": "Bufula",
+      "description": "Deals medium Ice damage to 1 foe.",
+      "damage": 100,
+      "hit": 98,
+      "mpCost": 8,
+      "damageType": "Ice"
+    },
+    {
+      "name": "Bufudyne",
+      "description": "Deals heavy Ice damage to 1 foe.",
+      "damage": 160,
+      "hit": 98,
+      "mpCost": 12,
+      "damageType": "Ice"
+    },
+    {
+      "name": "Niflheim",
+      "description": "Deals severe Ice damage to 1 foe. Loki exclusive, nontransferable.",
+      "damage": 200,
+      "hit": 98,
+      "mpCost": 48,
+      "damageType": "Ice"
+    },
+    {
+      "name": "Zio",
+      "description": "Deals light Elec damage to 1 foe.",
+      "damage": 40,
+      "hit": 98,
+      "mpCost": 4,
+      "damageType": "Elec"
+    },
+    {
+      "name": "Zionga",
+      "description": "Deals medium Elec damage to 1 foe.",
+      "damage": 100,
+      "hit": 98,
+      "mpCost": 8,
+      "damageType": "Elec"
+    },
+    {
+      "name": "Ziodyne",
+      "description": "Deals heavy Elec damage to 1 foe.",
+      "damage": 160,
+      "hit": 98,
+      "mpCost": 12,
+      "damageType": "Elec"
+    },
+    {
+      "name": "Thunder Reign",
+      "description": "Deals severe Elec damage to 1 foe. Thor exclusive, nontransferable.",
+      "damage": 200,
+      "hit": 98,
+      "mpCost": 48,
+      "damageType": "Elec"
+    },
+    {
+      "name": "Garu",
+      "description": "Deals light Wind damage to 1 foe.",
+      "damage": 40,
+      "hit": 98,
+      "mpCost": 4,
+      "damageType": "Wind"
+    },
+    {
+      "name": "Garula",
+      "description": "Deals medium Wind damage to 1 foe.",
+      "damage": 100,
+      "hit": 98,
+      "mpCost": 8,
+      "damageType": "Wind"
+    },
+    {
+      "name": "Garudyne",
+      "description": "Deals heavy Wind damage to 1 foe.",
+      "damage": 160,
+      "hit": 98,
+      "mpCost": 12,
+      "damageType": "Wind"
+    },
+    {
+      "name": "Rhei",
+      "description": "Deals severe Wind damage to 1 foe. Odin exclusive, nontransferable.",
+      "damage": 200,
+      "hit": 98,
+      "mpCost": 48,
+      "damageType": "Wind"
+    },
+    {
+      "name": "PSlash",
+      "hpCost": 8,
+      "damage": 88,
+      "hit": 92,
+      "damageType": "Slash",
+      "description": "Deals light Slash damage to one foe. 10% HP"
+    },
+    {
+      "name": "Fatal End",
+      "hpCost": 13,
+      "damage": 135,
+      "hit": 92,
+      "damageType": "Slash",
+      "description": "Deals medium Slash damage to one foe. 13% HP"
+    },
+    {
+      "name": "Tempest Slash",
+      "hpCost": 16,
+      "damage": 350,
+      "hit": 95,
+      "damageType": "Slash",
+      "description": "Deals heavy Slash damage to one foe. (1-3 hits) 13% HP"
+    },
+    {
+      "name": "Heaven's Blade",
+      "hpCost": 20,
+      "damage": 700,
+      "hit": 95,
+      "damageType": "Slash",
+      "description": "Deals severe Slash damage to one foe. Michael exclusive. 13% HP"
+    },
+    {
+      "name": "Brave Blade",
+      "hpCost": 22,
+      "damage": 800,
+      "hit": 99,
+      "damageType": "Slash",
+      "description": "Deals severe Slash damage to one foe. 20% HP"
+    },
+    {
+      "name": "Bash",
+      "hpCost": 8,
+      "damage": 88,
+      "hit": 92,
+      "damageType": "Bashing",
+      "description": "Deals light Bashing damage to one foe. 10% HP"
+    },
+    {
+      "name": "Herculean Strike",
+      "hpCost": 13,
+      "damage": 135,
+      "hit": 92,
+      "damageType": "Bashing",
+      "description": "Deals medium Bashing damage to one foe. 13% HP"
+    },
+    {
+      "name": "Gigantic Fist",
+      "hpCost": 16,
+      "damage": 350,
+      "hit": 95,
+      "damageType": "Bashing",
+      "description": "Deals heavy Bashing damage to one foe. (1-3 hits) 13% HP"
+    },
+    {
+      "name": "God's Hand",
+      "hpCost": 20,
+      "damage": 780,
+      "hit": 95,
+      "damageType": "Bashing",
+      "description": "Deals severe Bashing damage to one foe. Michael exclusive. 13% HP"
+    },
+    {
+      "name": "Single Shot",
+      "hpCost": 8,
+      "damage": 88,
+      "hit": 92,
+      "damageType": "Pierce",
+      "description": "Deals light Pierce damage to one foe. 10% HP"
+    },
+    {
+      "name": "Cruel Attack",
+      "hpCost": 13,
+      "damage": 135,
+      "hit": 92,
+      "damageType": "Pierce",
+      "description": "Deals medium Pierce damage to one foe. 13% HP"
+    },
+    {
+      "name": "Vile Assault",
+      "hpCost": 16,
+      "damage": 350,
+      "hit": 95,
+      "damageType": "Pierce",
+      "description": "Deals heavy Pierce damage to one foe. (1-3 hits) 13% HP"
+    },
+    {
+      "name": "Primal Force",
+      "hpCost": 20,
+      "damage": 780,
+      "hit": 95,
+      "damageType": "Pierce",
+      "description": "Deals severe Pierce damage to one foe. Michael exclusive. 13% HP"
+    }
+  ]

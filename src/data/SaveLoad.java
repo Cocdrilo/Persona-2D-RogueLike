@@ -5,7 +5,6 @@ import Object.Consumables.*;
 import Object.WorldBuilding.*;
 import entity.Entity;
 import main.GamePanel;
-import monster.shadowStandar;
 
 
 import java.io.*;
@@ -55,8 +54,6 @@ public class SaveLoad {
             DataStorage ds = new DataStorage();
 
             //Player Stats
-            ds.playerX = gp.player.WorldX;
-            ds.playerY = gp.player.WorldY;
             ds.level = gp.player.stats.level;
             ds.exp = gp.player.stats.exp;
             ds.nextLevelExp = gp.player.stats.nextLevelExp;
@@ -73,23 +70,13 @@ public class SaveLoad {
             //Player Inventory
             for (int i = 0; i < gp.player.inventory.size(); i++) {
                 ds.itemNames.add(gp.player.inventory.get(i).name);
+                //ds.itemAmounts.add(gp.player.inventory.get(i).amount);
 
             }
 
             //Player Equipment
             ds.currentWeaponSlot = gp.player.getWeaponSlot();
             ds.currentArmorSlot = gp.player.getArmorSlot();
-
-            //Objects on Map
-            for (int i = 0; i < gp.obj.length; i++) {
-                if (gp.obj[i] != null) {
-                    ds.mapObjectNames[i] = gp.obj[i].name;
-                    ds.mapObjectWorldX[i] = gp.obj[i].WorldX;
-                    ds.mapObjectWorldY[i] = gp.obj[i].WorldY;
-                    ds.mapObjectVisibility[i] = gp.obj[i].isVisible;
-                    //System.out.println("Saved: " + gp.obj[i].name + "," + gp.obj[i].WorldX + "," + gp.obj[i].WorldY);
-                }
-            }
 
             //Party
             for(int i = 0;i<gp.party.partyMembers.size();i++){
@@ -109,12 +96,12 @@ public class SaveLoad {
             }
             System.out.println("Members in party: " + ds.membersInParty);
 
+
             //Write in the file
             oos.writeObject(ds);
 
         } catch (Exception e) {
             System.out.println("Save Exception!");
-            e.printStackTrace(System.out);
         }
 
     }
@@ -128,8 +115,6 @@ public class SaveLoad {
             DataStorage ds = (DataStorage) ois.readObject();
 
             //Player Stats
-            gp.player.WorldX = ds.playerX;
-            gp.player.WorldY = ds.playerY;
             gp.player.stats.level = ds.level;
             gp.player.stats.exp = ds.exp;
             gp.player.stats.nextLevelExp = ds.nextLevelExp;
@@ -153,18 +138,7 @@ public class SaveLoad {
             gp.player.stats.armor = (OBJ_Armor) gp.player.inventory.get(ds.currentArmorSlot);
             gp.player.getDefense();
             gp.player.getPlayerImage();
-
-            //Objects on map
-            for (int i = 0; i < gp.obj.length; i++) {
-                if (gp.obj[i] != null) {
-                    gp.obj[i].name = ds.mapObjectNames[i];
-                    gp.obj[i].WorldX = ds.mapObjectWorldX[i];
-                    gp.obj[i].WorldY = ds.mapObjectWorldY[i];
-                    gp.obj[i].isVisible = ds.mapObjectVisibility[i];
-                    //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
-                }
-            }
-            //partyLoad
+            gp.tileM.loadedGame = true;
 
             System.out.println("Members in party: " + ds.membersInParty);
             gp.party.partyMembers.clear();
@@ -177,10 +151,8 @@ public class SaveLoad {
             ds.membersInParty = 0;
 
 
-
         } catch (Exception e) {
             System.out.println("Load Exception!");
-            e.printStackTrace(System.out);
         }
     }
 }

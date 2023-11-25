@@ -21,7 +21,7 @@ public class OBJ_WEAPON_BASH extends OBJ_Weapon {
         atk = 42;
         hit = 85;
         price = 60;
-        walkDown1 = setUp("/Objects/weapon_Maza");
+        walkDown1 = setUp("/Objects/weapon_Maza",gp.tileSize,gp.tileSize);
         setUpDescription();
     }
 

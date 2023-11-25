@@ -1,10 +1,6 @@
 package data;
 
 
-import entity.Entity;
-import monster.shadowStandar;
-
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -14,8 +10,6 @@ import java.util.ArrayList;
 public class DataStorage implements Serializable {
 
     //PLAYER STATS
-    int playerX;
-    int playerY;
     int level;
     int exp;
     int nextLevelExp;
@@ -31,14 +25,9 @@ public class DataStorage implements Serializable {
 
     //Player inventory
     ArrayList<String> itemNames = new ArrayList<>();
+    ArrayList<Integer> itemAmounts = new ArrayList<>();
     int currentWeaponSlot;
     int currentArmorSlot;
-
-    //Objects on map
-    String[] mapObjectNames = new String[10];
-    int[] mapObjectWorldX = new int[10];
-    int[] mapObjectWorldY = new int[10];
-    boolean[] mapObjectVisibility = new boolean[10];
 
     //Party
     int[] monsterLevel = new int[3];

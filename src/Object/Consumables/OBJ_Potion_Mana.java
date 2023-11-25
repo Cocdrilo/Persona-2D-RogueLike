@@ -22,7 +22,7 @@ public class OBJ_Potion_Mana extends Entity {
         collision = true;
         isPickupeable = true;
         type = 5;
-        walkDown1 = setUp("/Objects/manaPotion");
+        walkDown1 = setUp("/Objects/manaPotion",gp.tileSize,gp.tileSize);
         description = "Mana Potion heals +10 mp";
     }
 
@@ -63,7 +63,7 @@ public class OBJ_Potion_Mana extends Entity {
             gp.playerSe(4);
             healeablePlayer.stats.mp += 10;
             gp.gameState = gp.dialogueState;
-            gp.ui.currentDialogue = "You used a health potion";
+            gp.ui.currentDialogue = "You used a mana potion and healed 10 mp";
             if (healeablePlayer.stats.mp > healeablePlayer.stats.maxMp) {
                 healeablePlayer.stats.mp = healeablePlayer.stats.maxMp;
             }
