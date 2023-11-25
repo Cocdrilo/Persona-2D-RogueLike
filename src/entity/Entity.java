@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-public abstract class Entity implements Drawable{
+/**
+ * Represents an entity in the game world, such as players, NPCs, monsters, or items.
+ * Manages various attributes, actions, and interactions of entities.
+ */
+public class Entity {
 
     public GamePanel gp;
 
@@ -43,6 +47,7 @@ public abstract class Entity implements Drawable{
     public Entity_stats stats;
     public String description = "";
     public boolean isPickupeable = false;
+    public boolean isVisible = true;
 
     //Maps de Resistencias y Debilidades.
     public String resistances[];
@@ -63,6 +68,11 @@ public abstract class Entity implements Drawable{
     //Array de hechizos:
     public ArrayList<superMagic> spells;
 
+    /**
+     * Creates a new instance of the Entity class.
+     *
+     * @param gp The GamePanel associated with this entity.
+     */
     public Entity(GamePanel gp) {
 
         this.gp = gp;
@@ -70,7 +80,11 @@ public abstract class Entity implements Drawable{
     }
 
 
-
+    /**
+     * Fills the spells array with the specified spell names.
+     *
+     * @param spellNames An array of spell names to be added to the entity's spells.
+     */
     public void fillSpells(String[] spellNames) {
         spells = new ArrayList<>();
 
@@ -85,8 +99,14 @@ public abstract class Entity implements Drawable{
         }
     }
 
-    //CombatMethodss
+    //CombatMethods
 
+    /**
+     * Determines if the entity has a weakness against a given attack type.
+     *
+     * @param attckType The attack type to check.
+     * @return {@code true} if the entity is weak against the attack type, {@code false} otherwise.
+     */
     public boolean isWeak(String attckType) {
         for (String weakness : weaknesses) {
             if (Objects.equals(attckType, weakness)) {
@@ -96,6 +116,12 @@ public abstract class Entity implements Drawable{
         return false;
     }
 
+    /**
+     * Determines if the entity is resistant to a given attack type.
+     *
+     * @param attckType The attack type to check.
+     * @return {@code true} if the entity is resistant to the attack type, {@code false} otherwise.
+     */
     public boolean isResistant(String attckType) {
         for (String resistance : resistances) {
             if (Objects.equals(attckType, resistance)) {
@@ -105,6 +131,12 @@ public abstract class Entity implements Drawable{
         return false;
     }
 
+    /**
+     * Determines if the entity is null (neutral) to a given attack type.
+     *
+     * @param attckType The attack type to check.
+     * @return {@code true} if the entity is null to the attack type, {@code false} otherwise.
+     */
     public boolean isNull(String attckType) {
         for (String aNull : nulls) {
             if (Objects.equals(attckType, aNull)) {
@@ -114,6 +146,12 @@ public abstract class Entity implements Drawable{
         return false;
     }
 
+    /**
+     * Determines if the entity repels a given attack type.
+     *
+     * @param attckType The attack type to check.
+     * @return {@code true} if the entity repels the attack type, {@code false} otherwise.
+     */
     public boolean isRepelled(String attckType) {
         for (String repel : repells) {
             if (Objects.equals(attckType, repel)) {
@@ -133,6 +171,11 @@ public abstract class Entity implements Drawable{
     //RND = Randomness factor (according to DragoonKain33, may be roughly between
     //0.95 and 1.05)
 
+    /**
+     * Calculates the random factor used in damage calculation.
+     *
+     * @return A random factor between 0.95 and 1.05.
+     */
     public double randomFactor() {
         double minFactor = 0.95;
         double maxFactor = 1.05;
@@ -145,57 +188,98 @@ public abstract class Entity implements Drawable{
         return minFactor + (maxFactor - minFactor) * random.nextDouble();
     }
 
+    /**
+     * Calculates the physical attack damage.
+     *
+     * @param monsterEndurance The endurance stat of the target monster.
+     * @param physDmg          The physical damage value.
+     * @param attackerStat     The attacker's stat (strength, for example).
+     * @return The calculated physical attack damage.
+     */
     public int getPhysAttack(int monsterEndurance, int physDmg, int attackerStat) {
         return 5 * (int) (Math.sqrt(((double) attackerStat / monsterEndurance) * Math.sqrt(physDmg) * randomFactor()));
     }
 
+    /**
+     * Calculates the magic attack damage.
+     *
+     * @param monsterEndurance The endurance stat of the target monster.
+     * @param spellDmg         The spell damage value.
+     * @param attackMagicStat  The attacker's magic stat.
+     * @return The calculated magic attack damage.
+     */
     public int getMagicAttack(int monsterEndurance, int spellDmg, int attackMagicStat) {
         return 5 * (int) (Math.sqrt(((double) attackMagicStat / monsterEndurance) * Math.sqrt(spellDmg) * randomFactor()));
     }
 
+    /**
+     * Gets the defense value of the entity.
+     *
+     * @return The defense value.
+     */
     public int getDefense() {
         return stats.vit;
     }
     //Spell Methods
 
     // Métodos para agregar, quitar y acceder a hechizos del jugador
+
+    /**
+     * Adds a spell to the entity's list of spells.
+     *
+     * @param spell The spell to add.
+     */
     public void addSpell(superMagic spell) {
         spells.add(spell);
     }
 
+    /**
+     * Prints the names and costs of spells in the entity's spell list.
+     *
+     * @return An array of strings representing spell names and costs.
+     */
     public String[] printSpells() {
         String[] spellNames = new String[this.spells.size()];
         for (int spells = 0; spells < this.spells.size(); spells++) {
-            spellNames[spells] = this.spells.get(spells).name + "  " + (this.spells.get(spells).mpCost == 0 ? "hp: " + this.spells.get(spells).hpCost+"%" : "mp: " + this.spells.get(spells).mpCost);
+            spellNames[spells] = this.spells.get(spells).name + "  " + (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
         }
         return spellNames;
     }
-    public String[] getCosts(){
-        String[] spellCosts = new String[this.spells.size()];
-        for (int spells = 0; spells < this.spells.size(); spells++) {
-            spellCosts[spells] = (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
-        }
-        return spellCosts;
-    }
 
+    /**
+     * Removes a spell from the entity's list of spells.
+     *
+     * @param spell The spell to remove.
+     */
     public void removeSpell(superMagic spell) {
         spells.remove(spell);
     }
 
+    /**
+     * Gets the list of spells that the entity possesses.
+     *
+     * @return The list of spells.
+     */
     public ArrayList<superMagic> getSpells() {
         return spells;
     }
 
-
+    /**
+     * Updates the entity's action and checks for collisions.
+     */
     public void setAction() {
 
     }
 
+    /**
+     * Updates the entity's position and animation based on its direction and collision status.
+     * Also updates the sprite counter for animation.
+     */
     public void update() {
         setAction();
         checkCollisiOn();
 
-        //COLISON = FALSO ->PUEDE MOVER
+        //COLISION = FALSO ->PUEDE MOVER
         if (!collisionOn) {
 
             switch (direction) {
@@ -217,7 +301,10 @@ public abstract class Entity implements Drawable{
         }
     }
 
-    public void checkCollisiOn(){
+    /**
+     * Checks for collisions involving the entity, including tiles, objects, other entities, and the player.
+     */
+    public void checkCollisiOn() {
         collisionOn = false;
         gp.cCheck.checkTile(this);
         gp.cCheck.checkObject(this, false);
@@ -226,72 +313,68 @@ public abstract class Entity implements Drawable{
         boolean contactPlayer = gp.cCheck.checkPlayer(this);
     }
 
-    public void searchPath(int goalCol,int goalRow) {
+    /**
+     * Searches for a path from the entity's current position to the specified goal coordinates.
+     *
+     * @param goalCol The column of the goal coordinates.
+     * @param goalRow The row of the goal coordinates.
+     */
+    public void searchPath(int goalCol, int goalRow) {
 
-        int startCol = (WorldX + solidArea.x)/gp.tileSize;
-        int startRow = (WorldY + solidArea.y)/gp.tileSize;
+        int startCol = (WorldX + solidArea.x) / gp.tileSize;
+        int startRow = (WorldY + solidArea.y) / gp.tileSize;
 
         gp.pathFinder.setNode(startCol, startRow, goalCol, goalRow);
-        if(gp.pathFinder.search()){
+        if (gp.pathFinder.search()) {
             //Next WorldX&&Next WorldY
             int nextX = gp.pathFinder.pathList.get(0).col * gp.tileSize;
             int nextY = gp.pathFinder.pathList.get(0).row * gp.tileSize;
             //SolidAreaPosition
             int entityLeftX = WorldX + solidArea.x;
             int entityTopY = WorldY + solidArea.y;
-            int entityRightX = WorldX +solidArea.x + solidArea.width;
+            int entityRightX = WorldX + solidArea.x + solidArea.width;
             int entityBottomY = WorldY + solidArea.y + solidArea.height;
 
-            if(entityTopY > nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+            if (entityTopY > nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize) {
                 direction = "up";
-            }
-
-            else if (entityTopY < nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+            } else if (entityTopY < nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize) {
                 direction = "down";
-            }
-
-            else if (entityTopY >= nextY && entityBottomY < nextY + gp.tileSize){
+            } else if (entityTopY >= nextY && entityBottomY < nextY + gp.tileSize) {
                 //Left | right
-                if(entityLeftX > nextX){
+                if (entityLeftX > nextX) {
                     direction = "left";
                 }
-                if (entityLeftX < nextX){
+                if (entityLeftX < nextX) {
                     direction = "right";
                 }
-            }
-            else if (entityTopY > nextY && entityLeftX > nextX){
+            } else if (entityTopY > nextY && entityLeftX > nextX) {
                 //up or left
                 direction = "up";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "left";
                 }
-            }
-
-            else if (entityTopY > nextY && entityLeftX < nextX){
+            } else if (entityTopY > nextY && entityLeftX < nextX) {
                 //Up or right
                 direction = "up";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "right";
                 }
-            }
-            else if (entityTopY < nextY && entityLeftX > nextX){
+            } else if (entityTopY < nextY && entityLeftX > nextX) {
                 direction = "down";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "left";
                 }
-            }
-            else if (entityTopY < nextY && entityLeftX < nextX){
+            } else if (entityTopY < nextY && entityLeftX < nextX) {
                 direction = "down";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "right";
                 }
-            }
-            else{
-                //System.out.println("No se que hacer");
+            } else {
+                System.out.println("No se que hacer");
             }
         }
 
@@ -306,20 +389,28 @@ public abstract class Entity implements Drawable{
 
     }
 
-    public BufferedImage setUp(String ImagePath,int width, int height) {
+    /**
+     * Sets up the entity's image by loading and scaling it from the specified image path.
+     *
+     * @param ImagePath The path to the image file.
+     * @return The scaled BufferedImage for the entity's image.
+     */
+    public BufferedImage setUp(String ImagePath) {
         Toolbox tbox = new Toolbox();
         BufferedImage scaledImage = null;
 
         try {
             scaledImage = ImageIO.read(getClass().getResourceAsStream(ImagePath + ".png"));
-            scaledImage = tbox.scaleImage(scaledImage, width, height);
+            scaledImage = tbox.scaleImage(scaledImage, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return scaledImage;
     }
 
-
+    /**
+     * Initiates a conversation with the entity, updating the UI with the entity's name and dialogue.
+     */
     public void speak() {
         gp.ui.currentName = name;
         if (dialogues[dialogueIndex] == null) {
@@ -339,20 +430,39 @@ public abstract class Entity implements Drawable{
 
     }
 
+    /**
+     * Handles the use of the entity in the overworld context.
+     *
+     * @param entity The entity to interact with.
+     */
     public void overWorldUse(Entity entity) {
 
     }
 
+    /**
+     * Handles the use of the entity in a battle context.
+     *
+     * @param entity The entity to interact with in battle.
+     */
     public void battleUse(Entity entity) {
 
     }
 
-    @Override
+    /**
+     * Draws the entity on the game graphics.
+     *
+     * @param g2 The graphics context on which to draw the entity.
+     */
     public void draw(Graphics2D g2) {
+
+        if (!isVisible) {
+            return;
+        }
 
         BufferedImage image = null;
         int ScreenX = WorldX - gp.player.WorldX + gp.player.screenX;
         int ScreenY = WorldY - gp.player.WorldY + gp.player.screenY;
+
 
         if (WorldX + gp.tileSize > gp.player.WorldX - gp.player.screenX && WorldX - gp.tileSize < gp.player.WorldX + gp.player.screenX && WorldY + gp.tileSize > gp.player.WorldY - gp.player.screenY && WorldY - gp.tileSize < gp.player.WorldY + gp.player.screenX) {
 
@@ -387,7 +497,7 @@ public abstract class Entity implements Drawable{
                     }
                     break;
             }
-            g2.drawImage(image, ScreenX, ScreenY, image.getWidth(), image.getHeight(), null);
+            g2.drawImage(image, ScreenX, ScreenY, gp.tileSize, gp.tileSize, null);
         }
     }
 

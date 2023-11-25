@@ -3,7 +3,6 @@ package tile;
 import entity.Drawable;
 import main.GamePanel;
 import main.Toolbox;
-import proceduralNeeds.RandomDungeonGenerator;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,12 +19,8 @@ public class TileManager implements Drawable {
     GamePanel gp;
     public Tile[] tile;
 
-    public int[][] mapTileNum;
-    private int[][] oldmapTileNum;
+    public int mapTileNum[][];
     public boolean drawPath = true;
-    public boolean loadedGame = false;
-    public int specialRoomX;
-    public int specialRoomY;
 
     /**
      * Constructs a TileManager with the specified GamePanel.
@@ -33,32 +28,14 @@ public class TileManager implements Drawable {
      * @param gp The GamePanel associated with this TileManager.
      */
     public TileManager(GamePanel gp) {
+
         this.gp = gp;
 
         tile = new Tile[10];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+
         getTileImage();
-
-        // Generate a new random dungeon map
-        generateRandomDungeon();
-    }
-
-    /**
-     * Generates a random dungeon map using the RandomDungeonGenerator class.
-     */
-    private void generateRandomDungeon() {
-        RandomDungeonGenerator rdg = new RandomDungeonGenerator(gp);
-
-        // Set the generated dungeon as the current map
-
-        mapTileNum = rdg.dungeon;
-        setSpecialRoom(rdg.specialRoomX, rdg.specialRoomY);
-    }
-
-    public void setSpecialRoom(int x, int y){
-        specialRoomX = x -2;
-        specialRoomY = y -2;
-        System.out.println("Special room set at: " + specialRoomX + " " + specialRoomY);
+        LoadMap("/Maps/Map01.txt");
     }
 
     /**
@@ -67,16 +44,8 @@ public class TileManager implements Drawable {
     public void getTileImage() {
 
         setUp(0, "Floor_1", false);
-        setUp(1, "Wall_1", true);
-        setUp(2, "pitchBlack", true);
-        setUp(3,"Floor_2",false);
-        setUp(4,"Floor_3",false);
-        setUp(5,"Floor_4",false);
-        setUp(6,"Wall_2",true);
-        setUp(7,"Wall_3",true);
-        setUp(8,"Wall_4",true);
-        setUp(9,"Wall_5",true);
-
+        setUp(1, "WallMid", true);
+        setUp(2, "column", true);
     }
 
     /**
@@ -100,31 +69,6 @@ public class TileManager implements Drawable {
             e.printStackTrace();
         }
 
-    }
-
-    public int[] setPlayerRandomPosition() {
-        int col;
-        int row;
-
-        do {
-            // Generate random coordinates within the map boundaries
-            col = Toolbox.getRandomNumber(gp.maxWorldCol);
-            row = Toolbox.getRandomNumber(gp.maxWorldRow);
-
-            // Check if the generated coordinates are not in the boss room
-        } while (isInBossRoom(col, row) || mapTileNum[col][row] != 0); // Repeat until a ground tile is found outside the boss room
-
-        // Set the player's position to the found coordinates
-        return new int[]{col, row};
-    }
-
-    private boolean isInBossRoom(int col, int row) {
-        // Assuming specialRoomX and specialRoomY represent the top-left corner of the boss room
-        int bossRoomWidth = 5;
-        int bossRoomHeight = 5;
-
-        return col >= specialRoomX && col < specialRoomX + bossRoomWidth &&
-                row >= specialRoomY && row < specialRoomY + bossRoomHeight;
     }
 
     /**

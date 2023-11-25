@@ -1,9 +1,5 @@
 package negotiation;
 
-import Object.Consumables.OBJ_Potion_Health;
-import Object.Consumables.OBJ_Potion_Mana;
-import Object.Equipables.OBJ_WEAPON_Piercing;
-import Object.Equipables.OBJ_WEAPON_Slash;
 import main.BattleSystem;
 
 import java.util.ArrayList;
@@ -72,31 +68,7 @@ public class NegotiationSystem {
             System.out.println(requestMoneyText());
             canRequestMoney = false;
         } else if (randomAction == 2) {
-        }
-    }
-
-    /**
-     * Randomly gives an item for the player's inventory.
-     */
-    public void randomizeItems(){
-        //Numero Random del 1 al 3
-        int random = (int) (Math.random() * 3) + 1;
-        switch (random) {
-            case 1 -> {
-                OBJ_Potion_Health pocion = new OBJ_Potion_Health(battleSystem.gp);
-                battleSystem.party.Leader.inventory.add(pocion);
-                System.out.println("Has recibido una Pocion de Vida");
-            }
-            case 2 -> {
-                OBJ_Potion_Mana pocion = new OBJ_Potion_Mana(battleSystem.gp);
-                battleSystem.party.Leader.inventory.add(pocion);
-                System.out.println("Has recibido una Pocion de Mana");
-            }
-            case 3 -> {
-                OBJ_WEAPON_Piercing pierceWeapon = new OBJ_WEAPON_Piercing(battleSystem.gp);
-                battleSystem.party.Leader.inventory.add(pierceWeapon);
-                System.out.println("Has recibido un arma Perforante");
-            }
+            // No funcional actualmente requestItem();
         }
     }
 
@@ -172,7 +144,13 @@ public class NegotiationSystem {
      * Initiates a request for an item from the player.
      */
     public void requestItem() {
-        randomizeItems();
+        // Aquí puedes implementar la lógica para pedir un objeto al jugador.
+        // Por ejemplo, puedes seleccionar un objeto aleatorio de la lista de objetos del jugador.
+        // Si el jugador tiene objetos disponibles, puedes agregar la lógica para darle un objeto al oponente.
+        // Asegúrate de que haya un mecanismo para verificar si el jugador tiene objetos disponibles.
+        // Puedes considerar la creación de una lista de objetos en la clase `Party` para esto.
+        // battleSystem.party.Leader.addItem(item); // Agregar un objeto al oponente.
+        System.out.println("El oponente está pidiendo un objeto.");
     }
 
 
@@ -213,7 +191,7 @@ public class NegotiationSystem {
                     battleSystem.party.addMonsterToParty(battleSystem.monster.name);
             case 1 ->
                 // 2. Obtener un item. WIP
-                    randomizeItems();
+                    System.out.println("1. Obtener un item");
             case 2 -> {
                 // 3. Obtener dinero.
                 int random = (int) (Math.random() * (50) * battleSystem.monster.stats.level) + 10;

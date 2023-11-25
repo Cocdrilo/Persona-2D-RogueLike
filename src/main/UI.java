@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
 /**
  * This class represents the user interface (UI) for the game.
@@ -34,14 +33,10 @@ public class UI implements Drawable {
     BufferedImage pressTurnIcon1;
     BufferedImage pressTurnIcon2;
     BufferedImage backgroundCombat;
-    BufferedImage endScreen;
 
     //ArrayList de text para que sean Scrolling
-    public ArrayList<String> messageList = new ArrayList<>();
-    ArrayList<String> combatMessageList = new ArrayList<>();
+    ArrayList<String> messageList = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
-
-    private Timer timer;
 
     private int selectedIndex = 0;
 
@@ -86,13 +81,9 @@ public class UI implements Drawable {
             pressTurnIcon1 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIcon.png"));
             pressTurnIcon2 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIconHalfTurn.png"));
             backgroundCombat = ImageIO.read(getClass().getResourceAsStream("/BattleImages/Combat_Background.png"));
-            endScreen = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/BasementOfPain.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        int duracionTextoEnMilisegundos = 4000; // 4 segundos
-        timer = new Timer(duracionTextoEnMilisegundos, e -> draw(g2));
 
     }
 
@@ -288,7 +279,7 @@ public class UI implements Drawable {
         textY += lineHeight;
         g2.drawString("EXP", textX, textY);
         textY += lineHeight;
-        g2.drawString("NEXT EXP", textX, textY);
+        g2.drawString("NEXT_EXP", textX, textY);
         textY += lineHeight;
         g2.drawString("HP", textX, textY);
         textY += lineHeight;
@@ -380,12 +371,8 @@ public class UI implements Drawable {
             g2.drawString("Level: " + valor, textX, textY);
             textY += lineHeight;
 
-            valor = String.valueOf(member.stats.exp);
-            g2.drawString("EXP: " + valor, textX, textY);
-            textY += lineHeight;
-
             valor = String.valueOf(member.stats.nextLevelExp);
-            g2.drawString("NEXT EXP: " + valor, textX, textY);
+            g2.drawString("EXP: " + valor, textX, textY);
             textY += lineHeight;
 
             valor = String.valueOf(member.stats.hp + "/" + member.stats.maxHp);
@@ -523,12 +510,6 @@ public class UI implements Drawable {
     }
 
     /**
-     * Draws Attempt to escape failed on screen
-     *
-     */
-
-
-    /**
      * Draws the magic menu during combat, displaying available spells for the player.
      *
      * @param x           The X-coordinate of the magic menu.
@@ -541,7 +522,7 @@ public class UI implements Drawable {
         drawSubWindow(x, y, width, height);
 
         g2.setColor(Color.WHITE);
-        g2.setFont(g2.getFont().deriveFont(18F));
+        g2.setFont(g2.getFont().deriveFont(24F));
 
         String[] entitySpellNames = BattleState.partyMembers.get(BattleState.currentPartyMemberIndex).printSpells();
 
@@ -639,10 +620,10 @@ public class UI implements Drawable {
 
         drawPlayer(x, y, selectedIndex);
 
-        int maxHealth2 = gp.battleSystem.party.Leader.stats.maxHp;
-        int currentHealth2 = gp.battleSystem.party.Leader.stats.hp;
-        int maxMana = gp.battleSystem.party.Leader.stats.maxMp;
-        int currentMana = gp.battleSystem.party.Leader.stats.mp;
+        int maxHealth2 = gp.player.stats.maxHp;
+        int currentHealth2 = gp.player.stats.hp;
+        int maxMana = gp.player.stats.maxMp;
+        int currentMana = gp.player.stats.mp;
 
         String playerHealthText = currentHealth2 + "/" + maxHealth2;
         String playerManaText = currentMana + "/" + maxMana;
@@ -660,12 +641,14 @@ public class UI implements Drawable {
      * @param selectedIndex The index of the selected party member.
      */
     private void drawPlayer(int x, int y, int selectedIndex) {
-
         image = gp.player.standFront;
         g2.drawImage(image, x + 10, y, 64, 64, null);
+        if (selectedIndex == 0) {
+            g2.setColor(Color.RED);
+            g2.drawRoundRect(x + 10, y, 65, 65, 20, 20);
+        }
 
-        try {
-            for (int i = 1; i < gp.battleSystem.partyMembers.size(); i++) {
+        for (int i = 1; i < gp.battleSystem.partyMembers.size(); i++) {
 
             shadowStandar monstruo = (shadowStandar) gp.battleSystem.partyMembers.get(i);
             image = monstruo.getCombatImage();
@@ -683,17 +666,6 @@ public class UI implements Drawable {
                 g2.drawRoundRect(x + 128 + ((i -1) * 120), y+1, 65, 65, 20, 20);
             }
         }
-        }catch (Exception e){
-            System.out.println("No hay mas miembros en el party");
-            e.printStackTrace(System.out);
-        }
-
-        if (selectedIndex == 0) {
-            g2.setColor(Color.RED);
-            g2.drawRoundRect(x + 10, y, 65, 65, 20, 20);
-        }
-
-
     }
 
     /**
@@ -990,70 +962,24 @@ public class UI implements Drawable {
         int messageY = gp.tileSize * 4;
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
 
-        try{
-            for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
+        for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
 
-                if (messageList.get(messagePosition) != null) {
-                    g2.setColor(Color.white);
-                    g2.drawString(messageList.get(messagePosition), messageX, messageY);
+            if (messageList.get(messagePosition) != null) {
+                g2.setColor(Color.white);
+                g2.drawString(messageList.get(messagePosition), messageX, messageY);
 
-                    //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
+                //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
 
-                    int counter = messageCounter.get(messagePosition) + 1;
-                    messageCounter.set(messagePosition, counter);
-                    messageY += 50;
+                int counter = messageCounter.get(messagePosition) + 1;
+                messageCounter.set(messagePosition, counter);
+                messageY += 50;
 
-                    if (messageCounter.get(messagePosition) > 120) {
-                        messageList.remove(messagePosition);
-                        messageCounter.remove(messagePosition);
-                    }
+                if (messageCounter.get(messagePosition) > 120) {
+                    messageList.remove(messagePosition);
+                    messageCounter.remove(messagePosition);
                 }
             }
-        }catch (Exception e){
-            System.out.println("Error en drawMessage");
-            e.printStackTrace(System.err);
-            messageList.clear();
-            messageCounter.clear();
-            return;
         }
-
-
-    }
-
-    public void drawCombatMessage() {
-        int messageX = (int) (gp.screenWidth-gp.tileSize*6.5);    //gp.tileSize;
-        int messageY = gp.tileSize * 4;
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 18F));
-
-        try{
-            for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
-
-                if (messageList.get(messagePosition) != null) {
-                    g2.setColor(Color.white);
-                    g2.drawString(messageList.get(messagePosition), messageX, messageY);
-
-                    //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
-
-                    int counter = messageCounter.get(messagePosition) + 1;
-                    messageCounter.set(messagePosition, counter);
-                    messageY += 50;
-
-                    if (messageCounter.get(messagePosition) > 120) {
-                        messageList.remove(messagePosition);
-                        messageCounter.remove(messagePosition);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error en drawCombatMessage");
-            e.printStackTrace(System.err);
-            messageList.clear();
-            messageCounter.clear();
-            return;
-        }
-
-
-
     }
 
     /**
@@ -1116,18 +1042,6 @@ public class UI implements Drawable {
         }
     }
 
-
-    private void drawEndScreen() {
-
-        //Dibuja el fondo endScreen
-        g2.setColor(Color.BLACK);
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-        g2.drawImage(endScreen, 0, 0, gp.screenWidth, gp.screenHeight, null);
-
-    }
-
-
-
     /**
      * Draws the graphical elements based on the current game state, including title screens, messages, dialogue screens,
      * player menus, status screens, inventory screens, combat screens, negotiation screens, negotiation reward screens,
@@ -1176,7 +1090,6 @@ public class UI implements Drawable {
         //Combat State
         if (gp.gameState == gp.combatState || gp.gameState == gp.magicMenuState || gp.gameState == gp.battleItemsState) {
             drawCombatScreen(gp.battleSystem);
-            drawCombatMessage();
             if (gp.battleSystem.playerIsAttacking) {
                 int enemyX = gp.tileSize * 6+30;
                 int enemyY = (int) (gp.tileSize * 2);
@@ -1273,12 +1186,7 @@ public class UI implements Drawable {
         if (gp.gameState == gp.optionsState) {
             drawOptionsScreen();
         }
-        if (gp.gameState == gp.endScreenState){
-            drawEndScreen();
-        }
     }
-
-
 
     /**
      * Draws the game options screen, providing access to settings such as full screen, music volume, and sound effects volume.

@@ -92,7 +92,6 @@ public class GamePanel extends JPanel implements Runnable {
     public final int negotiationRewardState = 12;
     public final int moneyRequestState = 13;
     public final int optionsState = 14;
-    public final int endScreenState = 15;
 
 
     /**
@@ -127,9 +126,8 @@ public class GamePanel extends JPanel implements Runnable {
         Asetter.setObject();
         Asetter.setNPC();
         Asetter.setMonsters();
-        Asetter.setBoss();
 
-        playMusic(0);
+        //playMusic(0);
         gameState = titleState;
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
@@ -304,8 +302,8 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void playerSe(int i) {
 
-        //se.setFile(i);
-        //se.play();
+        se.setFile(i);
+        se.play();
 
     }
 }
