@@ -566,19 +566,11 @@ public class BattleSystem {
      * Ends the battle, granting experience points to the player and party and handling loot.
      */
     public void endBattle() {
-
-        if(monster.boss){
-            gp.stopMusic();
-            gp.playMusic(0);
-        }
-
-
         //EXP calc
 
         party.Leader.stats.exp = party.Leader.stats.exp + monster.xpGiven;
         System.out.println("Player has recived " + monster.xpGiven + " exp");
 
-        //Loot calc
 
         //Random de dinero
         Random random = new Random();
@@ -587,9 +579,6 @@ public class BattleSystem {
             gp.ui.messageList.add("Player has recived " + randomNum + " money");
             gp.player.stats.money = gp.player.stats.money + randomNum;
         }
-
-        //Random de Objetos
-        gp.Asetter.respawnMonster();
 
         for(int i = 0; i < party.partyMembers.size(); i++){
             //Exp /2 por cada miembro del partido para que no esten al mismo level o mas que el Lider y porque se reparte entre los miembros
@@ -602,11 +591,22 @@ public class BattleSystem {
             }
         }
 
+        if(monster.boss){
+            gp.stopMusic();
+            gp.playMusic(0);
+            gp.Asetter.summonStairs(monster.WorldX,monster.WorldY);
+        }
+
         if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
             //Level Up
             party.Leader.levelUp();
             System.out.println("Player has leveled up");
             return;
+        }
+
+        if(!monster.boss){
+            //Random de Objetos
+            gp.Asetter.respawnMonster();
         }
 
 

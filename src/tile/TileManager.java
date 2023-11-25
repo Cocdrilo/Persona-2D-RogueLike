@@ -116,11 +116,21 @@ public class TileManager implements Drawable {
             // Generate random coordinates within the map boundaries
             col = Toolbox.getRandomNumber(gp.maxWorldCol);
             row = Toolbox.getRandomNumber(gp.maxWorldRow);
-        } while (mapTileNum[col][row] != 0); // Repeat until a ground tile is found
 
+            // Check if the generated coordinates are not in the boss room
+        } while (isInBossRoom(col, row) || mapTileNum[col][row] != 0); // Repeat until a ground tile is found outside the boss room
 
         // Set the player's position to the found coordinates
         return new int[]{col, row};
+    }
+
+    private boolean isInBossRoom(int col, int row) {
+        // Assuming specialRoomX and specialRoomY represent the top-left corner of the boss room
+        int bossRoomWidth = 5;
+        int bossRoomHeight = 5;
+
+        return col >= specialRoomX && col < specialRoomX + bossRoomWidth &&
+                row >= specialRoomY && row < specialRoomY + bossRoomHeight;
     }
 
     /**

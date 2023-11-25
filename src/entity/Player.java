@@ -72,7 +72,7 @@ public class Player extends Entity {
         stats.hp = stats.maxHp;
         stats.maxMp = 41;
         stats.mp = stats.maxMp;
-        stats.str = 30;
+        stats.str = 7;
         stats.agi = 3;
         stats.mag = 2;
         stats.vit = 3;
@@ -305,8 +305,9 @@ public class Player extends Entity {
 
     public void ObjectInteractions(int i) {
 
-        if (i != 999) {
-
+        if (i != 999 && gp.keyH.zPressed && gp.obj[i].name.equals("stairs")) {
+            gp.stopMusic();
+            gp.gameState = gp.endScreenState;
         }
     }
 

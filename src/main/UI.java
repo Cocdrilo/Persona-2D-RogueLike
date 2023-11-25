@@ -34,6 +34,7 @@ public class UI implements Drawable {
     BufferedImage pressTurnIcon1;
     BufferedImage pressTurnIcon2;
     BufferedImage backgroundCombat;
+    BufferedImage endScreen;
 
     //ArrayList de text para que sean Scrolling
     public ArrayList<String> messageList = new ArrayList<>();
@@ -85,6 +86,7 @@ public class UI implements Drawable {
             pressTurnIcon1 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIcon.png"));
             pressTurnIcon2 = ImageIO.read(getClass().getResourceAsStream("/BattleImages/PressTurnIconHalfTurn.png"));
             backgroundCombat = ImageIO.read(getClass().getResourceAsStream("/BattleImages/Combat_Background.png"));
+            endScreen = ImageIO.read(getClass().getResourceAsStream("/TitleScreen/BasementOfPain.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -658,14 +660,12 @@ public class UI implements Drawable {
      * @param selectedIndex The index of the selected party member.
      */
     private void drawPlayer(int x, int y, int selectedIndex) {
+
         image = gp.player.standFront;
         g2.drawImage(image, x + 10, y, 64, 64, null);
-        if (selectedIndex == 0) {
-            g2.setColor(Color.RED);
-            g2.drawRoundRect(x + 10, y, 65, 65, 20, 20);
-        }
 
-        for (int i = 1; i < gp.battleSystem.partyMembers.size(); i++) {
+        try {
+            for (int i = 1; i < gp.battleSystem.partyMembers.size(); i++) {
 
             shadowStandar monstruo = (shadowStandar) gp.battleSystem.partyMembers.get(i);
             image = monstruo.getCombatImage();
@@ -683,6 +683,17 @@ public class UI implements Drawable {
                 g2.drawRoundRect(x + 128 + ((i -1) * 120), y+1, 65, 65, 20, 20);
             }
         }
+        }catch (Exception e){
+            System.out.println("No hay mas miembros en el party");
+            e.printStackTrace(System.out);
+        }
+
+        if (selectedIndex == 0) {
+            g2.setColor(Color.RED);
+            g2.drawRoundRect(x + 10, y, 65, 65, 20, 20);
+        }
+
+
     }
 
     /**
@@ -1004,24 +1015,35 @@ public class UI implements Drawable {
         int messageY = gp.tileSize * 4;
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 18F));
 
-        for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
+        try{
+            for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
 
-            if (messageList.get(messagePosition) != null) {
-                g2.setColor(Color.white);
-                g2.drawString(messageList.get(messagePosition), messageX, messageY);
+                if (messageList.get(messagePosition) != null) {
+                    g2.setColor(Color.white);
+                    g2.drawString(messageList.get(messagePosition), messageX, messageY);
 
-                //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
+                    //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
 
-                int counter = messageCounter.get(messagePosition) + 1;
-                messageCounter.set(messagePosition, counter);
-                messageY += 50;
+                    int counter = messageCounter.get(messagePosition) + 1;
+                    messageCounter.set(messagePosition, counter);
+                    messageY += 50;
 
-                if (messageCounter.get(messagePosition) > 120) {
-                    messageList.remove(messagePosition);
-                    messageCounter.remove(messagePosition);
+                    if (messageCounter.get(messagePosition) > 120) {
+                        messageList.remove(messagePosition);
+                        messageCounter.remove(messagePosition);
+                    }
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Error en drawCombatMessage");
+            e.printStackTrace(System.err);
+            messageList.clear();
+            messageCounter.clear();
+            return;
         }
+
+
+
     }
 
     /**
@@ -1083,6 +1105,18 @@ public class UI implements Drawable {
             g2.drawString("Points Left: " + gp.keyH.pointsPerLevel, gp.screenWidth - 200, gp.screenHeight - 50);
         }
     }
+
+
+    private void drawEndScreen() {
+
+        //Dibuja el fondo endScreen
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.drawImage(endScreen, 0, 0, gp.screenWidth, gp.screenHeight, null);
+
+    }
+
+
 
     /**
      * Draws the graphical elements based on the current game state, including title screens, messages, dialogue screens,
@@ -1229,7 +1263,12 @@ public class UI implements Drawable {
         if (gp.gameState == gp.optionsState) {
             drawOptionsScreen();
         }
+        if (gp.gameState == gp.endScreenState){
+            drawEndScreen();
+        }
     }
+
+
 
     /**
      * Draws the game options screen, providing access to settings such as full screen, music volume, and sound effects volume.

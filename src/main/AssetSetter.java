@@ -106,6 +106,12 @@ public class AssetSetter {
 
     }
 
+    public void summonStairs(int x,int y){
+        gp.obj[9] = new OBJ_Stairs(gp);
+        gp.obj[9].WorldX = x;
+        gp.obj[9].WorldY = y;
+    }
+
     public void setMonsters() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
 

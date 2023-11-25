@@ -24,7 +24,7 @@ public class OBJ_Stairs extends Entity {
 
         name = "stairs";
         walkDown1 = setUp("/Objects/Stairs",gp.tileSize,gp.tileSize);
-        collision = false;
+        collision = true;
     }
 }
 

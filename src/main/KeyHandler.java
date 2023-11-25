@@ -112,8 +112,18 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.optionsState) {
             optionsState(code);
         }
+        //END SCREEN
+        else if (gp.gameState == gp.endScreenState) {
+            endScreenState(code);
+        }
 
 
+    }
+
+    private void endScreenState(int code) {
+        if (code == KeyEvent.VK_ENTER) {
+            gp.gameState = gp.titleState;
+        }
     }
 
     /**
