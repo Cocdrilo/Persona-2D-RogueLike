@@ -106,6 +106,7 @@ public class BattleSystem {
             if (partyMembers.get(i).stats.hp <= 0) {
                 partyMembers.remove(i);
                 System.out.println(partyMembers.get(i).name + " has died");
+                gp.party.partyMembers.remove(i-1);
             }
         }
     }

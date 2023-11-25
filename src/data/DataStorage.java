@@ -29,11 +29,19 @@ public class DataStorage implements Serializable {
     int currentWeaponSlot;
     int currentArmorSlot;
 
-    //Objects on map
-    String[][] mapObjectNames;
-    int[][] mapObjectWorldX;
-    int[][] mapObjectWorldY;
-    String[][] mapObjectLootNames;
-    boolean[][] mapObjectOpened;
+    //Party
+    int[] monsterLevel = new int[3];
+    int[] monsterEXP = new int[3];
+    int[] monsterNextLevelEXP = new int[3];
+    int[] monsterMaxLife = new int[3];
+    int[] monsterLife = new int[3];
+    int[] monsterMana = new int[3];
+    int[] monsterMaxMana = new int[3];
+    int[] monsterStrength = new int[3];
+    int[] monsterMagic = new int[3];
+    int[] monsterAgility = new int[3];
+    int[] monsterVitality = new int[3];
+    String[] monsterName = new String[3];
+    int membersInParty = 0;
 
 }

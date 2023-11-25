@@ -990,24 +990,34 @@ public class UI implements Drawable {
         int messageY = gp.tileSize * 4;
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
 
-        for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
+        try{
+            for (int messagePosition = 0; messagePosition < messageList.size(); messagePosition++) {
 
-            if (messageList.get(messagePosition) != null) {
-                g2.setColor(Color.white);
-                g2.drawString(messageList.get(messagePosition), messageX, messageY);
+                if (messageList.get(messagePosition) != null) {
+                    g2.setColor(Color.white);
+                    g2.drawString(messageList.get(messagePosition), messageX, messageY);
 
-                //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
+                    //Esta parte lo que hace es actualizar el contador del array list y setearlo a la posicion del for loop con el contador actualizado y aumenta la Y del siguiente texto
 
-                int counter = messageCounter.get(messagePosition) + 1;
-                messageCounter.set(messagePosition, counter);
-                messageY += 50;
+                    int counter = messageCounter.get(messagePosition) + 1;
+                    messageCounter.set(messagePosition, counter);
+                    messageY += 50;
 
-                if (messageCounter.get(messagePosition) > 120) {
-                    messageList.remove(messagePosition);
-                    messageCounter.remove(messagePosition);
+                    if (messageCounter.get(messagePosition) > 120) {
+                        messageList.remove(messagePosition);
+                        messageCounter.remove(messagePosition);
+                    }
                 }
             }
+        }catch (Exception e){
+            System.out.println("Error en drawMessage");
+            e.printStackTrace(System.err);
+            messageList.clear();
+            messageCounter.clear();
+            return;
         }
+
+
     }
 
     public void drawCombatMessage() {

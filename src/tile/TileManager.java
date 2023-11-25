@@ -39,14 +39,8 @@ public class TileManager implements Drawable {
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
 
-        if (loadedGame) {
-            // Load existing map
-            mapTileNum = oldmapTileNum;
-        } else {
-            // Generate a new random dungeon map
-            generateRandomDungeon();
-            oldmapTileNum = mapTileNum;
-        }
+        // Generate a new random dungeon map
+        generateRandomDungeon();
     }
 
     /**

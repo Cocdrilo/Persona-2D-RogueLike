@@ -106,7 +106,7 @@ public class shadowStandar extends Entity {
 
             totalPoints -= pointsToAdd;
         }
-        System.out.println("Level up!" +name+" is now level "+stats.level);
+        System.out.println("Level up!" + name + " is now level " + stats.level);
     }
 
 
@@ -116,7 +116,7 @@ public class shadowStandar extends Entity {
      * @return The combat image.
      */
     public BufferedImage getCombatImage() {
-        combatImage = setUp(combatImagePath,gp.tileSize,gp.tileSize);
+        combatImage = setUp(combatImagePath, gp.tileSize, gp.tileSize);
         return combatImage;
     }
 
@@ -124,46 +124,46 @@ public class shadowStandar extends Entity {
      * Loads images for different walking directions.
      */
     public void getImage() {
-        walkDown1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
-        walkDown2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
-        walkDown3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
-        walkDown4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
-        walkLeft1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
-        walkLeft2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
-        walkLeft3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
-        walkLeft4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
-        walkRight1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
-        walkRight2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
-        walkRight3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
-        walkRight4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
-        walkUp1 = setUp("/Monsters/Demon1",gp.tileSize,gp.tileSize);
-        walkUp2 = setUp("/Monsters/Demon2",gp.tileSize,gp.tileSize);
-        walkUp3 = setUp("/Monsters/Demon3",gp.tileSize,gp.tileSize);
-        walkUp4 = setUp("/Monsters/Demon4",gp.tileSize,gp.tileSize);
+        walkDown1 = setUp("/Monsters/Demon1", gp.tileSize, gp.tileSize);
+        walkDown2 = setUp("/Monsters/Demon2", gp.tileSize, gp.tileSize);
+        walkDown3 = setUp("/Monsters/Demon3", gp.tileSize, gp.tileSize);
+        walkDown4 = setUp("/Monsters/Demon4", gp.tileSize, gp.tileSize);
+        walkLeft1 = setUp("/Monsters/Demon1", gp.tileSize, gp.tileSize);
+        walkLeft2 = setUp("/Monsters/Demon2", gp.tileSize, gp.tileSize);
+        walkLeft3 = setUp("/Monsters/Demon3", gp.tileSize, gp.tileSize);
+        walkLeft4 = setUp("/Monsters/Demon4", gp.tileSize, gp.tileSize);
+        walkRight1 = setUp("/Monsters/Demon1", gp.tileSize, gp.tileSize);
+        walkRight2 = setUp("/Monsters/Demon2", gp.tileSize, gp.tileSize);
+        walkRight3 = setUp("/Monsters/Demon3", gp.tileSize, gp.tileSize);
+        walkRight4 = setUp("/Monsters/Demon4", gp.tileSize, gp.tileSize);
+        walkUp1 = setUp("/Monsters/Demon1", gp.tileSize, gp.tileSize);
+        walkUp2 = setUp("/Monsters/Demon2", gp.tileSize, gp.tileSize);
+        walkUp3 = setUp("/Monsters/Demon3", gp.tileSize, gp.tileSize);
+        walkUp4 = setUp("/Monsters/Demon4", gp.tileSize, gp.tileSize);
     }
 
-    public void swaptoBossImage(){
+    public void swaptoBossImage() {
         int i = 3;
 
-        walkDown1 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
-        walkDown2 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
-        walkDown3 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
-        walkDown4 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
-        walkLeft1 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
-        walkLeft2 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
-        walkLeft3 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
-        walkLeft4 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
-        walkRight1 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
-        walkRight2 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
-        walkRight3 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
-        walkRight4 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
-        walkUp1 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
-        walkUp2 = setUp("/Monsters/Archangel2",gp.tileSize*i,gp.tileSize*i);
-        walkUp3 = setUp("/Monsters/Archangel3",gp.tileSize*i,gp.tileSize*i);
-        walkUp4 = setUp("/Monsters/Archangel1",gp.tileSize*i,gp.tileSize*i);
+        walkDown1 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
+        walkDown2 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
+        walkDown3 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
+        walkDown4 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
+        walkLeft1 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
+        walkLeft2 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
+        walkLeft3 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
+        walkLeft4 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
+        walkRight1 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
+        walkRight2 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
+        walkRight3 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
+        walkRight4 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
+        walkUp1 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
+        walkUp2 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
+        walkUp3 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
+        walkUp4 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
 
-        solidArea.width = gp.tileSize*i;
-        solidArea.height = gp.tileSize*i;
+        solidArea.width = gp.tileSize * i;
+        solidArea.height = gp.tileSize * i;
         boss = true;
     }
 
@@ -172,14 +172,12 @@ public class shadowStandar extends Entity {
      */
     public void setAction() {
 
-        if (onPath){
-            int goalCol = (gp.player.WorldX + gp.player.solidArea.x+1)/gp.tileSize;
-            int goalRow = (gp.player.WorldY + gp.player.solidArea.y+1)/gp.tileSize;
+        if (onPath) {
+            int goalCol = (gp.player.WorldX + gp.player.solidArea.x + 1) / gp.tileSize;
+            int goalRow = (gp.player.WorldY + gp.player.solidArea.y + 1) / gp.tileSize;
 
             searchPath(goalCol, goalRow);
-        }
-
-        else{
+        } else {
             //IA BASICA DE MOVIMIENTO ALEATORIO
             actionLockCounter++;
 
@@ -205,7 +203,7 @@ public class shadowStandar extends Entity {
     }
 
 
-    public void update(){
+    public void update() {
 
         super.update();
 
@@ -222,19 +220,31 @@ public class shadowStandar extends Entity {
 
         int xDistance = Math.abs(WorldX - gp.player.WorldX);
         int yDistance = Math.abs(WorldY - gp.player.WorldY);
-        int tileDistance = (xDistance + yDistance)/gp.tileSize;
+        int tileDistance = (xDistance + yDistance) / gp.tileSize;
 
-        if(!onPath && tileDistance < 5){
+        if (!onPath && tileDistance < 5) {
             onPath = true;
         }
 
         //Agro Range
-        if(onPath && tileDistance > 10){
+        if (onPath && tileDistance > 10) {
             onPath = false;
         }
 
     }
 
-
-
+    //ds.monsterLevel[i],ds.monsterEXP[i],ds.monsterNextLevelEXP[i],ds.monsterLife[i],ds.monsterMaxLife[i],ds.monsterMana[i],ds.monsterMaxMana[i],ds.monsterStrength[i],ds.monsterAgility[i],ds.monsterMagic[i],ds.monsterVitality[i]
+    public void swapStats(int level, int exp, int nextLevelExp, int life, int maxLife, int mana, int maxMana, int strength, int agility, int magic, int vitality) {
+        stats.level = level;
+        stats.exp = exp;
+        stats.nextLevelExp = nextLevelExp;
+        stats.hp = life;
+        stats.maxHp = maxLife;
+        stats.mp = mana;
+        stats.maxMp = maxMana;
+        stats.str = strength;
+        stats.agi = agility;
+        stats.mag = magic;
+        stats.vit = vitality;
+    }
 }

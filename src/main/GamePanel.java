@@ -304,8 +304,8 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void playerSe(int i) {
 
-        se.setFile(i);
-        se.play();
+        //se.setFile(i);
+        //se.play();
 
     }
 }
