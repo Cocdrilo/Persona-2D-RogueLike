@@ -521,12 +521,10 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_Z) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.playState;
-                //gp.playMusic(0);
             }
             if (gp.ui.commandNum == 1) {
                 gp.saveLoad.load();
                 gp.gameState = gp.playState;
-                //gp.playMusic(0);
             }
             if (gp.ui.commandNum == 2) {
                 System.exit(0);
@@ -576,7 +574,6 @@ public class KeyHandler implements KeyListener {
      * @param code Key code.
      */
     public void pauseState(int code) {
-
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.playState;
         }

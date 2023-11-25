@@ -50,6 +50,12 @@ public class BattleSystem {
         // Agrega a los miembros del partido a la lista
         this.partyMembers.addAll(party.partyMembers);
         this.currentPartyMemberIndex = 0; // Inicialmente, el primer miembro del partido ataca
+
+        if(monster.boss){
+            System.out.println("Boss Battle");
+            gp.music.stop();
+            gp.playMusic(6);
+        }
     }
 
     /**
@@ -560,6 +566,13 @@ public class BattleSystem {
      * Ends the battle, granting experience points to the player and party and handling loot.
      */
     public void endBattle() {
+
+        if(monster.boss){
+            gp.stopMusic();
+            gp.playMusic(0);
+        }
+
+
         //EXP calc
 
         party.Leader.stats.exp = party.Leader.stats.exp + monster.xpGiven;
@@ -595,6 +608,7 @@ public class BattleSystem {
             System.out.println("Player has leveled up");
             return;
         }
+
 
         gp.gameState = gp.playState;
 
