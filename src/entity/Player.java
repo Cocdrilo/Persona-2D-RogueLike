@@ -24,7 +24,6 @@ public class Player extends Entity {
 
     //Inventario del jugador
     public ArrayList<Entity> inventory = new ArrayList<>();
-    public boolean defending = false;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);

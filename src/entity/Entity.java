@@ -49,6 +49,7 @@ public abstract class Entity implements Drawable{
     public int type; // 0 = player, 1 = npc, 2 = mosnter 3 = equipableSword 4 = equipableArmor 5 = consumableItem
     public Entity_stats stats;
     public String description = "";
+    public boolean defending = false;
     public boolean isPickupeable = false;
 
     //Maps de Resistencias y Debilidades.

@@ -172,7 +172,16 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.battleItemsState;
             }
             if (gp.ui.commandNum == 3) {
-                gp.battleSystem.defend();
+                Entity defender = gp.battleSystem.partyMembers.get(gp.battleSystem.currentPartyMemberIndex);
+
+                if (defender instanceof Player playerDefender) {
+                    // Realiza un casting a Player
+                    gp.battleSystem.defend(playerDefender);
+                } else if (defender instanceof shadowStandar monsterDefender) {
+                    // Realiza un casting a shadowStandar
+                    gp.battleSystem.defend(monsterDefender);
+                }
+
             }
             if (gp.ui.commandNum == 4) {
                 gp.battleSystem.fleeFromBattle();

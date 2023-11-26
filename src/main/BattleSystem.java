@@ -130,7 +130,14 @@ public class BattleSystem {
 
         playerIsAttacking = true;
 
-        target.stats.hp = target.stats.hp - calculateDamage(attacker, target, weaponDmgType);
+        int damage = calculateDamage(attacker, target, weaponDmgType);
+
+        // Verifica si la entidad objetivo está defendiendo
+        if (target.defending) {
+            damage /= 2;  // Reduce el daño a la mitad si la entidad está defendiendo
+        }
+
+        target.stats.hp = target.stats.hp - damage;
 
         if (pressTurn <= 0 || target.stats.hp <= 0) {
             pressTurn = 8;
@@ -162,7 +169,14 @@ public class BattleSystem {
 
         monsterIsAttacking = true;
 
-        target.stats.hp = target.stats.hp - calculateDamage(attacker, target, weaponDmgType);
+        int damage = calculateDamage(attacker, target, weaponDmgType);
+
+        // Verifica si la entidad objetivo está defendiendo
+        if (target.defending) {
+            damage /= 2;  // Reduce el daño a la mitad si la entidad está defendiendo
+        }
+
+        target.stats.hp = target.stats.hp - damage;
 
     }
 
@@ -317,6 +331,10 @@ public class BattleSystem {
             int damage = calculateMagicDamage(attacker, target, selectedSpell);
             playerMagic = true;
 
+            if(target.defending){
+                damage /= 2;
+            }
+
             handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
 
             if (pressTurn <= 0 || target.stats.hp <= 0) {
@@ -364,6 +382,10 @@ public class BattleSystem {
 
         int damage = calculateMagicDamage(attacker, target, selectedSpell);
         monsterMagic = true;
+
+        if(target.defending){
+            damage /= 2;
+        }
 
         handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
     }
@@ -507,15 +529,27 @@ public class BattleSystem {
     }
 
     /**
-     * Allows the player to defend during their turn.
+     * Allows an entity to defend during their turn.
      * Reduces the damage received in the next turn.
+     *
+     * @param entity The entity defending (e.g., player or monster).
      */
-    public void defend() {
-        if (turn == 0) {
-            // El jugador decide defender, reduce el daño recibido en el siguiente turno
-            party.Leader.defending = true;
-            nextTurn();
+    public void defend(Entity entity) {
+        // The entity decides to defend, reduces the damage received in the next turn
+        if (!entity.defending) {
+            entity.defending = true;
+            pressTurn -= 3;
+            gp.ui.addMessage(entity.name + " is defending");
+
+            // Cambiar al siguiente miembro del partido
+            currentPartyMemberIndex++;
+            if (currentPartyMemberIndex >= partyMembers.size()) {
+                currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
+            }
+        } else {
+            gp.ui.addMessage(entity.name + " is already defending");
         }
+
     }
 
     /**
