@@ -43,7 +43,6 @@ public class Player extends Entity {
 
         setDefaultValues();
         getPlayerImage();
-        setItems();
         fillSpells(defaultSpells);
         debugPlayerSpells();
     }
@@ -84,6 +83,7 @@ public class Player extends Entity {
         weaknesses = new String[]{};
         nulls = new String[]{};
         repells = new String[]{};
+        setItems();
     }
 
     public void setRandomPos() {

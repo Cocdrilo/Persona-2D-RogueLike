@@ -62,6 +62,7 @@ public abstract class Entity implements Drawable{
 
     //Array de hechizos:
     public ArrayList<superMagic> spells;
+    public boolean isVisible = true;
 
     public Entity(GamePanel gp) {
 

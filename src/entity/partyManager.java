@@ -72,4 +72,7 @@ public class partyManager {
         }
     }
 
+    public void clearParty() {
+        partyMembers.clear();
+    }
 }

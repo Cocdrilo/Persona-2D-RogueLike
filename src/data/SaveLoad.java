@@ -83,6 +83,18 @@ public class SaveLoad {
             ds.currentWeaponSlot = gp.player.getWeaponSlot();
             ds.currentArmorSlot = gp.player.getArmorSlot();
 
+            //Save Objects:
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] != null) {
+                    ds.mapObjectNames[i] = gp.obj[i].name;
+                    ds.mapObjectWorldX[i] = gp.obj[i].WorldX;
+                    ds.mapObjectWorldY[i] = gp.obj[i].WorldY;
+                    ds.mapObjectVisibility[i] = gp.obj[i].isVisible;
+                    //System.out.println("Saved: " + gp.obj[i].name + "," + gp.obj[i].WorldX + "," + gp.obj[i].WorldY);
+                }
+            }
+
+
             //Party
             for(int i = 0;i<gp.party.partyMembers.size();i++){
                 ds.monsterName[i] = gp.party.partyMembers.get(i).name;
@@ -101,7 +113,7 @@ public class SaveLoad {
             }
             System.out.println("Members in party: " + ds.membersInParty);
 
-            RandomDungeonGenerator.saveDungeonToFile(gp.tileM.mapTileNum,"src/tile/Map.txt");
+            //RandomDungeonGenerator.saveDungeonToFile(gp.tileM.mapTileNum,"src/tile/Map.txt");
 
             for(int i = 0;i<50;i++){
                 for(int j = 0;j<50;j++){
@@ -157,6 +169,19 @@ public class SaveLoad {
             gp.player.getDefense();
             gp.player.getPlayerImage();
             gp.tileM.loadedGame = true;
+
+            for (int i = 0; i < gp.obj.length; i++) {
+                if (gp.obj[i] != null) {
+                    gp.obj[i].name = ds.mapObjectNames[i];
+                    gp.obj[i].WorldX = ds.mapObjectWorldX[i];
+                    gp.obj[i].WorldY = ds.mapObjectWorldY[i];
+                    gp.obj[i].isVisible = ds.mapObjectVisibility[i];
+                    //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
+                }
+            }
+
+
+
 
             System.out.println("Members in party: " + ds.membersInParty);
             gp.party.partyMembers.clear();

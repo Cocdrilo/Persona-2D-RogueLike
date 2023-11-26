@@ -531,6 +531,7 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.commandNum == 0) {
                 gp.setUpMap();
                 gp.party.Leader.setRandomPos();
+                gp.newGame();
                 gp.gameState = gp.playState;
             }
             if (gp.ui.commandNum == 1) {

@@ -142,6 +142,12 @@ public class GamePanel extends JPanel implements Runnable {
         Asetter.setBoss();
     }
 
+    public void newGame(){
+        party.clearParty();
+        player.inventory.clear();
+        player.setDefaultValues();
+    }
+
     /**
      * Starts the game thread.
      */

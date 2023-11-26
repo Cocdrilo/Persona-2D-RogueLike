@@ -31,6 +31,13 @@ public class DataStorage implements Serializable {
     int currentWeaponSlot;
     int currentArmorSlot;
 
+    //Objects on map
+    String[] mapObjectNames = new String[10];
+    int[] mapObjectWorldX = new int[10];
+    int[] mapObjectWorldY = new int[10];
+    boolean[] mapObjectVisibility = new boolean[10];
+
+
     //Party
     int[] monsterLevel = new int[3];
     int[] monsterEXP = new int[3];
