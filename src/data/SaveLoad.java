@@ -5,7 +5,6 @@ import Object.Consumables.*;
 import Object.WorldBuilding.*;
 import entity.Entity;
 import main.GamePanel;
-import proceduralNeeds.RandomDungeonGenerator;
 
 
 import java.io.*;
@@ -39,7 +38,7 @@ public class SaveLoad {
             case "Health Potion" -> new OBJ_Potion_Health(gp);
             case "Mana Potion" -> new OBJ_Potion_Mana(gp);
             case "stairs" -> new OBJ_Stairs(gp);
-            case "Bashing Weapon" -> new OBJ_WEAPON_BASH(gp);
+            case "Bashing Weapon" -> new OBJ_WEAPON_Bash(gp);
             case "Piercing Weapon" -> new OBJ_WEAPON_Piercing(gp);
             case "Espadon" -> new OBJ_WEAPON_Slash(gp);
             default -> null;

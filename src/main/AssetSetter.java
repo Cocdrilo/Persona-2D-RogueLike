@@ -2,9 +2,7 @@ package main;
 
 import Object.Consumables.OBJ_Potion_Health;
 import Object.Consumables.OBJ_Potion_Mana;
-import Object.Equipables.OBJ_WEAPON_BASH;
 import Object.WorldBuilding.OBJ_Chest;
-import Object.WorldBuilding.OBJ_Door;
 import Object.WorldBuilding.OBJ_Stairs;
 import entity.NPC;
 import monster.monsterData;

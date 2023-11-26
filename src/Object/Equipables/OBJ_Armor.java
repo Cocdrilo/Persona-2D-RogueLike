@@ -20,5 +20,6 @@ public class OBJ_Armor extends Entity {
         super(gp);
         name = "Cota de malla";
         walkDown1 = setUp("/Objects/Armor",gp.tileSize,gp.tileSize);
+        description = "[" + name + " ]\nDef: " + def;
     }
 }

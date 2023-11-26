@@ -21,6 +21,7 @@ public class OBJ_WEAPON_Piercing extends OBJ_Weapon {
         atk = 42;
         hit = 90;
         price = 80;
+        walkDown1 = setUp("/Objects/weapon_rapier",gp.tileSize,gp.tileSize);
         description = "[" + name + " ]\nAtk: " + atk + " \nHit: " + hit + "\n Tipo de DMG: " + damageType;
     }
 }
