@@ -15,6 +15,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * The abstract base class for all entities in the game. Entities are objects that exist
+ * in the game world, such as players, NPCs, monsters, and items.
+ *
+ * This class implements the Drawable interface, providing a method for drawing entities on
+ * the game panel.
+ */
 public abstract class Entity implements Drawable{
 
     public GamePanel gp;
@@ -64,13 +71,21 @@ public abstract class Entity implements Drawable{
     public ArrayList<superMagic> spells;
     public boolean isVisible = true;
 
+    /**
+     * Constructs a new Entity with the specified GamePanel.
+     *
+     * @param gp The GamePanel instance associated with this entity.
+     */
+
     public Entity(GamePanel gp) {
 
         this.gp = gp;
         stats = new Entity_stats();
     }
 
-
+    /**
+     * Adds Spells by name receibed
+     */
 
     public void fillSpells(String[] spellNames) {
         spells = new ArrayList<>();
@@ -88,6 +103,10 @@ public abstract class Entity implements Drawable{
 
     //CombatMethodss
 
+    /**
+     * Checks inCombat if a weakness has been hitted
+     */
+
     public boolean isWeak(String attckType) {
         for (String weakness : weaknesses) {
             if (Objects.equals(attckType, weakness)) {
@@ -96,6 +115,10 @@ public abstract class Entity implements Drawable{
         }
         return false;
     }
+
+    /**
+     * Checks inCombat if a resistance has been hitted
+     */
 
     public boolean isResistant(String attckType) {
         for (String resistance : resistances) {
@@ -106,6 +129,10 @@ public abstract class Entity implements Drawable{
         return false;
     }
 
+    /**
+     * Checks inCombat if attack has been nulled
+     */
+
     public boolean isNull(String attckType) {
         for (String aNull : nulls) {
             if (Objects.equals(attckType, aNull)) {
@@ -114,6 +141,10 @@ public abstract class Entity implements Drawable{
         }
         return false;
     }
+
+    /**
+     * Checks inCombat if attack was repelled
+     */
 
     public boolean isRepelled(String attckType) {
         for (String repel : repells) {
@@ -134,9 +165,13 @@ public abstract class Entity implements Drawable{
     //RND = Randomness factor (according to DragoonKain33, may be roughly between
     //0.95 and 1.05)
 
+    /**
+     * Generates a random factor between 0.85 and 1.20.
+     */
+
     public double randomFactor() {
-        double minFactor = 0.95;
-        double maxFactor = 1.05;
+        double minFactor = 0.85;
+        double maxFactor = 1.20;
 
         // Crear una instancia de la clase Random
         Random random = new Random();
@@ -146,13 +181,28 @@ public abstract class Entity implements Drawable{
         return minFactor + (maxFactor - minFactor) * random.nextDouble();
     }
 
+    /**
+     * Calculates the damage of a physical attack.
+     * @param monsterEndurance
+     * @param physDmg
+     * @param attackerStat
+     */
+
     public int getPhysAttack(int monsterEndurance, int physDmg, int attackerStat) {
         return 5 * (int) (Math.sqrt(((double) attackerStat / monsterEndurance) * Math.sqrt(physDmg) * randomFactor()));
     }
 
+    /**
+     * Calculates the damage of a magical attack.
+     * @param monsterEndurance
+     * @param spellDmg
+     * @param attackMagicStat
+     */
+
     public int getMagicAttack(int monsterEndurance, int spellDmg, int attackMagicStat) {
         return 5 * (int) (Math.sqrt(((double) attackMagicStat / monsterEndurance) * Math.sqrt(spellDmg) * randomFactor()));
     }
+
 
     public int getDefense() {
         return stats.vit;
