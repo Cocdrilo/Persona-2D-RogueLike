@@ -749,6 +749,27 @@ public class UI implements Drawable {
         y = gp.tileSize * 3;
         g2.drawImage(gp.battleSystem.monster.combatImage, x + 10, y + 10, 128, 128, null);
 
+        //Draw Player Money on the top right
+        x = gp.tileSize*2;
+        y = gp.tileSize * 2;
+        g2.setColor(Color.WHITE);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString("Dinero: " + gp.player.stats.money, x, y);
+
+        //Draw Happy Face : Happy Meter on the top left
+        x = gp.screenWidth - gp.tileSize * 5;
+        y = gp.tileSize * 2;
+        g2.setColor(Color.GREEN);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString("Happy Meter: " + gp.battleSystem.negotiationSystem.happyMeter, x, y);
+
+        //Draw Angry Face: Angry Meter on the top left
+        x = gp.screenWidth - gp.tileSize * 5;
+        y = gp.tileSize * 3;
+        g2.setColor(Color.RED);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString("Angry Meter: " + gp.battleSystem.negotiationSystem.angryMeter, x, y);
+
         //Draw Question and Options at bottom center
         x = gp.tileSize;
         y = gp.tileSize * 8;
@@ -1260,6 +1281,7 @@ public class UI implements Drawable {
         }
         //Negotiation State
         if (gp.gameState == gp.negotiationState || gp.gameState == gp.moneyRequestState) {
+            drawCombatMessage();
             drawNegotiationScreen();
         }
         //Negotiation Reward State
