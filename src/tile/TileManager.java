@@ -21,7 +21,7 @@ public class TileManager implements Drawable {
     public Tile[] tile;
 
     public int[][] mapTileNum;
-    private int[][] oldmapTileNum;
+    public int[][] oldmapTileNum;
     public boolean drawPath = true;
     public boolean loadedGame = false;
     public int specialRoomX;
@@ -37,10 +37,27 @@ public class TileManager implements Drawable {
 
         tile = new Tile[10];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+        oldmapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
 
-        // Generate a new random dungeon map
-        generateRandomDungeon();
+    }
+
+    public void initializeMap(){
+        System.out.println("Initializing map... " + loadedGame);
+        if (loadedGame){
+            mapTileNum = oldmapTileNum;
+            System.out.println("Old Map loaded");
+            //print loadedMap
+            for (int i = 0; i < gp.maxWorldCol; i++) {
+                for (int j = 0; j < gp.maxWorldRow; j++) {
+                    System.out.print(mapTileNum[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }else{
+            System.out.println("New Map created");
+            generateRandomDungeon();
+        }
     }
 
     /**
@@ -53,6 +70,14 @@ public class TileManager implements Drawable {
 
         mapTileNum = rdg.dungeon;
         setSpecialRoom(rdg.specialRoomX, rdg.specialRoomY);
+
+        //Print Map:
+        for (int i = 0; i < gp.maxWorldCol; i++) {
+            for (int j = 0; j < gp.maxWorldRow; j++) {
+                System.out.print(mapTileNum[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     public void setSpecialRoom(int x, int y){
@@ -165,7 +190,7 @@ public class TileManager implements Drawable {
             br.close();
 
         } catch (Exception e) {
-
+            e.printStackTrace(System.err);
         }
     }
 

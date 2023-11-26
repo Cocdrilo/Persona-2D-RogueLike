@@ -5,6 +5,7 @@ import Object.Consumables.*;
 import Object.WorldBuilding.*;
 import entity.Entity;
 import main.GamePanel;
+import proceduralNeeds.RandomDungeonGenerator;
 
 
 import java.io.*;
@@ -66,6 +67,10 @@ public class SaveLoad {
             ds.agility = gp.player.stats.agi;
             ds.vitality = gp.player.stats.vit;
             ds.money = gp.player.stats.money;
+            ds.playerX = gp.player.WorldX;
+            ds.playerY = gp.player.WorldY;
+            System.out.println("Player X: " + gp.player.WorldX);
+            System.out.println("Player Y: " + gp.player.WorldY);
 
             //Player Inventory
             for (int i = 0; i < gp.player.inventory.size(); i++) {
@@ -96,12 +101,21 @@ public class SaveLoad {
             }
             System.out.println("Members in party: " + ds.membersInParty);
 
+            RandomDungeonGenerator.saveDungeonToFile(gp.tileM.mapTileNum,"src/tile/Map.txt");
+
+            for(int i = 0;i<50;i++){
+                for(int j = 0;j<50;j++){
+                    ds.dungeonMap[i][j] = gp.tileM.mapTileNum[i][j];
+                }
+            }
+
 
             //Write in the file
             oos.writeObject(ds);
 
         } catch (Exception e) {
             System.out.println("Save Exception!");
+            e.printStackTrace(System.err);
         }
 
     }
@@ -127,8 +141,12 @@ public class SaveLoad {
             gp.player.stats.agi = ds.agility;
             gp.player.stats.vit = ds.vitality;
             gp.player.stats.money = ds.money;
+            gp.player.WorldX = ds.playerX;
+            gp.player.WorldY= ds.playerY;
+            System.out.println("Player X: " + gp.player.WorldX);
+            System.out.println("Player Y: " + gp.player.WorldY);
 
-            //Player Inventory
+                    //Player Inventory
             gp.player.inventory.clear();
             for (int i = 0; i < ds.itemNames.size(); i++) {
                 gp.player.inventory.add(getObject(ds.itemNames.get(i)));
@@ -147,12 +165,19 @@ public class SaveLoad {
                 gp.party.partyMembers.get(i).swapStats(ds.monsterLevel[i],ds.monsterEXP[i],ds.monsterNextLevelEXP[i],ds.monsterLife[i],ds.monsterMaxLife[i],ds.monsterMana[i],ds.monsterMaxMana[i],ds.monsterStrength[i],ds.monsterAgility[i],ds.monsterMagic[i],ds.monsterVitality[i]);
 
             }
+            gp.tileM.loadedGame = true;
 
-            ds.membersInParty = 0;
+            for(int i = 0;i<50;i++){
+                for(int j = 0;j<50;j++){
+                    gp.tileM.oldmapTileNum[i][j] = ds.dungeonMap[i][j];
+                }
+            }
+
 
 
         } catch (Exception e) {
             System.out.println("Load Exception!");
+            e.printStackTrace(System.err);
         }
     }
 }

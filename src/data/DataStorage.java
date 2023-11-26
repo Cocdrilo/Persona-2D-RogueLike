@@ -22,6 +22,8 @@ public class DataStorage implements Serializable {
     int agility;
     int vitality;
     int money;
+    int playerX;
+    int playerY;
 
     //Player inventory
     ArrayList<String> itemNames = new ArrayList<>();
@@ -43,5 +45,6 @@ public class DataStorage implements Serializable {
     int[] monsterVitality = new int[3];
     String[] monsterName = new String[3];
     int membersInParty = 0;
+    int[][] dungeonMap = new int[50][50];
 
 }

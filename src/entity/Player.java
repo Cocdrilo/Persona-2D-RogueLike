@@ -63,9 +63,8 @@ public class Player extends Entity {
         direction = "down";
         name = "Raidou";
 
-        setRandomPos();
 
-        System.out.println("DEBUG: Player position: " + WorldX / gp.tileSize + ", " + WorldY / gp.tileSize);
+        //System.out.println("DEBUG: Player position: " + WorldX / gp.tileSize + ", " + WorldY / gp.tileSize);
 
         stats.level = 1;
         stats.maxHp = 190;

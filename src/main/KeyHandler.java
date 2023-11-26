@@ -408,7 +408,6 @@ public class KeyHandler implements KeyListener {
     }
 
 
-    //Necesita Fix
 
     /**
      * Handles key events for the level up state.
@@ -530,10 +529,13 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_Z) {
             if (gp.ui.commandNum == 0) {
+                gp.setUpMap();
+                gp.party.Leader.setRandomPos();
                 gp.gameState = gp.playState;
             }
             if (gp.ui.commandNum == 1) {
                 gp.saveLoad.load();
+                gp.setUpMap();
                 gp.gameState = gp.playState;
             }
             if (gp.ui.commandNum == 2) {

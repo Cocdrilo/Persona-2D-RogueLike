@@ -204,7 +204,7 @@ public class RandomDungeonGenerator {
     }
 
 
-    private static void saveDungeonToFile(int[][] dungeon, String fileName) {
+    public static void saveDungeonToFile(int[][] dungeon, String fileName) {
         try (PrintWriter writer = new PrintWriter(fileName)) {
             for (int row = 0; row < dungeon.length; row++) {
                 for (int col = 0; col < dungeon[0].length; col++) {

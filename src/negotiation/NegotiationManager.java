@@ -10,6 +10,20 @@ import java.util.List;
 
 /**
  * Manages negotiations and handles questions.
+ *
+ * The code uses the Singleton design pattern to ensure that there is only one instance of the NegotiationManager class in the application. Let's break down the reasons for using the Singleton pattern in this context:
+ * Single Instance Requirement:
+ *
+ * The NegotiationManager is designed to manage negotiations and handle questions.
+ * In many scenarios, having multiple instances of such a manager could lead to inconsistent behavior and unnecessary resource consumption.
+ * Global Access Point:
+ *
+ * The getInstance() method provides a global access point to the single instance of the NegotiationManager.
+ * This allows other parts of the codebase to obtain a reference to the manager and use its functionality without the need to create multiple instances.
+ * Lazy Initialization:
+ *
+ * The Singleton pattern in this implementation adopts lazy initialization. The instance is created only when it is first requested. This is achieved through the if (instance == null) check in the getInstance() method.
+ * Lazy initialization can be beneficial for performance, especially if the creation of the instance involves resource-intensive operations.
  */
 public class NegotiationManager {
     private static NegotiationManager instance;

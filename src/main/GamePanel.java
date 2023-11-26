@@ -124,11 +124,6 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void setUpGame() {
 
-        Asetter.setObject();
-        Asetter.setNPC();
-        Asetter.setMonsters();
-        Asetter.setBoss();
-
         playMusic(0);
         gameState = titleState;
 
@@ -137,6 +132,14 @@ public class GamePanel extends JPanel implements Runnable {
         if (fullScreenOn) {
             setFullScreen();
         }
+    }
+
+    public void setUpMap() {
+        tileM.initializeMap();
+        Asetter.setObject();
+        Asetter.setNPC();
+        Asetter.setMonsters();
+        Asetter.setBoss();
     }
 
     /**
