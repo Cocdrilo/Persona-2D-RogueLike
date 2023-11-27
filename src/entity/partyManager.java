@@ -72,6 +72,9 @@ public class partyManager {
         }
     }
 
+    /**
+     * Clears the party members.
+     */
     public void clearParty() {
         partyMembers.clear();
     }

@@ -142,6 +142,11 @@ public class shadowStandar extends Entity {
         walkUp4 = setUp("/Monsters/Demon4", gp.tileSize, gp.tileSize);
     }
 
+    /**
+     * Swaps the entity's sprites to a boss image with a specified size.
+     * The entity's movement sprites (walk) in all directions are set to the boss image with the given size.
+     * The solid area dimensions are adjusted accordingly, and the entity is marked as a boss.
+     */
     public void swaptoBossImage() {
         int i = 3;
 
@@ -202,7 +207,10 @@ public class shadowStandar extends Entity {
         }
     }
 
-
+    /**
+     * Updates the state of the monster, including collision with the player,
+     * checking the distance to the player, and managing the monster's path.
+     */
     public void update() {
 
         super.update();
@@ -234,6 +242,22 @@ public class shadowStandar extends Entity {
     }
 
     //ds.monsterLevel[i],ds.monsterEXP[i],ds.monsterNextLevelEXP[i],ds.monsterLife[i],ds.monsterMaxLife[i],ds.monsterMana[i],ds.monsterMaxMana[i],ds.monsterStrength[i],ds.monsterAgility[i],ds.monsterMagic[i],ds.monsterVitality[i]
+
+    /**
+     * Swaps the stats of the entity with the provided values.
+     *
+     * @param level        The new level for the entity.
+     * @param exp          The new experience points for the entity.
+     * @param nextLevelExp The experience points required for the next level.
+     * @param life         The new current life points (HP) for the entity.
+     * @param maxLife      The new maximum life points (HP) for the entity.
+     * @param mana         The new current mana points (MP) for the entity.
+     * @param maxMana      The new maximum mana points (MP) for the entity.
+     * @param strength     The new strength stat for the entity.
+     * @param agility      The new agility stat for the entity.
+     * @param magic        The new magic stat for the entity.
+     * @param vitality     The new vitality stat for the entity.
+     */
     public void swapStats(int level, int exp, int nextLevelExp, int life, int maxLife, int mana, int maxMana, int strength, int agility, int magic, int vitality) {
         stats.level = level;
         stats.exp = exp;

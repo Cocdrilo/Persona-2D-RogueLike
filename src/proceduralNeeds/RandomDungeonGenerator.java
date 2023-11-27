@@ -12,7 +12,7 @@ import main.GamePanel;
  */
 public class RandomDungeonGenerator {
 
-    public int [][] dungeon;
+    public int[][] dungeon;
     GamePanel gp;
 
     public int specialRoomX;
@@ -32,8 +32,8 @@ public class RandomDungeonGenerator {
      */
     public void postProcessDungeon() {
         Random random = new Random();
-        for (int row = 0; row < dungeon.length ; row++) {
-            for (int col = 0; col < dungeon[0].length ; col++) {
+        for (int row = 0; row < dungeon.length; row++) {
+            for (int col = 0; col < dungeon[0].length; col++) {
                 if (dungeon[row][col] == 1 && !isInnerWall(row, col)) {
                     dungeon[row][col] = 2; // Cambiar a tile de vacío
                 }
@@ -70,6 +70,14 @@ public class RandomDungeonGenerator {
         System.out.println("Dungeon post-processing complete.");
     }
 
+    /**
+     * Checks if the specified position in the dungeon represents an inner wall, meaning it has a floor
+     * at a one-tile distance in any cardinal direction.
+     *
+     * @param row The row index of the position.
+     * @param col The column index of the position.
+     * @return {@code true} if the specified position is an inner wall, {@code false} otherwise.
+     */
     private boolean isInnerWall(int row, int col) {
         // Verificar si el muro tiene un suelo a un tile de distancia
         boolean isTopEdge = row - 1 < 0;
@@ -92,8 +100,7 @@ public class RandomDungeonGenerator {
         }
 
         // Verificar si está en el borde y es una pared interna
-        return (isTopEdge || isBottomEdge) && dungeon[row][col] == 0 ||
-                (isLeftEdge || isRightEdge) && dungeon[row][col] == 0;
+        return (isTopEdge || isBottomEdge) && dungeon[row][col] == 0 || (isLeftEdge || isRightEdge) && dungeon[row][col] == 0;
     }
 
 
@@ -184,7 +191,7 @@ public class RandomDungeonGenerator {
                 }
 
                 // Store the room's position and dimensions
-                rooms.add(new Room(roomX, roomY, roomWidth, roomHeight,false));
+                rooms.add(new Room(roomX, roomY, roomWidth, roomHeight, false));
             }
         }
 
@@ -203,7 +210,12 @@ public class RandomDungeonGenerator {
         return new int[]{specialRoomX, specialRoomY};
     }
 
-
+    /**
+     * Saves the given dungeon matrix to a text file with the specified file name.
+     *
+     * @param dungeon  The dungeon matrix to be saved.
+     * @param fileName The name of the file to save the dungeon matrix.
+     */
     public static void saveDungeonToFile(int[][] dungeon, String fileName) {
         try (PrintWriter writer = new PrintWriter(fileName)) {
             for (int row = 0; row < dungeon.length; row++) {
@@ -233,7 +245,7 @@ public class RandomDungeonGenerator {
          * @param width  The width of the room.
          * @param height The height of the room.
          */
-        public Room(int x, int y, int width, int height,boolean special) {
+        public Room(int x, int y, int width, int height, boolean special) {
             this.x = x;
             this.y = y;
             this.width = width;

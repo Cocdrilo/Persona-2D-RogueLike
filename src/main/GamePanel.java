@@ -134,6 +134,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Sets up the game map by initializing tiles, objects, NPCs, monsters, and bosses.
+     * Invokes the necessary methods from the corresponding setters.
+     */
     public void setUpMap() {
         tileM.initializeMap();
         Asetter.setObject();
@@ -142,7 +146,11 @@ public class GamePanel extends JPanel implements Runnable {
         Asetter.setBoss();
     }
 
-    public void newGame(){
+    /**
+     * Initiates a new game by clearing the player's party, inventory, and resetting the player's values to default.
+     * This method is typically called when starting a new game or resetting the game state.
+     */
+    public void newGame() {
         party.clearParty();
         player.inventory.clear();
         player.setDefaultValues();
@@ -156,6 +164,12 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
+    /**
+     * The main game loop that runs continuously during the game's execution.
+     * Manages the game's update and rendering processes based on the specified frames per second (FPS).
+     * This method calculates the elapsed time between frames, updates the game state, and renders the screen.
+     * The loop runs until the game thread is interrupted or stopped.
+     */
     @Override
     public void run() {
 
@@ -256,6 +270,11 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             // Ordena las entidades por su posición en el eje Y
+            /**
+             * Sorts the list of entities based on their WorldY coordinates in ascending order.
+             *
+             * @param entityList The list of entities to be sorted.
+             */
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
                 public int compare(Entity o1, Entity o2) {
@@ -313,8 +332,8 @@ public class GamePanel extends JPanel implements Runnable {
      */
     public void playerSe(int i) {
 
-        //se.setFile(i);
-        //se.play();
+        se.setFile(i);
+        se.play();
 
     }
 }

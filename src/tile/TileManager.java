@@ -42,9 +42,14 @@ public class TileManager implements Drawable {
 
     }
 
-    public void initializeMap(){
+    /**
+     * Initializes the map by either loading the old map or creating a new random dungeon.
+     * If a game is loaded, it uses the old map; otherwise, it generates a new random dungeon.
+     * Prints the mapTileNum for diagnostic purposes.
+     */
+    public void initializeMap() {
         System.out.println("Initializing map... " + loadedGame);
-        if (loadedGame){
+        if (loadedGame) {
             mapTileNum = oldmapTileNum;
             System.out.println("Old Map loaded");
             //print loadedMap
@@ -54,7 +59,7 @@ public class TileManager implements Drawable {
                 }
                 System.out.println();
             }
-        }else{
+        } else {
             System.out.println("New Map created");
             generateRandomDungeon();
         }
@@ -80,9 +85,16 @@ public class TileManager implements Drawable {
         }
     }
 
-    public void setSpecialRoom(int x, int y){
-        specialRoomX = x -2;
-        specialRoomY = y -2;
+    /**
+     * Sets the coordinates for a special room based on the given x and y coordinates.
+     * Adjusts the special room coordinates to align with the top-left corner of the room.
+     *
+     * @param x The x-coordinate of the special room.
+     * @param y The y-coordinate of the special room.
+     */
+    public void setSpecialRoom(int x, int y) {
+        specialRoomX = x - 2;
+        specialRoomY = y - 2;
         System.out.println("Special room set at: " + specialRoomX + " " + specialRoomY);
     }
 
@@ -94,13 +106,13 @@ public class TileManager implements Drawable {
         setUp(0, "Floor_1", false);
         setUp(1, "Wall_1", true);
         setUp(2, "pitchBlack", true);
-        setUp(3,"Floor_2",false);
-        setUp(4,"Floor_3",false);
-        setUp(5,"Floor_4",false);
-        setUp(6,"Wall_2",true);
-        setUp(7,"Wall_3",true);
-        setUp(8,"Wall_4",true);
-        setUp(9,"Wall_5",true);
+        setUp(3, "Floor_2", false);
+        setUp(4, "Floor_3", false);
+        setUp(5, "Floor_4", false);
+        setUp(6, "Wall_2", true);
+        setUp(7, "Wall_3", true);
+        setUp(8, "Wall_4", true);
+        setUp(9, "Wall_5", true);
 
     }
 
@@ -127,6 +139,12 @@ public class TileManager implements Drawable {
 
     }
 
+    /**
+     * Sets the player's random position on the map.
+     * Generates random coordinates within the map boundaries, avoiding the boss room and non-ground tiles.
+     *
+     * @return An array containing the column and row coordinates of the player's position.
+     */
     public int[] setPlayerRandomPosition() {
         int col;
         int row;
@@ -143,13 +161,19 @@ public class TileManager implements Drawable {
         return new int[]{col, row};
     }
 
+    /**
+     * Checks if the specified coordinates are within the boss room boundaries.
+     *
+     * @param col The column coordinate to check.
+     * @param row The row coordinate to check.
+     * @return {@code true} if the coordinates are within the boss room; otherwise, {@code false}.
+     */
     private boolean isInBossRoom(int col, int row) {
         // Assuming specialRoomX and specialRoomY represent the top-left corner of the boss room
         int bossRoomWidth = 5;
         int bossRoomHeight = 5;
 
-        return col >= specialRoomX && col < specialRoomX + bossRoomWidth &&
-                row >= specialRoomY && row < specialRoomY + bossRoomHeight;
+        return col >= specialRoomX && col < specialRoomX + bossRoomWidth && row >= specialRoomY && row < specialRoomY + bossRoomHeight;
     }
 
     /**
@@ -226,17 +250,17 @@ public class TileManager implements Drawable {
                 WorldRow++;
             }
         }
-        if (drawPath){
-            g2.setColor(new Color (255,0,0,70));
+        if (drawPath) {
+            g2.setColor(new Color(255, 0, 0, 70));
 
-            for(int i = 0; i <gp.pathFinder.pathList.size();i++){
+            for (int i = 0; i < gp.pathFinder.pathList.size(); i++) {
 
                 int worldX = gp.pathFinder.pathList.get(i).col * gp.tileSize;
                 int worldY = gp.pathFinder.pathList.get(i).row * gp.tileSize;
                 int ScreenX = worldX - gp.player.WorldX + gp.player.screenX;
                 int ScreenY = worldY - gp.player.WorldY + gp.player.screenY;
 
-                g2.fillRect(ScreenX,ScreenY,gp.tileSize,gp.tileSize);
+                g2.fillRect(ScreenX, ScreenY, gp.tileSize, gp.tileSize);
             }
 
         }

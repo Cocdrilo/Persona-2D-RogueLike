@@ -71,5 +71,13 @@ public class MonsterManager {
     public ArrayList<monsterData> getMonsters() {
         return monsters;
     }
-    public ArrayList<monsterData> getBosses() { return bosses; }
+
+    /**
+     * Retrieves the list of boss monster data.
+     *
+     * @return An ArrayList containing the data of boss monsters.
+     */
+    public ArrayList<monsterData> getBosses() {
+        return bosses;
+    }
 }

@@ -9,6 +9,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
+/**
+ * The BattleAnimations class handles the animations for melee and magic attacks in a game.
+ */
 public class BattleAnimations {
     private Image meleeSlash1;
     private Image meleeSlash2;
@@ -28,6 +31,9 @@ public class BattleAnimations {
     private int meleeFrameCount = 0;
     private int magicFrameCount = 0;
 
+    /**
+     * Constructs a new BattleAnimations object, loading the required animation images.
+     */
     public BattleAnimations() {
         // Load melee animation images
         meleeSlash1 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_1.png");
@@ -48,6 +54,12 @@ public class BattleAnimations {
         magicAnimationTimer = createAnimationTimer();
     }
 
+    /**
+     * Creates a Timer object for animation purposes.
+     *
+     * @return The created Timer object.
+     */
+
     private Timer createAnimationTimer() {
         return new Timer(100, new ActionListener() {
             @Override
@@ -61,6 +73,13 @@ public class BattleAnimations {
         });
     }
 
+    /**
+     * Initiates and plays the melee attack animation.
+     *
+     * @param g2d     The Graphics2D object to draw on.
+     * @param targetX The x-coordinate of the target location.
+     * @param targetY The y-coordinate of the target location.
+     */
     public void playMeleeAttackAnimation(Graphics2D g2d, int targetX, int targetY) {
         startTime = System.currentTimeMillis();
         meleeFrameCount = 0;
@@ -81,6 +100,13 @@ public class BattleAnimations {
         drawTimer.start();
     }
 
+    /**
+     * Initiates and plays the magic attack animation.
+     *
+     * @param g2d     The Graphics2D object to draw on.
+     * @param targetX The x-coordinate of the target location.
+     * @param targetY The y-coordinate of the target location.
+     */
     public void playMagicAttackAnimation(Graphics2D g2d, int targetX, int targetY) {
         startTime = System.currentTimeMillis();
         magicFrameCount = 0;
@@ -101,6 +127,13 @@ public class BattleAnimations {
         drawTimer.start();
     }
 
+    /**
+     * Draws the current frame of the melee attack animation.
+     *
+     * @param g2d     The Graphics2D object to draw on.
+     * @param targetX The x-coordinate of the target location.
+     * @param targetY The y-coordinate of the target location.
+     */
     private void drawMeleeFrame(Graphics2D g2d, int targetX, int targetY) {
         switch (meleeFrameCount) {
             case 0 -> g2d.drawImage(meleeSlash1, targetX, targetY, null);
@@ -110,6 +143,13 @@ public class BattleAnimations {
         }
     }
 
+    /**
+     * Draws the current frame of the magic attack animation.
+     *
+     * @param g2d     The Graphics2D object to draw on.
+     * @param targetX The x-coordinate of the target location.
+     * @param targetY The y-coordinate of the target location.
+     */
     private void drawMagicFrame(Graphics2D g2d, int targetX, int targetY) {
         switch (magicFrameCount) {
             case 0 -> g2d.drawImage(magicBlast1, targetX, targetY, null);
@@ -119,6 +159,12 @@ public class BattleAnimations {
         }
     }
 
+    /**
+     * Loads an image from a file.
+     *
+     * @param filename The path to the image file.
+     * @return The loaded BufferedImage, or null if an error occurs.
+     */
     private static BufferedImage loadImage(String filename) {
         try {
             return ImageIO.read(new File(filename));

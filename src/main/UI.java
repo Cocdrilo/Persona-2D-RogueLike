@@ -1041,6 +1041,10 @@ public class UI implements Drawable {
 
     }
 
+    /**
+     * Draws combat messages on the screen. Each message is displayed with a gradual fade-out effect.
+     * Messages are removed from the display after reaching a certain duration.
+     */
     public void drawCombatMessage() {
         int messageX = (int) (gp.screenWidth-gp.tileSize*6.5);    //gp.tileSize;
         int messageY = gp.tileSize * 4;

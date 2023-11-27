@@ -14,6 +14,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * The Player class represents the main character in the game.
+ */
 public class Player extends Entity {
 
     public final int screenX;
@@ -25,6 +28,12 @@ public class Player extends Entity {
     //Inventario del jugador
     public ArrayList<Entity> inventory = new ArrayList<>();
 
+    /**
+     * Constructs a new Player object.
+     *
+     * @param gp   The GamePanel object associated with the player.
+     * @param keyH The KeyHandler object for handling player input.
+     */
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -38,7 +47,7 @@ public class Player extends Entity {
         SolidAreaDefaultY = solidArea.y;
 
         stats = new Entity_stats();
-        String[] defaultSpells = {"Zio", "Agi","Fatal End"};
+        String[] defaultSpells = {"Zio", "Agi", "Fatal End"};
 
         setDefaultValues();
         getPlayerImage();
@@ -48,6 +57,9 @@ public class Player extends Entity {
 
     //DEBUG
 
+    /**
+     * Displays the spells currently available to the player for debugging purposes.
+     */
     public void debugPlayerSpells() {
         System.out.println("DEBUG: Player spells:");
         for (superMagic spell : this.spells) {
@@ -56,6 +68,9 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * Sets default values for the player character.
+     */
     public void setDefaultValues() {
         speed = 10;
         direction = "down";
@@ -85,12 +100,18 @@ public class Player extends Entity {
         setItems();
     }
 
+    /**
+     * Sets a random position for the player on the game map.
+     */
     public void setRandomPos() {
         int[] datos = gp.tileM.setPlayerRandomPosition();
-        WorldX = datos[0]*gp.tileSize;
-        WorldY = datos[1]*gp.tileSize;
+        WorldX = datos[0] * gp.tileSize;
+        WorldY = datos[1] * gp.tileSize;
     }
 
+    /**
+     * Sets the initial items in the player's inventory.
+     */
     public void setItems() {
 
         inventory.add(stats.weapon);
@@ -98,6 +119,11 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * Returns the index of the weapon in the player's inventory.
+     *
+     * @return The index of the weapon, or -1 if not found.
+     */
     public int getWeaponSlot() {
         int weaponSlot = -1; // Valor predeterminado para indicar que no se ha encontrado un arma en el inventario
         for (int i = 0; i < inventory.size(); i++) {
@@ -109,6 +135,11 @@ public class Player extends Entity {
         return weaponSlot;
     }
 
+    /**
+     * Returns the index of the armor in the player's inventory.
+     *
+     * @return The index of the armor, or -1 if not found.
+     */
     public int getArmorSlot() {
         int armorSlot = -1; // Valor predeterminado para indicar que no se ha encontrado armadura en el inventario
         for (int i = 0; i < inventory.size(); i++) {
@@ -120,6 +151,11 @@ public class Player extends Entity {
         return armorSlot;
     }
 
+    /**
+     * Prints the names of consumable items in the player's inventory.
+     *
+     * @return An array of consumable item names.
+     */
     public String[] printItems() {
         String[] Items = new String[inventory.size()];
         int ItemsIndex = 0;
@@ -136,6 +172,11 @@ public class Player extends Entity {
         return consumableItems;
     }
 
+    /**
+     * Returns a list of consumable items in the player's inventory.
+     *
+     * @return ArrayList of consumable items.
+     */
     public ArrayList<Entity> getItems() {
         ArrayList<Entity> Items = new ArrayList<>();
         for (int i = 0; i < inventory.size(); i++) {
@@ -146,6 +187,11 @@ public class Player extends Entity {
         return Items;
     }
 
+    /**
+     * Saves the indexes of consumable items in the player's inventory.
+     *
+     * @return An array of indexes of consumable items.
+     */
     public int[] saveItemIndexes() {
         int[] itemIndexes = new int[inventory.size()];
         int itemCounter = 0;
@@ -162,6 +208,9 @@ public class Player extends Entity {
         return consumableItemsIndex;
     }
 
+    /**
+     * Selects and uses items from the player's inventory.
+     */
     public void selectItems() {
 
         int itemIndex = gp.ui.getItemIndexSlot();
@@ -177,7 +226,7 @@ public class Player extends Entity {
             if (selectedItem instanceof OBJ_Armor) {
                 stats.armor = (OBJ_Armor) selectedItem;
             }
-            if (selectedItem instanceof OBJ_Chest cofre){
+            if (selectedItem instanceof OBJ_Chest cofre) {
                 cofre.use();
                 inventory.remove(itemIndex);
             }
@@ -191,6 +240,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Returns the total defense value of the player, taking armor into account.
+     *
+     * @return The total defense value.
+     */
     public int getDefense() {
         int defReturn = 0;
         if (stats.armor != null) {
@@ -201,6 +255,11 @@ public class Player extends Entity {
         return defReturn;
     }
 
+    /**
+     * Returns the damage type of the player's equipped weapon.
+     *
+     * @return The damage type of the weapon.
+     */
     public String getWeaponDmgType() {
         String dmgType = "";
         if (stats.weapon != null) {
@@ -211,26 +270,45 @@ public class Player extends Entity {
         return dmgType;
     }
 
+    /**
+     * Adds money to the player's currency.
+     *
+     * @param money The amount of money to add.
+     */
     public void addMoney(int money) {
         stats.money += money;
     }
-    public void subtractMoney(int money){ stats.money -= money;}
 
-    public void getPlayerImage() {
-        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize*1.5),gp.tileSize*2);
-        standLeft = setUp("/player/NuevoPlayer/Left" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        standRight = setUp("/player/NuevoPlayer/Right" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        standBack = setUp("/player/NuevoPlayer/Back" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkDown1 = setUp("/player/NuevoPlayer/Front2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkDown2 = setUp("/player/NuevoPlayer/Front3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkLeft1 = setUp("/player/NuevoPlayer/Left2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkLeft2 = setUp("/player/NuevoPlayer/Left3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkRight1 = setUp("/player/NuevoPlayer/Right2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkRight2 = setUp("/player/NuevoPlayer/Right3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkUp1 = setUp("/player/NuevoPlayer/Back2" , (int) (gp.tileSize*1.5),gp.tileSize*2);
-        walkUp2 = setUp("/player/NuevoPlayer/Back3" , (int) (gp.tileSize*1.5),gp.tileSize*2);
+    /**
+     * Subtracts money from the player's currency.
+     *
+     * @param money The amount of money to subtract.
+     */
+    public void subtractMoney(int money) {
+        stats.money -= money;
     }
 
+    /**
+     * Loads the player character images for different directions and movements.
+     */
+    public void getPlayerImage() {
+        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        standLeft = setUp("/player/NuevoPlayer/Left", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        standRight = setUp("/player/NuevoPlayer/Right", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        standBack = setUp("/player/NuevoPlayer/Back", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkDown1 = setUp("/player/NuevoPlayer/Front2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkDown2 = setUp("/player/NuevoPlayer/Front3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkLeft1 = setUp("/player/NuevoPlayer/Left2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkLeft2 = setUp("/player/NuevoPlayer/Left3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkRight1 = setUp("/player/NuevoPlayer/Right2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkRight2 = setUp("/player/NuevoPlayer/Right3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkUp1 = setUp("/player/NuevoPlayer/Back2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkUp2 = setUp("/player/NuevoPlayer/Back3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+    }
+
+    /**
+     * Updates the player's position and handles interactions based on user input.
+     */
     public void update() {
 
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed) {
@@ -292,6 +370,11 @@ public class Player extends Entity {
 
     }
 
+    /**
+     * Handles NPC interactions when the "Z" key is pressed.
+     *
+     * @param i The index of the interacting NPC.
+     */
     private void interactNPC(int i) {
         if (i != 999) {
             if (gp.keyH.zPressed) {
@@ -301,6 +384,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Handles interactions with objects in the game world.
+     *
+     * @param i The index of the interacting object.
+     */
     public void ObjectInteractions(int i) {
 
         if (i != 999 && gp.keyH.zPressed && gp.obj[i].name.equals("stairs")) {
@@ -309,6 +397,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Picks up objects in the game world when the "Z" key is pressed.
+     *
+     * @param i The index of the object to pick up.
+     */
     public void pickUpObject(int i) {
         if (i != 999 && gp.keyH.zPressed && gp.obj[i].isPickupeable) {
             String text = "";
@@ -321,6 +414,11 @@ public class Player extends Entity {
     }
 
 
+    /**
+     * Initiates combat when the player contacts a monster.
+     *
+     * @param i The index of the contacting monster.
+     */
     public void contactMonster(int i) {
         if (i != 999) {
             shadowStandar shadow = (shadowStandar) gp.monsters[i];
@@ -331,12 +429,20 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Initiates combat when an enemy contacts the player.
+     *
+     * @param shadow The enemy contacting the player.
+     */
     public void enemyContactPlayer(shadowStandar shadow) {
         //Cambio a Combate
         gp.battleSystem = new BattleSystem(gp.party, shadow, gp);
         gp.gameState = gp.combatState;
     }
 
+    /**
+     * Records the player's old statistics for leveling up.
+     */
     public void getOldStats() {
         keyH.oldStr = gp.player.stats.str;
         keyH.oldDex = gp.player.stats.vit;
@@ -344,6 +450,9 @@ public class Player extends Entity {
         keyH.oldAgi = gp.player.stats.agi;
     }
 
+    /**
+     * Initiates the leveling up process for the player character.
+     */
     public void levelUp() {
         keyH.pointsPerLevel = keyH.pointsPerLevel + 3;
         getOldStats();
@@ -352,6 +461,11 @@ public class Player extends Entity {
         stats.nextLevelExp = stats.nextLevelExp * 2;
     }
 
+    /**
+     * Draws the player character on the screen.
+     *
+     * @param graficos2d The Graphics2D object for drawing.
+     */
     @Override
     public void draw(Graphics2D graficos2d) {
 

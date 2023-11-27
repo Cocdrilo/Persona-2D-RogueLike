@@ -18,11 +18,11 @@ import java.util.Random;
 /**
  * The abstract base class for all entities in the game. Entities are objects that exist
  * in the game world, such as players, NPCs, monsters, and items.
- *
+ * <p>
  * This class implements the Drawable interface, providing a method for drawing entities on
  * the game panel.
  */
-public abstract class Entity implements Drawable{
+public abstract class Entity implements Drawable {
 
     public GamePanel gp;
 
@@ -184,6 +184,7 @@ public abstract class Entity implements Drawable{
 
     /**
      * Calculates the damage of a physical attack.
+     *
      * @param monsterEndurance
      * @param physDmg
      * @param attackerStat
@@ -195,6 +196,7 @@ public abstract class Entity implements Drawable{
 
     /**
      * Calculates the damage of a magical attack.
+     *
      * @param monsterEndurance
      * @param spellDmg
      * @param attackMagicStat
@@ -205,24 +207,46 @@ public abstract class Entity implements Drawable{
     }
 
 
+    /**
+     * Retrieves the defense stat.
+     *
+     * @return The defense stat.
+     */
     public int getDefense() {
         return stats.vit;
     }
     //Spell Methods
 
     // Métodos para agregar, quitar y acceder a hechizos del jugador
+
+    /**
+     * Adds a spell to the entity's spell list.
+     *
+     * @param spell The spell to be added.
+     */
     public void addSpell(superMagic spell) {
         spells.add(spell);
     }
 
+    /**
+     * Prints the names of spells available to the entity.
+     *
+     * @return An array of spell names.
+     */
     public String[] printSpells() {
         String[] spellNames = new String[this.spells.size()];
         for (int spells = 0; spells < this.spells.size(); spells++) {
-            spellNames[spells] = this.spells.get(spells).name + "  " + (this.spells.get(spells).mpCost == 0 ? "hp: " + this.spells.get(spells).hpCost+"%" : "mp: " + this.spells.get(spells).mpCost);
+            spellNames[spells] = this.spells.get(spells).name + "  " + (this.spells.get(spells).mpCost == 0 ? "hp: " + this.spells.get(spells).hpCost + "%" : "mp: " + this.spells.get(spells).mpCost);
         }
         return spellNames;
     }
-    public String[] getCosts(){
+
+    /**
+     * Returns an array of spell costs.
+     *
+     * @return The array of spell costs.
+     */
+    public String[] getCosts() {
         String[] spellCosts = new String[this.spells.size()];
         for (int spells = 0; spells < this.spells.size(); spells++) {
             spellCosts[spells] = (this.spells.get(spells).mpCost == 0 ? "HP: " + this.spells.get(spells).hpCost : "MP: " + this.spells.get(spells).mpCost);
@@ -230,19 +254,34 @@ public abstract class Entity implements Drawable{
         return spellCosts;
     }
 
+    /**
+     * Removes a spell from the entity's spell list.
+     *
+     * @param spell The spell to be removed.
+     */
     public void removeSpell(superMagic spell) {
         spells.remove(spell);
     }
 
+    /**
+     * Retrieves the list of spells available to the entity.
+     *
+     * @return The list of spells.
+     */
     public ArrayList<superMagic> getSpells() {
         return spells;
     }
 
-
+    /**
+     * Sets the action of the entity.
+     */
     public void setAction() {
 
     }
 
+    /**
+     * Updates the state of the entity.
+     */
     public void update() {
         setAction();
         checkCollisiOn();
@@ -269,7 +308,10 @@ public abstract class Entity implements Drawable{
         }
     }
 
-    public void checkCollisiOn(){
+    /**
+     * Checks for collisions and updates the collision state.
+     */
+    public void checkCollisiOn() {
         collisionOn = false;
         gp.cCheck.checkTile(this);
         gp.cCheck.checkObject(this, false);
@@ -278,71 +320,67 @@ public abstract class Entity implements Drawable{
         boolean contactPlayer = gp.cCheck.checkPlayer(this);
     }
 
-    public void searchPath(int goalCol,int goalRow) {
+    /**
+     * Searches for a path to the specified goal position.
+     *
+     * @param goalCol The column of the goal position.
+     * @param goalRow The row of the goal position.
+     */
+    public void searchPath(int goalCol, int goalRow) {
 
-        int startCol = (WorldX + solidArea.x)/gp.tileSize;
-        int startRow = (WorldY + solidArea.y)/gp.tileSize;
+        int startCol = (WorldX + solidArea.x) / gp.tileSize;
+        int startRow = (WorldY + solidArea.y) / gp.tileSize;
 
         gp.pathFinder.setNode(startCol, startRow, goalCol, goalRow);
-        if(gp.pathFinder.search()){
+        if (gp.pathFinder.search()) {
             //Next WorldX&&Next WorldY
             int nextX = gp.pathFinder.pathList.get(0).col * gp.tileSize;
             int nextY = gp.pathFinder.pathList.get(0).row * gp.tileSize;
             //SolidAreaPosition
             int entityLeftX = WorldX + solidArea.x;
             int entityTopY = WorldY + solidArea.y;
-            int entityRightX = WorldX +solidArea.x + solidArea.width;
+            int entityRightX = WorldX + solidArea.x + solidArea.width;
             int entityBottomY = WorldY + solidArea.y + solidArea.height;
 
-            if(entityTopY > nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+            if (entityTopY > nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize) {
                 direction = "up";
-            }
-
-            else if (entityTopY < nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize){
+            } else if (entityTopY < nextY && entityLeftX >= nextX && entityRightX < nextX + gp.tileSize) {
                 direction = "down";
-            }
-
-            else if (entityTopY >= nextY && entityBottomY < nextY + gp.tileSize){
+            } else if (entityTopY >= nextY && entityBottomY < nextY + gp.tileSize) {
                 //Left | right
-                if(entityLeftX > nextX){
+                if (entityLeftX > nextX) {
                     direction = "left";
                 }
-                if (entityLeftX < nextX){
+                if (entityLeftX < nextX) {
                     direction = "right";
                 }
-            }
-            else if (entityTopY > nextY && entityLeftX > nextX){
+            } else if (entityTopY > nextY && entityLeftX > nextX) {
                 //up or left
                 direction = "up";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "left";
                 }
-            }
-
-            else if (entityTopY > nextY && entityLeftX < nextX){
+            } else if (entityTopY > nextY && entityLeftX < nextX) {
                 //Up or right
                 direction = "up";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "right";
                 }
-            }
-            else if (entityTopY < nextY && entityLeftX > nextX){
+            } else if (entityTopY < nextY && entityLeftX > nextX) {
                 direction = "down";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "left";
                 }
-            }
-            else if (entityTopY < nextY && entityLeftX < nextX){
+            } else if (entityTopY < nextY && entityLeftX < nextX) {
                 direction = "down";
                 checkCollisiOn();
-                if(collisionOn){
+                if (collisionOn) {
                     direction = "right";
                 }
-            }
-            else{
+            } else {
                 //System.out.println("No se que hacer");
             }
         }
@@ -358,7 +396,15 @@ public abstract class Entity implements Drawable{
 
     }
 
-    public BufferedImage setUp(String ImagePath,int width, int height) {
+    /**
+     * Sets up the entity's image based on the specified image path, width, and height.
+     *
+     * @param ImagePath The image path.
+     * @param width     The desired width of the image.
+     * @param height    The desired height of the image.
+     *                  * @return The scaled image.
+     */
+    public BufferedImage setUp(String ImagePath, int width, int height) {
         Toolbox tbox = new Toolbox();
         BufferedImage scaledImage = null;
 
@@ -371,7 +417,9 @@ public abstract class Entity implements Drawable{
         return scaledImage;
     }
 
-
+    /**
+     * Initiates a conversation with the entity.
+     */
     public void speak() {
         gp.ui.currentName = name;
         if (dialogues[dialogueIndex] == null) {
@@ -391,14 +439,29 @@ public abstract class Entity implements Drawable{
 
     }
 
+    /**
+     * Performs an action when the entity is used in the overworld.
+     *
+     * @param entity The entity to interact with.
+     */
     public void overWorldUse(Entity entity) {
 
     }
 
+    /**
+     * Performs an action when the entity is used in battle.
+     *
+     * @param entity The entity to interact with in battle.
+     */
     public void battleUse(Entity entity) {
 
     }
 
+    /**
+     * Draws the entity on the graphics context.
+     *
+     * @param g2 The graphics context.
+     */
     @Override
     public void draw(Graphics2D g2) {
 

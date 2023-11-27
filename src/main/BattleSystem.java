@@ -51,7 +51,7 @@ public class BattleSystem {
         this.partyMembers.addAll(party.partyMembers);
         this.currentPartyMemberIndex = 0; // Inicialmente, el primer miembro del partido ataca
 
-        if(monster.boss){
+        if (monster.boss) {
             System.out.println("Boss Battle");
             gp.music.stop();
             gp.playMusic(6);
@@ -94,6 +94,11 @@ public class BattleSystem {
 
     }
 
+    /**
+     * Checks for character death in the player's party.
+     * If the player's leader has died, the game state transitions to the title state.
+     * Removes any party members who have died from both partyMembers and gp.party.partyMembers.
+     */
     private void checkForCharacterDeath() {
         // Check if the player's leader has died
         if (party.Leader.stats.hp <= 0) {
@@ -106,7 +111,7 @@ public class BattleSystem {
             if (partyMembers.get(i).stats.hp <= 0) {
                 partyMembers.remove(i);
                 System.out.println(partyMembers.get(i).name + " has died");
-                gp.party.partyMembers.remove(i-1);
+                gp.party.partyMembers.remove(i - 1);
             }
         }
     }
@@ -253,6 +258,16 @@ public class BattleSystem {
         }
     }
 
+    /**
+     * Handles damage calculation and press turn adjustments based on the weakness, resistance,
+     * nullification, or repelling of a selected spell's damage type on the target entity.
+     *
+     * @param attacker      The entity performing the attack.
+     * @param target        The entity being targeted by the attack.
+     * @param damage        The initial damage before adjustments.
+     * @param selectedSpell The spell used for the attack.
+     * @return The adjusted damage after considering weaknesses, resistances, nullifications, or repelling.
+     */
     private int handleDamageAndPressTurnBasedOnWeakness(Entity attacker, Entity target, int damage, superMagic selectedSpell) {
         if (target.isWeak(selectedSpell.damageType)) {
             damage *= 2;
@@ -322,7 +337,7 @@ public class BattleSystem {
      * @param selectedSpell The magic spell used for the attack.
      */
     public void useMagic(Entity attacker, Entity target, superMagic selectedSpell) {
-        if(selectedSpell.mpCost > 0){
+        if (selectedSpell.mpCost > 0) {
             if (attacker.stats.mp < selectedSpell.mpCost) {
                 System.out.println("Not enough MP to cast " + selectedSpell.name);
                 return;
@@ -331,7 +346,7 @@ public class BattleSystem {
             int damage = calculateMagicDamage(attacker, target, selectedSpell);
             playerMagic = true;
 
-            if(target.defending){
+            if (target.defending) {
                 damage /= 2;
             }
 
@@ -345,15 +360,14 @@ public class BattleSystem {
             if (currentPartyMemberIndex >= partyMembers.size()) {
                 currentPartyMemberIndex = 0; // Reiniciar al primer miembro del partido
             }
-        }
-        else if(selectedSpell.hpCost>0){
+        } else if (selectedSpell.hpCost > 0) {
             if (attacker.stats.hp < attacker.stats.maxHp % selectedSpell.hpCost) {
                 System.out.println("Not enough HP to cast " + selectedSpell.name);
                 return;
             }
 
             boolean phys = true;
-            int damage = calculateMagicDamage(attacker, target, selectedSpell,phys);
+            int damage = calculateMagicDamage(attacker, target, selectedSpell, phys);
             playerMagic = true;
 
             handleDamageAndPressTurn(attacker, target, damage, selectedSpell);
@@ -383,7 +397,7 @@ public class BattleSystem {
         int damage = calculateMagicDamage(attacker, target, selectedSpell);
         monsterMagic = true;
 
-        if(target.defending){
+        if (target.defending) {
             damage /= 2;
         }
 
@@ -413,7 +427,7 @@ public class BattleSystem {
         return damage;
     }
 
-    private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell,boolean isphys) {
+    private int calculateMagicDamage(Entity attacker, Entity target, superMagic selectedSpell, boolean isphys) {
         int damage = 0;
 
         if (attacker instanceof Player playerAttacker) {
@@ -507,7 +521,13 @@ public class BattleSystem {
         pressTurn = 8;
     }
 
-    public void getTargetSlot(Entity target){
+    /**
+     * Retrieves the slot index of the specified target entity within the player's party members.
+     * Prints the name of the target entity to the console.
+     *
+     * @param target The entity for which to determine the slot index.
+     */
+    public void getTargetSlot(Entity target) {
         String nombre = target.name;
         System.out.println(nombre);
         partyMembers.forEach((partyMember) -> {
@@ -558,7 +578,7 @@ public class BattleSystem {
      */
     public void fleeFromBattle() {
         //Implementar el escape de la batalla
-        if(!monster.boss){
+        if (!monster.boss) {
             Random random = new Random();
             int randomNum = random.nextInt(100);
             if (randomNum < 50) {
@@ -570,8 +590,7 @@ public class BattleSystem {
                 gp.ui.addMessage("Player Failed to escape");
                 nextTurn();
             }
-        }
-        else{
+        } else {
             System.out.println("You can't escape from a boss");
             gp.ui.addMessage("You can't escape from a boss");
         }
@@ -583,11 +602,10 @@ public class BattleSystem {
      * The NegotiationSystem is responsible for handling the negotiation.
      */
     public void negotiateMonster() {
-        if(monster.boss){
+        if (monster.boss) {
             System.out.println("You can't negotiate with a boss");
             gp.ui.addMessage("You can't negotiate with a boss");
-        }
-        else{
+        } else {
             //Implementar la negociacion con el monstruo
             negotiationSystem = new NegotiationSystem(this);
             negotiationSystem.startNegotiation();
@@ -615,21 +633,21 @@ public class BattleSystem {
             gp.player.stats.money = gp.player.stats.money + randomNum;
         }
 
-        for(int i = 0; i < party.partyMembers.size(); i++){
+        for (int i = 0; i < party.partyMembers.size(); i++) {
             //Exp /2 por cada miembro del partido para que no esten al mismo level o mas que el Lider y porque se reparte entre los miembros
-            party.partyMembers.get(i).stats.exp = party.partyMembers.get(i).stats.exp + (monster.xpGiven / 2 );
+            party.partyMembers.get(i).stats.exp = party.partyMembers.get(i).stats.exp + (monster.xpGiven / 2);
 
-            if(party.partyMembers.get(i).stats.exp>= party.partyMembers.get(i).stats.nextLevelExp){
+            if (party.partyMembers.get(i).stats.exp >= party.partyMembers.get(i).stats.nextLevelExp) {
                 //Level Up
                 party.partyMembers.get(i).levelUp();
                 System.out.println(party.partyMembers.get(i).name + " has leveled up");
             }
         }
 
-        if(monster.boss){
+        if (monster.boss) {
             gp.stopMusic();
             gp.playMusic(0);
-            gp.Asetter.summonStairs(monster.WorldX,monster.WorldY);
+            gp.Asetter.summonStairs(monster.WorldX, monster.WorldY);
         }
 
         if (party.Leader.stats.exp >= party.Leader.stats.nextLevelExp) {
@@ -639,7 +657,7 @@ public class BattleSystem {
             return;
         }
 
-        if(!monster.boss){
+        if (!monster.boss) {
             //Random de Objetos
             gp.Asetter.respawnMonster();
         }
@@ -647,6 +665,6 @@ public class BattleSystem {
 
         gp.gameState = gp.playState;
 
-        }
-
     }
+
+}

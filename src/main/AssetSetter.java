@@ -11,21 +11,35 @@ import monster.shadowStandar;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The AssetSetter class is responsible for setting up various game assets such as objects, NPCs, and monsters.
+ */
 public class AssetSetter {
 
     GamePanel gp;
 
+    /**
+     * Constructs a new AssetSetter object.
+     *
+     * @param gp The GamePanel object associated with the AssetSetter.
+     */
     public AssetSetter(GamePanel gp) {
 
         this.gp = gp;
 
     }
 
+    /**
+     * Sets up game objects, including random chests and potions, and initializes the boss.
+     */
     public void setObject() {
         generateRandomObjects();
         setBoss();
     }
 
+    /**
+     * Generates random objects such as chests and potions on the game map.
+     */
     private void generateRandomObjects() {
         Random random = new Random();
 
@@ -72,10 +86,13 @@ public class AssetSetter {
     }
 
 
+    /**
+     * Sets up NPCs in the game world, ensuring they are positioned within a certain range of the player.
+     */
     public void setNPC() {
         gp.npc[0] = new NPC(gp);
 
-        try{
+        try {
             // Obtener la posición aleatoria cercana al jugador
             int[] playerPosition = gp.tileM.setPlayerRandomPosition();
             int playerCol = playerPosition[0];
@@ -96,7 +113,7 @@ public class AssetSetter {
             // Establecer la posición del NPC en las coordenadas encontradas
             gp.npc[0].WorldX = gp.tileSize * npcTileCol;
             gp.npc[0].WorldY = gp.tileSize * npcTileRow;
-        }catch ( Exception e){
+        } catch (Exception e) {
             System.out.println("NPC out of bounds");
             setNPC();
         }
@@ -104,12 +121,21 @@ public class AssetSetter {
 
     }
 
-    public void summonStairs(int x,int y){
+    /**
+     * Summons stairs at a specified position on the game map.
+     *
+     * @param x The x-coordinate of the stairs' position.
+     * @param y The y-coordinate of the stairs' position.
+     */
+    public void summonStairs(int x, int y) {
         gp.obj[9] = new OBJ_Stairs(gp);
         gp.obj[9].WorldX = x;
         gp.obj[9].WorldY = y;
     }
 
+    /**
+     * Sets up monsters in the game world.
+     */
     public void setMonsters() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
 
@@ -118,6 +144,12 @@ public class AssetSetter {
         }
     }
 
+    /**
+     * Generates a random monster from the available pool of monsters.
+     *
+     * @param availableMonsters The list of available monsters.
+     * @return A randomly generated monster.
+     */
     private shadowStandar generateRandomMonster(ArrayList<monsterData> availableMonsters) {
         Random random = new Random();
         int randomIndex = random.nextInt(availableMonsters.size());
@@ -140,21 +172,30 @@ public class AssetSetter {
         return monster;
     }
 
+    /**
+     * Generates a random boss monster from the available pool of bosses.
+     *
+     * @param availableMonsters The list of available boss monsters.
+     * @return A randomly generated boss monster.
+     */
     private shadowStandar generateRandomBoss(ArrayList<monsterData> availableMonsters) {
         Random random = new Random();
         int randomIndex = random.nextInt(availableMonsters.size());
         monsterData randomMonsterData = availableMonsters.get(randomIndex);
 
         shadowStandar monster = new shadowStandar(gp, randomMonsterData);
-        monster.WorldX = gp.tileM.specialRoomX*gp.tileSize +1*gp.tileSize;
-        monster.WorldY = gp.tileM.specialRoomY*gp.tileSize +1*gp.tileSize;
+        monster.WorldX = gp.tileM.specialRoomX * gp.tileSize + 1 * gp.tileSize;
+        monster.WorldY = gp.tileM.specialRoomY * gp.tileSize + 1 * gp.tileSize;
         monster.speed = 0;
         monster.swaptoBossImage();
 
         return monster;
     }
 
-    public void setBoss(){
+    /**
+     * Sets up a boss monster in a special room on the game map.
+     */
+    public void setBoss() {
         ArrayList<monsterData> availableBosses = gp.monsterManager.getBosses();
 
         gp.monsters[9] = generateRandomBoss(availableBosses);
@@ -163,10 +204,13 @@ public class AssetSetter {
     }
 
 
+    /**
+     * Respawns monsters in the game world.
+     */
     public void respawnMonster() {
         ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
-        for(int i = 0; i < 6; i++){
-            if(gp.monsters[i] == null){
+        for (int i = 0; i < 6; i++) {
+            if (gp.monsters[i] == null) {
                 gp.monsters[i] = generateRandomMonster(availableMonsters);
             }
         }

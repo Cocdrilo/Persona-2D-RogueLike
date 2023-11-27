@@ -8,6 +8,12 @@ import java.awt.image.BufferedImage;
  */
 public class Toolbox {
 
+    /**
+     * Generates a random integer between 1 (inclusive) and the specified maximum value (exclusive).
+     *
+     * @param maxWorldCol The upper bound for the random number (exclusive).
+     * @return A randomly generated integer between 1 (inclusive) and maxWorldCol (exclusive).
+     */
     public static int getRandomNumber(int maxWorldCol) {
         //gets a random Numer between 1 and 49
         return (int) (Math.random() * maxWorldCol-1) + 1;
