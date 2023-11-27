@@ -818,10 +818,16 @@ public class UI implements Drawable {
         int y = gp.tileSize;
         int width = gp.screenWidth - gp.tileSize * 2;
         int height = gp.tileSize * 2;
-        
+
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.drawImage(backgroundCombat, 0, 0, gp.screenWidth, gp.screenHeight, null);
+
+
         g2.setFont(g2.getFont().deriveFont(24F));
 
         drawSubWindow(x, y, width, height);
+        g2.setColor(Color.white);
         x = getXforCenterText("Añadir El Demonio a la Party");
         g2.drawString("Añadir El Demonio a la Party", x, y + 30);
         if (commandNum2 == 0) {
@@ -832,6 +838,7 @@ public class UI implements Drawable {
         x = gp.tileSize;
         y = gp.tileSize * 5;
         drawSubWindow(x, y, width, height);
+        g2.setColor(Color.white);
         x = getXforCenterText("Pedir Objetos");
         g2.drawString("Pedir Objetos", x, y + 30);
         if (commandNum2 == 1) {
@@ -842,6 +849,7 @@ public class UI implements Drawable {
         x = gp.tileSize;
         y = gp.tileSize * 10;
         drawSubWindow(x, y, width, height);
+        g2.setColor(Color.white);
         x = getXforCenterText("Pedir Dinero");
         g2.drawString("Pedir Dinero", x, y + 30);
         if (commandNum2 == 2) {
