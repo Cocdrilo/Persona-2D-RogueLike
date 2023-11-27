@@ -7,6 +7,6 @@ negotiation
 Object.Consumables
 Object.Equipables
 Object.WorldBuilding
-Pathfinding
+PathFinding
 proceduralNeeds
 tile

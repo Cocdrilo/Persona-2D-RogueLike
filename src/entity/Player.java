@@ -72,7 +72,7 @@ public class Player extends Entity {
      * Sets default values for the player character.
      */
     public void setDefaultValues() {
-        speed = 10;
+        speed = 4;
         direction = "down";
         name = "Raidou";
 

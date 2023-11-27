@@ -1,6 +1,6 @@
 package main;
 
-import Pathfinding.PathFinder;
+import PathFinding.PathFinder;
 import battleNeeds.BattleAnimations;
 import battleNeeds.SpellManager;
 import data.SaveLoad;
@@ -9,7 +9,6 @@ import entity.Player;
 import entity.partyManager;
 import monster.MonsterManager;
 import negotiation.NegotiationManager;
-import negotiation.NegotiationSystem;
 import tile.TileManager;
 
 import javax.swing.*;

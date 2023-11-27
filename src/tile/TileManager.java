@@ -22,7 +22,7 @@ public class TileManager implements Drawable {
 
     public int[][] mapTileNum;
     public int[][] oldmapTileNum;
-    public boolean drawPath = true;
+    public boolean drawPath = false;
     public boolean loadedGame = false;
     public int specialRoomX;
     public int specialRoomY;

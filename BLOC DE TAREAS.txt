@@ -13,7 +13,7 @@ Falta por hacer: seleccionar con X si lo va a hacer alejandro y con + si lo va a
 -Save File en un txt:+
 -Cargar partida desde el txt:+
 -Transicionar Mapas:
--Pathfinding (que te sigan los mobs que cojan agro o npcs)
+-PathFinding (que te sigan los mobs que cojan agro o npcs)
 -Loot fuera de combate:
 -Mejora de los diálogos para que no tengas que rehablar y que avance, es decir que sea estilo page flip:
 -
