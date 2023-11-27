@@ -776,7 +776,7 @@ public class UI implements Drawable {
         height = gp.tileSize * 5;
         drawSubWindow(x, y, width, height);
         g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.setFont(franklin.deriveFont(24F));
 
         // Check if it's a money request
         if (gp.battleSystem.negotiationSystem.moneyRequest) {
@@ -824,7 +824,7 @@ public class UI implements Drawable {
         g2.drawImage(backgroundCombat, 0, 0, gp.screenWidth, gp.screenHeight, null);
 
 
-        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.setFont(franklin.deriveFont(24F));
 
         drawSubWindow(x, y, width, height);
         g2.setColor(Color.white);
