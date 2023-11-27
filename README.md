@@ -23,6 +23,8 @@
 **Inventario:** Recoge objetos, pociones y equipo para mejorar tus habilidades y tu supervivencia en las mazmorras.
 **Progresión:** Gana experiencia y mejora tus habilidades a medida que avanzas en el juego. Derrota jefes para desbloquear nuevas áreas y desafíos.
 
+[Pdf de Juego](Shin Megami Tensei RogueLike GameGuide.pdf)
+
 ![UML Diagram](UML Persona .png)
 
 ## Instalación
