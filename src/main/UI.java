@@ -818,10 +818,10 @@ public class UI implements Drawable {
         int y = gp.tileSize;
         int width = gp.screenWidth - gp.tileSize * 2;
         int height = gp.tileSize * 2;
+        
+        g2.setFont(g2.getFont().deriveFont(24F));
 
         drawSubWindow(x, y, width, height);
-        g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(24F));
         x = getXforCenterText("Añadir El Demonio a la Party");
         g2.drawString("Añadir El Demonio a la Party", x, y + 30);
         if (commandNum2 == 0) {
