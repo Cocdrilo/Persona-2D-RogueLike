@@ -50,158 +50,166 @@ public class SaveLoad {
      */
     public void save() {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
-            DataStorage ds = new DataStorage();
-
-            //Player Stats
-            ds.level = gp.player.stats.level;
-            ds.exp = gp.player.stats.exp;
-            ds.nextLevelExp = gp.player.stats.nextLevelExp;
-            ds.maxLife = gp.player.stats.maxHp;
-            ds.life = gp.player.stats.hp;
-            ds.mana = gp.player.stats.mp;
-            ds.maxMana = gp.player.stats.maxMp;
-            ds.strength = gp.player.stats.str;
-            ds.magic = gp.player.stats.mag;
-            ds.agility = gp.player.stats.agi;
-            ds.vitality = gp.player.stats.vit;
-            ds.money = gp.player.stats.money;
-            ds.playerX = gp.player.WorldX;
-            ds.playerY = gp.player.WorldY;
-            System.out.println("Player X: " + gp.player.WorldX);
-            System.out.println("Player Y: " + gp.player.WorldY);
-
-            //Player Inventory
-            for (int i = 0; i < gp.player.inventory.size(); i++) {
-                ds.itemNames.add(gp.player.inventory.get(i).name);
-                //ds.itemAmounts.add(gp.player.inventory.get(i).amount);
-
-            }
-
-            //Player Equipment
-            ds.currentWeaponSlot = gp.player.getWeaponSlot();
-            ds.currentArmorSlot = gp.player.getArmorSlot();
-
-            //Save Objects:
-            for (int i = 0; i < gp.obj.length; i++) {
-                if (gp.obj[i] != null) {
-                    ds.mapObjectNames[i] = gp.obj[i].name;
-                    ds.mapObjectWorldX[i] = gp.obj[i].WorldX;
-                    ds.mapObjectWorldY[i] = gp.obj[i].WorldY;
-                    ds.mapObjectVisibility[i] = gp.obj[i].isVisible;
-                    //System.out.println("Saved: " + gp.obj[i].name + "," + gp.obj[i].WorldX + "," + gp.obj[i].WorldY);
-                }
-            }
-
-
-            //Party
-            for(int i = 0;i<gp.party.partyMembers.size();i++){
-                ds.monsterName[i] = gp.party.partyMembers.get(i).name;
-                ds.monsterLevel[i] = gp.party.partyMembers.get(i).stats.level;
-                ds.monsterEXP[i] = gp.party.partyMembers.get(i).stats.exp;
-                ds.monsterNextLevelEXP[i] = gp.party.partyMembers.get(i).stats.nextLevelExp;
-                ds.monsterMaxLife[i] = gp.party.partyMembers.get(i).stats.maxHp;
-                ds.monsterLife[i] = gp.party.partyMembers.get(i).stats.hp;
-                ds.monsterMana[i] = gp.party.partyMembers.get(i).stats.mp;
-                ds.monsterMaxMana[i] = gp.party.partyMembers.get(i).stats.maxMp;
-                ds.monsterStrength[i] = gp.party.partyMembers.get(i).stats.str;
-                ds.monsterMagic[i] = gp.party.partyMembers.get(i).stats.mag;
-                ds.monsterAgility[i] = gp.party.partyMembers.get(i).stats.agi;
-                ds.monsterVitality[i] = gp.party.partyMembers.get(i).stats.vit;
-                ds.membersInParty++;
-            }
-            System.out.println("Members in party: " + ds.membersInParty);
-
-            //RandomDungeonGenerator.saveDungeonToFile(gp.tileM.mapTileNum,"src/tile/Map.txt");
-
-            for(int i = 0;i<50;i++){
-                for(int j = 0;j<50;j++){
-                    ds.dungeonMap[i][j] = gp.tileM.mapTileNum[i][j];
-                }
-            }
-
-
-            //Write in the file
-            oos.writeObject(ds);
-
-        } catch (Exception e) {
-            System.out.println("Save Exception!");
-            e.printStackTrace(System.err);
+            saveAllGameData();
+        } catch (Exception fileExceptions) {
+            fileExceptions.printStackTrace(System.err);
         }
-
     }
+
+    private void saveAllGameData() throws IOException {
+        ObjectOutputStream objectOutputStreamWritter = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
+        DataStorage dataStorageFile = new DataStorage();
+
+        savePlayerStats(dataStorageFile);
+
+        savePlayerInventory(dataStorageFile);
+
+        saveMapObjects(dataStorageFile);
+
+        savePartyStats(dataStorageFile);
+
+        saveDungeonLayout(dataStorageFile);
+
+        //Write in the file
+        objectOutputStreamWritter.writeObject(dataStorageFile);
+    }
+
+    private void savePlayerStats(DataStorage dataStorageFile){
+        dataStorageFile.level = gp.player.stats.level;
+        dataStorageFile.exp = gp.player.stats.exp;
+        dataStorageFile.nextLevelExp = gp.player.stats.nextLevelExp;
+        dataStorageFile.maxLife = gp.player.stats.maxHp;
+        dataStorageFile.life = gp.player.stats.hp;
+        dataStorageFile.mana = gp.player.stats.mp;
+        dataStorageFile.maxMana = gp.player.stats.maxMp;
+        dataStorageFile.strength = gp.player.stats.str;
+        dataStorageFile.magic = gp.player.stats.mag;
+        dataStorageFile.agility = gp.player.stats.agi;
+        dataStorageFile.vitality = gp.player.stats.vit;
+        dataStorageFile.money = gp.player.stats.money;
+        dataStorageFile.playerX = gp.player.WorldX;
+        dataStorageFile.playerY = gp.player.WorldY;
+    }
+
+    private void savePlayerInventory(DataStorage dataStorageFile) {
+        for (int inventorySlot = 0; inventorySlot < gp.player.inventory.size(); inventorySlot++) {
+            dataStorageFile.itemNames.add(gp.player.inventory.get(inventorySlot).name);
+        }
+        dataStorageFile.currentWeaponSlot = gp.player.getWeaponSlot();
+        dataStorageFile.currentArmorSlot = gp.player.getArmorSlot();
+    }
+
+    private void saveMapObjects(DataStorage dataStorageFile) {
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (gp.obj[i] != null) {
+                dataStorageFile.mapObjectNames[i] = gp.obj[i].name;
+                dataStorageFile.mapObjectWorldX[i] = gp.obj[i].WorldX;
+                dataStorageFile.mapObjectWorldY[i] = gp.obj[i].WorldY;
+                dataStorageFile.mapObjectVisibility[i] = gp.obj[i].isVisible;
+            }
+        }
+    }
+
+    private void savePartyStats(DataStorage dataStorageFile){
+        for(int monsterSlotInParty = 0;monsterSlotInParty<gp.party.partyMembers.size();monsterSlotInParty++){
+            dataStorageFile.monsterName[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).name;
+            dataStorageFile.monsterLevel[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.level;
+            dataStorageFile.monsterEXP[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.exp;
+            dataStorageFile.monsterNextLevelEXP[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.nextLevelExp;
+            dataStorageFile.monsterMaxLife[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.maxHp;
+            dataStorageFile.monsterLife[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.hp;
+            dataStorageFile.monsterMana[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.mp;
+            dataStorageFile.monsterMaxMana[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.maxMp;
+            dataStorageFile.monsterStrength[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.str;
+            dataStorageFile.monsterMagic[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.mag;
+            dataStorageFile.monsterAgility[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.agi;
+            dataStorageFile.monsterVitality[monsterSlotInParty] = gp.party.partyMembers.get(monsterSlotInParty).stats.vit;
+            dataStorageFile.membersInParty++;
+        }
+    }
+    private void saveDungeonLayout(DataStorage dataStorageFile){
+        for(int i = 0;i<50;i++){
+            System.arraycopy(gp.tileM.mapTileNum[i], 0, dataStorageFile.dungeonMap[i], 0, 50);
+        }
+    }
+
 
     /**
      * Load game data from a file.
      */
     public void load() {
         try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));
-            DataStorage ds = (DataStorage) ois.readObject();
-
-            //Player Stats
-            gp.player.stats.level = ds.level;
-            gp.player.stats.exp = ds.exp;
-            gp.player.stats.nextLevelExp = ds.nextLevelExp;
-            gp.player.stats.maxHp = ds.maxLife;
-            gp.player.stats.hp = ds.life;
-            gp.player.stats.mp = ds.mana;
-            gp.player.stats.maxMp = ds.maxMana;
-            gp.player.stats.str = ds.strength;
-            gp.player.stats.mag = ds.magic;
-            gp.player.stats.agi = ds.agility;
-            gp.player.stats.vit = ds.vitality;
-            gp.player.stats.money = ds.money;
-            gp.player.WorldX = ds.playerX;
-            gp.player.WorldY= ds.playerY;
-            System.out.println("Player X: " + gp.player.WorldX);
-            System.out.println("Player Y: " + gp.player.WorldY);
-
-                    //Player Inventory
-            gp.player.inventory.clear();
-            for (int i = 0; i < ds.itemNames.size(); i++) {
-                gp.player.inventory.add(getObject(ds.itemNames.get(i)));
-            }
-            //Player Equipment
-            gp.player.stats.weapon = (OBJ_Weapon) gp.player.inventory.get(ds.currentWeaponSlot);
-            gp.player.stats.armor = (OBJ_Armor) gp.player.inventory.get(ds.currentArmorSlot);
-            gp.player.getDefense();
-            gp.player.getPlayerImage();
-            gp.tileM.loadedGame = true;
-
-            for (int i = 0; i < gp.obj.length; i++) {
-                if (gp.obj[i] != null) {
-                    gp.obj[i].name = ds.mapObjectNames[i];
-                    gp.obj[i].WorldX = ds.mapObjectWorldX[i];
-                    gp.obj[i].WorldY = ds.mapObjectWorldY[i];
-                    gp.obj[i].isVisible = ds.mapObjectVisibility[i];
-                    //System.out.println("Loaded: " + ds.mapObjectNames[i] + "," + ds.mapObjectWorldX[i] + "," + ds.mapObjectWorldY[i]);
-                }
-            }
-
-
-
-
-            System.out.println("Members in party: " + ds.membersInParty);
-            gp.party.partyMembers.clear();
-            for(int i = 0;i<ds.membersInParty;i++){
-                gp.party.addMonsterToParty(ds.monsterName[i]);
-                gp.party.partyMembers.get(i).swapStats(ds.monsterLevel[i],ds.monsterEXP[i],ds.monsterNextLevelEXP[i],ds.monsterLife[i],ds.monsterMaxLife[i],ds.monsterMana[i],ds.monsterMaxMana[i],ds.monsterStrength[i],ds.monsterAgility[i],ds.monsterMagic[i],ds.monsterVitality[i]);
-
-            }
-            gp.tileM.loadedGame = true;
-
-            for(int i = 0;i<50;i++){
-                for(int j = 0;j<50;j++){
-                    gp.tileM.oldmapTileNum[i][j] = ds.dungeonMap[i][j];
-                }
-            }
-
-
+            loadGameData();
 
         } catch (Exception e) {
-            System.out.println("Load Exception!");
             e.printStackTrace(System.err);
+        }
+    }
+    private void loadGameData() throws IOException, ClassNotFoundException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(new File("save.dat")));
+        DataStorage dataStorageFile = (DataStorage) objectInputStream.readObject();
+
+        loadPlayerStats(dataStorageFile);
+
+        loadPlayerInventory(dataStorageFile);
+
+        loadMapObjects(dataStorageFile);
+
+        loadPartyMembersStats(dataStorageFile);
+
+        loadDungeonLayout(dataStorageFile);
+    }
+    private void loadPlayerStats(DataStorage dataStorageFile){
+        gp.player.stats.level = dataStorageFile.level;
+        gp.player.stats.exp = dataStorageFile.exp;
+        gp.player.stats.nextLevelExp = dataStorageFile.nextLevelExp;
+        gp.player.stats.maxHp = dataStorageFile.maxLife;
+        gp.player.stats.hp = dataStorageFile.life;
+        gp.player.stats.mp = dataStorageFile.mana;
+        gp.player.stats.maxMp = dataStorageFile.maxMana;
+        gp.player.stats.str = dataStorageFile.strength;
+        gp.player.stats.mag = dataStorageFile.magic;
+        gp.player.stats.agi = dataStorageFile.agility;
+        gp.player.stats.vit = dataStorageFile.vitality;
+        gp.player.stats.money = dataStorageFile.money;
+        gp.player.WorldX = dataStorageFile.playerX;
+        gp.player.WorldY= dataStorageFile.playerY;
+    }
+    private void loadPlayerInventory(DataStorage dataStorageFile){
+        //Hacemos un clear del inventario para evitar duplicados siempre
+        gp.player.inventory.clear();
+        for (String itemName : dataStorageFile.itemNames) {
+            gp.player.inventory.add(getObject(itemName));
+        }
+        gp.player.stats.weapon = (OBJ_Weapon) gp.player.inventory.get(dataStorageFile.currentWeaponSlot);
+        gp.player.stats.armor = (OBJ_Armor) gp.player.inventory.get(dataStorageFile.currentArmorSlot);
+    }
+    private void loadMapObjects(DataStorage dataStorageFile){
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (dataStorageFile.mapObjectNames[i] != null) {
+                gp.obj[i] = getObject(dataStorageFile.mapObjectNames[i]);
+                gp.obj[i].WorldX = dataStorageFile.mapObjectWorldX[i];
+                gp.obj[i].WorldY = dataStorageFile.mapObjectWorldY[i];
+                gp.obj[i].isVisible = dataStorageFile.mapObjectVisibility[i];
+            }
+        }
+    }
+    private void loadPartyMembersStats(DataStorage dataStorageFile){
+        //Igual que con el inventario hacemos un clear para evitar duplicados siempre
+        gp.party.partyMembers.clear();
+
+        for(int i = 0;i<dataStorageFile.membersInParty;i++){
+            gp.party.addMonsterToParty(dataStorageFile.monsterName[i]);
+            gp.party.partyMembers.get(i).swapStats(dataStorageFile.monsterLevel[i],dataStorageFile.monsterEXP[i],dataStorageFile.monsterNextLevelEXP[i],dataStorageFile.monsterLife[i],dataStorageFile.monsterMaxLife[i],dataStorageFile.monsterMana[i],dataStorageFile.monsterMaxMana[i],dataStorageFile.monsterStrength[i],dataStorageFile.monsterAgility[i],dataStorageFile.monsterMagic[i],dataStorageFile.monsterVitality[i]);
+
+        }
+    }
+    private void loadDungeonLayout(DataStorage dataStorageFile){
+        //Marcamos la variable de la clase que monta el mapa para que utilice este y no cree uno nuevo
+        gp.tileM.loadedGame = true;
+
+        for(int i = 0;i<50;i++){
+            System.arraycopy(dataStorageFile.dungeonMap[i], 0, gp.tileM.oldmapTileNum[i], 0, 50);
         }
     }
 }

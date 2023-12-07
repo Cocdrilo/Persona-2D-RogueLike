@@ -10,24 +10,11 @@ import java.util.ArrayList;
 public class DataStorage implements Serializable {
 
     //PLAYER STATS
-    int level;
-    int exp;
-    int nextLevelExp;
-    int maxLife;
-    int life;
-    int mana;
-    int maxMana;
-    int strength;
-    int magic;
-    int agility;
-    int vitality;
-    int money;
-    int playerX;
-    int playerY;
+    int level, exp, nextLevelExp, maxLife, life ,mana, maxMana;
+    int strength, magic, agility, vitality, money, playerX, playerY;
 
     //Player inventory
     ArrayList<String> itemNames = new ArrayList<>();
-    ArrayList<Integer> itemAmounts = new ArrayList<>();
     int currentWeaponSlot;
     int currentArmorSlot;
 
@@ -52,6 +39,8 @@ public class DataStorage implements Serializable {
     int[] monsterVitality = new int[3];
     String[] monsterName = new String[3];
     int membersInParty = 0;
+
+    //Dungeon Map Storage
     int[][] dungeonMap = new int[50][50];
 
 }

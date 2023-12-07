@@ -13,17 +13,9 @@ import javax.swing.Timer;
  * The BattleAnimations class handles the animations for melee and magic attacks in a game.
  */
 public class BattleAnimations {
-    private Image meleeSlash1;
-    private Image meleeSlash2;
-    private Image meleeSlash3;
-    private Image meleeSlash4;
-
-    private Image magicBlast1;
-    private Image magicBlast2;
-    private Image magicBlast3;  // Same image as magicBlast4
-    private Image magicBlast4;  // Same image as magicBlast3
-
-    private int animationDuration = 1400;
+    private Image meleeSlash1, meleeSlash2, meleeSlash3, meleeSlash4;
+    private Image magicBlast1, magicBlast2, magicBlast3, magicBlast4;
+    private final int animationDuration = 1400;
     private long startTime;
 
     private Timer meleeAnimationTimer;

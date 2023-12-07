@@ -46,7 +46,7 @@ public class SpellManager {
             spells = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<superMagic>>() {
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             // Manejar excepciones apropiadamente
         }
     }
