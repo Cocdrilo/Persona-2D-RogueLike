@@ -6,6 +6,7 @@ import main.KeyHandler;
 /**
  * The Player_Prot1 class is a specific player character class that extends the Player class.
  * It represents the first prototype of a player character in the game.
+ * TODO CLASS STILL NOT IMPLEMENTED SHOULD IMPLEMENT AFTER TALENT TREES
  */
 public class Player_Prot1 extends Player {
 

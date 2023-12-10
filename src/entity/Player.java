@@ -37,48 +37,57 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
-
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+        setPlayerSolidArea();
+        getPlayerImage();
+        setDefaultValues();
+        fillSpells(addDefaultSpells());
+    }
 
+
+    private void setPlayerSolidArea(){
         solidArea = new Rectangle(15, 20, 32, 64);
-
         solidAreaDefaultX = solidArea.x;
         SolidAreaDefaultY = solidArea.y;
-
-        stats = new Entity_stats();
-        String[] defaultSpells = {"Zio", "Agi", "Fatal End"};
-
-        setDefaultValues();
-        getPlayerImage();
-        fillSpells(defaultSpells);
-        debugPlayerSpells();
     }
-
-    //DEBUG
 
     /**
-     * Displays the spells currently available to the player for debugging purposes.
+     * Loads the player character images for different directions and movements.
      */
-    public void debugPlayerSpells() {
-        System.out.println("DEBUG: Player spells:");
-        for (superMagic spell : this.spells) {
-            System.out.println(spell.name);
-        }
-
+    public void getPlayerImage() {
+        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        standLeft = setUp("/player/NuevoPlayer/Left", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        standRight = setUp("/player/NuevoPlayer/Right", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        standBack = setUp("/player/NuevoPlayer/Back", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkDown1 = setUp("/player/NuevoPlayer/Front2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkDown2 = setUp("/player/NuevoPlayer/Front3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkLeft1 = setUp("/player/NuevoPlayer/Left2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkLeft2 = setUp("/player/NuevoPlayer/Left3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkRight1 = setUp("/player/NuevoPlayer/Right2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkRight2 = setUp("/player/NuevoPlayer/Right3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkUp1 = setUp("/player/NuevoPlayer/Back2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        walkUp2 = setUp("/player/NuevoPlayer/Back3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
     }
-
+    
     /**
      * Sets default values for the player character.
      */
     public void setDefaultValues() {
+        setPlayer_Speed_Name_DefDirection();
+        setPlayerBaseStats();
+        setPlayerDefaultWeapon_Armor();
+        setPlayerBattleDebilities();
+    }
+
+    private void setPlayer_Speed_Name_DefDirection(){
         speed = 4;
         direction = "down";
         name = "Raidou";
+    }
 
-
-        //System.out.println("DEBUG: Player position: " + WorldX / gp.tileSize + ", " + WorldY / gp.tileSize);
-
+    private void setPlayerBaseStats(){
+        stats = new Entity_stats();
         stats.level = 1;
         stats.maxHp = 190;
         stats.hp = stats.maxHp;
@@ -91,15 +100,33 @@ public class Player extends Entity {
         stats.exp = 0;
         stats.nextLevelExp = 10;
         stats.money = 50;
+    }
+    private void setPlayerDefaultWeapon_Armor(){
         stats.weapon = new OBJ_WEAPON_Slash(gp);
         stats.armor = new OBJ_Armor(gp);
+        addDefaultPlayerItemsToInventory();
+    }
+
+    private void setPlayerBattleDebilities(){
         resistances = new String[]{};
         weaknesses = new String[]{};
         nulls = new String[]{};
         repells = new String[]{};
-        setItems();
     }
 
+    /**
+     * Sets the initial items in the player's inventory.
+     */
+    public void addDefaultPlayerItemsToInventory() {
+
+        inventory.add(stats.weapon);
+        inventory.add(stats.armor);
+
+    }
+
+    private String[] addDefaultSpells(){
+        return new String[]{"Zio", "Agi", "Fatal End"};
+    }
     /**
      * Sets a random position for the player on the game map.
      */
@@ -107,16 +134,6 @@ public class Player extends Entity {
         int[] datos = gp.tileM.setPlayerRandomPosition();
         WorldX = datos[0] * gp.tileSize;
         WorldY = datos[1] * gp.tileSize;
-    }
-
-    /**
-     * Sets the initial items in the player's inventory.
-     */
-    public void setItems() {
-
-        inventory.add(stats.weapon);
-        inventory.add(stats.armor);
-
     }
 
     /**
@@ -159,16 +176,14 @@ public class Player extends Entity {
     public String[] printItems() {
         String[] Items = new String[inventory.size()];
         int ItemsIndex = 0;
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).type == 5) {
-                Items[ItemsIndex] = inventory.get(i).name;
+        for (Entity entity : inventory) {
+            if (entity.type == 5) {
+                Items[ItemsIndex] = entity.name;
                 ItemsIndex++;
             }
         }
         String[] consumableItems = new String[ItemsIndex];
-        for (int i = 0; i < ItemsIndex; i++) {
-            consumableItems[i] = Items[i];
-        }
+        System.arraycopy(Items, 0, consumableItems, 0, ItemsIndex);
         return consumableItems;
     }
 
@@ -179,9 +194,9 @@ public class Player extends Entity {
      */
     public ArrayList<Entity> getItems() {
         ArrayList<Entity> Items = new ArrayList<>();
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).type == 5) {
-                Items.add(inventory.get(i));
+        for (Entity entity : inventory) {
+            if (entity.type == 5) {
+                Items.add(entity);
             }
         }
         return Items;
@@ -286,24 +301,6 @@ public class Player extends Entity {
      */
     public void subtractMoney(int money) {
         stats.money -= money;
-    }
-
-    /**
-     * Loads the player character images for different directions and movements.
-     */
-    public void getPlayerImage() {
-        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        standLeft = setUp("/player/NuevoPlayer/Left", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        standRight = setUp("/player/NuevoPlayer/Right", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        standBack = setUp("/player/NuevoPlayer/Back", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkDown1 = setUp("/player/NuevoPlayer/Front2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkDown2 = setUp("/player/NuevoPlayer/Front3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkLeft1 = setUp("/player/NuevoPlayer/Left2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkLeft2 = setUp("/player/NuevoPlayer/Left3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkRight1 = setUp("/player/NuevoPlayer/Right2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkRight2 = setUp("/player/NuevoPlayer/Right3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkUp1 = setUp("/player/NuevoPlayer/Back2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkUp2 = setUp("/player/NuevoPlayer/Back3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
     }
 
     /**
