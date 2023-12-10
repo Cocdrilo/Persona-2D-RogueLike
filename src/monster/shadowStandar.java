@@ -1,7 +1,6 @@
 package monster;
 
 import entity.Entity;
-import main.BattleSystem;
 import main.GamePanel;
 
 import java.awt.image.BufferedImage;
@@ -14,8 +13,7 @@ import java.util.Random;
 public class shadowStandar extends Entity {
 
     public BufferedImage walkDown3, walkDown4, walkUp3, walkUp4, walkLeft3, walkLeft4, walkRight3, walkRight4;
-
-    public int xpGiven;
+    public int xpGivenAtMonsterDeath;
     private String attackType;
     public BufferedImage combatImage;
     public String combatImagePath;
@@ -29,27 +27,34 @@ public class shadowStandar extends Entity {
      */
     public shadowStandar(GamePanel gp, monsterData data) {
         super(gp);
-        this.name = data.name;
-        this.stats.hp = data.hp;
+        setJsonDataToGameMonster(data);
+        setSpeedAndEntityType();
+        getImage();
+    }
+
+    private void setJsonDataToGameMonster(monsterData selectedMonsterData){
+        this.name = selectedMonsterData.name;
+        this.stats.hp = selectedMonsterData.hp;
         this.stats.maxHp = this.stats.hp;
-        this.stats.str = data.str;
-        this.stats.agi = data.agi;
-        this.stats.mag = data.mag;
-        this.stats.vit = data.vit;
-        this.stats.level = data.lvl;
-        this.xpGiven = data.xpGiven;
+        this.stats.str = selectedMonsterData.str;
+        this.stats.agi = selectedMonsterData.agi;
+        this.stats.mag = selectedMonsterData.mag;
+        this.stats.vit = selectedMonsterData.vit;
+        this.stats.level = selectedMonsterData.lvl;
+        this.xpGivenAtMonsterDeath = selectedMonsterData.xpGiven;
         this.stats.nextLevelExp = stats.level * 20;
         this.stats.exp = 0;
-        this.attackType = data.attackType;
-        this.combatImagePath = data.combatImagePath;
-        this.resistances = data.resistances;
-        this.weaknesses = data.weaknesses;
-        this.nulls = data.nulls;
-        this.repells = data.repells;
-        fillSpells(data.spells);
+        this.attackType = selectedMonsterData.attackType;
+        this.combatImagePath = selectedMonsterData.combatImagePath;
+        this.resistances = selectedMonsterData.resistances;
+        this.weaknesses = selectedMonsterData.weaknesses;
+        this.nulls = selectedMonsterData.nulls;
+        this.repells = selectedMonsterData.repells;
+        fillSpells(selectedMonsterData.spells);
+    }
+    private void setSpeedAndEntityType(){
         this.type = 2;
         speed = 1;
-        getImage();
     }
 
     /**
@@ -72,6 +77,9 @@ public class shadowStandar extends Entity {
         return 5 * (int) (Math.sqrt(((double) attackerStat / playerEndurance) * randomFactor()));
     }
 
+    /**
+     * Neccesary Function to create Boss Monsters using this class
+     */
     public void swapStats(int level, int exp, int nextLevelExp, int life, int maxLife, int mana, int maxMana, int strength, int agility, int magic, int vitality) {
         stats.level = level;
         stats.exp = exp;
@@ -95,17 +103,23 @@ public class shadowStandar extends Entity {
      * @see Random
      */
     public void levelUp() {
+        monsterLevelUpAndExperienceUpdate();
+        randomStatDistribution();
+        System.out.println("Level up!" + name + " is now level " + stats.level);
+    }
+
+    private void monsterLevelUpAndExperienceUpdate(){
         stats.level++;
         stats.nextLevelExp = stats.nextLevelExp * 2;
+    }
 
-        // Randomly distribute 3 points among stats
+    private void randomStatDistribution(){
         Random random = new Random();
-        int totalPoints = 3;
+        int totalPointsToDistribute = 3;
 
-        while (totalPoints > 0) {
-            int pointsToAdd = random.nextInt(3) + 1; // Randomly choose 1 to 3 points
+        while (totalPointsToDistribute > 0) {
+            int pointsToAdd = random.nextInt(totalPointsToDistribute) + 1; // Randomly choose 1 to 3 points
 
-            // Randomly choose a stat to add points to
             int statChoice = random.nextInt(4); // Assuming you have 4 stats (hp, str, agi, mag)
 
             switch (statChoice) {
@@ -114,14 +128,11 @@ public class shadowStandar extends Entity {
                 case 2 -> this.stats.agi += pointsToAdd;
                 case 3 -> this.stats.mag += pointsToAdd;
 
-                // Add more cases if you have additional stats
             }
-
-            totalPoints -= pointsToAdd;
+            totalPointsToDistribute -= pointsToAdd;
         }
-        System.out.println("Level up!" + name + " is now level " + stats.level);
     }
-    
+
     /**
      * Gets the combat image of the monster.
      *
@@ -130,6 +141,38 @@ public class shadowStandar extends Entity {
     public BufferedImage getCombatImage() {
         combatImage = setUp(combatImagePath, gp.tileSize, gp.tileSize);
         return combatImage;
+    }
+
+    /**
+     * Swaps the entity's sprites to a boss image with a specified size.
+     * The entity's movement sprites (walk) in all directions are set to the boss image with the given size.
+     * The solid area dimensions are adjusted accordingly, and the entity is marked as a boss.
+     */
+    public void swaptoBossImage() {
+        int scale = 3;
+        walkDown1 = setUp("/Monsters/Archangel1", gp.tileSize * scale, gp.tileSize * scale);
+        walkDown2 = setUp("/Monsters/Archangel2", gp.tileSize * scale, gp.tileSize * scale);
+        walkDown3 = setUp("/Monsters/Archangel3", gp.tileSize * scale, gp.tileSize * scale);
+        walkDown4 = setUp("/Monsters/Archangel1", gp.tileSize * scale, gp.tileSize * scale);
+        walkLeft1 = setUp("/Monsters/Archangel2", gp.tileSize * scale, gp.tileSize * scale);
+        walkLeft2 = setUp("/Monsters/Archangel3", gp.tileSize * scale, gp.tileSize * scale);
+        walkLeft3 = setUp("/Monsters/Archangel1", gp.tileSize * scale, gp.tileSize * scale);
+        walkLeft4 = setUp("/Monsters/Archangel2", gp.tileSize * scale, gp.tileSize * scale);
+        walkRight1 = setUp("/Monsters/Archangel3", gp.tileSize * scale, gp.tileSize * scale);
+        walkRight2 = setUp("/Monsters/Archangel1", gp.tileSize * scale, gp.tileSize * scale);
+        walkRight3 = setUp("/Monsters/Archangel2", gp.tileSize * scale, gp.tileSize * scale);
+        walkRight4 = setUp("/Monsters/Archangel3", gp.tileSize * scale, gp.tileSize * scale);
+        walkUp1 = setUp("/Monsters/Archangel1", gp.tileSize * scale, gp.tileSize * scale);
+        walkUp2 = setUp("/Monsters/Archangel2", gp.tileSize * scale, gp.tileSize * scale);
+        walkUp3 = setUp("/Monsters/Archangel3", gp.tileSize * scale, gp.tileSize * scale);
+        walkUp4 = setUp("/Monsters/Archangel1", gp.tileSize * scale, gp.tileSize * scale);
+
+        setBossSolidAreaAndBossStatus(scale);
+    }
+    private void setBossSolidAreaAndBossStatus(int scale){
+        solidArea.width = gp.tileSize * scale;
+        solidArea.height = gp.tileSize * scale;
+        boss = true;
     }
 
     /**
@@ -152,36 +195,6 @@ public class shadowStandar extends Entity {
         walkUp2 = setUp("/Monsters/Demon2", gp.tileSize, gp.tileSize);
         walkUp3 = setUp("/Monsters/Demon3", gp.tileSize, gp.tileSize);
         walkUp4 = setUp("/Monsters/Demon4", gp.tileSize, gp.tileSize);
-    }
-
-    /**
-     * Swaps the entity's sprites to a boss image with a specified size.
-     * The entity's movement sprites (walk) in all directions are set to the boss image with the given size.
-     * The solid area dimensions are adjusted accordingly, and the entity is marked as a boss.
-     */
-    public void swaptoBossImage() {
-        int i = 3;
-
-        walkDown1 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
-        walkDown2 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
-        walkDown3 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
-        walkDown4 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
-        walkLeft1 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
-        walkLeft2 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
-        walkLeft3 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
-        walkLeft4 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
-        walkRight1 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
-        walkRight2 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
-        walkRight3 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
-        walkRight4 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
-        walkUp1 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
-        walkUp2 = setUp("/Monsters/Archangel2", gp.tileSize * i, gp.tileSize * i);
-        walkUp3 = setUp("/Monsters/Archangel3", gp.tileSize * i, gp.tileSize * i);
-        walkUp4 = setUp("/Monsters/Archangel1", gp.tileSize * i, gp.tileSize * i);
-
-        solidArea.width = gp.tileSize * i;
-        solidArea.height = gp.tileSize * i;
-        boss = true;
     }
 
     /**
@@ -210,7 +223,14 @@ public class shadowStandar extends Entity {
 
         super.update();
 
-        // Verifica la colisión con el jugador
+        checkCollisionWithPlayer();
+
+        int tileDistance = calculateTileDistanceFromPlayer();
+
+        checkRangeForAgroAndDeAgro(tileDistance);
+
+    }
+    private void checkCollisionWithPlayer(){
         if (gp.cCheck.checkPlayer(this)) {
             gp.player.enemyContactPlayer(this);
 
@@ -220,19 +240,19 @@ public class shadowStandar extends Entity {
                 gp.monsters[monsterIndex] = null;
             }
         }
-
+    }
+    private int calculateTileDistanceFromPlayer(){
         int xDistance = Math.abs(WorldX - gp.player.WorldX);
         int yDistance = Math.abs(WorldY - gp.player.WorldY);
-        int tileDistance = (xDistance + yDistance) / gp.tileSize;
-
+        return (xDistance + yDistance) / gp.tileSize;
+    }
+    private void checkRangeForAgroAndDeAgro(int tileDistance){
         if (!onPath && tileDistance < 5) {
             onPath = true;
         }
-
         //Agro Range
         if (onPath && tileDistance > 10) {
             onPath = false;
         }
-
     }
 }

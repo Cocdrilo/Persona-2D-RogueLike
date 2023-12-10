@@ -621,8 +621,8 @@ public class BattleSystem {
     public void endBattle() {
         //EXP calc
 
-        party.Leader.stats.exp = party.Leader.stats.exp + monster.xpGiven;
-        System.out.println("Player has recived " + monster.xpGiven + " exp");
+        party.Leader.stats.exp = party.Leader.stats.exp + monster.xpGivenAtMonsterDeath;
+        System.out.println("Player has recived " + monster.xpGivenAtMonsterDeath + " exp");
 
 
         //Random de dinero
@@ -635,7 +635,7 @@ public class BattleSystem {
 
         for (int i = 0; i < party.partyMembers.size(); i++) {
             //Exp /2 por cada miembro del partido para que no esten al mismo level o mas que el Lider y porque se reparte entre los miembros
-            party.partyMembers.get(i).stats.exp = party.partyMembers.get(i).stats.exp + (monster.xpGiven / 2);
+            party.partyMembers.get(i).stats.exp = party.partyMembers.get(i).stats.exp + (monster.xpGivenAtMonsterDeath / 2);
 
             if (party.partyMembers.get(i).stats.exp >= party.partyMembers.get(i).stats.nextLevelExp) {
                 //Level Up
