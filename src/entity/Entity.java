@@ -439,6 +439,28 @@ public abstract class Entity implements Drawable {
 
     }
 
+    protected void randomMoveForEntities(){
+        actionLockCounter++;
+        if (actionLockCounter == 90) {
+            Random random = new Random();
+            int i = random.nextInt(100 + 1);
+
+            if (i <= 25) {
+                direction = "up";
+            }
+            if (i > 25 && i <= 50) {
+                direction = "down";
+            }
+            if (i > 50 && i <= 75) {
+                direction = "left";
+            }
+            if (i > 75) {
+                direction = "right";
+            }
+            actionLockCounter = 0;
+        }
+    }
+
     /**
      * Performs an action when the entity is used in the overworld.
      *
