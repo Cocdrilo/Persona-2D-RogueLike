@@ -4,7 +4,6 @@ import Object.Equipables.OBJ_Armor;
 import Object.Equipables.OBJ_WEAPON_Slash;
 import Object.Equipables.OBJ_Weapon;
 import Object.WorldBuilding.OBJ_Chest;
-import battleNeeds.superMagic;
 import main.BattleSystem;
 import main.GamePanel;
 import main.KeyHandler;
@@ -170,7 +169,7 @@ public class Player extends Entity {
 
     /**
      * Prints the names of consumable items in the player's inventory.
-     *
+     * We need this function to have the only consumables inventory in the Battle
      * @return An array of consumable item names.
      */
     public String[] printItems() {
@@ -185,6 +184,25 @@ public class Player extends Entity {
         String[] consumableItems = new String[ItemsIndex];
         System.arraycopy(Items, 0, consumableItems, 0, ItemsIndex);
         return consumableItems;
+    }
+
+    /**
+     * Saves the indexes of consumable items in the player's inventory.
+     * We need this function to save the indexes of items used in Battle and delete them from inventory after
+     * @return An array of indexes of consumable items.
+     */
+    public int[] saveItemIndexes() {
+        int[] itemIndexes = new int[inventory.size()];
+        int itemCounter = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i).type == 5) {
+                itemIndexes[itemCounter] = i;
+                itemCounter++;
+            }
+        }
+        int[] consumableItemsIndex = new int[itemIndexes.length];
+        if (itemCounter >= 0) System.arraycopy(itemIndexes, 0, consumableItemsIndex, 0, itemCounter);
+        return consumableItemsIndex;
     }
 
     /**
@@ -203,51 +221,32 @@ public class Player extends Entity {
     }
 
     /**
-     * Saves the indexes of consumable items in the player's inventory.
-     *
-     * @return An array of indexes of consumable items.
-     */
-    public int[] saveItemIndexes() {
-        int[] itemIndexes = new int[inventory.size()];
-        int itemCounter = 0;
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).type == 5) {
-                itemIndexes[itemCounter] = i;
-                itemCounter++;
-            }
-        }
-        int[] consumableItemsIndex = new int[itemIndexes.length];
-        if (itemCounter >= 0) System.arraycopy(itemIndexes, 0, consumableItemsIndex, 0, itemCounter);
-        return consumableItemsIndex;
-    }
-
-    /**
      * Selects and uses items from the player's inventory.
      */
     public void selectItems() {
-
         int itemIndex = gp.ui.getItemIndexSlot();
+        if(itemIndex >= inventory.size()){
+            System.out.println("Inventory Full Pls Use Something Before picking up");
+        }
+        useItemWhenSelected(itemIndex);
+    }
+    private void useItemWhenSelected(int itemIndex){
 
-        if (itemIndex < inventory.size()) {
+        Entity selectedItem = inventory.get(itemIndex);
 
-            Entity selectedItem = inventory.get(itemIndex);
-
-            if (selectedItem instanceof OBJ_Weapon) {
-                stats.weapon = (OBJ_Weapon) selectedItem;
-            }
-            if (selectedItem instanceof OBJ_Armor) {
-                stats.armor = (OBJ_Armor) selectedItem;
-            }
-            if (selectedItem instanceof OBJ_Chest cofre) {
-                cofre.use();
-                inventory.remove(itemIndex);
-            }
-            if (selectedItem.type == 5) {
-                //CONSUMIBLE
-                selectedItem.overWorldUse(this);
-                inventory.remove(itemIndex);
-            }
-
+        if (selectedItem instanceof OBJ_Weapon) {
+            stats.weapon = (OBJ_Weapon) selectedItem;
+        }
+        if (selectedItem instanceof OBJ_Armor) {
+            stats.armor = (OBJ_Armor) selectedItem;
+        }
+        if (selectedItem instanceof OBJ_Chest cofre) {
+            cofre.use();
+            inventory.remove(itemIndex);
+        }
+        if (selectedItem.type == 5){ //Consumible
+            selectedItem.overWorldUse(this);
+            inventory.remove(itemIndex);
         }
     }
 
@@ -281,20 +280,9 @@ public class Player extends Entity {
         return dmgType;
     }
 
-    /**
-     * Adds money to the player's currency.
-     *
-     * @param money The amount of money to add.
-     */
     public void addMoney(int money) {
         stats.money += money;
     }
-
-    /**
-     * Subtracts money from the player's currency.
-     *
-     * @param money The amount of money to subtract.
-     */
     public void subtractMoney(int money) {
         stats.money -= money;
     }
@@ -303,14 +291,17 @@ public class Player extends Entity {
      * Updates the player's position and handles interactions based on user input.
      */
     public void update() {
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed) {
+        if (anyKeyPressed()) {
             directionSwapperOnPress();
             checkAllCollisionsPlayer();
             if (!collisionOn && !keyH.zPressed) {
-                moveNoCollision();
+                movePlayerWhenNoCollisions();
             }
-            spriteCounterUpdater();
+            spriteCounterUpdate();
         }
+    }
+    private boolean anyKeyPressed(){
+        return keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed;
     }
 
     private void checkAllCollisionsPlayer(){
@@ -355,7 +346,7 @@ public class Player extends Entity {
         }
     }
 
-    private void moveNoCollision(){
+    private void movePlayerWhenNoCollisions(){
         switch (direction) {
             case "up" -> WorldY -= speed;
             case "down" -> WorldY += speed;
@@ -364,7 +355,7 @@ public class Player extends Entity {
         }
     }
 
-    private void spriteCounterUpdater(){
+    private void spriteCounterUpdate(){
         gp.keyH.zPressed = false;
         spriteCounter++;
         if (spriteCounter > 12) {
@@ -429,7 +420,6 @@ public class Player extends Entity {
     public void contactMonster(int i) {
         if (i != 999) {
             shadowStandar shadow = (shadowStandar) gp.monsters[i];
-            //Cambio a Combate
             gp.battleSystem = new BattleSystem(gp.party, shadow, gp);
             gp.gameState = gp.combatState;
             gp.monsters[i] = null;
@@ -449,6 +439,7 @@ public class Player extends Entity {
 
     /**
      * Records the player's old statistics for leveling up.
+     * Neccesary function to not allow player to touch stats already setted before LevelUp
      */
     public void getOldStats() {
         keyH.oldStr = gp.player.stats.str;
@@ -479,48 +470,52 @@ public class Player extends Entity {
         BufferedImage image = null;
 
         if (!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
-            // El jugador está quieto, selecciona la imagen adecuada según la última dirección.
-            switch (direction) {
-                case "up" -> image = standBack;
-                case "down" -> image = standFront;
-                case "left" -> image = standLeft;
-                case "right" -> image = standRight;
-            }
+            drawPlayerWhenNotMoving();
         } else {
-            // El jugador se está moviendo, selecciona la imagen correspondiente a la dirección de movimiento.
-            switch (direction) {
-                case "up" -> {
-                    if (spriteNum == 1) {
-                        image = walkUp1;
-                    } else if (spriteNum == 2) {
-                        image = walkUp2;
-                    }
-                }
-                case "down" -> {
-                    if (spriteNum == 1) {
-                        image = walkDown1;
-                    } else if (spriteNum == 2) {
-                        image = walkDown2;
-                    }
-                }
-                case "left" -> {
-                    if (spriteNum == 1) {
-                        image = walkLeft1;
-                    } else if (spriteNum == 2) {
-                        image = walkLeft2;
-                    }
-                }
-                case "right" -> {
-                    if (spriteNum == 1) {
-                        image = walkRight1;
-                    } else if (spriteNum == 2) {
-                        image = walkRight2;
-                    }
-                }
-            }
+            drawPlayerWhenMoving();
         }
         graficos2d.drawImage(image, screenX, screenY, null);
 
     }
 
+    public void drawPlayerWhenNotMoving(){
+        switch (direction) {
+            case "up" -> image = standBack;
+            case "down" -> image = standFront;
+            case "left" -> image = standLeft;
+            case "right" -> image = standRight;
+        }
+    }
+    public void drawPlayerWhenMoving(){
+        switch (direction) {
+            case "up" -> {
+                if (spriteNum == 1) {
+                    image = walkUp1;
+                } else if (spriteNum == 2) {
+                    image = walkUp2;
+                }
+            }
+            case "down" -> {
+                if (spriteNum == 1) {
+                    image = walkDown1;
+                } else if (spriteNum == 2) {
+                    image = walkDown2;
+                }
+            }
+            case "left" -> {
+                if (spriteNum == 1) {
+                    image = walkLeft1;
+                } else if (spriteNum == 2) {
+                    image = walkLeft2;
+                }
+            }
+            case "right" -> {
+                if (spriteNum == 1) {
+                    image = walkRight1;
+                } else if (spriteNum == 2) {
+                    image = walkRight2;
+                }
+            }
+        }
+    }
 }
