@@ -7,7 +7,8 @@ import monster.shadowStandar;
 import java.util.ArrayList;
 
 /**
- * This class manages the player's party, which consists of a leader and a list of party members.
+ * This class manages the player's party, which consists of a leader the Player,
+ * and a list of party members the monsters Befriended
  */
 public class partyManager {
 
@@ -25,32 +26,33 @@ public class partyManager {
         this.Leader = Leader;
         this.partyMembers = new ArrayList<>();
         this.gp = gp;
-        //addMonsterToParty("Mascara Sonriente");
-        //addMonsterToParty("Cuervo Oscuro");
     }
 
     /**
      * Adds a monster to the party with the specified monster name.
      * If the party has less than 3 members and a matching monster is found, it's added to the party.
      *
-     * @param monsterName The name of the monster to add to the party.
+     * @param searchedMonsterName The name of the monster to add to the party.
      */
-    public void addMonsterToParty(String monsterName) {
-        if (partyMembers.size() < 3) {
-            ArrayList<monsterData> availableMonsters = gp.monsterManager.getMonsters();
-            for (monsterData monster : availableMonsters) {
-                if (monster.name.equals(monsterName)) {
-                    partyMembers.add(new shadowStandar(gp, monster));
-                    System.out.println(monsterName + " ha sido añadido al grupo.");
-                    return; // Sal del bucle una vez que hayas agregado un miembro.
-                }
-            }
-            System.out.println("No se pudo encontrar un monstruo con el nombre: " + monsterName);
-        } else {
+    public void addMonsterToParty(String searchedMonsterName) {
+        ArrayList<monsterData> allMonstersInGameData = gp.monsterManager.getMonsters();
+        if (partyMembers.size() >= 3) {
             System.out.println("El grupo ya tiene 3 miembros, no se puede agregar más.");
+        } else {
+            checkNameAndAddMonsterToParty(allMonstersInGameData,searchedMonsterName);
         }
     }
 
+    public void checkNameAndAddMonsterToParty(ArrayList<monsterData> availeableMonsters, String monsterSearchedName){
+        for(monsterData monster : availeableMonsters){
+            if (monster.name.equals(monsterSearchedName)) {
+                partyMembers.add(new shadowStandar(gp, monster));
+                System.out.println(monsterSearchedName + " ha sido añadido al grupo.");
+                return; // Sal del bucle una vez que hayas agregado un miembro.
+            }
+        }
+        System.out.println("No se pudo encontrar un monstruo con el nombre: " + monsterSearchedName);
+    }
     /**
      * Removes a monster from the party.
      *
@@ -59,8 +61,6 @@ public class partyManager {
     public void removeMonsterFromParty(shadowStandar monster) {
         partyMembers.remove(monster);
     }
-    //Debug Print Party
-
     /**
      * Prints information about the party, including the leader and all party members.
      */
