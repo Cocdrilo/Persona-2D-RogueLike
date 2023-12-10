@@ -72,6 +72,19 @@ public class shadowStandar extends Entity {
         return 5 * (int) (Math.sqrt(((double) attackerStat / playerEndurance) * randomFactor()));
     }
 
+    public void swapStats(int level, int exp, int nextLevelExp, int life, int maxLife, int mana, int maxMana, int strength, int agility, int magic, int vitality) {
+        stats.level = level;
+        stats.exp = exp;
+        stats.nextLevelExp = nextLevelExp;
+        stats.hp = life;
+        stats.maxHp = maxLife;
+        stats.mp = mana;
+        stats.maxMp = maxMana;
+        stats.str = strength;
+        stats.agi = agility;
+        stats.mag = magic;
+        stats.vit = vitality;
+    }
     /**
      * Increases the level of the shadowStandar instance and allocates
      * a random number of points to its stats upon leveling up.
@@ -108,8 +121,7 @@ public class shadowStandar extends Entity {
         }
         System.out.println("Level up!" + name + " is now level " + stats.level);
     }
-
-
+    
     /**
      * Gets the combat image of the monster.
      *
@@ -176,15 +188,18 @@ public class shadowStandar extends Entity {
      * Sets the action for the monster (basic random movement).
      */
     public void setAction() {
-
         if (onPath) {
-            int goalCol = (gp.player.WorldX + gp.player.solidArea.x + 1) / gp.tileSize;
-            int goalRow = (gp.player.WorldY + gp.player.solidArea.y + 1) / gp.tileSize;
-
-            searchPath(goalCol, goalRow);
+            chasingThePlayerMoving();
         } else {
             randomMoveForEntities();
         }
+    }
+
+    private void chasingThePlayerMoving(){
+        int goalCol = (gp.player.WorldX + gp.player.solidArea.x + 1) / gp.tileSize;
+        int goalRow = (gp.player.WorldY + gp.player.solidArea.y + 1) / gp.tileSize;
+
+        searchPath(goalCol, goalRow);
     }
 
     /**
@@ -219,36 +234,5 @@ public class shadowStandar extends Entity {
             onPath = false;
         }
 
-    }
-
-    //ds.monsterLevel[i],ds.monsterEXP[i],ds.monsterNextLevelEXP[i],ds.monsterLife[i],ds.monsterMaxLife[i],ds.monsterMana[i],ds.monsterMaxMana[i],ds.monsterStrength[i],ds.monsterAgility[i],ds.monsterMagic[i],ds.monsterVitality[i]
-
-    /**
-     * Swaps the stats of the entity with the provided values.
-     *
-     * @param level        The new level for the entity.
-     * @param exp          The new experience points for the entity.
-     * @param nextLevelExp The experience points required for the next level.
-     * @param life         The new current life points (HP) for the entity.
-     * @param maxLife      The new maximum life points (HP) for the entity.
-     * @param mana         The new current mana points (MP) for the entity.
-     * @param maxMana      The new maximum mana points (MP) for the entity.
-     * @param strength     The new strength stat for the entity.
-     * @param agility      The new agility stat for the entity.
-     * @param magic        The new magic stat for the entity.
-     * @param vitality     The new vitality stat for the entity.
-     */
-    public void swapStats(int level, int exp, int nextLevelExp, int life, int maxLife, int mana, int maxMana, int strength, int agility, int magic, int vitality) {
-        stats.level = level;
-        stats.exp = exp;
-        stats.nextLevelExp = nextLevelExp;
-        stats.hp = life;
-        stats.maxHp = maxLife;
-        stats.mp = mana;
-        stats.maxMp = maxMana;
-        stats.str = strength;
-        stats.agi = agility;
-        stats.mag = magic;
-        stats.vit = vitality;
     }
 }
