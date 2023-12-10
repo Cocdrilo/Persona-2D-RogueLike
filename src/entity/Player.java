@@ -69,7 +69,7 @@ public class Player extends Entity {
         walkUp1 = setUp("/player/NuevoPlayer/Back2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
         walkUp2 = setUp("/player/NuevoPlayer/Back3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
     }
-    
+
     /**
      * Sets default values for the player character.
      */
@@ -217,9 +217,7 @@ public class Player extends Entity {
             }
         }
         int[] consumableItemsIndex = new int[itemIndexes.length];
-        for (int i = 0; i < itemCounter; i++) {
-            consumableItemsIndex[i] = itemIndexes[i];
-        }
+        if (itemCounter >= 0) System.arraycopy(itemIndexes, 0, consumableItemsIndex, 0, itemCounter);
         return consumableItemsIndex;
     }
 
@@ -237,7 +235,6 @@ public class Player extends Entity {
             if (selectedItem instanceof OBJ_Weapon) {
                 stats.weapon = (OBJ_Weapon) selectedItem;
             }
-
             if (selectedItem instanceof OBJ_Armor) {
                 stats.armor = (OBJ_Armor) selectedItem;
             }
@@ -245,7 +242,6 @@ public class Player extends Entity {
                 cofre.use();
                 inventory.remove(itemIndex);
             }
-
             if (selectedItem.type == 5) {
                 //CONSUMIBLE
                 selectedItem.overWorldUse(this);
@@ -307,64 +303,78 @@ public class Player extends Entity {
      * Updates the player's position and handles interactions based on user input.
      */
     public void update() {
-
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.zPressed) {
-
-            if (keyH.upPressed) {
-                direction = "up";
-            } else if (keyH.downPressed) {
-                direction = "down";
-            } else if (keyH.leftPressed) {
-                direction = "left";
-            } else if (keyH.rightPressed) {
-                direction = "right";
-            }
-
-
-            // CHECKEA LA COLISION DE TILES
-            collisionOn = false;
-            gp.cCheck.checkTile(this);
-
-            //CHECK COLISION OBJETOS
-            int objIndex = gp.cCheck.checkObject(this, true);
-            ObjectInteractions(objIndex);
-            pickUpObject(objIndex);
-
-            //Colision de NPC
-            int npcIndex = gp.cCheck.checkEntity(this, gp.npc);
-            interactNPC(npcIndex);
-
-            //COLISION CON EVENTOS
-            gp.eventHandler.checkEvent();
-
-            //COLISION CON MOBS
-            int mobIndex = gp.cCheck.checkEntity(this, gp.monsters);
-            contactMonster(mobIndex);
-
-
+            directionSwapperOnPress();
+            checkAllCollisionsPlayer();
             if (!collisionOn && !keyH.zPressed) {
-
-                switch (direction) {
-                    case "up" -> WorldY -= speed;
-                    case "down" -> WorldY += speed;
-                    case "left" -> WorldX -= speed;
-                    case "right" -> WorldX += speed;
-                }
+                moveNoCollision();
             }
-            //Despues de tod0 para actualizar estado
-            gp.keyH.zPressed = false;
-
-            spriteCounter++;
-            if (spriteCounter > 12) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;
-            }
+            spriteCounterUpdater();
         }
+    }
 
+    private void checkAllCollisionsPlayer(){
+        collisionOn = false;
+        checkCollisionTile();
+        checkObjectCollision();
+        checkNPCCollision();
+        checkEventCollision();
+        checkEnemyMonsterCollision();
+    }
+
+    private void checkCollisionTile(){
+        gp.cCheck.checkTile(this);
+    }
+
+    private void checkObjectCollision(){
+        int objIndex = gp.cCheck.checkObject(this, true);
+        ObjectInteractions(objIndex);
+        pickUpObject(objIndex);
+    }
+    private void checkNPCCollision(){
+        int npcIndex = gp.cCheck.checkEntity(this, gp.npc);
+        interactNPC(npcIndex);
+    }
+    private void checkEventCollision(){
+        gp.eventHandler.checkEvent();
+    }
+    private void checkEnemyMonsterCollision(){
+        int mobIndex = gp.cCheck.checkEntity(this, gp.monsters);
+        contactMonster(mobIndex);
+    }
+
+    private void directionSwapperOnPress(){
+        if (keyH.upPressed) {
+            direction = "up";
+        } else if (keyH.downPressed) {
+            direction = "down";
+        } else if (keyH.leftPressed) {
+            direction = "left";
+        } else if (keyH.rightPressed) {
+            direction = "right";
+        }
+    }
+
+    private void moveNoCollision(){
+        switch (direction) {
+            case "up" -> WorldY -= speed;
+            case "down" -> WorldY += speed;
+            case "left" -> WorldX -= speed;
+            case "right" -> WorldX += speed;
+        }
+    }
+
+    private void spriteCounterUpdater(){
+        gp.keyH.zPressed = false;
+        spriteCounter++;
+        if (spriteCounter > 12) {
+            if (spriteNum == 1) {
+                spriteNum = 2;
+            } else if (spriteNum == 2) {
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
+        }
     }
 
     /**
