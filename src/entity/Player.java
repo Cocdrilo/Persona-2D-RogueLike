@@ -467,8 +467,6 @@ public class Player extends Entity {
     @Override
     public void draw(Graphics2D graficos2d) {
 
-        BufferedImage image = null;
-
         if (!keyH.upPressed && !keyH.downPressed && !keyH.leftPressed && !keyH.rightPressed) {
             drawPlayerWhenNotMoving();
         } else {
