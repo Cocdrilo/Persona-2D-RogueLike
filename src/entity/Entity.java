@@ -1,11 +1,8 @@
 package entity;
 
 import battleNeeds.superMagic;
-import main.BattleSystem;
 import main.GamePanel;
-import main.KeyHandler;
 import main.Toolbox;
-import monster.shadowStandar;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -44,7 +41,6 @@ public abstract class Entity implements Drawable {
 
     //ATRIBUTOS DE PERSONAJES
     public int speed;
-
     public String name;
     public int type; // 0 = player, 1 = npc, 2 = mosnter 3 = equipableSword 4 = equipableArmor 5 = consumableItem
     public Entity_stats stats;
@@ -58,7 +54,6 @@ public abstract class Entity implements Drawable {
     public String nulls[];
     public String repells[];
 
-    //Sprites
     //CONTADORES
     public int spriteCounter = 0;
     public int actionLockCounter = 0;
@@ -317,7 +312,6 @@ public abstract class Entity implements Drawable {
         gp.cCheck.checkObject(this, false);
         gp.cCheck.checkEntity(this, gp.npc);
         gp.cCheck.checkEntity(this, gp.monsters);
-        boolean contactPlayer = gp.cCheck.checkPlayer(this);
     }
 
     /**
@@ -384,16 +378,6 @@ public abstract class Entity implements Drawable {
                 //System.out.println("No se que hacer");
             }
         }
-
-        /*
-        int nextCol = gp.pathFinder.pathList.get(0).col;
-        int nextRow = gp.pathFinder.pathList.get(0).row;
-        if(nextCol == goalCol && nextRow == goalRow){
-            onPath = false;
-        }
-
-         */
-
     }
 
     /**
