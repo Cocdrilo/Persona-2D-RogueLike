@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Persona-2D-RogueLike:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Persona_2D_RogueLike_jar</output-path>
+    <root id="archive" name="Persona-2D-RogueLike.jar">
+      <element id="module-output" name="Persona-2D-RogueLike" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jackson-core-2.15.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jackson-databind-2.15.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jackson-annotations-2.15.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

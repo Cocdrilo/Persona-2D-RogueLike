@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -20,7 +21,7 @@ public class SpellManager {
      * The private constructor of the class. Calls the loadSpellsFromFile method to load the spells from the JSON file.
      */
     private SpellManager() {
-        loadSpellsFromFile("res/Jsons/spells.json"); // Ajusta la ruta según la ubicación de tu archivo JSON
+        loadSpellsFromFile("/Jsons/spells.json"); // Ajusta la ruta según la ubicación de tu archivo JSON
     }
 
     /**
@@ -43,8 +44,8 @@ public class SpellManager {
     private void loadSpellsFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            spells = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<superMagic>>() {
-            });
+            InputStream is = getClass().getResourceAsStream(filePath);
+            spells = objectMapper.readValue(is, new TypeReference<ArrayList<superMagic>>() {});
         } catch (IOException e) {
             e.printStackTrace(System.err);
             // Manejar excepciones apropiadamente

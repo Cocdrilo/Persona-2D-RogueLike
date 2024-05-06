@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -19,8 +20,8 @@ public class MonsterManager {
      * Private constructor to ensure singleton pattern and load monsters from a specified JSON file.
      */
     private MonsterManager() {
-        loadMonstersFromFile("res/Jsons/monsters.json"); // Ajusta la ruta según la ubicación de tu archivo JSON
-        loadBossesFromFile("res/Jsons/bosses.json");
+        loadMonstersFromFile("/Jsons/monsters.json"); // Ajusta la ruta según la ubicación de tu archivo JSON
+        loadBossesFromFile("/Jsons/bosses.json");
 
     }
 
@@ -44,7 +45,8 @@ public class MonsterManager {
     private void loadMonstersFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            monsters = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<monsterData>>() {
+            InputStream is = getClass().getResourceAsStream(filePath);
+            monsters = objectMapper.readValue(is, new TypeReference<ArrayList<monsterData>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,7 +57,8 @@ public class MonsterManager {
     private void loadBossesFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            bosses = objectMapper.readValue(new File(filePath), new TypeReference<ArrayList<monsterData>>() {
+            InputStream is = getClass().getResourceAsStream(filePath);
+            bosses = objectMapper.readValue(is, new TypeReference<ArrayList<monsterData>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();

@@ -23,7 +23,7 @@ public class Config {
      */
     public void saveConfig() {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("res/configs/config.txt"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("/configs/config.txt"));
 
 
             //Full Screen
@@ -55,7 +55,8 @@ public class Config {
      */
     public void loadConfig() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("res/configs/config.txt"));
+            InputStream is = getClass().getResourceAsStream("/configs/config.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String s = br.readLine();
 
             //Full Screen
@@ -75,10 +76,8 @@ public class Config {
 
             br.close();
 
-
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }
-
     }
 }

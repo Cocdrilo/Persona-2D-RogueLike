@@ -6,6 +6,7 @@ import monster.MonsterManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class NegotiationManager {
      * Constructor to initialize the negotiation manager.
      */
     public NegotiationManager() {
-        cargarPreguntasDesdeJSON("res/Jsons/questions.json"); // Reemplaza "preguntas.json" con la ubicación de tu archivo JSON.
+        cargarPreguntasDesdeJSON("/Jsons/questions.json"); // Reemplaza "preguntas.json" con la ubicación de tu archivo JSON.
     }
 
     /**
@@ -58,7 +59,9 @@ public class NegotiationManager {
 
         try {
             // Lee el archivo JSON y deserializa en una lista de preguntas
-            PreguntaJson preguntaJson = objectMapper.readValue(new File(filePath), PreguntaJson.class);
+            InputStream is = getClass().getResourceAsStream(filePath);
+
+            PreguntaJson preguntaJson = objectMapper.readValue(is, PreguntaJson.class);
 
             // Obtiene la lista de preguntas desde el objeto PreguntaJson
             preguntas = preguntaJson.getPreguntas();

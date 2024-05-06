@@ -28,16 +28,16 @@ public class BattleAnimations {
      */
     public BattleAnimations() {
         // Load melee animation images
-        meleeSlash1 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_1.png");
-        meleeSlash2 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_2.png");
-        meleeSlash3 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_3.png");
-        meleeSlash4 = loadImage("res/BattleImages/MeleAttackAnimation/Slash_4.png");
+        meleeSlash1 = loadImage("/BattleImages/MeleAttackAnimation/Slash_1.png");
+        meleeSlash2 = loadImage("/BattleImages/MeleAttackAnimation/Slash_2.png");
+        meleeSlash3 = loadImage("/BattleImages/MeleAttackAnimation/Slash_3.png");
+        meleeSlash4 = loadImage("/BattleImages/MeleAttackAnimation/Slash_4.png");
 
         // Load magic animation images
-        magicBlast1 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball1.png");
-        magicBlast2 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball2.png");
-        magicBlast3 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball3.png");
-        magicBlast4 = loadImage("res/BattleImages/MagicAttackAnimation/Fireball3.png");
+        magicBlast1 = loadImage("/BattleImages/MagicAttackAnimation/Fireball1.png");
+        magicBlast2 = loadImage("/BattleImages/MagicAttackAnimation/Fireball2.png");
+        magicBlast3 = loadImage("/BattleImages/MagicAttackAnimation/Fireball3.png");
+        magicBlast4 = loadImage("/BattleImages/MagicAttackAnimation/Fireball3.png");
 
         // Set up melee animation timer
         meleeAnimationTimer = createAnimationTimer();
@@ -157,9 +157,9 @@ public class BattleAnimations {
      * @param filename The path to the image file.
      * @return The loaded BufferedImage, or null if an error occurs.
      */
-    private static BufferedImage loadImage(String filename) {
+    private BufferedImage loadImage(String filename) {
         try {
-            return ImageIO.read(new File(filename));
+            return ImageIO.read(getClass().getResourceAsStream(filename));
         } catch (IOException e) {
             e.printStackTrace(System.err);
             return null;
