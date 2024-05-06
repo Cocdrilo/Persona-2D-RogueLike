@@ -24,8 +24,8 @@ public class Sound {
     public Sound() {
 
         soundURL[0] = getClass().getResource("/Sound/DarkLoop.wav");
-        soundURL[1] = getClass().getResource("/Sound/Coin.wav");
-        soundURL[2] = getClass().getResource("/Sound/Unlock.wav");
+        soundURL[1] = getClass().getResource("/Sound/coin.wav");
+        soundURL[2] = getClass().getResource("/Sound/unlock.wav");
         soundURL[3] = getClass().getResource("/Sound/fanfare.wav");
         soundURL[4] = getClass().getResource("/Sound/powerup.wav");
         soundURL[5] = getClass().getResource("/Sound/cursor.wav");

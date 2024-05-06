@@ -33,14 +33,14 @@ public class NPC extends Entity {
      */
     private void getImage() {
         int scale = 1;
-        walkDown1 = setUp("/NPC/demon_1",gp.tileSize*scale,gp.tileSize*scale);
-        walkDown2 = setUp("/NPC/demon_2",gp.tileSize*scale,gp.tileSize*scale);
-        walkLeft1 = setUp("/NPC/demon_left_1" ,gp.tileSize*scale,gp.tileSize*scale);
-        walkLeft2 = setUp("/NPC/demon_left_2" ,gp.tileSize*scale,gp.tileSize*scale);
-        walkRight1 = setUp("/NPC/demon_right_1" ,gp.tileSize*scale,gp.tileSize*scale);
-        walkRight2 = setUp("/NPC/demon_right_2" ,gp.tileSize*scale,gp.tileSize*scale);
-        walkUp1 = setUp("/NPC/demon_back_1" ,gp.tileSize*scale,gp.tileSize*scale);
-        walkUp2 = setUp("/NPC/demon_back_2" ,gp.tileSize*scale,gp.tileSize*scale);
+        walkDown1 = setUp("/NPC/Demon_1",gp.tileSize*scale,gp.tileSize*scale);
+        walkDown2 = setUp("/NPC/Demon_2",gp.tileSize*scale,gp.tileSize*scale);
+        walkLeft1 = setUp("/NPC/Demon_left_1" ,gp.tileSize*scale,gp.tileSize*scale);
+        walkLeft2 = setUp("/NPC/Demon_left_2" ,gp.tileSize*scale,gp.tileSize*scale);
+        walkRight1 = setUp("/NPC/Demon_right_1" ,gp.tileSize*scale,gp.tileSize*scale);
+        walkRight2 = setUp("/NPC/Demon_right_2" ,gp.tileSize*scale,gp.tileSize*scale);
+        walkUp1 = setUp("/NPC/Demon_back_1" ,gp.tileSize*scale,gp.tileSize*scale);
+        walkUp2 = setUp("/NPC/Demon_back_2" ,gp.tileSize*scale,gp.tileSize*scale);
 
     }
 
