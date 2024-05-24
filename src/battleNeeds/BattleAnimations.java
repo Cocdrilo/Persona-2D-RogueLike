@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.Timer;
+import javax.swing.*;
 
 /**
  * The BattleAnimations class handles the animations for melee and magic attacks in a game.
@@ -78,7 +78,7 @@ public class BattleAnimations {
 
         meleeAnimationTimer.start();
 
-        Timer drawTimer = new Timer(100, new ActionListener() {
+        Timer drawTimer = new Timer(300, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 drawMeleeFrame(g2d, targetX, targetY);
@@ -165,4 +165,5 @@ public class BattleAnimations {
             return null;
         }
     }
+
 }
