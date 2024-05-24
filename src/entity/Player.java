@@ -46,7 +46,7 @@ public class Player extends Entity {
 
 
     private void setPlayerSolidArea(){
-        solidArea = new Rectangle(15, 20, 32, 64);
+        solidArea = new Rectangle(16,24 , 40, 48);
         solidAreaDefaultX = solidArea.x;
         SolidAreaDefaultY = solidArea.y;
     }
@@ -55,18 +55,18 @@ public class Player extends Entity {
      * Loads the player character images for different directions and movements.
      */
     public void getPlayerImage() {
-        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        standLeft = setUp("/player/NuevoPlayer/Left", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        standRight = setUp("/player/NuevoPlayer/Right", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        standBack = setUp("/player/NuevoPlayer/Back", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkDown1 = setUp("/player/NuevoPlayer/Front2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkDown2 = setUp("/player/NuevoPlayer/Front3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkLeft1 = setUp("/player/NuevoPlayer/Left2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkLeft2 = setUp("/player/NuevoPlayer/Left3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkRight1 = setUp("/player/NuevoPlayer/Right2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkRight2 = setUp("/player/NuevoPlayer/Right3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkUp1 = setUp("/player/NuevoPlayer/Back2", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
-        walkUp2 = setUp("/player/NuevoPlayer/Back3", (int) (gp.tileSize * 1.5), gp.tileSize * 2);
+        standFront = setUp("/player/NuevoPlayer/Front", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        standLeft = setUp("/player/NuevoPlayer/Left", (int) (gp.tileSize * 1.5),  (int) (gp.tileSize * 1.5));
+        standRight = setUp("/player/NuevoPlayer/Right", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        standBack = setUp("/player/NuevoPlayer/Back", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkDown1 = setUp("/player/NuevoPlayer/Front2", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkDown2 = setUp("/player/NuevoPlayer/Front3", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkLeft1 = setUp("/player/NuevoPlayer/Left2", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkLeft2 = setUp("/player/NuevoPlayer/Left3", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkRight1 = setUp("/player/NuevoPlayer/Right2", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkRight2 = setUp("/player/NuevoPlayer/Right3", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkUp1 = setUp("/player/NuevoPlayer/Back2", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
+        walkUp2 = setUp("/player/NuevoPlayer/Back3", (int) (gp.tileSize * 1.5), (int) (gp.tileSize * 1.5));
     }
 
     /**
