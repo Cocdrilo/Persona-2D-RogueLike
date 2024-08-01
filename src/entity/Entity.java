@@ -186,8 +186,10 @@ public abstract class Entity implements Drawable {
      */
 
     public int getPhysAttack(int monsterEndurance, int physDmg, int attackerStat) {
-        return 5 * (int) (Math.sqrt(((double) attackerStat / monsterEndurance) * Math.sqrt(physDmg) * randomFactor()));
+        double damage = 5 * Math.sqrt(((double) attackerStat / monsterEndurance) * Math.sqrt(physDmg) * randomFactor());
+        return (int) Math.round(damage);
     }
+
 
     /**
      * Calculates the damage of a magical attack.
@@ -198,7 +200,8 @@ public abstract class Entity implements Drawable {
      */
 
     public int getMagicAttack(int monsterEndurance, int spellDmg, int attackMagicStat) {
-        return 5 * (int) (Math.sqrt(((double) attackMagicStat / monsterEndurance) * Math.sqrt(spellDmg) * randomFactor()));
+        double damage = 5 * Math.sqrt(((double) attackMagicStat / monsterEndurance) * Math.sqrt(spellDmg) * randomFactor());
+        return (int) Math.round(damage);
     }
 
 

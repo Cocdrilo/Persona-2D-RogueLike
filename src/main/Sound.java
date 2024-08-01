@@ -35,18 +35,19 @@ public class Sound {
     /**
      * Sets the sound file to be played based on the specified index.
      *
-     * @param i The index of the sound file.
+     * @param soundArrayIndex The index of the sound file.
      */
-    public void setFile(int i) {
+    public void setFile(int soundArrayIndex) {
 
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[soundArrayIndex]);
             clip = AudioSystem.getClip();
             clip.open(ais);
             fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             checkVolume();
         } catch (Exception e) {
-
+            System.err.println("Error in audio Files ");
+            e.printStackTrace(System.err);
         }
 
     }
