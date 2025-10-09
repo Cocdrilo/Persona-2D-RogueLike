@@ -23,59 +23,34 @@ public class Config {
      */
     public void saveConfig() {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("/configs/config.txt"));
-
-
-            //Full Screen
-            if (gp.fullScreenOn) {
-                bw.write("On");
-            }
-            if (!gp.fullScreenOn) {
-                bw.write("Off");
-            }
+            File dir = new File("configs");
+            if (!dir.exists()) dir.mkdirs();
+            BufferedWriter bw = new BufferedWriter(new FileWriter("res/configs/config.txt"));
+            // Full Screen
+            bw.write(gp.fullScreenOn ? "On" : "Off");
             bw.newLine();
-
-            //Music Volume
+            // Music Volume
             bw.write(String.valueOf(gp.music.volumeScale));
             bw.newLine();
-
-            //SE Volume
+            // SE Volume
             bw.write(String.valueOf(gp.se.volumeScale));
             bw.newLine();
-
             bw.close();
-
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }
     }
 
-    /**
-     * Loads the configuration settings from a file.
-     */
     public void loadConfig() {
         try {
-            InputStream is = getClass().getResourceAsStream("/configs/config.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            BufferedReader br = new BufferedReader(new FileReader("res/configs/config.txt"));
             String s = br.readLine();
-
-            //Full Screen
-            if (s.equals("On")) {
-                gp.fullScreenOn = true;
-            }
-            if (s.equals("Off")) {
-                gp.fullScreenOn = false;
-            }
-            //Music Volume
+            gp.fullScreenOn = s.equals("On");
             s = br.readLine();
             gp.music.volumeScale = Integer.parseInt(s);
-
-            //SE Volume
             s = br.readLine();
             gp.se.volumeScale = Integer.parseInt(s);
-
             br.close();
-
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }

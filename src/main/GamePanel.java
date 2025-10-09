@@ -109,12 +109,14 @@ public class GamePanel extends JPanel implements Runnable {
      * Sets the game to full screen mode.
      */
     public void setFullScreen() {
+        JFrame window = Main.window;
+        window.dispose(); // Necesario para cambiar decoraciones
+        window.setUndecorated(true); // Quita bordes y barra de título
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
-        Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        screenWidth2 = (int) width;
-        screenHeight2 = (int) height;
+        window.setBounds(0, 0, screenSize.width, screenSize.height);
+        window.setVisible(true);
+        screenWidth2 = screenSize.width;
+        screenHeight2 = screenSize.height;
     }
 
 

@@ -49,6 +49,10 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
 
+        if (e.getKeyChar() == 'ñ' || e.getKeyChar() == 'Ñ') {
+            gp.fullScreenOn = !gp.fullScreenOn;
+        }
+
         //PLAY STATE
         if (gp.gameState == gp.playState) {
             playState(code);
@@ -552,6 +556,7 @@ public class KeyHandler implements KeyListener {
                 System.exit(0);
             }
         }
+
     }
 
     /**
